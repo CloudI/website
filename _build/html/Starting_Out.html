@@ -1,0 +1,251 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>2. Starting Out &mdash; CloudI Tutorial</title>
+    
+    <link rel="stylesheet" href="_static/pyramid.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.3.3B',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="CloudI Tutorial" href="index.html" />
+    <link rel="next" title="3. Book Recommendation Application" href="Book_Recommendation_Application.html" />
+    <link rel="prev" title="1. Introduction" href="Introduction.html" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+  </head>
+  <body>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Book_Recommendation_Application.html" title="3. Book Recommendation Application"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Introduction.html" title="1. Introduction"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">CloudI Tutorial</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="starting-out">
+<h1>2. Starting Out<a class="headerlink" href="#starting-out" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="setting-up-the-cloudi-configuration">
+<h2>2.1. Setting up the CloudI Configuration<a class="headerlink" href="#setting-up-the-cloudi-configuration" title="Permalink to this headline">¶</a></h2>
+<p>When CloudI is installed, several default configuration files are created.
+These are generally stored in the
+<strong>/usr/local/lib/cloud_&lt;version&gt;/etc</strong>
+directory.
+For initial development, the following suggested changes should be made.</p>
+<p>1.  Make a copy of the original configuration file.</p>
+<div class="highlight-python"><div class="highlight"><pre>sudo cp /usr/local/etc/cloudi/cloudi.conf /usr/local/etc/cloudi/cloudi.conf.original
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li>Adjust the log setting by changing the settings in the
+<strong>cloudi.conf</strong>
+file.  The original configuration has a “trace” log level and this generates a very large quantity of messages.
+Setting the level to “debug” is probably more appropriate for development purposes.</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>{logging, [
+        %{file, &quot;path/to/logfile&quot;},
+        {level,
+        debug
+        }, % levels: off, fatal, error, warn, info, debug, trace
+
+       ...
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li>The standard installation includes a number of test services.
+These test services can consume a fair amount of CPU resources and can clutter up the logs.
+During active development, you are likely going to be restarting the CloudI service frequently, so it makes sense to remove anything you don&#8217;t need.
+You can do this by removing or commenting out the test services located in the
+<strong>cloudi.conf</strong>
+file. An example is shown below where the % sign is used to comment out an entry.</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>%{internal,
+%&quot;/tests/flood/&quot;,
+%cloudi_service_flood,
+%[{flood, &quot;/tests/flood/java&quot;, &lt;&lt;&quot;DATA&quot;&gt;&gt;, 1000}],
+%lazy_closest,
+%5000, 5000, 5000, [api], undefined, 2, 5, 300, []},
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li>It is important to realize that all services listed in the cloudi.conf file must start successfully when the cloud is restarted.
+In other words, the failure of any service listed in the configuration file will keep the entire cloud from starting.
+One method for dealing with this is:</li>
+</ol>
+<ul class="simple">
+<li>Start the cloud with the bare minimum services that are needed; and</li>
+<li>Develop a script with the additional services and run the script after the cloud has successfully started.</li>
+</ul>
+</div>
+<div class="section" id="viewing-logs">
+<h2>2.2. Viewing Logs<a class="headerlink" href="#viewing-logs" title="Permalink to this headline">¶</a></h2>
+<p>The default location of CloudI log files is the
+<strong>/usr/local/var/log/cloudi/</strong>
+<strong>logs</strong>
+directory.  You can change the location of the log files by modifying the
+<strong>cloudi.conf</strong>
+file and removing the % comment.</p>
+<div class="highlight-python"><div class="highlight"><pre>{logging, [
+%{file, &quot;**path/to/logfile**&quot;},
+{level, debug
+}, % levels: off, fatal, error, warn, info, debug, trace
+</pre></div>
+</div>
+</div>
+<div class="section" id="automating-the-build-process">
+<h2>2.3. Automating the Build Process<a class="headerlink" href="#automating-the-build-process" title="Permalink to this headline">¶</a></h2>
+<p>The typical build process when working with CloudI consists of the following steps:</p>
+<ul class="simple">
+<li>Starting CloudI</li>
+<li>Specifying the code path location using the CloudI Service API</li>
+<li>Compilation of custom code</li>
+<li>Adding custom code to CloudI using the CloudI Service API</li>
+<li>Running test services</li>
+<li>Stopping CloudI</li>
+</ul>
+<p>The use of some sort of automated build process to perform these steps is well worth the effort.
+Options range from a simple shell script, to a make file, to more complicated build tool.
+Pick a mechanism that is simple and something that you are familiar with.
+An example shell script for the Book Service (see next section for more details) is listed below.</p>
+<div class="highlight-python"><div class="highlight"><pre>#!/bin/sh
+#
+# These scripts are used to load the Book services into the Cloudi engine
+#
+
+# Add the current directory to the code path
+curl -X POST -d &#39;&quot;&#39;`pwd`&#39;&quot;&#39; http://localhost:6467/cloudi/api/erlang/code_path_add
+
+# Compile all Erlang modules
+erlc -pz /usr/local/lib/cloudi-1.3.3/lib/cloudi_core-1.3.3 -pz /usr/local/lib/cloudi-1.3.3/lib/cloudi_core-1.3.3/ebin book.erl
+
+# Add the Book service
+curl -X POST -d @book.conf http://localhost:6467/cloudi/api/erlang/services_add
+
+# Display list of services
+curl http://localhost:6467/cloudi/api/erlang/services
+
+# Call the Book Service
+curl http://localhost:6467/recommendation/book?item=45388
+</pre></div>
+</div>
+</div>
+<div class="section" id="common-operations">
+<h2>2.4. Common Operations<a class="headerlink" href="#common-operations" title="Permalink to this headline">¶</a></h2>
+<p>Common operations for working with CloudI are shown below.</p>
+<p>1.  Starting / Stopping CloudI</p>
+<div class="highlight-python"><div class="highlight"><pre>sudo cloudi start
+
+sudo cloudi stop
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li>Listing services</li>
+</ol>
+<p>This command is useful for viewing what services have been defined in the cloud.</p>
+<div class="highlight-python"><div class="highlight"><pre>curl http://localhost:6467/cloudi/api/erlang/services
+</pre></div>
+</div>
+<p>3.  Listing the code search paths</p>
+<div class="highlight-python"><div class="highlight"><pre>curl http://localhost:6467/cloudi/api/erlang/code_path
+</pre></div>
+</div>
+<p>4. Adding a code search path</p>
+<div class="highlight-python"><div class="highlight"><pre>curl -X POST -d &#39;&quot;/home/user/code/services&quot;&#39; http://localhost:6467/cloudi/api/erlang/code_path_add
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">2. Starting Out</a><ul>
+<li><a class="reference internal" href="#setting-up-the-cloudi-configuration">2.1. Setting up the CloudI Configuration</a></li>
+<li><a class="reference internal" href="#viewing-logs">2.2. Viewing Logs</a></li>
+<li><a class="reference internal" href="#automating-the-build-process">2.3. Automating the Build Process</a></li>
+<li><a class="reference internal" href="#common-operations">2.4. Common Operations</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Introduction.html"
+                        title="previous chapter">1. Introduction</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="Book_Recommendation_Application.html"
+                        title="next chapter">3. Book Recommendation Application</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="Book_Recommendation_Application.html" title="3. Book Recommendation Application"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="Introduction.html" title="1. Introduction"
+             >previous</a> |</li>
+        <li><a href="index.html">CloudI Tutorial</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright .
+      Last updated on Nov 13, 2014.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>
