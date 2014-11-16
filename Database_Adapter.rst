@@ -72,10 +72,14 @@ CloudI provides out-of-the-box adapters for many types of databases.  The exampl
 Testing the Service
 -------------------
 
-You can test the database service by using a web browser or command line web client.  Here's an example using the ``curl`` application. ::
+You can test the database service by using the CloudI module and the associated Erlang VM shell.  A simple example is shown below. Note that Erlang commands are case-sensitive and each command must be terminated with a period character.
 
-  curl -X POST -d "select * from items where id=45388" http://localhost:6467/db/mysql/book
+::
 
-.. todo::
- The command above does not work. 
+  sudo cloudi attach
 
+  Context = cloudi:new().  
+  cloudi:send_sync(Context, "/db/mysql/book", "select * from items where id=1").
+
+.. NOTE::
+	To exit the Erlang shell, press the Control D key simultaneously.
