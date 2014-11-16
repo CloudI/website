@@ -6,7 +6,7 @@
 Welcome to the CloudI Tutorial
 ==============================
 
-.. Contributed by Bruce Kissinger - Impact Software LLC., 2014
+.. Initial version contributed by Bruce Kissinger - Impact Software LLC., 2014
 
 Contents:
 

@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '1.3.3B',
+        VERSION:     '1.3.3 Beta',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -120,13 +120,16 @@
 </div>
 <div class="section" id="testing-the-service">
 <h2>4.2. Testing the Service<a class="headerlink" href="#testing-the-service" title="Permalink to this headline">¶</a></h2>
-<p>You can test the database service by using a web browser or command line web client.  Here&#8217;s an example using the <tt class="docutils literal"><span class="pre">curl</span></tt> application.</p>
-<div class="highlight-python"><div class="highlight"><pre>curl -X POST -d &quot;select * from items where id=45388&quot; http://localhost:6467/db/mysql/book
+<p>You can test the database service by using the CloudI module and the associated Erlang VM shell.  A simple example is shown below. Note that Erlang commands are case-sensitive and each command must be terminated with a period character.</p>
+<div class="highlight-python"><div class="highlight"><pre>sudo cloudi attach
+
+Context = cloudi:new().
+cloudi:send_sync(Context, &quot;/db/mysql/book&quot;, &quot;select * from items where id=1&quot;).
 </pre></div>
 </div>
-<div class="admonition-todo admonition" id="index-0">
-<p class="first admonition-title">Todo</p>
-<p class="last">The command above does not work.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">To exit the Erlang shell, press the Control D key simultaneously.</p>
 </div>
 </div>
 </div>
@@ -185,8 +188,7 @@
       </ul>
     </div>
     <div class="footer">
-        &copy; Copyright .
-      Last updated on Nov 13, 2014.
+      Last updated on Nov 16, 2014.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>

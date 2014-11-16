@@ -49,14 +49,8 @@ For initial development, the following suggested changes should be made.
   %lazy_closest,
   %5000, 5000, 5000, [api], undefined, 2, 5, 300, []},
 
-4.  It is important to realize that all services listed in the cloudi.conf file must start successfully when the cloud is restarted.
-    In other words, the failure of any service listed in the configuration file will keep the entire cloud from starting.
-    One method for dealing with this is:
-
-*   Start the cloud with the bare minimum services that are needed; and
-
-*   Develop a script with the additional services and run the script after the cloud has successfully started.
-
+4.  It is important to realize that all services listed in the cloudi.conf file must start successfully when the cloud is first started.  
+    In other words, the failure of any service listed in the configuration file will keep the entire cloud from starting to ensure an error-free starting state.  Seperate configuration methods will be used to show how a cloud may grow.
 
 
 Viewing Logs

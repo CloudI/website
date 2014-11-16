@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '1.0',
+        VERSION:     '1.3.3 Beta',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -61,12 +61,11 @@ It supports the development of services that can be created in many different pr
 <h3>About This Tutorial<a class="headerlink" href="#about-this-tutorial" title="Permalink to this headline">¶</a></h3>
 <p>This tutorial should help you understand the design decisions and implementation steps needed to use CloudI for your own projects.
 A small real-world application is used for illustration and the full source code for the application is located
-here</p>
+here in case you want to look at the complete implementation.</p>
 <div class="admonition-todo admonition" id="index-0">
 <p class="first admonition-title">Todo</p>
 <p class="last">Add source code link here.</p>
 </div>
-<p>in case you want to look at the complete implementation.</p>
 <p>This tutorial assumes that you have successfully <a class="reference external" href="http://cloudi.org/faq.html#3_Overview">installed CloudI</a> on a development system and can successfully start and stop it.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -128,14 +127,9 @@ file. An example is shown below where the % sign is used to comment out an entry
 </pre></div>
 </div>
 <ol class="arabic simple" start="4">
-<li>It is important to realize that all services listed in the cloudi.conf file must start successfully when the cloud is restarted.
-In other words, the failure of any service listed in the configuration file will keep the entire cloud from starting.
-One method for dealing with this is:</li>
+<li>It is important to realize that all services listed in the cloudi.conf file must start successfully when the cloud is first started.
+In other words, the failure of any service listed in the configuration file will keep the entire cloud from starting to ensure an error-free starting state.  Seperate configuration methods will be used to show how a cloud may grow.</li>
 </ol>
-<ul class="simple">
-<li>Start the cloud with the bare minimum services that are needed; and</li>
-<li>Develop a script with the additional services and run the script after the cloud has successfully started.</li>
-</ul>
 </div>
 <div class="section" id="viewing-logs">
 <h3>Viewing Logs<a class="headerlink" href="#viewing-logs" title="Permalink to this headline">¶</a></h3>
@@ -458,13 +452,16 @@ An excellent resource for designing RESTful API&#8217;s is located <a class="ref
 </div>
 <div class="section" id="testing-the-service">
 <h3>Testing the Service<a class="headerlink" href="#testing-the-service" title="Permalink to this headline">¶</a></h3>
-<p>You can test the database service by using a web browser or command line web client.  Here&#8217;s an example using the <tt class="docutils literal"><span class="pre">curl</span></tt> application.</p>
-<div class="highlight-python"><div class="highlight"><pre>curl -X POST -d &quot;select * from items where id=45388&quot; http://localhost:6467/db/mysql/book
+<p>You can test the database service by using the CloudI module and the associated Erlang VM shell.  A simple example is shown below. Note that Erlang commands are case-sensitive and each command must be terminated with a period character.</p>
+<div class="highlight-python"><div class="highlight"><pre>sudo cloudi attach
+
+Context = cloudi:new().
+cloudi:send_sync(Context, &quot;/db/mysql/book&quot;, &quot;select * from items where id=1&quot;).
 </pre></div>
 </div>
-<div class="admonition-todo admonition" id="index-0">
-<p class="first admonition-title">Todo</p>
-<p class="last">The command above does not work.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">To exit the Erlang shell, press the Control D key simultaneously.</p>
 </div>
 </div>
 </div>
@@ -607,6 +604,11 @@ An excellent resource for designing RESTful API&#8217;s is located <a class="ref
 <p class="todo-source">(The <a class="reference internal" href="index.html#index-0"><em>original entry</em></a> is located in  /home/bruce/Documents/Impact/Projects/CloudI/tutorial/HTML_Integration.rst, line 5.)</p>
 <div class="admonition-todo admonition">
 <p class="first admonition-title">Todo</p>
+<p class="last">Add source code link here.</p>
+</div>
+<p class="todo-source">(The <a class="reference internal" href="index.html#index-0"><em>original entry</em></a> is located in  /home/bruce/Documents/Impact/Projects/CloudI/tutorial/Introduction.rst, line 23.)</p>
+<div class="admonition-todo admonition">
+<p class="first admonition-title">Todo</p>
 <p class="last">This section has not yet been written</p>
 </div>
 <p class="todo-source">(The <a class="reference internal" href="index.html#index-0"><em>original entry</em></a> is located in  /home/bruce/Documents/Impact/Projects/CloudI/tutorial/Java_Integration.rst, line 5.)</p>
@@ -625,16 +627,6 @@ An excellent resource for designing RESTful API&#8217;s is located <a class="ref
 <p class="last">This section has not yet been written</p>
 </div>
 <p class="todo-source">(The <a class="reference internal" href="index.html#index-0"><em>original entry</em></a> is located in  /home/bruce/Documents/Impact/Projects/CloudI/tutorial/ZeroMQ.rst, line 5.)</p>
-<div class="admonition-todo admonition">
-<p class="first admonition-title">Todo</p>
-<p class="last">Add source code link here.</p>
-</div>
-<p class="todo-source">(The <a class="reference internal" href="index.html#index-0"><em>original entry</em></a> is located in  /home/bruce/Documents/Impact/Projects/CloudI/tutorial/Introduction.rst, line 23.)</p>
-<div class="admonition-todo admonition">
-<p class="first admonition-title">Todo</p>
-<p class="last">The command above does not work.</p>
-</div>
-<p class="todo-source">(The <a class="reference internal" href="index.html#index-0"><em>original entry</em></a> is located in  /home/bruce/Documents/Impact/Projects/CloudI/tutorial/Database_Adapter.rst, line 79.)</p>
 </div>
 </div>
 </div>
@@ -642,7 +634,6 @@ An excellent resource for designing RESTful API&#8217;s is located <a class="ref
 <h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
 <li><a class="reference internal" href="genindex.html"><em>Index</em></a></li>
-<li><a class="reference internal" href="py-modindex.html"><em>Module Index</em></a></li>
 <li><a class="reference internal" href="search.html"><em>Search Page</em></a></li>
 </ul>
 </div>
@@ -739,8 +730,7 @@ An excellent resource for designing RESTful API&#8217;s is located <a class="ref
       </ul>
     </div>
     <div class="footer">
-        &copy; Copyright 2014, Impact Software LLC..
-      Last updated on Nov 13, 2014.
+      Last updated on Nov 16, 2014.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
