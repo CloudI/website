@@ -1,0 +1,81 @@
+/*
+ * Copyright (c) 2012-2013 Michael Truog
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ *
+ */
+
+body { 
+    background: #181818 url(images/sun.png) no-repeat right top;
+    color: #ffffff;
+}
+
+a:link {
+    color: #80d4ff;
+}
+a:visited {
+    color: #80d4ff;
+}
+a:hover {
+    color: #fffd77;
+}
+
+hr {
+    background: #E19832;
+}
+
+pre {
+    border-left-color: #2a2a2a;
+}
+
+#header {
+    color: #80d4ff;
+}
+#header a {
+    color: #80d4ff;
+}
+#sub-header {
+    color: #d5d5d5;
+}
+#sub-header a {
+    color: #d5d5d5;
+}
+#navigation li {
+    border-left-color: #424242;
+}
+#navigation li a {
+    color: #52ff52;
+}
+#navigation li a:hover {
+    color: #fffd77;
+}
+#navigation li a.active {
+    color: #fec83a;
+}
+#navigation li.noprint {
+    display: none;
+}
+#content p.code {
+    border-left-color: #2a2a2a;
+}
+

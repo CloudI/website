@@ -1,0 +1,202 @@
+<html>
+<head>
+  <title>CloudI: A Cloud at the lowest level - Current Configuration</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta content="Cloud Framework for fault-tolerant distributed processing with dynamic load balancing" name="description" />
+  <meta content="cloud, private cloud, framework, erlang, c++, distributed, fault tolerant, distributed systems, fault-tolerant, embarrassingly parallel, divide and conquer, work pool, cloudi" name="keywords" />
+  <meta content="global" name="distribution" />
+  <meta content="This document copyright 2009-2013 by Michael Truog" name="copyright" />
+  <script type="text/javascript" src="style.js"></script>
+  <link rel="stylesheet" type="text/css" href="style.css" />
+  <link rel="stylesheet alt" type="text/css" title="print"
+        href="print.css" />
+  <link rel="stylesheet" type="text/css" title="noprint"
+        href="noprint.css" />
+  <meta http-equiv="Default-Style" content="noprint" />
+  <link rel="shortcut icon" href="images/cloud.ico" type="image/x-icon" />
+</head>
+<body>
+
+<div id="header">
+<a href="index.html">
+Cloud<font style="font-family: serif">I</font><img src="images/cloud.png" />
+</a>
+</div>
+<br />
+<div id="navigation">
+  <ul>
+    <li><a href="api.html">API</a></li>
+    <li><a href="faq.html">FAQ</a></li>
+    <li><a href="http://sourceforge.net/projects/cloudi/files/latest/download" target="_blank">Download</a></li>
+    <li><a href="https://github.com/CloudI/CloudI/tree/master#readme">Source</a></li>
+    <li><a href="support.html">Support</a></li>
+    <li>
+      <!-- AddThis Button BEGIN -->
+      <div class="addthis_toolbox addthis_default_style ">
+        <a class="addthis_button_preferred_1"></a>
+        <a class="addthis_button_preferred_2"></a>
+        <a class="addthis_button_preferred_3"></a>
+        <a class="addthis_button_preferred_4"></a>
+        <a class="addthis_button_compact"></a>
+        <a class="addthis_counter addthis_bubble_style"></a>
+      </div>
+      <script type="text/javascript">
+      var addthis_config = {"data_track_clickback":true};
+      </script>
+      <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=ra-4dae3b45563ec17d"></script>
+      <!-- AddThis Button END -->
+    </li>
+  </ul>
+</div>
+
+<div id="content">
+  <h1>Current Configuration</h1>
+
+  <p>http://cloudi.org (and <a href="http://ndforge.com" target="_blank">http://ndforge.com</a>) Configuration
+  <pre>
+% last updated on Fri Oct  3 21:09:04 UTC 2014 with CloudI 1.3.3
+{acl, [
+    {api,
+     ["/cloudi/api/*"]},
+    {files,
+     ["/ndforge.com/*",
+      "/cloudi.org/*",
+      "/loadbalancer_health_check/*"]},
+    {www,
+     ["*/www.ndforge.com/*",
+      "*/ndforge.com/*",
+      "*/www.cloudi.org/*",
+      "*/cloudi.org/*",
+      "*/*/loadbalancer_health_check/index.html/get"]}
+]}.
+{services, [
+    % CloudI Service API interface
+
+    {internal,
+     "/cloudi/api/",
+     cloudi_service_api_requests,
+     [],
+     none,
+     5000, 5000, 5000, undefined, undefined, 1, 5, 300, []},
+
+    % ndforge.com files
+
+    {internal,
+     "/ndforge.com/",
+     cloudi_service_filesystem,
+     [{directory, "${HOME}/www/ndforge.com/"},
+      {refresh, 900},     % 15 minutes
+      {cache, refresh}],  % 7.5 minutes
+     none,
+     60000, 5000, 5000, [api], undefined, 4, 5, 300, []},
+
+    % cloudi.org files
+
+    {internal,
+     "/cloudi.org/",
+     cloudi_service_filesystem,
+     [{directory, "${HOME}/www/cloudi.org/"},
+      {refresh, 900},     % 15 minutes
+      {cache, refresh}],  % 7.5 minutes
+     none,
+     1200000, 5000, 5000, [api], undefined, 4, 5, 300, []},
+
+    % ec2 load-balancer health check
+
+    {internal,
+     "/loadbalancer_health_check/",
+     cloudi_service_filesystem,
+     [{directory, "${HOME}/www/private/"}],
+     none,
+     5000, 5000, 5000, [api], undefined, 1, 5, 300, []},
+
+    % HTTP traffic
+
+    {internal,
+     "*/",
+     cloudi_service_router,
+     [{add_prefix, false},
+      {destinations,
+       [{"www.ndforge.com/*",
+         [{parameters_allowed, true},
+          {parameters_strict_matching, false},
+          {parameters_selected, [2]},
+          {service_names,
+           ["/ndforge.com/*"]}]},
+        {"ndforge.com/*",
+         [{parameters_allowed, true},
+          {parameters_strict_matching, false},
+          {parameters_selected, [2]},
+          {service_names,
+           ["/ndforge.com/*"]}]},
+        {"www.cloudi.org/*",
+         [{parameters_allowed, true},
+          {parameters_strict_matching, false},
+          {parameters_selected, [2]},
+          {service_names,
+           ["/cloudi.org/*"]}]},
+        {"cloudi.org/*",
+         [{parameters_allowed, true},
+          {parameters_strict_matching, false},
+          {parameters_selected, [2]},
+          {service_names,
+           ["/cloudi.org/*"]}]},
+        {"*/loadbalancer_health_check/index.html/get",
+         [{parameters_allowed, true},
+          {parameters_strict_matching, false},
+          {service_names,
+           ["/loadbalancer_health_check/index.html/get"]}]}
+        ]}],
+     lazy_closest,
+     5000, 5000, 5000, [api], [files], 8, 5, 300,
+     [{duo_mode, true},
+      {dest_refresh_start, 3000}]},
+    {internal,
+     "/",
+     cloudi_service_http_cowboy,
+     [{use_client_ip_prefix, true},
+      {use_host_prefix, true},
+      {ip, {0, 0, 0, 0}}, {port, 8000}, {output, binary}],
+     lazy_closest,
+     5000, 5000, 5000, [api], [www], 1, 5, 300,
+     [{duo_mode, true}]}
+
+]}.
+{nodes, [
+    {discovery,
+     [{ec2,
+       [{access_key_id, "PUT_IT_HERE"},
+        {secret_access_key, "PUT_IT_HERE"},
+        {groups, ["www"]}]}]}
+]}.
+{logging, [
+    {formatters,
+     [{any,
+       [{formatter, cloudi_core_i_logger},
+        {formatter_config,
+         [{mode, legacy}]}]},
+      {['STDOUT'],
+       [{formatter, cloudi_core_i_logger},
+        {formatter_config,
+         [{mode, legacy_stdout}]}]},
+      {['STDERR'],
+       [{formatter, cloudi_core_i_logger},
+        {formatter_config,
+         [{mode, legacy_stderr}]}]}]},
+    {level, debug} % levels: off, fatal, error, warn, info, debug, trace
+]}.
+  </pre>
+  </p>
+</div>
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<div id="footer">
+<img style="position: absolute; right: 10; bottom: 0;" src="images/powered_by_cloudi.png" />
+</div>
+
+</body>
+</html>
