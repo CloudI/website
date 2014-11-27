@@ -62,7 +62,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 <div id="content">
   <h1>Frequently Asked Questions</h1>
   <center><h3>version 1.3.3b<br />
-              last updated on November 25<sup>th</sup> 2014</h3></center>
+              last updated on November 26<sup>th</sup> 2014</h3></center>
 
   <a name="1_contents"></a>
   <h2>1 - Introduction to CloudI</h2>
@@ -151,12 +151,15 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
   <a name="7_contents"></a>
   <h2>7 - Databases</h2>
   <ul class="faq">
-    <li><a href="#7_CouchDB"    >7.1 - CouchDB Integration</a></li>
-    <li><a href="#7_memcached"  >7.2 - memcached Integration</a></li>
-    <li><a href="#7_MySQL"      >7.3 - MySQL Integration</a></li>
-    <li><a href="#7_PostgreSQL" >7.4 - PostgreSQL Integration</a></li>
-    <li><a href="#7_TokyoTyrant">7.5 - Tokyo Tyrant Integration</a></li>
-    <li><a href="#7_Other"      >7.6 - Other Database Integration</a></li>
+    <li><a href="#7_Cassandra"  >7.1 - Cassandra Integration</a></li>
+    <li><a href="#7_CouchDB"    >7.2 - CouchDB Integration</a></li>
+    <li><a href="#7_elasticsearch">7.3 - Elasticsearch Integration</a></li>
+    <li><a href="#7_memcached"  >7.4 - memcached Integration</a></li>
+    <li><a href="#7_MySQL"      >7.5 - MySQL Integration</a></li>
+    <li><a href="#7_PostgreSQL" >7.6 - PostgreSQL Integration</a></li>
+    <li><a href="#7_riak"       >7.7 - riak Integration</a></li>
+    <li><a href="#7_TokyoTyrant">7.8 - Tokyo Tyrant Integration</a></li>
+    <li><a href="#7_Other"      >7.9 - Other Database Integration</a></li>
   </ul>
 
   <hr \>
@@ -2148,7 +2151,7 @@ sudo cloudi stop
   </p>
   <p>
     PHP threads are supported though they are not provided within the
-    <a href="http://php.net/manual/en/intro.pthreads.php" target="_blank">default installation</a>.
+    <a href="http://php.net/manual/en/intro.pthreads.php" target="_blank">default installation of the PHP interpreter</a>.
     For more information, please refer to <a href="#4_API">"4.1 - How do I integrate external software with CloudI?"</a>.
   </p>
   <div class="top"><a href="#6_contents">Top</a></div>
@@ -2459,18 +2462,71 @@ sudo cloudi stop
   <hr \>
   <h2>7 - Databases</h2>
 
+  <a name="7_Cassandra"></a>
+  <h3>7.1 - Cassandra Integration</h3>
+  <p class="paragraph">
+    Both the cloudi_service_db_cassandra internal service and the
+    cloudi_service_db_cassandra_cql internal service can be used for
+    Cassandra usage from other CloudI services.  The
+    cloudi_service_db_cassandra internal service uses
+    <a href="http://en.wikipedia.org/wiki/Apache_Thrift" target="_blank">Apache Thrift</a>
+    for Cassandra communication while the
+    cloudi_service_db_cassandra_cql internal service uses
+    <a href="https://cassandra.apache.org/doc/cql/CQL.html" target="_blank">CQL</a>
+    for Cassandra communication.  Functions are provided in both
+    internal service modules for usage by other internal services.
+    External services can send binary data to cloudi_service_db_cassandra.
+    The service name used to communicate with Cassandra is the configured
+    database service name prefix with the connection name appended
+    (i.e., "/db/cassandra/thrift_cloudi_tests" and
+     "/db/cassandra/cql_cloudi_tests" in the examples below).
+  </p>
+  <p class="paragraph">
+    An example configuration for a Cassandra Apache Thrift connection
+    in a single service configuration entry is below:
+<pre>
+    {internal,
+        "/db/cassandra/",
+        cloudi_service_db_cassandra,
+        [{connection_name, "thrift_cloudi_tests"},
+         {connection_options,
+          [{thrift_host, "127.0.0.1"},
+           {thrift_port, 9160}]}],
+        none,
+        5000, 5000, 5000, undefined, undefined, 1, 5, 300, []}
+</pre>
+  </p>
+  <p class="paragraph">
+    An example configuration for a Cassandra CQL connection
+    in a single service configuration entry is below:
+<pre>
+    {internal,
+        "/db/cassandra/",
+        cloudi_service_db_cassandra_cql,
+        [{service_name, "cql_cloudi_tests"},
+         {connection_options,
+          [{host, "127.0.0.1"},
+           {port, 9042},
+           {keepalive, true},
+           {use, undefined},
+           {cql_version, &lt;&lt;"3.1.5"&gt;&gt;},
+           {auto_reconnect, true}]},
+         {consistency, quorum}],
+        none,
+        5000, 5000, 5000, undefined, undefined, 1, 5, 300, []}
+</pre>
+  </p>
+  <div class="top"><a href="#7_contents">Top</a></div>
+
   <a name="7_CouchDB"></a>
-  <h3>7.1 - CouchDB Integration</h3>
+  <h3>7.2 - CouchDB Integration</h3>
   <p class="paragraph">
     The cloudi_service_db_couchdb internal service accepts requests from other
-    CloudI services.  The service expects database commands supplied as
-    Erlang tuples or atoms.  When the service receives data from an external
-    service the data received is binary and should be a string that contains
-    Erlang terms that is the database command.  The command result is
-    returned as binary to an external service.  An internal service can
-    send the command as Erlang terms and will receive Erlang terms for the
-    result.  The service name used to communicate with the database is the
-    configured database service name prefix with the database name appended
+    CloudI services.  Functions are provided by the cloudi_service_db_couchdb
+    module for usage by other internal services.  External services can send
+    binary data to cloudi_service_db_couchdb.  The service name used to
+    communicate with the database is the configured database service name
+    prefix with the database name appended
     (i.e., "/db/couchdb/cloudi_tests" in the example below).
   </p>
   <p class="paragraph">
@@ -2490,18 +2546,53 @@ sudo cloudi stop
   </p>
   <div class="top"><a href="#7_contents">Top</a></div>
 
+  <a name="7_elasticsearch"></a>
+  <h3>7.3 - elasticsearch Integration</h3>
+  <p class="paragraph">
+    The cloudi_service_db_elasticsearch internal service accepts requests from
+    other CloudI services.  The cloudi_service_db_elasticsearch internal
+    service uses <a href="http://en.wikipedia.org/wiki/Apache_Thrift" target="_blank">Apache Thrift</a>
+    for elasticsearch communication, so the Thrift elasticsearch plugin needs
+    to be installed for the driver.  Functions are provided by the
+    cloudi_service_db_elasticsearch module for usage by other internal
+    services.  External services can send binary data to
+    cloudi_service_db_elasticsearch.  The service name used to
+    communicate with the database is the configured database service name
+    prefix with the database name appended (represents a connection)
+    (i.e., "/db/elasticsearch/cloudi_tests" in the example below).
+  </p>
+  <p class="paragraph">
+    An example configuration for a single connection that is represented as a
+    single service is below:
+<pre>
+    {internal,
+        "/db/elasticsearch/",
+        cloudi_service_db_elasticsearch,
+        [{pool_options, []},
+         {connection_options, 
+          [{thrift_host, "127.0.0.1"},
+           {thrift_port, 9500},
+           {thrift_options,
+            [{framed, false}]},
+           {binary_response, false},
+           {retry_interval, 500},
+           {retry_amount, 5}]},
+         {database, "cloudi_tests"}],
+        none,
+        5000, 5000, 5000, undefined, undefined, 1, 5, 300, []}
+</pre>
+  </p>
+  <div class="top"><a href="#7_contents">Top</a></div>
+
   <a name="7_memcached"></a>
-  <h3>7.2 - memcached Integration</h3>
+  <h3>7.4 - memcached Integration</h3>
   <p class="paragraph">
     The cloudi_service_db_memcached internal service accepts requests from other
-    CloudI services.  The service expects database commands supplied as
-    Erlang tuples or atoms.  When the service receives data from an external
-    service the data received is binary and should be a string that contains
-    Erlang terms that is the database command.  The command result is
-    returned as binary to an external service.  An internal service can
-    send the command as Erlang terms and will receive Erlang terms for the
-    result.  The service name used to communicate with the database is the
-    configured database service name prefix with the database name appended
+    CloudI services.  Functions are provided by the cloudi_service_db_memcached
+    module for usage by other internal services.  External services can send
+    binary data to cloudi_service_db_memcached.  The service name used to
+    communicate with the database is the configured database service name
+    prefix with the database name appended
     (i.e., "/db/memcached/cloudi_tests" in the example below).
   </p>
   <p class="paragraph">
@@ -2517,26 +2608,22 @@ sudo cloudi stop
         5000, 5000, 5000, undefined, undefined, 1, 5, 300, []}
 </pre>
     The list of host-port-connection_count tuples is used for providing
-    <a href="http://amarok.kde.org/blog/archives/363-libketama-a-consistent-hashing-algo-for-memcache-clients.html" target="_blank">continuum hashing</a>
+    <a href="http://www.last.fm/user/RJ/journal/2007/04/10/rz_libketama_-_a_consistent_hashing_algo_for_memcache_clients" target="_blank">continuum hashing</a>
     of database keys.  Using continuum hashing avoids rehashing all the keys
     (i.e., cached-misses) when a memcached node fails.
   </p>
   <div class="top"><a href="#7_contents">Top</a></div>
 
   <a name="7_MySQL"></a>
-  <h3>7.3 - MySQL Integration</h3>
+  <h3>7.5 - MySQL Integration</h3>
   <p class="paragraph">
     The cloudi_service_db_mysql internal service accepts requests from other
-    CloudI services.  The service expects SQL input and provides the query
-    result either as an Erlang tuple or as binary encoded data based on whether
-    the input was binary or a list.  All data coming from external services
-    is received as binary and is returned as binary that can be used to
-    determine the result of a query.  Internal services are able to send SQL
-    as an Erlang list and will then receive a tuple from the database driver
-    that is the result of the query.  The service name used to communicate
-    with the database is the configured database service name prefix with
-    the database name appended (i.e., "/db/mysql/cloudi_tests" in the example
-    below).
+    CloudI services.  Functions are provided by the cloudi_service_db_mysql
+    module for usage by other internal services.  External services can send
+    binary SQL queries to cloudi_service_db_mysql.  The service name used to
+    communicate with the database is the configured database service name
+    prefix with the database name appended
+    (i.e., "/db/mysql/cloudi_tests" in the example below).
   </p>
   <p class="paragraph">
     An example configuration for a single database that is represented as a
@@ -2551,27 +2638,28 @@ sudo cloudi stop
          {hostname, "127.0.0.1"},
          {username, "cloudi"},
          {password, "XXXXXXXXX"},
-         {port, 3306}],
+         {port, 3306},
+         {internal_interface, common},
+         {debug, true}],
         none,
         5000, 5000, 5000, undefined, undefined, 1, 5, 300, []}
 </pre>
   </p>
+    Setting the internal_interface configuration argument to
+    'common' makes sure the result of a service request is consistent with
+    cloudi_service_db_pgsql usage of 'common' for internal_interface.
   <div class="top"><a href="#7_contents">Top</a></div>
 
   <a name="7_PostgreSQL"></a>
-  <h3>7.4 - PostgreSQL Integration</h3>
+  <h3>7.6 - PostgreSQL Integration</h3>
   <p class="paragraph">
     The cloudi_service_db_pgsql internal service accepts requests from other
-    CloudI services.  The service expects SQL input and provides the query
-    result either as an Erlang tuple or as binary encoded data based on whether
-    the input was binary or a list.  All data coming from external services
-    is received as binary and is returned as binary that can be used to
-    determine the result of a query.  Internal services are able to send SQL
-    as an Erlang list and will then receive a tuple from the database driver
-    that is the result of the query.  The service name used to communicate
-    with the database is the configured database service name prefix with
-    the database name appended (i.e., "/db/pgsql/cloudi_tests" in the example
-    below).
+    CloudI services.  Functions are provided by the cloudi_service_db_pgsql
+    module for usage by other internal services.  External services can send
+    binary SQL queries to cloudi_service_db_pgsql.  The service name used to
+    communicate with the database is the configured database service name
+    prefix with the database name appended
+    (i.e., "/db/pgsql/cloudi_tests" in the example below).
   </p>
   <p class="paragraph">
     An example configuration for a single database that is represented as a
@@ -2585,7 +2673,44 @@ sudo cloudi stop
          {hostname, "127.0.0.1"},
          {username, "cloudi"},
          {password, "XXXXXXXXX"},
-         {port, 5432}],
+         {port, 5432},
+         {driver, semiocast},
+         {internal_interface, common},
+         {debug, true}],
+        none,
+        5000, 5000, 5000, undefined, undefined, 1, 5, 300, []}
+</pre>
+    The driver configuration argument allows one of the three supported
+    Erlang PostgreSQL drivers to be used ('epgsql_wg', 'epgsql', or
+    'semiocast').  Setting the internal_interface configuration argument to
+    'common' makes sure all the drivers provide the same format for the result
+    which is consistent with cloudi_service_db_mysql usage of 'common' for
+    internal_interface.
+  </p>
+  <div class="top"><a href="#7_contents">Top</a></div>
+
+  <a name="7_riak"></a>
+  <h3>7.7 - riak Integration</h3>
+  <p class="paragraph">
+    The cloudi_service_db_riak internal service accepts requests from other
+    CloudI services.  Functions are provided by the cloudi_service_db_riak
+    module for usage by other internal services.  External services can send
+    binary data to cloudi_service_db_riak.  The service name used to
+    communicate with the database is the configured database service name
+    prefix with the bucket name appended
+    (i.e., "/db/riak/cloudi_tests" in the example below).
+  </p>
+  <p class="paragraph">
+    An example configuration for a single bucket that is represented as a
+    single service is below (if bucket is omitted any bucket can be used):
+<pre>
+    {internal,
+        "/db/riak/",
+        cloudi_service_db_riak,
+        [{hostname, "127.0.0.1"},
+         {port, 8087},
+         {bucket, "cloudi_tests"},
+         {debug, true}],
         none,
         5000, 5000, 5000, undefined, undefined, 1, 5, 300, []}
 </pre>
@@ -2593,17 +2718,14 @@ sudo cloudi stop
   <div class="top"><a href="#7_contents">Top</a></div>
 
   <a name="7_TokyoTyrant"></a>
-  <h3>7.5 - Tokyo Tyrant Integration</h3>
+  <h3>7.8 - Tokyo Tyrant Integration</h3>
   <p class="paragraph">
     The cloudi_service_db_tokyotyrant internal service accepts requests from
-    other CloudI services.  The service expects database commands supplied as
-    Erlang tuples or atoms.  When the service receives data from an external
-    service the data received is binary and should be a string that contains
-    Erlang terms that is the database command.  The command result is
-    returned as binary to an external service.  An internal service can
-    send the command as Erlang terms and will receive Erlang terms for the
-    result.  The service name used to communicate with the database is the
-    configured database service name prefix with the database name appended
+    other CloudI services.  Functions are provided by the
+    cloudi_service_db_tokyotyrant module for usage by other internal services.
+    External services can send binary data to cloudi_service_db_tokyotyrant.
+    The service name used to communicate with the database is the configured
+    database service name prefix with the database name appended
     (i.e., "/db/tokyotyrant/cloudi_tests" in the example below).
   </p>
   <p class="paragraph">
@@ -2624,7 +2746,7 @@ sudo cloudi stop
   <div class="top"><a href="#7_contents">Top</a></div>
 
   <a name="7_Other"></a>
-  <h3>7.6 - Other Database Integration</h3>
+  <h3>7.9 - Other Database Integration</h3>
   <p class="paragraph">
     Other databases can easily be integrated with CloudI.  The best database
     integration uses a database driver implemented completely in Erlang and
