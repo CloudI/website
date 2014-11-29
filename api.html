@@ -62,7 +62,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 <div id="content">
   <h1>CloudI API Documentation</h1>
   <center><h3>version 1.3.3b<br />
-              last updated on November 28<sup>th</sup> 2014</h3></center>
+              last updated on November 29<sup>th</sup> 2014</h3></center>
 
   <a name="Service"></a>
   <h2>CloudI API - Making a Service</h2>
@@ -2640,10 +2640,12 @@ curl -X POST -d '["6a675470-7a1f-11e2-d40e-a5dd00000058"]' http://localhost:6467
   <h3>2.8 - services_search</h3>
 <p class="code">
 curl -X POST -d '"/tests/http/text/post"' http://localhost:6467/cloudi/api/rpc/services_search.erl
+curl -X POST -d '{cloudi_service_msg_size, "/tests/msg_size/erlang"}' http://localhost:6467/cloudi/api/rpc/services_search.erl
 </p>
   <p class="paragraph">
     List the service configuration parameters with each service's UUID that
-    are receiving service requests for a given service name.
+    are receiving service requests for a given service name.  To search within
+    a custom scope, provide both the scope and the service name within a tuple.
   </p>
   <div class="top"><a href="#CloudI">Top</a></div>
 
