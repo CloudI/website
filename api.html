@@ -1846,13 +1846,13 @@ CloudI::API.poll(timeout=nil)
     Erlang
   </td><td>
 <p class="code">
-curl http://localhost:6467/cloudi/api/erlang/services
+curl http://localhost:6467/cloudi/api/rpc/services.erl
 </p>
   </td></tr><tr><td>
     JSON-RPC
   </td><td>
 <p class="code">
-curl -X POST -d '{"method": "services", "params":[], "id": 1}' http://localhost:6467/cloudi/api/json_rpc/
+curl -X POST -d '{"method": "services", "params":[], "id": 1}' http://localhost:6467/cloudi/api/rpc.json
 </p>
   </td></tr></table>
   <p class="paragraph">
@@ -1864,7 +1864,7 @@ curl -X POST -d '{"method": "services", "params":[], "id": 1}' http://localhost:
   <a name="2_acl_add"></a>
   <h3>2.1 - acl_add</h3>
 <p class="code">
-curl -X POST -d '[{sensitive, ["/accouting/", "/finance/"]}]' http://localhost:6467/cloudi/api/erlang/acl_add
+curl -X POST -d '[{sensitive, ["/accouting/", "/finance/"]}]' http://localhost:6467/cloudi/api/rpc/acl_add.erl
 </p>
   <p class="paragraph">
     Add more ACL entries to be later used when starting services.  An ACL
@@ -1879,7 +1879,7 @@ curl -X POST -d '[{sensitive, ["/accouting/", "/finance/"]}]' http://localhost:6
   <a name="2_acl_remove"></a>
   <h3>2.2 - acl_remove</h3>
 <p class="code">
-curl -X POST -d '[sensitive]' http://localhost:6467/cloudi/api/erlang/acl_remove
+curl -X POST -d '[sensitive]' http://localhost:6467/cloudi/api/rpc/acl_remove.erl
 </p>
   <p class="paragraph">
     Remove ACL entries that are no longer needed.  Running services will
@@ -1891,7 +1891,7 @@ curl -X POST -d '[sensitive]' http://localhost:6467/cloudi/api/erlang/acl_remove
   <a name="2_acl"></a>
   <h3>2.3 - acl</h3>
 <p class="code">
-curl http://localhost:6467/cloudi/api/erlang/acl
+curl http://localhost:6467/cloudi/api/rpc/acl.erl
 </p>
   <p class="paragraph">
     List all the current ACL entries as lists of service name patterns.
@@ -1901,7 +1901,7 @@ curl http://localhost:6467/cloudi/api/erlang/acl
   <a name="2_service_subscriptions"></a>
   <h3>2.4 - service_subscriptions</h3>
 <p class="code">
-curl -X POST -d '&lt;&lt;106,103,84,112,122,31,17,226,212,14,165,221,0,0,0,88&gt;&gt;' http://localhost:6467/cloudi/api/erlang/service_subscriptions
+curl -X POST -d '"6a675470-7a1f-11e2-d40e-a5dd00000058"' http://localhost:6467/cloudi/api/rpc/service_subscriptions.erl
 </p>
   <p class="paragraph">
     List the subscriptions a service instance has initiated.
@@ -1911,7 +1911,7 @@ curl -X POST -d '&lt;&lt;106,103,84,112,122,31,17,226,212,14,165,221,0,0,0,88&gt
   <a name="2_services_add"></a>
   <h3>2.5 - services_add</h3>
 <p class="code">
-curl -X POST -d '[{external, "/tests/flood/", "tests/flood/service/flood", "", [{"LD_LIBRARY_PATH", "api/c/lib/"}, {"DYLD_LIBRARY_PATH", "api/c/lib/"}], none, default, default, 5000, 5000, 5000, [api], undefined, 1, 1, 5, 300, []}, {internal, "/tests/flood/", cloudi_service_flood, [{flood, "/tests/flood/c", &lt;&lt;"DATA"&gt;&gt;, 1000}], lazy_closest, 5000, 5000, 5000, [api], undefined, 2, 5, 300, []}]' http://localhost:6467/cloudi/api/erlang/services_add
+curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{request_rate, dynamic}], lazy_closest, 5000, 5000, 5000, undefined, undefined, 1, 5, 300, [{duo_mode, true}]}]' http://localhost:6467/cloudi/api/rpc/services_add.erl
 </p>
   <p class="paragraph">
     Start services and return their Service UUIDs.  Provide service
@@ -2379,7 +2379,7 @@ fun((Args :: list(),
      Prefix :: cloudi_service:service_name_pattern(),
      Timeout :: cloudi_service_api:timeout_milliseconds(),
      State :: any(),
-     Dispatcher :: cloudi_service:dispatcher()) ->
+     Dispatcher :: cloudi_service:dispatcher()) -&gt;
     {ok, NewState :: any()} |
     {stop, Reason :: any(), NewState :: any()}).
 </pre>
@@ -2391,7 +2391,7 @@ fun((Args :: list(),
 fun((CommandLine :: list(string()),
      Prefix :: cloudi:service_name_pattern(),
      Timeout :: cloudi_service_api:timeout_milliseconds(),
-     State :: any()) ->
+     State :: any()) -&gt;
     {ok, NewState :: any()} |
     {stop, Reason :: any(), NewState :: any()}).
 </pre>
@@ -2421,7 +2421,7 @@ fun((Type :: cloudi_service:request_type(),
      TransId :: cloudi_service:trans_id(),
      Source :: cloudi_service:source(),
      State :: any(),
-     Dispatcher :: cloudi_service:dispatcher()) ->
+     Dispatcher :: cloudi_service:dispatcher()) -&gt;
     {ok, NewState :: any()} |
     {stop, Reason :: any(), NewState :: any()}).
 </pre>
@@ -2438,7 +2438,7 @@ fun((Type :: cloudi_service:request_type(),
      Priority :: cloudi_service:priority(),
      TransId :: cloudi_service:trans_id(),
      Source :: cloudi_service:source(),
-     State :: any()) ->
+     State :: any()) -&gt;
     {ok, NewState :: any()} |
     {stop, Reason :: any(), NewState :: any()}).
 </pre>
@@ -2469,7 +2469,7 @@ fun((Type :: cloudi_service:request_type(),
      Source :: cloudi_service:source(),
      Result :: cloudi_service:request_result(),
      State :: any(),
-     Dispatcher :: cloudi_service:dispatcher()) ->
+     Dispatcher :: cloudi_service:dispatcher()) -&gt;
     {ok, NewState :: any()} |
     {stop, Reason :: any(), NewState :: any()}).
 </pre>
@@ -2487,7 +2487,7 @@ fun((Type :: cloudi_service:request_type(),
      TransId :: cloudi_service:trans_id(),
      Source :: cloudi_service:source(),
      Result :: cloudi_service:request_result(),
-     State :: any()) ->
+     State :: any()) -&gt;
     {ok, NewState :: any()} |
     {stop, Reason :: any(), NewState :: any()}).
 </pre>
@@ -2509,7 +2509,7 @@ fun((Type :: cloudi_service:request_type(),
 <pre>
 fun((Request :: any(),
      State :: any(),
-     Dispatcher :: cloudi_service:dispatcher()) ->
+     Dispatcher :: cloudi_service:dispatcher()) -&gt;
     {ok, NewState :: any()} |
     {stop, Reason :: any(), NewState :: any()}).
 </pre>
@@ -2531,7 +2531,7 @@ fun((Request :: any(),
 <pre>
 fun((Request :: any(),
      State :: any(),
-     Dispatcher :: cloudi_service:dispatcher()) ->
+     Dispatcher :: cloudi_service:dispatcher()) -&gt;
     {ok, NewState :: any()} |
     {stop, Reason :: any(), NewState :: any()}).
 </pre>
@@ -2555,7 +2555,7 @@ fun((Request :: any(),
 <pre>
 fun((Reason :: any(),
      Timeout :: cloudi_service_api:timeout_milliseconds(),
-     State :: any()) ->
+     State :: any()) -&gt;
     {ok, State :: any()}).
 </pre>
   </td></tr></table>
@@ -2591,7 +2591,7 @@ fun((Reason :: any(),
   <a name="2_services_remove"></a>
   <h3>2.6 - services_remove</h3>
 <p class="code">
-curl -X POST -d '[&lt;&lt;110,129,240,166,122,31,17,226,212,14,165,221,0,0,0,88&gt;&gt;, &lt;&lt;110,129,240,236,122,31,17,226,212,14,165,221,0,0,0,88&gt;&gt;]' http://localhost:6467/cloudi/api/erlang/services_remove
+curl -X POST -d '["6e81f0a6-7a1f-11e2-d40e-a5dd00000058", "6e81f0ec-7a1f-11e2-d40e-a5dd00000058"]' http://localhost:6467/cloudi/api/rpc/services_remove.erl
 </p>
   <p class="paragraph">
     Provide the Service UUIDs for the services that should be stopped.
@@ -2622,7 +2622,7 @@ curl -X POST -d '[&lt;&lt;110,129,240,166,122,31,17,226,212,14,165,221,0,0,0,88&
   <a name="2_services_restart"></a>
   <h3>2.7 - services_restart</h3>
 <p class="code">
-curl -X POST -d '[&lt;&lt;106,103,84,112,122,31,17,226,212,14,165,221,0,0,0,88&gt;&gt;]' http://localhost:6467/cloudi/api/erlang/services_restart
+curl -X POST -d '["6a675470-7a1f-11e2-d40e-a5dd00000058"]' http://localhost:6467/cloudi/api/rpc/services_restart.erl
 </p>
   <p class="paragraph">
     Provide the Service UUIDs for the services that should be restarted.
@@ -2639,7 +2639,7 @@ curl -X POST -d '[&lt;&lt;106,103,84,112,122,31,17,226,212,14,165,221,0,0,0,88&g
   <a name="2_services_search"></a>
   <h3>2.8 - services_search</h3>
 <p class="code">
-curl -X POST -d '"/tests/http/text/post"' http://localhost:6467/cloudi/api/erlang/services_search
+curl -X POST -d '"/tests/http/text/post"' http://localhost:6467/cloudi/api/rpc/services_search.erl
 </p>
   <p class="paragraph">
     List the service configuration parameters with each service's UUID that
@@ -2650,7 +2650,7 @@ curl -X POST -d '"/tests/http/text/post"' http://localhost:6467/cloudi/api/erlan
   <a name="2_services"></a>
   <h3>2.9 - services</h3>
 <p class="code">
-curl http://localhost:6467/cloudi/api/erlang/services
+curl http://localhost:6467/cloudi/api/rpc/services.erl
 </p>
   <p class="paragraph">
     List the service configuration parameters with each service's UUID.
@@ -2661,7 +2661,7 @@ curl http://localhost:6467/cloudi/api/erlang/services
   <a name="2_nodes_set"></a>
   <h3>2.10 - nodes_set</h3>
 <p class="code">
-curl -X POST -d "[{reconnect_delay, 300}]" http://localhost:6467/cloudi/api/erlang/nodes_set
+curl -X POST -d "[{reconnect_delay, 300}]" http://localhost:6467/cloudi/api/rpc/nodes_set.erl
 </p>
   <p class="paragraph">
     Set the distributed Erlang node configuration for a CloudI node
@@ -2872,7 +2872,7 @@ curl -X POST -d "[{reconnect_delay, 300}]" http://localhost:6467/cloudi/api/erla
   <a name="2_nodes_get"></a>
   <h3>2.11 - nodes_get</h3>
 <p class="code">
-curl http://localhost:6467/cloudi/api/erlang/nodes_get
+curl http://localhost:6467/cloudi/api/rpc/nodes_get.erl
 </p>
   <p class="paragraph">
     List the current nodes configuration in the same format provided to
@@ -2884,7 +2884,7 @@ curl http://localhost:6467/cloudi/api/erlang/nodes_get
   <a name="2_nodes_add"></a>
   <h3>2.12 - nodes_add</h3>
 <p class="code">
-curl -X POST -d "['cloud001@cluster1']" http://localhost:6467/cloudi/api/erlang/nodes_add
+curl -X POST -d "['cloud001@cluster1']" http://localhost:6467/cloudi/api/rpc/nodes_add.erl
 </p>
   <p class="paragraph">
     Explicitly add a CloudI node name, so that services between all other
@@ -2895,7 +2895,7 @@ curl -X POST -d "['cloud001@cluster1']" http://localhost:6467/cloudi/api/erlang/
   <a name="2_nodes_remove"></a>
   <h3>2.13 - nodes_remove</h3>
 <p class="code">
-curl -X POST -d "['cloud001@cluster1']" http://localhost:6467/cloudi/api/erlang/nodes_remove
+curl -X POST -d "['cloud001@cluster1']" http://localhost:6467/cloudi/api/rpc/nodes_remove.erl
 </p>
   <p class="paragraph">
     Explicitly remove a CloudI node name.  The CloudI node must have
@@ -2907,7 +2907,7 @@ curl -X POST -d "['cloud001@cluster1']" http://localhost:6467/cloudi/api/erlang/
   <a name="2_nodes_alive"></a>
   <h3>2.14 - nodes_alive</h3>
 <p class="code">
-curl http://localhost:6467/cloudi/api/erlang/nodes_alive
+curl http://localhost:6467/cloudi/api/rpc/nodes_alive.erl
 </p>
   <p class="paragraph">
     List all the CloudI nodes known to be connected.
@@ -2917,7 +2917,7 @@ curl http://localhost:6467/cloudi/api/erlang/nodes_alive
   <a name="2_nodes_dead"></a>
   <h3>2.15 - nodes_dead</h3>
 <p class="code">
-curl http://localhost:6467/cloudi/api/erlang/nodes_dead
+curl http://localhost:6467/cloudi/api/rpc/nodes_dead.erl
 </p>
   <p class="paragraph">
     List all the CloudI nodes that are disconnected but expected to
@@ -2928,7 +2928,7 @@ curl http://localhost:6467/cloudi/api/erlang/nodes_dead
   <a name="2_nodes"></a>
   <h3>2.16 - nodes</h3>
 <p class="code">
-curl http://localhost:6467/cloudi/api/erlang/nodes
+curl http://localhost:6467/cloudi/api/rpc/nodes.erl
 </p>
   <p class="paragraph">
     List both the connected and disconnected CloudI nodes.
@@ -2938,7 +2938,7 @@ curl http://localhost:6467/cloudi/api/erlang/nodes
   <a name="2_logging_file_set"></a>
   <h3>2.17 - logging_file_set</h3>
 <p class="code">
-curl -X POST -d '"logs/cloudi_rotated.log"' http://localhost:6467/cloudi/api/erlang/logging_file_set
+curl -X POST -d '"logs/cloudi_rotated.log"' http://localhost:6467/cloudi/api/rpc/logging_file_set.erl
 </p>
   <p class="paragraph">
     Set the file path for logging output.  If set to 'undefined', logging
@@ -2949,7 +2949,7 @@ curl -X POST -d '"logs/cloudi_rotated.log"' http://localhost:6467/cloudi/api/erl
   <a name="2_logging_level_set"></a>
   <h3>2.18 - logging_level_set</h3>
 <p class="code">
-curl -X POST -d 'warn' http://localhost:6467/cloudi/api/erlang/logging_level_set
+curl -X POST -d 'warn' http://localhost:6467/cloudi/api/rpc/logging_level_set.erl
 </p>
   <p class="paragraph">
     Modify the loglevel.  The loglevel is changed with an Erlang module
@@ -2962,7 +2962,7 @@ curl -X POST -d 'warn' http://localhost:6467/cloudi/api/erlang/logging_level_set
   <a name="2_logging_syslog_set"></a>
   <h3>2.19 - logging_syslog_set</h3>
 <p class="code">
-curl -X POST -d '[{identity, "CloudI"}, {facility, local0}, {level, trace}]' http://localhost:6467/cloudi/api/erlang/logging_syslog_set
+curl -X POST -d '[{identity, "CloudI"}, {facility, local0}, {level, trace}]' http://localhost:6467/cloudi/api/rpc/logging_syslog_set.erl
 </p>
   <p class="paragraph">
     Send all logging output to syslog.
@@ -3009,7 +3009,7 @@ curl -X POST -d '[{identity, "CloudI"}, {facility, local0}, {level, trace}]' htt
   <a name="2_logging_formatters_set"></a>
   <h3>2.20 - logging_formatters_set</h3>
 <p class="code">
-curl -X POST -d '[{any, [{output, lager_file_backend}, {output_args, [{file, "logs/lager.log"}]}, {formatter, lager_default_formatter}, {level, trace}]}]' http://localhost:6467/cloudi/api/erlang/logging_formatters_set
+curl -X POST -d '[{any, [{output, lager_file_backend}, {output_args, [{file, "logs/lager.log"}]}, {formatter, lager_default_formatter}, {level, trace}]}]' http://localhost:6467/cloudi/api/rpc/logging_formatters_set.erl
 </p>
   <p class="paragraph">
     Provide integration with lager-compatible formatters and
@@ -3100,7 +3100,7 @@ curl -X POST -d '[{any, [{output, lager_file_backend}, {output_args, [{file, "lo
   <a name="2_logging_redirect_set"></a>
   <h3>2.21 - logging_redirect_set</h3>
 <p class="code">
-curl -X POST -d 'cloudi@host' http://localhost:6467/cloudi/api/erlang/logging_redirect_set
+curl -X POST -d 'cloudi@host' http://localhost:6467/cloudi/api/rpc/logging_redirect_set.erl
 </p>
   <p class="paragraph">
     Redirect all local log output to a remote CloudI node.  Use 'undefined'
@@ -3111,7 +3111,7 @@ curl -X POST -d 'cloudi@host' http://localhost:6467/cloudi/api/erlang/logging_re
   <a name="2_logging"></a>
   <h3>2.22 - logging</h3>
 <p class="code">
-curl http://localhost:6467/cloudi/api/erlang/logging
+curl http://localhost:6467/cloudi/api/rpc/logging.erl
 </p>
   <p class="paragraph">
     List the current logging configuration in the same format provided to
@@ -3123,7 +3123,7 @@ curl http://localhost:6467/cloudi/api/erlang/logging
   <a name="2_code_path_add"></a>
   <h3>2.23 - code_path_add</h3>
 <p class="code">
-curl -X POST -d '"/home/user/code/services"' http://localhost:6467/cloudi/api/erlang/code_path_add
+curl -X POST -d '"/home/user/code/services"' http://localhost:6467/cloudi/api/rpc/code_path_add.erl
 </p>
   <p class="paragraph">
     Add a directory to the CloudI Erlang VM code server's search paths.
@@ -3135,7 +3135,7 @@ curl -X POST -d '"/home/user/code/services"' http://localhost:6467/cloudi/api/er
   <a name="2_code_path_remove"></a>
   <h3>2.24 - code_path_remove</h3>
 <p class="code">
-curl -X POST -d '"/home/user/code/services"' http://localhost:6467/cloudi/api/erlang/code_path_remove
+curl -X POST -d '"/home/user/code/services"' http://localhost:6467/cloudi/api/rpc/code_path_remove.erl
 </p>
   <p class="paragraph">
     Remove a directory from the CloudI Erlang VM code server's search paths.
@@ -3147,7 +3147,7 @@ curl -X POST -d '"/home/user/code/services"' http://localhost:6467/cloudi/api/er
   <a name="2_code_path"></a>
   <h3>2.25 - code_path</h3>
 <p class="code">
-curl http://localhost:6467/cloudi/api/erlang/code_path
+curl http://localhost:6467/cloudi/api/rpc/code_path.erl
 </p>
   <p class="paragraph">
     List all the CloudI Erlang VM code server search paths
