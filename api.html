@@ -1813,7 +1813,7 @@ CloudI::API.poll(timeout=nil)
     default function argument or function overloading).  A boolean true
     value is used as the poll function return value if a timeout occurred
     (a non zero return value if the return value is an integer).  A boolean
-    false value is used as the poll function return value if the service
+    false value is used as the poll function return value if service
     <a href="#1_termination">termination</a> is in-progress.
   </p>
   <div class="top"><a href="#Service">Top</a></div>
@@ -1911,7 +1911,7 @@ curl -X POST -d '"6a675470-7a1f-11e2-d40e-a5dd00000058"' http://localhost:6467/c
   <a name="2_services_add"></a>
   <h3>2.5 - services_add</h3>
 <p class="code">
-curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{request_rate, dynamic}], lazy_closest, 5000, 5000, 5000, undefined, undefined, 1, 5, 300, [{duo_mode, true}]}]' http://localhost:6467/cloudi/api/rpc/services_add.erl
+curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{service_name, "/tests/http_req/ruby.xml/get"}, {request_rate, dynamic}], lazy_closest, 5000, 5000, 5000, undefined, undefined, 1, 5, 300, [{duo_mode, true}]}]' http://localhost:6467/cloudi/api/rpc/services_add.erl
 </p>
   <p class="paragraph">
     Start services and return their Service UUIDs.  Provide service
