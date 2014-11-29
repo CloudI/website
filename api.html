@@ -62,32 +62,35 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 <div id="content">
   <h1>CloudI API Documentation</h1>
   <center><h3>version 1.3.3b<br />
-              last updated on November 25<sup>th</sup> 2014</h3></center>
+              last updated on November 28<sup>th</sup> 2014</h3></center>
 
   <a name="Service"></a>
   <h2>CloudI API - Making a Service</h2>
   <ul class="api">
     <li><a href="#1_Intro"             >1.0 - Introduction</a></li>
     <li><a href="#1_initialization"    >1.1 - (initialization)</a></li>
-    <li><a href="#1_subscribe"         >1.2 - subscribe</a></li>
-    <li><a href="#1_subscribe_count"   >1.3 - subscribe_count</a></li>
-    <li><a href="#1_unsubscribe"       >1.4 - unsubscribe</a></li>
-    <li><a href="#1_get_pid"           >1.5 - get_pid
-                                        (Erlang/Elixir-only)</a></li>
-    <li><a href="#1_get_pids"          >1.6 - get_pids
-                                        (Erlang/Elixir-only)</a></li>
-    <li><a href="#1_send_sync"         >1.7 - send_sync</a></li>
-    <li><a href="#1_send_async"        >1.8 - send_async</a></li>
-    <li><a href="#1_send_async_active" >1.9 - send_async_active
-                                        (Erlang/Elixir-only)</a></li>
-    <li><a href="#1_mcast_async"       >1.10 - mcast_async</a></li>
-    <li><a href="#1_mcast_async_active">1.11 - mcast_async_active
-                                        (Erlang/Elixir-only)</a></li>
-    <li><a href="#1_recv_async"        >1.12 - recv_async</a></li>
-    <li><a href="#1_recv_asyncs"       >1.13 - recv_asyncs
-                                        (Erlang/Elixir-only)</a></li>
-    <li><a href="#1_return"            >1.14 - return</a></li>
-    <li><a href="#1_forward"           >1.15 - forward</a></li>
+    <li><a href="#1_termination"       >1.2 - (termination)</a></li>
+    <li><a href="#1_subscribe"         >1.3 - subscribe</a></li>
+    <li><a href="#1_subscribe_count"   >1.4 - subscribe_count</a></li>
+    <li><a href="#1_unsubscribe"       >1.5 - unsubscribe</a></li>
+    <li><a href="#1_get_pid"           >1.6 - get_pid
+                                        (internal services only)</a></li>
+    <li><a href="#1_get_pids"          >1.7 - get_pids
+                                        (internal services only)</a></li>
+    <li><a href="#1_send_sync"         >1.8 - send_sync</a></li>
+    <li><a href="#1_send_async"        >1.9 - send_async</a></li>
+    <li><a href="#1_send_async_active" >1.10 - send_async_active
+                                        (internal services only)</a></li>
+    <li><a href="#1_mcast_async"       >1.11 - mcast_async</a></li>
+    <li><a href="#1_mcast_async_active">1.12 - mcast_async_active
+                                        (internal services only)</a></li>
+    <li><a href="#1_recv_async"        >1.13 - recv_async</a></li>
+    <li><a href="#1_recv_asyncs"       >1.14 - recv_asyncs
+                                        (internal services only)</a></li>
+    <li><a href="#1_return"            >1.15 - return</a></li>
+    <li><a href="#1_forward"           >1.16 - forward</a></li>
+    <li><a href="#1_poll"              >1.17 - poll
+                                        (external services only)</a></li>
   </ul>
   <a name="CloudI"></a>
   <h2>CloudI Service API - Controlling CloudI</h2>
@@ -115,13 +118,9 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
     <li><a href="#2_logging_formatters_set">2.20 - logging_formatters_set</a></li>
     <li><a href="#2_logging_redirect_set"  >2.21 - logging_redirect_set</a></li>
     <li><a href="#2_logging"               >2.22 - logging</a></li>
-    <li><a href="#2_loglevel_set"          >2.23 - loglevel_set
-                                            (deprecated in 1.3.3)</a></li>
-    <li><a href="#2_log_redirect"          >2.24 - log_redirect
-                                            (deprecated in 1.3.3)</a></li>
-    <li><a href="#2_code_path_add"         >2.25 - code_path_add</a></li>
-    <li><a href="#2_code_path_remove"      >2.26 - code_path_remove</a></li>
-    <li><a href="#2_code_path"             >2.27 - code_path</a></li>
+    <li><a href="#2_code_path_add"         >2.23 - code_path_add</a></li>
+    <li><a href="#2_code_path_remove"      >2.24 - code_path_remove</a></li>
+    <li><a href="#2_code_path"             >2.25 - code_path</a></li>
   </ul>
 
   <hr \>
@@ -241,7 +240,9 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
     (i.e., the service request is finished, at that point).
     A service can <a href="#1_return">return</a> a null response if the sending
     service should not receive a response, which can be used for typical
-    response-less publish functionality.  The <a href="#1_forward">forward</a>
+    response-less publish functionality (a null response is when both the
+    ResponseInfo and Response parameters are an empty binary of size 0).
+    The <a href="#1_forward">forward</a>
     function provides a new destination for the same service request,
     delaying the request's completion, but still terminating the current
     request handler.
@@ -255,7 +256,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
     which is done automatically, but does influence the source code.
     The service configuration defines the number of Operating System (OS)
     processes to create and the number of threads for an external
-    (non-Erlang) service.  For an internal (Erlang or Elixir) service,
+    service.  For an internal service,
     the configuration defines the number of Erlang processes to create.
     A number specified as an integer in the configuration is the exact
     number of processes or threads.
@@ -303,6 +304,37 @@ CloudI::API.thread_count()
 </pre>
   </td></tr></table>
   <p class="paragraph">
+    An internal service uses the configured initialization timeout to limit the
+    execution time spent within the cloudi_service_init/4 cloudi_service
+    behaviour callback function.  An external service uses the configured
+    initialization timeout to limit the execution time spent between
+    creating an instance of the CloudI API and calling the CloudI API
+    <a href="#1_poll">poll</a> function.  During the service initialization
+    the CloudI API functions that may not be called are:
+    <a href="#1_send_sync">send_sync</a>,
+    <a href="#1_recv_async">recv_async</a>,
+    <a href="#1_return">return</a> and
+    <a href="#1_forward">forward</a>
+    (i.e., send_sync and recv_async block to receive a service request response
+     but service initialization must be asynchronous and within the
+     initialization timeout period, return and forward are only valid
+     when completing the handling of a service request).
+  </p>
+  <p class="paragraph">
+    If the initialization timeout is exceeded a service failure has
+    occurred and a restart will occur (if possible) based on the configured
+    MaxR (maximum restarts) and MaxT (maximum time period in seconds) service
+    configuration values.  If the service was configured in the
+    CloudI configuration file (i.e., <a href="https://github.com/CloudI/CloudI/blob/master/src/cloudi.conf.in" target="_blank">/usr/local/etc/cloudi/cloudi.conf</a>,
+    used when CloudI is first started) and one of
+    the configured services fails initialization MaxR times, CloudI will
+    shutdown to prevent erroneous operation.  To avoid the fail-fast
+    handling of the CloudI configuration file, the CloudI Service API
+    <a href="#2_services_add">services_add</a> function may be used
+    to provide service configuration (the return value will provide
+    information about service initialization failures exceeding MaxR).
+  </p>
+  <p class="paragraph">
     The service configuration also allows Access Control Lists (ACLs) to define
     explicit service name patterns for allowing or denying service
     destinations when the service sends a service request.  The ACLs along
@@ -328,7 +360,7 @@ CloudI::API.thread_count()
   Specific Language Integration Notes:
   </p>
   <p class="paragraph">
-    The Erlang/Elixir CloudI API functions shown below accept the most function
+    The Elixir/Erlang CloudI API functions shown below accept the most function
     parameters in cloudi_service but functions with less parameters do
     exist and they utilize default values for timeouts and request
     priority.  Both the Timeout parameter and the Priority parameter
@@ -363,8 +395,27 @@ CloudI::API.thread_count()
   </p>
   <div class="top"><a href="#Service">Top</a></div>
 
+  <a name="1_termination"></a>
+  <h3>1.2 - (termination)</h3>
+  <p class="paragraph">
+    An internal service uses the termination timeout to limit the
+    execution time spent within the cloudi_service_terminate/3 cloudi_service
+    behaviour callback function.  An external service uses the
+    termination timeout to limit the execution time spent between
+    returning from the CloudI API
+    <a href="#1_poll">poll</a> function and the service OS process exit.
+    The termination timout is slightly less than
+    MaxT (maximum time period in seconds) divided by MaxR (maximum restarts)
+    to make sure service failures are finite
+    (MaxR and MaxT are both service configuration values).
+    During termination no CloudI API functions may be called.
+    The termination execution time is used to cleanup the service's
+    state (e.g., close connections or files).
+  </p>
+  <div class="top"><a href="#Service">Top</a></div>
+
   <a name="1_subscribe"></a>
-  <h3>1.2 - subscribe</h3>
+  <h3>1.3 - subscribe</h3>
   <table><tr><th>
     Programming Language
   </th><th>
@@ -469,7 +520,7 @@ CloudI::API.subscribe(pattern, function)
   <div class="top"><a href="#Service">Top</a></div>
 
   <a name="1_subscribe_count"></a>
-  <h3>1.3 - subscribe_count</h3>
+  <h3>1.4 - subscribe_count</h3>
   <table><tr><th>
     Programming Language
   </th><th>
@@ -539,7 +590,7 @@ CloudI::API.subscribe_count(pattern)
   <div class="top"><a href="#Service">Top</a></div>
 
   <a name="1_unsubscribe"></a>
-  <h3>1.4 - unsubscribe</h3>
+  <h3>1.5 - unsubscribe</h3>
   <table><tr><th>
     Programming Language
   </th><th>
@@ -595,7 +646,7 @@ CloudI::API.unsubscribe(pattern)
   <div class="top"><a href="#Service">Top</a></div>
 
   <a name="1_get_pid"></a>
-  <h3>1.5 - get_pid (Erlang/Elixir-only)</h3>
+  <h3>1.6 - get_pid (internal services only)</h3>
   <table><tr><th>
     Programming Language
   </th><th>
@@ -613,7 +664,7 @@ cloudi_service:get_pid(Dispatcher :: pid(),
 </pre>
   </td></tr></table>
   <p class="paragraph">
-    Internal (Erlang/Elixir-only) services can request an Erlang process
+    Internal (Elixir/Erlang-only) services can request an Erlang process
     based on the service name provided, before calling either the
     send_sync function or the send_async function.  The get_pid
     function should rarely be necessary, but it can allow other logic
@@ -622,7 +673,7 @@ cloudi_service:get_pid(Dispatcher :: pid(),
     The Erlang PatternPid tuple returned could become invalid if the service
     destination terminated, so the Erlang process monitoring becomes
     the burden of the get_pid function user.  Due to the intimate nature
-    of this function, it only exists within the Erlang/Elixir CloudI API
+    of this function, it only exists within the Elixir/Erlang CloudI API
     (to implement it in other languages would cause service destination
      inconsistencies due to the function delay and the potential storage
      before the destination is used).
@@ -635,7 +686,7 @@ cloudi_service:get_pid(Dispatcher :: pid(),
   <div class="top"><a href="#Service">Top</a></div>
 
   <a name="1_get_pids"></a>
-  <h3>1.6 - get_pids (Erlang/Elixir-only)</h3>
+  <h3>1.7 - get_pids (internal services only)</h3>
   <table><tr><th>
     Programming Language
   </th><th>
@@ -653,7 +704,7 @@ cloudi_service:get_pids(Dispatcher :: pid(),
 </pre>
   </td></tr></table>
   <p class="paragraph">
-    Internal (Erlang/Elixir-only) services can request a list of Erlang
+    Internal (Elixir/Erlang-only) services can request a list of Erlang
     processes based on the service name provided, before calling either the
     send_sync function or the send_async function.  If all Erlang processes
     returned need to be used with send_async, it is easier to use the
@@ -665,7 +716,7 @@ cloudi_service:get_pids(Dispatcher :: pid(),
     Erlang processes if the service destination terminated, so the
     Erlang process monitoring becomes
     the burden of the get_pids function user.  Due to the intimate nature
-    of this function, it only exists within the Erlang/Elixir CloudI API
+    of this function, it only exists within the Elixir/Erlang CloudI API
     (to implement it in other languages would cause service destination
      inconsistencies due to the function delay and the potential storage
      before the destination is used).
@@ -678,7 +729,7 @@ cloudi_service:get_pids(Dispatcher :: pid(),
   <div class="top"><a href="#Service">Top</a></div>
 
   <a name="1_send_sync"></a>
-  <h3>1.7 - send_sync</h3>
+  <h3>1.8 - send_sync</h3>
   <table><tr><th>
     Programming Language
   </th><th>
@@ -852,7 +903,7 @@ org.cloudi.API.Response
   <div class="top"><a href="#Service">Top</a></div>
 
   <a name="1_send_async"></a>
-  <h3>1.8 - send_async</h3>
+  <h3>1.9 - send_async</h3>
   <table><tr><th>
     Programming Language
   </th><th>
@@ -1038,7 +1089,7 @@ trans_id
   <div class="top"><a href="#Service">Top</a></div>
 
   <a name="1_send_async_active"></a>
-  <h3>1.9 - send_async_active (Erlang/Elixir-only)</h3>
+  <h3>1.10 - send_async_active (internal services only)</h3>
   <table><tr><th>
     Programming Language
   </th><th>
@@ -1112,7 +1163,7 @@ cloudi_service:send_async_active(Dispatcher :: pid(),
   <div class="top"><a href="#Service">Top</a></div>
 
   <a name="1_mcast_async"></a>
-  <h3>1.10 - mcast_async</h3>
+  <h3>1.11 - mcast_async</h3>
   <table><tr><th>
     Programming Language
   </th><th>
@@ -1193,8 +1244,9 @@ CloudI::API.mcast_async(name, request,
     request_name_lookup to 'async').  The result of
     the function call is a list of TransIds (one TransId per service request).
     If a publish request is required, the destination service should
-    have a null response (an empty binary of size 0), so that the service
-    request response is ignored.
+    have a null response (a null response is when both the
+    ResponseInfo and Response parameters are an empty binary of size 0),
+    so that the service request response is ignored.
   </p>
   <p>
     Function Return Values:
@@ -1269,7 +1321,7 @@ List&lt;org.cloudi.API.TransId&gt;
   <div class="top"><a href="#Service">Top</a></div>
 
   <a name="1_mcast_async_active"></a>
-  <h3>1.11 - mcast_async_active (Erlang/Elixir-only)</h3>
+  <h3>1.12 - mcast_async_active (internal services only)</h3>
   <table><tr><th>
     Programming Language
   </th><th>
@@ -1333,7 +1385,7 @@ cloudi_service:mcast_async_active(Dispatcher :: pid(),
   <div class="top"><a href="#Service">Top</a></div>
 
   <a name="1_recv_async"></a>
-  <h3>1.12 - recv_async</h3>
+  <h3>1.13 - recv_async</h3>
   <table><tr><th>
     Programming Language
   </th><th>
@@ -1477,7 +1529,7 @@ org.cloudi.API.Response
   <div class="top"><a href="#Service">Top</a></div>
 
   <a name="1_recv_asyncs"></a>
-  <h3>1.13 - recv_asyncs (Erlang/Elixir-only)</h3>
+  <h3>1.14 - recv_asyncs (internal services only)</h3>
   <table><tr><th>
     Programming Language
   </th><th>
@@ -1497,7 +1549,7 @@ cloudi_service:recv_asyncs(Dispatcher :: pid(),
 </pre>
   </td></tr></table>
   <p class="paragraph">
-    Internal (Erlang/Elixir-only) services can block to receive multiple
+    Internal (Elixir/Erlang-only) services can block to receive multiple
     asynchronous service request responses.  By default, the recv_asyncs
     function will consume the service request so it is not accessible with the
     same function call in the future.  The TransId of the service request is
@@ -1508,7 +1560,7 @@ cloudi_service:recv_asyncs(Dispatcher :: pid(),
   <div class="top"><a href="#Service">Top</a></div>
 
   <a name="1_return"></a>
-  <h3>1.14 - return</h3>
+  <h3>1.15 - return</h3>
   <table><tr><th>
     Programming Language
   </th><th>
@@ -1611,7 +1663,7 @@ CloudI::API.return_(command, name, pattern, response_info, response,
   <div class="top"><a href="#Service">Top</a></div>
 
   <a name="1_forward"></a>
-  <h3>1.15 - forward</h3>
+  <h3>1.16 - forward</h3>
   <table><tr><th>
     Programming Language
   </th><th>
@@ -1707,6 +1759,62 @@ CloudI::API.forward_(command, name, request_info, request,
     handled.  If the service is configured with the response_timeout_adjustment
     option set to true (the default is false), the response timeout is
     automatically decremented based on the sender-side's timing (more accurate).
+  </p>
+  <div class="top"><a href="#Service">Top</a></div>
+
+  <a name="1_poll"></a>
+  <h3>1.17 - poll (external services only)</h3>
+  <table><tr><th>
+    Programming Language
+  </th><th>
+    Function Call
+  </th></tr><tr><td>
+    C
+  </td><td>
+<pre>
+int cloudi_poll(cloudi_instance_t * p,
+                int timeout);
+</pre>
+  </td></tr><tr><td>
+    C++
+  </td><td>
+<pre>
+int CloudI::API::poll(int timeout = -1);
+</pre>
+  </td></tr><tr><td>
+    Java
+  </td><td>
+<pre>
+Object org.cloudi.API.poll(int timeout);
+</pre>
+  </td></tr><tr><td>
+    Python
+  </td><td>
+<pre>
+cloudi_c.API.poll(timeout=-1)
+cloudi.API.poll(timeout=-1)
+</pre>
+  </td></tr><tr><td>
+    Ruby
+  </td><td>
+<pre>
+CloudI::API.poll(timeout=nil)
+</pre>
+  </td></tr></table>
+  <p class="paragraph">
+    External services use the poll function to accept service requests
+    while blocking execution until either the timeout value expires or the
+    service terminates.  The execution time before the first poll function
+    call is service <a href="#1_initialization">initialization</a>.
+    The timeout value is specified in milliseconds.  A timeout value of 0 can
+    be used to not block on the poll function call.  If the timeout value is
+    not provided a value of -1 is used to make the poll function call
+    block until service termination (if the programming language allows
+    default function argument or function overloading).  A boolean true
+    value is used as the poll function return value if a timeout occurred
+    (a non zero return value if the return value is an integer).  A boolean
+    false value is used as the poll function return value if the service
+    <a href="#1_termination">termination</a> is in-progress.
   </p>
   <div class="top"><a href="#Service">Top</a></div>
 
@@ -1963,7 +2071,7 @@ curl -X POST -d '[{external, "/tests/flood/", "tests/flood/service/flood", "", [
     Maximum timeout (in milliseconds) considered "immediate".  Larger timeouts
     will send a null response instead of discarding a null response
     (a null response is when both the ResponseInfo and Response parameters
-     are &lt;&lt;&gt;&gt;).
+     are an empty binary of size 0).
   </td></tr><tr><td>
     <a href="#2_services_add_config_opts_count_process_dynamic">
     count_process_dynamic
@@ -3012,22 +3120,8 @@ curl http://localhost:6467/cloudi/api/erlang/logging
   </p>
   <div class="top"><a href="#CloudI">Top</a></div>
 
-  <a name="2_loglevel_set"></a>
-  <h3>2.23 - loglevel_set (deprecated in 1.3.3)</h3>
-  <p class="paragraph">
-    Renamed to <a href="#2_logging_level_set">logging_level_set</a>.
-  </p>
-  <div class="top"><a href="#CloudI">Top</a></div>
-
-  <a name="2_log_redirect"></a>
-  <h3>2.24 - log_redirect (deprecated in 1.3.3)</h3>
-  <p class="paragraph">
-    Renamed to <a href="#2_logging_redirect_set">logging_redirect_set</a>.
-  </p>
-  <div class="top"><a href="#CloudI">Top</a></div>
-
   <a name="2_code_path_add"></a>
-  <h3>2.25 - code_path_add</h3>
+  <h3>2.23 - code_path_add</h3>
 <p class="code">
 curl -X POST -d '"/home/user/code/services"' http://localhost:6467/cloudi/api/erlang/code_path_add
 </p>
@@ -3039,7 +3133,7 @@ curl -X POST -d '"/home/user/code/services"' http://localhost:6467/cloudi/api/er
   <div class="top"><a href="#CloudI">Top</a></div>
 
   <a name="2_code_path_remove"></a>
-  <h3>2.26 - code_path_remove</h3>
+  <h3>2.24 - code_path_remove</h3>
 <p class="code">
 curl -X POST -d '"/home/user/code/services"' http://localhost:6467/cloudi/api/erlang/code_path_remove
 </p>
@@ -3051,7 +3145,7 @@ curl -X POST -d '"/home/user/code/services"' http://localhost:6467/cloudi/api/er
   <div class="top"><a href="#CloudI">Top</a></div>
 
   <a name="2_code_path"></a>
-  <h3>2.27 - code_path</h3>
+  <h3>2.25 - code_path</h3>
 <p class="code">
 curl http://localhost:6467/cloudi/api/erlang/code_path
 </p>
