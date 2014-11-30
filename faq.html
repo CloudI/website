@@ -62,7 +62,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 <div id="content">
   <h1>Frequently Asked Questions</h1>
   <center><h3>version 1.3.3b<br />
-              last updated on November 29<sup>th</sup> 2014</h3></center>
+              last updated on November 30<sup>th</sup> 2014</h3></center>
 
   <a name="1_contents"></a>
   <h2>1 - Introduction to CloudI</h2>
@@ -450,6 +450,15 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
     to handle either a destination failure or both a source failure and
     destination failure (based on the 'mode' configuration argument being
     either 'destination' or 'both').
+  </p>
+  <p class="paragraph">
+    To make CloudI service requests consistent across multiple
+    service instances, the service requests can be sent through
+    <a href="https://github.com/CloudI/CloudI/blob/master/src/lib/cloudi_service_quorum/src/cloudi_service_quorum.erl" target="_blank">cloudi_service_quorum</a>.
+    The service request responses will be checked to make sure they
+    pass the initialized quorum requirement and the service request will
+    fail (providing a null response) if quorum is not obtained during the
+    service request timeout period.
   </p>
   <div class="top"><a href="#1_contents">Top</a></div>
 
