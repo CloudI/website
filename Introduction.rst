@@ -1,6 +1,8 @@
 Introduction
 ============
 
+.. index::
+ CloudI FAQ
 
 So What's CloudI?
 -----------------
@@ -28,6 +30,10 @@ This tutorial assumes that you have successfully `installed CloudI <http://cloud
 
 .. note::
  The examples shown here were developed on a machine using CloudI version 1.3.3 running Ubuntu Linux version 14.04 operating system.
+
+
+.. index::
+ Support 
 
 Where to Get Help
 -----------------

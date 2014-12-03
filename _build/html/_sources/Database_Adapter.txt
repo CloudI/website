@@ -5,6 +5,8 @@ As stated in the CloudI FAQ
 `<http://cloudi.org/faq.html#7_MySQL>`_
 , a CloudI database service accepts requests from other CloudI services.  The service expects SQL input and provides the query result either as Erlang data or binary encoded data based on whether the input was Erlang data ora binary SQL string.
 
+.. index::
+ single: Database Service 
 
 Creating the MySQL Database Service
 -----------------------------------
@@ -23,35 +25,20 @@ CloudI provides out-of-the-box adapters for many types of databases.  The exampl
 ::
 
         %
-
         % Book Recommendation services
-
         %
-
         {internal,
-
                 "/db/mysql/",
-
                cloudi_service_db_mysql,
-
                [{database, "book"},
-
                 {timeout, 20000}, % ms
-
                 {encoding, utf8},
-
                 {hostname, "192.168.0.5"},
-
                 {username, "cloudi"},
-
                 {password, "secret"},
-
                 {port, 3306}],
-
                none,
-
                5000, 5000, 5000, undefined, undefined, 1, 5, 300, []}
-
 
 
 .. ATTENTION::
@@ -68,6 +55,8 @@ CloudI provides out-of-the-box adapters for many types of databases.  The exampl
 
   curl http://localhost:6467/cloudi/api/erlang/services
 
+.. index::
+ single: Erlang Shell
 
 Testing the Service
 -------------------

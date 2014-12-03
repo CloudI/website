@@ -24,7 +24,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="CloudI Tutorial" href="index.html" />
-    <link rel="next" title="7. ZeroMQ" href="ZeroMQ.html" />
+    <link rel="next" title="7. Java Integration" href="Java_Integration.html" />
     <link rel="prev" title="5. Book Service" href="Book_Service.html" />
 <!--[if lte IE 6]>
 <link rel="stylesheet" href="_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
@@ -40,7 +40,7 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="ZeroMQ.html" title="7. ZeroMQ"
+          <a href="Java_Integration.html" title="7. Java Integration"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="Book_Service.html" title="5. Book Service"
@@ -56,9 +56,108 @@
             
   <div class="section" id="html-integration">
 <h1>6. HTML Integration<a class="headerlink" href="#html-integration" title="Permalink to this headline">¶</a></h1>
-<div class="admonition-todo admonition" id="index-0">
+<p id="index-0">Once the Book Service has been developed, integration with the HTML pages is straightfoward.  Note that the HTML pages use the JQuery Mobile framework which simplifies much of the Javascript coding.  If you use a different (or no) web framework the general principles would remain the same.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The HTML pages use the Web Sockets integration method which is part of the HTML5 specification.  Web Sockets may not work correctly on older browsers.</p>
+</div>
+<div class="section" id="calling-the-book-service">
+<h2>6.1. Calling the Book Service<a class="headerlink" href="#calling-the-book-service" title="Permalink to this headline">¶</a></h2>
+<p>Invocation of the Book Service is done using Javascript and consists of several different functions shown below.</p>
+<p>First, some global variables are defined:</p>
+<div class="highlight-python"><div class="highlight"><pre>// Customize for your environment
+var web_socket = undefined;
+var host_url = &quot;ws://127.0.0.1:6464&quot;;
+var service_name = &quot;/recommend/book/newbooks&quot;;
+var request_type = &quot;get&quot;;
+</pre></div>
+</div>
+<p>Next, the web socket is opened using the following code:</p>
+<div class="highlight-python"><div class="highlight"><pre>web_socket = new WebSocket(host_url + service_name);
+</pre></div>
+</div>
+<p>Web sockets raise events and a function is defined that will handle the <strong>onopen</strong> event.  In this case, when the socket is opened then the <strong>send</strong> function will be called:</p>
+<div class="highlight-python"><div class="highlight"><pre>// define function that is called when the web socket is opened
+web_socket.onopen = function () {
+        send();
+};
+</pre></div>
+</div>
+<p>The <strong>send</strong> function is defined as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre>function send() {
+    // if the web socket is in an open status then send the request
+    if (web_socket.readyState == web_socket.OPEN) {
+        web_socket.send(request_type);
+    }
+}
+</pre></div>
+</div>
+<p>When a message is received by the socket, the <strong>onmessage</strong> event is raised, and is handled by the following function:</p>
+<div class="highlight-python"><div class="highlight"><pre>web_socket.onmessage = function (evt) {
+    var data = evt.data;
+    if (is(&quot;Blob&quot;, data)) {
+        var reader = new FileReader();
+        reader.readAsText(data, &quot;text/plain&quot;);
+        reader.onload = function (reader_evt) {
+            data = reader_evt.target.result;
+            handle_message(data);
+        };
+    }
+    else {
+        handle_message(data);
+    }
+};
+</pre></div>
+</div>
+<p>The detailed processing of the message is performed by the <strong>handle_message</strong> function described below.</p>
+</div>
+<div class="section" id="parsing-the-results">
+<span id="index-1"></span><h2>6.2. Parsing the Results<a class="headerlink" href="#parsing-the-results" title="Permalink to this headline">¶</a></h2>
+<p>A simplified version of the <strong>handle_message</strong> function is shown below:</p>
+<div class="highlight-python"><div class="highlight"><pre>handle_message = function (data) {
+
+    if (data.startsWith(&quot;notification:&quot;)) {
+        // client state check to determine this is an incoming
+        // service request, not an incoming response
+        var response = &quot;ok&quot;;
+        web_socket.send(response);
+    }
+    else {
+        if (data != &quot;got connect! yay!&quot;) {
+
+            // parse the JSON array
+            var obj = JSON.parse(data);
+
+            // add items to the list
+            $.each(obj, function (i, item) {
+                //alert(&quot;Item ID = &quot; + item.id);
+                //alert(&quot;Title = &quot; + item.title);
+                var tag = &quot;&lt;li&gt;&quot; + item.title + &quot;&lt;/li&gt;&quot;;
+                $(&quot;#itemList&quot;).append(tag).listview(&#39;refresh&#39;);
+            });
+
+        }
+    }
+};
+</pre></div>
+</div>
+<p>Parsing the JSON string that contains an array of <strong>items</strong> returned by the Book Service is very simple and performed by the code:</p>
+<div class="highlight-python"><div class="highlight"><pre>// parse the JSON array
+var obj = JSON.parse(data);
+</pre></div>
+</div>
+<p>Referencing individual attributes of an item is done like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">item</span><span class="o">.</span><span class="n">id</span>
+<span class="n">item</span><span class="o">.</span><span class="n">title</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="complete-source">
+<h2>6.3. Complete Source<a class="headerlink" href="#complete-source" title="Permalink to this headline">¶</a></h2>
+<div class="admonition-todo admonition" id="index-2">
 <p class="first admonition-title">Todo</p>
-<p class="last">This section has not yet been written</p>
+<p class="last">Add link to the HTML source code</p>
+</div>
 </div>
 </div>
 
@@ -68,12 +167,22 @@
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">6. HTML Integration</a><ul>
+<li><a class="reference internal" href="#calling-the-book-service">6.1. Calling the Book Service</a></li>
+<li><a class="reference internal" href="#parsing-the-results">6.2. Parsing the Results</a></li>
+<li><a class="reference internal" href="#complete-source">6.3. Complete Source</a></li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="Book_Service.html"
                         title="previous chapter">5. Book Service</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="ZeroMQ.html"
-                        title="next chapter">7. ZeroMQ</a></p>
+  <p class="topless"><a href="Java_Integration.html"
+                        title="next chapter">7. Java Integration</a></p>
 <div id="searchbox" style="display: none">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
@@ -98,7 +207,7 @@
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="ZeroMQ.html" title="7. ZeroMQ"
+          <a href="Java_Integration.html" title="7. Java Integration"
              >next</a> |</li>
         <li class="right" >
           <a href="Book_Service.html" title="5. Book Service"
@@ -107,7 +216,7 @@
       </ul>
     </div>
     <div class="footer">
-      Last updated on Nov 14, 2014.
+      Last updated on Dec 03, 2014.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
