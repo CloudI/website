@@ -58,19 +58,42 @@
 <h1>10. Trouble Shooting<a class="headerlink" href="#trouble-shooting" title="Permalink to this headline">¶</a></h1>
 <div class="admonition-todo admonition" id="index-0">
 <p class="first admonition-title">Todo</p>
-<p class="last">This section has not yet been written</p>
+<p class="last">This section is in progress</p>
 </div>
 <div class="section" id="source-code-paths">
 <h2>10.1. Source Code Paths<a class="headerlink" href="#source-code-paths" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="timeout">
 <h2>10.2. Timeout<a class="headerlink" href="#timeout" title="Permalink to this headline">¶</a></h2>
+<p>There are several possible causes of a timeout error.</p>
+<ol class="arabic simple">
+<li>Incorrect Dispatcher Pattern</li>
+</ol>
+<blockquote>
+<div>For example, in the development of the Book Service the original service initialization logic had code that looked like this:</div></blockquote>
+<div class="highlight-python"><div class="highlight"><pre>cloudi_service:subscribe(Dispatcher, &quot;recommendbooks/get&quot;)
+</pre></div>
+</div>
+<p>However, the pattern was misspelled and should have looked like this:</p>
+<div class="highlight-python"><div class="highlight"><pre>cloudi_service:subscribe(Dispatcher, &quot;recommendedbooks/get&quot;)
+</pre></div>
+</div>
+<p>Consequently, when the <strong>recommendedbooks</strong> service was invoked the CloudI dispatcher could not find any module that was subscribing to the request and generated a timeout.</p>
 </div>
 <div class="section" id="old-code-appears-to-be-running">
 <h2>10.3. Old Code Appears to be Running<a class="headerlink" href="#old-code-appears-to-be-running" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="erlang-crash-dump">
-<h2>10.4. Erlang Crash Dump<a class="headerlink" href="#erlang-crash-dump" title="Permalink to this headline">¶</a></h2>
+<span id="index-1"></span><h2>10.4. Erlang Crash Dump<a class="headerlink" href="#erlang-crash-dump" title="Permalink to this headline">¶</a></h2>
+<p>A file named <strong>erl_crash.dump</strong> located in the main CloudI folder is generated when a system-wide error occurs.  Possible causes of this include:</p>
+<ol class="arabic simple">
+<li>Incorrect Configuration File</li>
+</ol>
+<p>If there are syntax errors in the <strong>cloudi.conf</strong> or <strong>app.config</strong> files, the CloudI system can not be started properly.  The solution is to carefully inspect the configuration files and make changes carefully. Storing previous versions of each configuration file and using these for comparison may also help.</p>
+<ol class="arabic simple" start="2">
+<li>Required Service Dependencies Not Met on Startup</li>
+</ol>
+<p>All services listed in the <strong>cloudi.conf</strong> file must start successfully when the cloud is first started. In other words, the failure of any service listed in the configuration file will keep the entire cloud from starting to ensure an error-free starting state.</p>
 </div>
 </div>
 
@@ -130,7 +153,7 @@
       </ul>
     </div>
     <div class="footer">
-      Last updated on Dec 03, 2014.
+      Last updated on Dec 04, 2014.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
