@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>11. Trouble Shooting &mdash; CloudI Tutorial</title>
+    <title>10. Trouble Shooting &mdash; CloudI Tutorial</title>
     
     <link rel="stylesheet" href="_static/pyramid.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -24,8 +24,8 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="CloudI Tutorial" href="index.html" />
-    <link rel="next" title="12. To Do List" href="Todo.html" />
-    <link rel="prev" title="10. Cluster Configuration" href="Cluster.html" />
+    <link rel="next" title="11. To Do List" href="Todo.html" />
+    <link rel="prev" title="9. Cluster Configuration" href="Cluster.html" />
 <!--[if lte IE 6]>
 <link rel="stylesheet" href="_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
 <![endif]-->
@@ -40,10 +40,10 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="Todo.html" title="12. To Do List"
+          <a href="Todo.html" title="11. To Do List"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="Cluster.html" title="10. Cluster Configuration"
+          <a href="Cluster.html" title="9. Cluster Configuration"
              accesskey="P">previous</a> |</li>
         <li><a href="index.html">CloudI Tutorial</a> &raquo;</li> 
       </ul>
@@ -55,22 +55,45 @@
           <div class="body">
             
   <div class="section" id="trouble-shooting">
-<h1>11. Trouble Shooting<a class="headerlink" href="#trouble-shooting" title="Permalink to this headline">¶</a></h1>
+<h1>10. Trouble Shooting<a class="headerlink" href="#trouble-shooting" title="Permalink to this headline">¶</a></h1>
 <div class="admonition-todo admonition" id="index-0">
 <p class="first admonition-title">Todo</p>
-<p class="last">This section has not yet been written</p>
+<p class="last">This section is in progress</p>
 </div>
 <div class="section" id="source-code-paths">
-<h2>11.1. Source Code Paths<a class="headerlink" href="#source-code-paths" title="Permalink to this headline">¶</a></h2>
+<h2>10.1. Source Code Paths<a class="headerlink" href="#source-code-paths" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="timeout">
-<h2>11.2. Timeout<a class="headerlink" href="#timeout" title="Permalink to this headline">¶</a></h2>
+<h2>10.2. Timeout<a class="headerlink" href="#timeout" title="Permalink to this headline">¶</a></h2>
+<p>There are several possible causes of a timeout error.</p>
+<ol class="arabic simple">
+<li>Incorrect Dispatcher Pattern</li>
+</ol>
+<blockquote>
+<div>For example, in the development of the Book Service the original service initialization logic had code that looked like this:</div></blockquote>
+<div class="highlight-python"><div class="highlight"><pre>cloudi_service:subscribe(Dispatcher, &quot;recommendbooks/get&quot;)
+</pre></div>
+</div>
+<p>However, the pattern was misspelled and should have looked like this:</p>
+<div class="highlight-python"><div class="highlight"><pre>cloudi_service:subscribe(Dispatcher, &quot;recommendedbooks/get&quot;)
+</pre></div>
+</div>
+<p>Consequently, when the <strong>recommendedbooks</strong> service was invoked the CloudI dispatcher could not find any module that was subscribing to the request and generated a timeout.</p>
 </div>
 <div class="section" id="old-code-appears-to-be-running">
-<h2>11.3. Old Code Appears to be Running<a class="headerlink" href="#old-code-appears-to-be-running" title="Permalink to this headline">¶</a></h2>
+<h2>10.3. Old Code Appears to be Running<a class="headerlink" href="#old-code-appears-to-be-running" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="erlang-crash-dump">
-<h2>11.4. Erlang Crash Dump<a class="headerlink" href="#erlang-crash-dump" title="Permalink to this headline">¶</a></h2>
+<span id="index-1"></span><h2>10.4. Erlang Crash Dump<a class="headerlink" href="#erlang-crash-dump" title="Permalink to this headline">¶</a></h2>
+<p>A file named <strong>erl_crash.dump</strong> located in the main CloudI folder is generated when a system-wide error occurs.  Possible causes of this include:</p>
+<ol class="arabic simple">
+<li>Incorrect Configuration File</li>
+</ol>
+<p>If there are syntax errors in the <strong>cloudi.conf</strong> or <strong>app.config</strong> files, the CloudI system can not be started properly.  The solution is to carefully inspect the configuration files and make changes carefully. Storing previous versions of each configuration file and using these for comparison may also help.</p>
+<ol class="arabic simple" start="2">
+<li>Required Service Dependencies Not Met on Startup</li>
+</ol>
+<p>All services listed in the <strong>cloudi.conf</strong> file must start successfully when the cloud is first started. In other words, the failure of any service listed in the configuration file will keep the entire cloud from starting to ensure an error-free starting state.</p>
 </div>
 </div>
 
@@ -82,21 +105,21 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">11. Trouble Shooting</a><ul>
-<li><a class="reference internal" href="#source-code-paths">11.1. Source Code Paths</a></li>
-<li><a class="reference internal" href="#timeout">11.2. Timeout</a></li>
-<li><a class="reference internal" href="#old-code-appears-to-be-running">11.3. Old Code Appears to be Running</a></li>
-<li><a class="reference internal" href="#erlang-crash-dump">11.4. Erlang Crash Dump</a></li>
+<li><a class="reference internal" href="#">10. Trouble Shooting</a><ul>
+<li><a class="reference internal" href="#source-code-paths">10.1. Source Code Paths</a></li>
+<li><a class="reference internal" href="#timeout">10.2. Timeout</a></li>
+<li><a class="reference internal" href="#old-code-appears-to-be-running">10.3. Old Code Appears to be Running</a></li>
+<li><a class="reference internal" href="#erlang-crash-dump">10.4. Erlang Crash Dump</a></li>
 </ul>
 </li>
 </ul>
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="Cluster.html"
-                        title="previous chapter">10. Cluster Configuration</a></p>
+                        title="previous chapter">9. Cluster Configuration</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="Todo.html"
-                        title="next chapter">12. To Do List</a></p>
+                        title="next chapter">11. To Do List</a></p>
 <div id="searchbox" style="display: none">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
@@ -121,16 +144,16 @@
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="Todo.html" title="12. To Do List"
+          <a href="Todo.html" title="11. To Do List"
              >next</a> |</li>
         <li class="right" >
-          <a href="Cluster.html" title="10. Cluster Configuration"
+          <a href="Cluster.html" title="9. Cluster Configuration"
              >previous</a> |</li>
         <li><a href="index.html">CloudI Tutorial</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
-      Last updated on Nov 14, 2014.
+      Last updated on Dec 04, 2014.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>

@@ -57,13 +57,15 @@
   <div class="section" id="starting-out">
 <h1>2. Starting Out<a class="headerlink" href="#starting-out" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="setting-up-the-cloudi-configuration">
-<h2>2.1. Setting up the CloudI Configuration<a class="headerlink" href="#setting-up-the-cloudi-configuration" title="Permalink to this headline">¶</a></h2>
+<span id="index-0"></span><h2>2.1. Setting up the CloudI Configuration<a class="headerlink" href="#setting-up-the-cloudi-configuration" title="Permalink to this headline">¶</a></h2>
 <p>When CloudI is installed, several default configuration files are created.
 These are generally stored in the
 <strong>/usr/local/lib/cloud_&lt;version&gt;/etc</strong>
 directory.
 For initial development, the following suggested changes should be made.</p>
-<p>1.  Make a copy of the original configuration file.</p>
+<ol class="arabic simple">
+<li>Make a copy of the original configuration file.</li>
+</ol>
 <div class="highlight-python"><div class="highlight"><pre>sudo cp /usr/local/etc/cloudi/cloudi.conf /usr/local/etc/cloudi/cloudi.conf.original
 </pre></div>
 </div>
@@ -99,12 +101,12 @@ file. An example is shown below where the % sign is used to comment out an entry
 </pre></div>
 </div>
 <ol class="arabic simple" start="4">
-<li>It is important to realize that all services listed in the cloudi.conf file must start successfully when the cloud is first started.
+<li>It is important to realize that all services listed in the <strong>cloudi.conf</strong> file must start successfully when the cloud is first started.
 In other words, the failure of any service listed in the configuration file will keep the entire cloud from starting to ensure an error-free starting state.  Seperate configuration methods will be used to show how a cloud may grow.</li>
 </ol>
 </div>
 <div class="section" id="viewing-logs">
-<h2>2.2. Viewing Logs<a class="headerlink" href="#viewing-logs" title="Permalink to this headline">¶</a></h2>
+<span id="index-1"></span><h2>2.2. Viewing Logs<a class="headerlink" href="#viewing-logs" title="Permalink to this headline">¶</a></h2>
 <p>The default location of CloudI log files is the
 <strong>/usr/local/var/log/cloudi/</strong>
 <strong>logs</strong>
@@ -156,7 +158,7 @@ curl http://localhost:6467/recommendation/book?item=45388
 </div>
 </div>
 <div class="section" id="common-operations">
-<h2>2.4. Common Operations<a class="headerlink" href="#common-operations" title="Permalink to this headline">¶</a></h2>
+<span id="index-2"></span><h2>2.4. Common Operations<a class="headerlink" href="#common-operations" title="Permalink to this headline">¶</a></h2>
 <p>Common operations for working with CloudI are shown below.</p>
 <p>1.  Starting / Stopping CloudI</p>
 <div class="highlight-python"><div class="highlight"><pre>sudo cloudi start
@@ -238,7 +240,7 @@ sudo cloudi stop
       </ul>
     </div>
     <div class="footer">
-      Last updated on Nov 14, 2014.
+      Last updated on Dec 04, 2014.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>

@@ -19,7 +19,6 @@ Contents:
  Database Adapter Service <Database_Adapter>
  Book Service <Book_Service>
  HTML Integration <HTML_Integration>
- Configuring ZeroMQ <ZeroMQ>
  Java Integration <Java_Integration>
  Security Configuration <Security>
  Cluster Configuration <Cluster>

@@ -60,7 +60,7 @@
 <a class="reference external" href="http://cloudi.org/faq.html#7_MySQL">http://cloudi.org/faq.html#7_MySQL</a>
 , a CloudI database service accepts requests from other CloudI services.  The service expects SQL input and provides the query result either as Erlang data or binary encoded data based on whether the input was Erlang data ora binary SQL string.</p>
 <div class="section" id="creating-the-mysql-database-service">
-<h2>4.1. Creating the MySQL Database Service<a class="headerlink" href="#creating-the-mysql-database-service" title="Permalink to this headline">¶</a></h2>
+<span id="index-0"></span><h2>4.1. Creating the MySQL Database Service<a class="headerlink" href="#creating-the-mysql-database-service" title="Permalink to this headline">¶</a></h2>
 <p>CloudI provides out-of-the-box adapters for many types of databases.  The example shown below is for a MySQL database, but the same general steps would apply for other database types.</p>
 <ol class="arabic simple">
 <li>Stop CloudI.</li>
@@ -72,33 +72,19 @@
 <p class="last">Note that the database hostname, port, username, and password need to be changed for your environment.</p>
 </div>
 <div class="highlight-python"><div class="highlight"><pre>%
-
 % Book Recommendation services
-
 %
-
 {internal,
-
         &quot;/db/mysql/&quot;,
-
        cloudi_service_db_mysql,
-
        [{database, &quot;book&quot;},
-
         {timeout, 20000}, % ms
-
         {encoding, utf8},
-
         {hostname, &quot;192.168.0.5&quot;},
-
         {username, &quot;cloudi&quot;},
-
         {password, &quot;secret&quot;},
-
         {port, 3306}],
-
        none,
-
        5000, 5000, 5000, undefined, undefined, 1, 5, 300, []}
 </pre></div>
 </div>
@@ -119,7 +105,7 @@
 </div>
 </div>
 <div class="section" id="testing-the-service">
-<h2>4.2. Testing the Service<a class="headerlink" href="#testing-the-service" title="Permalink to this headline">¶</a></h2>
+<span id="index-1"></span><h2>4.2. Testing the Service<a class="headerlink" href="#testing-the-service" title="Permalink to this headline">¶</a></h2>
 <p>You can test the database service by using the CloudI module and the associated Erlang VM shell.  A simple example is shown below. Note that Erlang commands are case-sensitive and each command must be terminated with a period character.</p>
 <div class="highlight-python"><div class="highlight"><pre>sudo cloudi attach
 
@@ -188,7 +174,7 @@ cloudi:send_sync(Context, &quot;/db/mysql/book&quot;, &quot;select * from items 
       </ul>
     </div>
     <div class="footer">
-      Last updated on Nov 16, 2014.
+      Last updated on Nov 19, 2014.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>

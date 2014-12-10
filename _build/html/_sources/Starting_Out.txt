@@ -1,6 +1,9 @@
 Starting Out
 ============
 
+.. index::
+ single: cloudi.conf
+
 
 Setting up the CloudI Configuration
 -----------------------------------
@@ -12,6 +15,7 @@ directory.
 For initial development, the following suggested changes should be made.
    
 1.  Make a copy of the original configuration file.
+
 ::
 
   sudo cp /usr/local/etc/cloudi/cloudi.conf /usr/local/etc/cloudi/cloudi.conf.original
@@ -49,9 +53,12 @@ For initial development, the following suggested changes should be made.
   %lazy_closest,
   %5000, 5000, 5000, [api], undefined, 2, 5, 300, []},
 
-4.  It is important to realize that all services listed in the cloudi.conf file must start successfully when the cloud is first started.  
+4.  It is important to realize that all services listed in the **cloudi.conf** file must start successfully when the cloud is first started.  
     In other words, the failure of any service listed in the configuration file will keep the entire cloud from starting to ensure an error-free starting state.  Seperate configuration methods will be used to show how a cloud may grow.
 
+
+.. index::
+ single: Log Files
 
 Viewing Logs
 ------------
@@ -115,6 +122,11 @@ An example shell script for the Book Service (see next section for more details)
   # Call the Book Service
   curl http://localhost:6467/recommendation/book?item=45388
 
+
+.. index::
+ single: Starting / Stopping CloudI
+ single: Listing Services
+ single: Code Search Path
 
 Common Operations
 -----------------

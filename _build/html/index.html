@@ -78,6 +78,7 @@
 <li class="toctree-l3"><a class="reference internal" href="Book_Recommendation_Application.html#integration-method">3.4.3. Integration Method</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="Book_Recommendation_Application.html#data-model">3.5. Data Model</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="Database_Adapter.html">4. Database Adapter Service</a><ul>
@@ -87,45 +88,51 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="Book_Service.html">5. Book Service</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="Book_Service.html#configuration-file">5.1. Configuration File</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Book_Service.html#module-outline">5.2. Module Outline</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Book_Service.html#handling-requests">5.3. Handling Requests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Book_Service.html#calling-the-mysql-database-adapter">5.4. Calling the MySQL Database Adapter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Book_Service.html#parsing-the-results">5.5. Parsing the Results</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Book_Service.html#complete-source">5.6. Complete Source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Book_Service.html#module-outline">5.2. Module Outline</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Book_Service.html#service-initialization-logic">5.2.1. Service Initialization Logic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Book_Service.html#handling-requests">5.2.2. Handling Requests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Book_Service.html#calling-the-mysql-database-adapter">5.2.3. Calling the MySQL Database Adapter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Book_Service.html#parsing-the-results">5.2.4. Parsing the Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Book_Service.html#handling-informational-messages">5.2.5. Handling Informational Messages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Book_Service.html#service-termination">5.2.6. Service Termination</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Book_Service.html#complete-source">5.2.7. Complete Source</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="HTML_Integration.html">6. HTML Integration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ZeroMQ.html">7. Configuring ZeroMQ</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="ZeroMQ.html#installing-zeromq">7.1. Installing ZeroMQ</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ZeroMQ.html#configuring-endpoints">7.2. Configuring Endpoints</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ZeroMQ.html#testing-the-configuration">7.3. Testing the Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Book_Service.html#adding-the-service-to-cloudi">5.3. Adding the Service to CloudI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Book_Service.html#testing-the-service">5.4. Testing the Service</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="Java_Integration.html">8. Java Integration</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="Java_Integration.html#calling-the-book-service">8.1. Calling the Book Service</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Java_Integration.html#parsing-the-results">8.2. Parsing the Results</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Java_Integration.html#complete-source">8.3. Complete Source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HTML_Integration.html">6. HTML Integration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="HTML_Integration.html#calling-the-book-service">6.1. Calling the Book Service</a></li>
+<li class="toctree-l2"><a class="reference internal" href="HTML_Integration.html#parsing-the-results">6.2. Parsing the Results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="HTML_Integration.html#complete-source">6.3. Complete Source</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="Security.html">9. Security Configuration</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="Security.html#configuring-the-access-control-lists">9.1. Configuring the Access Control Lists</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Security.html#testing-the-configuration">9.2. Testing the Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Java_Integration.html">7. Java Integration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Java_Integration.html#calling-the-book-service">7.1. Calling the Book Service</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Java_Integration.html#parsing-the-results">7.2. Parsing the Results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Java_Integration.html#complete-source">7.3. Complete Source</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="Cluster.html">10. Cluster Configuration</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="Cluster.html#adding-nodes-to-the-cluster">10.1. Adding Nodes to the Cluster</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Cluster.html#failing-over-nodes-in-the-cluster">10.2. Failing Over Nodes In the Cluster</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Cluster.html#testing-the-cluster-configuration">10.3. Testing the Cluster Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Security.html">8. Security Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Security.html#configuring-the-access-control-lists">8.1. Configuring the Access Control Lists</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Security.html#testing-the-configuration">8.2. Testing the Configuration</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="Trouble_Shooting.html">11. Trouble Shooting</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="Trouble_Shooting.html#source-code-paths">11.1. Source Code Paths</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Trouble_Shooting.html#timeout">11.2. Timeout</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Trouble_Shooting.html#old-code-appears-to-be-running">11.3. Old Code Appears to be Running</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Trouble_Shooting.html#erlang-crash-dump">11.4. Erlang Crash Dump</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Cluster.html">9. Cluster Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Cluster.html#adding-nodes-to-the-cluster">9.1. Adding Nodes to the Cluster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Cluster.html#failing-over-nodes-in-the-cluster">9.2. Failing Over Nodes In the Cluster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Cluster.html#testing-the-cluster-configuration">9.3. Testing the Cluster Configuration</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="Todo.html">12. To Do List</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Trouble_Shooting.html">10. Trouble Shooting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Trouble_Shooting.html#source-code-paths">10.1. Source Code Paths</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Trouble_Shooting.html#timeout">10.2. Timeout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Trouble_Shooting.html#old-code-appears-to-be-running">10.3. Old Code Appears to be Running</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Trouble_Shooting.html#erlang-crash-dump">10.4. Erlang Crash Dump</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Todo.html">11. To Do List</a></li>
 </ul>
 </div>
 </div>
@@ -182,7 +189,7 @@
       </ul>
     </div>
     <div class="footer">
-      Last updated on Nov 16, 2014.
+      Last updated on Dec 04, 2014.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>

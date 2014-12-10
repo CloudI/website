@@ -58,25 +58,224 @@
 <h1>5. Book Service<a class="headerlink" href="#book-service" title="Permalink to this headline">¶</a></h1>
 <div class="admonition-todo admonition" id="index-0">
 <p class="first admonition-title">Todo</p>
-<p class="last">This section has not yet been written</p>
+<p class="last">This section is in the process of being written.</p>
 </div>
 <div class="section" id="configuration-file">
-<h2>5.1. Configuration File<a class="headerlink" href="#configuration-file" title="Permalink to this headline">¶</a></h2>
+<span id="index-1"></span><h2>5.1. Configuration File<a class="headerlink" href="#configuration-file" title="Permalink to this headline">¶</a></h2>
+<p>Every service running in Cloudi needs certain configuration information to be defined.  Typically, this information is stored in a separate file for each service and specified when the service is added.</p>
+<p>The configuration file for the Book Service is shown below and is stored in a file named <strong>book.conf</strong>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">[{</span>
+  <span class="n">internal</span><span class="p">,</span>
+  <span class="s">&quot;/recommend/book/&quot;</span><span class="p">,</span>
+  <span class="n">book</span><span class="p">,</span>
+  <span class="p">[],</span>
+  <span class="n">immediate_closest</span><span class="p">,</span>
+  <span class="mi">5000</span><span class="p">,</span>
+  <span class="mi">5000</span><span class="p">,</span>
+  <span class="mi">5000</span><span class="p">,</span>
+  <span class="n">undefined</span><span class="p">,</span>
+  <span class="n">undefined</span><span class="p">,</span>
+  <span class="mi">1</span><span class="p">,</span>
+  <span class="mi">5</span><span class="p">,</span>
+  <span class="mi">300</span><span class="p">,</span>
+  <span class="p">[{</span><span class="nb">reload</span><span class="p">,</span> <span class="n">true</span><span class="p">},</span> <span class="p">{</span><span class="n">queue_limit</span><span class="p">,</span> <span class="mi">50</span><span class="p">}]</span>
+<span class="p">}]</span>
+</pre></div>
+</div>
+<p>A table describing each of these parameters is listed below.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="21%" />
+<col width="79%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter Value</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>internal</td>
+<td>Service type - either internal or external</td>
+</tr>
+<tr class="row-odd"><td>&#8220;/recommend/book/&#8221;</td>
+<td>Service name prefix</td>
+</tr>
+<tr class="row-even"><td>book</td>
+<td>Erlang module name</td>
+</tr>
+<tr class="row-odd"><td>[]</td>
+<td>Module initializion list</td>
+</tr>
+<tr class="row-even"><td>immediate_closest</td>
+<td>Destination refresh method</td>
+</tr>
+<tr class="row-odd"><td>5000</td>
+<td>Initialization timeout in milliseconds</td>
+</tr>
+<tr class="row-even"><td>5000</td>
+<td>Default asynchronous timeout in milliseconds</td>
+</tr>
+<tr class="row-odd"><td>5000</td>
+<td>Default synchronous timeout in milliseconds</td>
+</tr>
+<tr class="row-even"><td>undefined</td>
+<td>Destination deny ACL</td>
+</tr>
+<tr class="row-odd"><td>undefined</td>
+<td>Destination allow ACL</td>
+</tr>
+<tr class="row-even"><td>1</td>
+<td>Process count</td>
+</tr>
+<tr class="row-odd"><td>5</td>
+<td>Maximum number of restarts</td>
+</tr>
+<tr class="row-even"><td>300</td>
+<td>Maximum time in seconds</td>
+</tr>
+<tr class="row-odd"><td>[</td>
+<td>Beginning of service options property list</td>
+</tr>
+<tr class="row-even"><td>{reload, true}</td>
+<td>Automatically reload the service when the module&#8217;s file is updated on the filesystem</td>
+</tr>
+<tr class="row-odd"><td>{queue_limit, 50}</td>
+<td>Limit the total number of incoming service requests that are queued while the service is busy</td>
+</tr>
+<tr class="row-even"><td>]</td>
+<td>End of service options property list</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Access Control Lists (ACLs) are defined in Chapter 9.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">More information about the configuration settings and additional service options can be found <a class="reference external" href="http://cloudi.org/api.html#2_services_add">here</a></p>
+</div>
 </div>
 <div class="section" id="module-outline">
 <h2>5.2. Module Outline<a class="headerlink" href="#module-outline" title="Permalink to this headline">¶</a></h2>
+<p>The Book Service module is split into several sections.  In our example, the Book Service is developed using the Erlang language, but other language examples are displayed later.</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Service initialization logic - needs to be customized for each application</li>
+<li>Code for handling request messages - needs to be customized for each application</li>
+<li>Code for handling informational messages - can use standard pattern</li>
+<li>Logic for dealing with service termination - can use standard pattern</li>
+<li>Logic for handling application-specific processing</li>
+</ol>
+</div></blockquote>
+<p>Each of these sections is described in more detail below.</p>
+<div class="section" id="service-initialization-logic">
+<span id="index-2"></span><h3>5.2.1. Service Initialization Logic<a class="headerlink" href="#service-initialization-logic" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre>cloudi_service_init(_Args, _Prefix, Dispatcher) -&gt;
+
+  % subscribe to different request patterns
+  cloudi_service:subscribe(Dispatcher, &quot;newbooks/get&quot;),
+  cloudi_service:subscribe(Dispatcher, &quot;popularbooks/get&quot;),
+  cloudi_service:subscribe(Dispatcher, &quot;recommendedbooks/get&quot;),
+  cloudi_service:subscribe(Dispatcher, &quot;allbooks/get&quot;),
+  cloudi_service:subscribe(Dispatcher, &quot;allbooks/post&quot;),
+  cloudi_service:subscribe(Dispatcher, &quot;download/get&quot;),
+  cloudi_service:subscribe(Dispatcher, &quot;download/post&quot;),
+
+  % return ok
+  {ok, #state{}}.
+</pre></div>
+</div>
+<p>In the code above, the Book Service defines which messages it subscribes to.  Note that the list of request patterns matches the Service API table shown earlier in Section 3.4.2 with the HTTP method type (<em>get</em> or <em>post</em>) appended.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The initialization section is also a good place to define the code path for any external libraries that this service depends on.  For example, in an earlier version of this code, the Jiffy JSON library was used.  Consequently, the additional lines shown below were added in this section.</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>% Add the path to the Jiffy source
+code:add_path(&quot;/usr/lib/erlang/lib/jiffy-0.8.5/ebin&quot;),
+
+% Load Jiffy module manually
+code:load_file(jiffy),
+</pre></div>
+</div>
 </div>
 <div class="section" id="handling-requests">
-<h2>5.3. Handling Requests<a class="headerlink" href="#handling-requests" title="Permalink to this headline">¶</a></h2>
+<h3>5.2.2. Handling Requests<a class="headerlink" href="#handling-requests" title="Permalink to this headline">¶</a></h3>
 </div>
 <div class="section" id="calling-the-mysql-database-adapter">
-<h2>5.4. Calling the MySQL Database Adapter<a class="headerlink" href="#calling-the-mysql-database-adapter" title="Permalink to this headline">¶</a></h2>
+<span id="index-3"></span><h3>5.2.3. Calling the MySQL Database Adapter<a class="headerlink" href="#calling-the-mysql-database-adapter" title="Permalink to this headline">¶</a></h3>
+<p>The code for calling the MySQL Database Adapter is shown below.</p>
+<div class="highlight-python"><div class="highlight"><pre>Query = &quot;select id, title from items&quot;,
+
+Status = cloudi_service:send_sync(Dispatcher,
+  &quot;/db/mysql/book&quot;,
+  &lt;&lt;&gt;&gt;,
+  Query,
+  undefined,
+  undefined),
+
+case Status of
+  {ok , Result} -&gt;
+    Json_result = parse_items(Result);
+  _ -&gt;
+    Json_result = cloudi_x_jsx:encode(&lt;&lt;&quot;No data found&quot;&gt;&gt;)
+  end,
+
+Json_result.
+</pre></div>
+</div>
+<p>First, a string containing the SQL query is constructed.  Next, the service named <tt class="docutils literal"><span class="pre">/db/mysql/book</span></tt> is invoked and the query is passed to it.  Then the value of the <tt class="docutils literal"><span class="pre">Status</span></tt> variable is matched and if the <tt class="docutils literal"><span class="pre">Status</span></tt> is <tt class="docutils literal"><span class="pre">ok</span></tt>, the contents of the <tt class="docutils literal"><span class="pre">Result</span></tt> variable are parsed which returns a JSON encoded response.  If the <tt class="docutils literal"><span class="pre">Status</span></tt> is anything other than <tt class="docutils literal"><span class="pre">ok</span></tt> then the JSON encoded message <tt class="docutils literal"><span class="pre">No</span> <span class="pre">data</span> <span class="pre">found</span></tt> is returned.</p>
 </div>
 <div class="section" id="parsing-the-results">
-<h2>5.5. Parsing the Results<a class="headerlink" href="#parsing-the-results" title="Permalink to this headline">¶</a></h2>
+<h3>5.2.4. Parsing the Results<a class="headerlink" href="#parsing-the-results" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="handling-informational-messages">
+<span id="index-4"></span><h3>5.2.5. Handling Informational Messages<a class="headerlink" href="#handling-informational-messages" title="Permalink to this headline">¶</a></h3>
+<p>The <tt class="docutils literal"><span class="pre">cloudi_service_handle_info</span></tt> function is used for handling spontaneous messages to the service.  For example, if this service is linked to another process and that process unexpectedly halts, an exit trap message may be received.  Typically, the response to this message is to do nothing and the pattern shown below can be used.</p>
+<div class="highlight-python"><div class="highlight"><pre>cloudi_service_handle_info(Request, State, _) -&gt;
+  {noreply, State}.
+</pre></div>
+</div>
+</div>
+<div class="section" id="service-termination">
+<span id="index-5"></span><h3>5.2.6. Service Termination<a class="headerlink" href="#service-termination" title="Permalink to this headline">¶</a></h3>
+<p>The <tt class="docutils literal"><span class="pre">cloudi_service_terminate</span></tt> function is called when the CloudI server is shutting down and about to terminate.  You can add any logic needed to cleanup any resources used by this service or do additional notifications.  If nothing special is needed, you can use the pattern shown below.</p>
+<div class="highlight-python"><div class="highlight"><pre>cloudi_service_terminate(_, #state{}) -&gt;
+  ok.
+</pre></div>
+</div>
 </div>
 <div class="section" id="complete-source">
-<h2>5.6. Complete Source<a class="headerlink" href="#complete-source" title="Permalink to this headline">¶</a></h2>
+<h3>5.2.7. Complete Source<a class="headerlink" href="#complete-source" title="Permalink to this headline">¶</a></h3>
+<div class="admonition-todo admonition" id="index-6">
+<p class="first admonition-title">Todo</p>
+<p class="last">Add link to the Book Service source code</p>
+</div>
+</div>
+</div>
+<div class="section" id="adding-the-service-to-cloudi">
+<h2>5.3. Adding the Service to CloudI<a class="headerlink" href="#adding-the-service-to-cloudi" title="Permalink to this headline">¶</a></h2>
+<p>Adding the Book Service to CloudI requires three steps.  First, the code is compiled.  Next, the location of the source code is added using the CloudI API.  Finally, the service is added using the CloudI API.</p>
+<div class="highlight-python"><div class="highlight"><pre># compile code
+erlc -pz /usr/local/lib/cloudi-1.3.3/lib/cloudi_core-1.3.3 -pz /usr/local/lib/cloudi-1.3.3/lib/cloudi_core-1.3.3/ebin book.erl
+
+# add the source code path
+curl -X POST -d /opt/cloudi/book/ebin http://localhost:6467/cloudi/api/erlang/code_path_add
+
+# add the service using the attached configuration file
+curl -X post -d @book.conf http://localhost:6467/cloudi/api/erlang/services_add
+</pre></div>
+</div>
+</div>
+<div class="section" id="testing-the-service">
+<h2>5.4. Testing the Service<a class="headerlink" href="#testing-the-service" title="Permalink to this headline">¶</a></h2>
+<p>The service can be tested using an HTML browser as shown below.</p>
+<div class="highlight-python"><div class="highlight"><pre>curl http://localhost:6467/recommend/book/newbooks
+curl http://localhost:6467/recommend/book/popularbooks
+curl http://localhost:6467/recommend/book/recommendedbooks?user=1
+curl http://localhost:6467/recommend/book/allbooks?id=1
+</pre></div>
+</div>
 </div>
 </div>
 
@@ -90,11 +289,18 @@
   <ul>
 <li><a class="reference internal" href="#">5. Book Service</a><ul>
 <li><a class="reference internal" href="#configuration-file">5.1. Configuration File</a></li>
-<li><a class="reference internal" href="#module-outline">5.2. Module Outline</a></li>
-<li><a class="reference internal" href="#handling-requests">5.3. Handling Requests</a></li>
-<li><a class="reference internal" href="#calling-the-mysql-database-adapter">5.4. Calling the MySQL Database Adapter</a></li>
-<li><a class="reference internal" href="#parsing-the-results">5.5. Parsing the Results</a></li>
-<li><a class="reference internal" href="#complete-source">5.6. Complete Source</a></li>
+<li><a class="reference internal" href="#module-outline">5.2. Module Outline</a><ul>
+<li><a class="reference internal" href="#service-initialization-logic">5.2.1. Service Initialization Logic</a></li>
+<li><a class="reference internal" href="#handling-requests">5.2.2. Handling Requests</a></li>
+<li><a class="reference internal" href="#calling-the-mysql-database-adapter">5.2.3. Calling the MySQL Database Adapter</a></li>
+<li><a class="reference internal" href="#parsing-the-results">5.2.4. Parsing the Results</a></li>
+<li><a class="reference internal" href="#handling-informational-messages">5.2.5. Handling Informational Messages</a></li>
+<li><a class="reference internal" href="#service-termination">5.2.6. Service Termination</a></li>
+<li><a class="reference internal" href="#complete-source">5.2.7. Complete Source</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#adding-the-service-to-cloudi">5.3. Adding the Service to CloudI</a></li>
+<li><a class="reference internal" href="#testing-the-service">5.4. Testing the Service</a></li>
 </ul>
 </li>
 </ul>
@@ -138,7 +344,7 @@
       </ul>
     </div>
     <div class="footer">
-      Last updated on Nov 14, 2014.
+      Last updated on Dec 03, 2014.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
