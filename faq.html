@@ -62,7 +62,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 <div id="content">
   <h1>Frequently Asked Questions</h1>
   <center><h3>version 1.3.3b<br />
-              last updated on December 5<sup>th</sup> 2014</h3></center>
+              last updated on December 16<sup>th</sup> 2014</h3></center>
 
   <a name="1_contents"></a>
   <h2>1 - Introduction to CloudI</h2>
@@ -1915,7 +1915,8 @@ sudo cloudi stop
   <h3>5.5 - Load Testing</h3>
   <p class="paragraph">
     Since the 1.0.0 CloudI release, the http_req test has been used for
-    executing various loadtests which have guided development and configuration
+    executing various (<a href="http://tsung.erlang-projects.org/" target="_blank">Tsung</a>)
+    loadtests which have guided development and configuration
     decisions.  The main goal has been to reduce the latency due to
     external service integration, but it has also helped to minimize internal
     service latency.  The http_req test is a simple HTTP GET request query
@@ -1928,59 +1929,81 @@ sudo cloudi stop
     loadtesting results can be compared when making CloudI integration
     decisions.  Below are summaries specific to past releases:
     <ul>
+      <li><a href="https://github.com/CloudI/CloudI/raw/develop/src/tests/http_req/loadtest/results_v1_4_0/201412_summary.pdf" target="_blank">1.4.0 summary</a></li>
       <li><a href="https://github.com/CloudI/CloudI/raw/master/src/tests/http_req/loadtest/results_v1_2_2/201306_summary.pdf" target="_blank">1.2.2 summary</a></li>
       <li><a href="https://github.com/CloudI/CloudI/raw/master/src/tests/http_req/loadtest/results_v1_2_1/201303_summary.pdf" target="_blank">1.2.1 summary</a></li>
       <li><a href="https://github.com/CloudI/CloudI/raw/master/src/tests/http_req/loadtest/results_v1_1_0/201210_summary.pdf" target="_blank">1.1.0 summary</a></li>
     </ul>
   </p>
+  <p class="paragraph">
+    To look at service request throughput to a single service name with a
+    static request it is possible to use the request_rate test
+    (to determine the maximum throughput for a service request during the
+     service request timeout period without any errors).
+    Various configuration scenarios have been tested for the 1.4.0 CloudI
+    release which are summarized <a href="https://github.com/CloudI/CloudI/blob/develop/src/tests/request_rate/results/results_v1_4_0/results.txt" target="_blank">here</a>.
+  </p>
   <p>
-    The latency graphs below show service request performance during the
-    1.2.2 loadtests of 20k connections at 10k req/s
-    (with cowboy, Erlang R16B, and Ubuntu 12.04.2):
+    The latency graphs below show service request performance during the 1.4.0
+    <a href="https://github.com/CloudI/CloudI/tree/develop/src/tests/http_req/loadtest/results_v1_4_0/201412_tsung_output.tar.bz2" target="_blank">Tsung loadtests</a>
+    of 20k connections at 10k req/s
+    (with Erlang R16B03-1 and Ubuntu 12.04.5 using CloudI cowboy integration):
     <ul>
       <li>
-        <a href="https://github.com/CloudI/CloudI/tree/master/src/tests/http_req/loadtest/results_v1_2_2/201306_20k_10kreqs_local/c.tar.gz" target="_blank">
         C++/C
-        <img src="images/201306_graphes-Transactions-mean_c.png" /><br />
-        <img src="images/201306_graphes-Transactions-min_sample_c.png" width="280" /><img src="images/201306_graphes-Transactions-max_sample_c.png" width="280" />
-        </a><br /><br />
+        <img src="images/201412_graphes-Transactions-mean_c.png" /><br />
+        <img src="images/201412_graphes-Transactions-min_sample_c.png" width="280" /><img src="images/201412_graphes-Transactions-max_sample_c.png" width="280" />
+        <br /><br />
       </li>
       <li>
-        <a href="https://github.com/CloudI/CloudI/tree/master/src/tests/http_req/loadtest/results_v1_2_2/201306_20k_10kreqs_local/erlang.tar.gz" target="_blank">
         Erlang
-        <img src="images/201306_graphes-Transactions-mean_erlang.png" /><br />
-        <img src="images/201306_graphes-Transactions-min_sample_erlang.png" width="280" /><img src="images/201306_graphes-Transactions-max_sample_erlang.png" width="280" />
-        </a><br /><br />
+        <img src="images/201412_graphes-Transactions-mean_erlang.png" /><br />
+        <img src="images/201412_graphes-Transactions-min_sample_erlang.png" width="280" /><img src="images/201412_graphes-Transactions-max_sample_erlang.png" width="280" />
+        <br /><br />
       </li>
       <li>
-        <a href="https://github.com/CloudI/CloudI/tree/master/src/tests/http_req/loadtest/results_v1_2_2/201306_20k_10kreqs_local/java.tar.gz" target="_blank">
         Java
-        <img src="images/201306_graphes-Transactions-mean_java.png" /><br />
-        <img src="images/201306_graphes-Transactions-min_sample_java.png" width="280" /><img src="images/201306_graphes-Transactions-max_sample_java.png" width="280" />
-        </a><br /><br />
+        <img src="images/201412_graphes-Transactions-mean_java.png" /><br />
+        <img src="images/201412_graphes-Transactions-min_sample_java.png" width="280" /><img src="images/201412_graphes-Transactions-max_sample_java.png" width="280" />
+        <br /><br />
       </li>
       <li>
-        <a href="https://github.com/CloudI/CloudI/tree/master/src/tests/http_req/loadtest/results_v1_2_2/201306_20k_10kreqs_local/python_c.tar.gz" target="_blank">
+        Javascript
+        <img src="images/201412_graphes-Transactions-mean_javascript.png" /><br />
+        <img src="images/201412_graphes-Transactions-min_sample_javascript.png" width="280" /><img src="images/201412_graphes-Transactions-max_sample_javascript.png" width="280" />
+        <br /><br />
+      </li>
+      <li>
+        Perl
+        <img src="images/201412_graphes-Transactions-mean_perl.png" /><br />
+        <img src="images/201412_graphes-Transactions-min_sample_perl.png" width="280" /><img src="images/201412_graphes-Transactions-max_sample_perl.png" width="280" />
+        <br /><br />
+      </li>
+      <li>
+        PHP
+        <img src="images/201412_graphes-Transactions-mean_php.png" /><br />
+        <img src="images/201412_graphes-Transactions-min_sample_php.png" width="280" /><img src="images/201412_graphes-Transactions-max_sample_php.png" width="280" />
+        <br /><br />
+      </li>
+      <li>
         Python
-        <img src="images/201306_graphes-Transactions-mean_python_c.png" />
+        <img src="images/201412_graphes-Transactions-mean_python_c.png" />
         (with C integration)
         <br />
-        <img src="images/201306_graphes-Transactions-min_sample_python_c.png" width="280" /><img src="images/201306_graphes-Transactions-max_sample_python_c.png" width="280" />
-        </a><br /><br />
+        <img src="images/201412_graphes-Transactions-min_sample_python_c.png" width="280" /><img src="images/201412_graphes-Transactions-max_sample_python_c.png" width="280" />
+        <br /><br />
       </li>
       <li>
-        <a href="https://github.com/CloudI/CloudI/tree/master/src/tests/http_req/loadtest/results_v1_2_2/201306_20k_10kreqs_local/python.tar.gz" target="_blank">
         Python
-        <img src="images/201306_graphes-Transactions-mean_python.png" /><br />
-        <img src="images/201306_graphes-Transactions-min_sample_python.png" width="280" /><img src="images/201306_graphes-Transactions-max_sample_python.png" width="280" />
-        </a><br /><br />
+        <img src="images/201412_graphes-Transactions-mean_python.png" /><br />
+        <img src="images/201412_graphes-Transactions-min_sample_python.png" width="280" /><img src="images/201412_graphes-Transactions-max_sample_python.png" width="280" />
+        <br /><br />
       </li>
       <li>
-        <a href="https://github.com/CloudI/CloudI/tree/master/src/tests/http_req/loadtest/results_v1_2_2/201306_20k_10kreqs_local/ruby.tar.gz" target="_blank">
         Ruby
-        <img src="images/201306_graphes-Transactions-mean_ruby.png" /><br />
-        <img src="images/201306_graphes-Transactions-min_sample_ruby.png" width="280" /><img src="images/201306_graphes-Transactions-max_sample_ruby.png" width="280" />
-        </a><br /><br />
+        <img src="images/201412_graphes-Transactions-mean_ruby.png" /><br />
+        <img src="images/201412_graphes-Transactions-min_sample_ruby.png" width="280" /><img src="images/201412_graphes-Transactions-max_sample_ruby.png" width="280" />
+        <br /><br />
       </li>
     </ul>
   </p>
