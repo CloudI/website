@@ -129,6 +129,90 @@ Referencing individual attributes of an item is done like this:
     item.id 
     item.title
 
+.. index::
+ single: AJAX 
+ single: CORS 
+
+Using AJAX instead of Web Sockets
+=================================
+
+The use of Web Sockets for integration of HTML pages with CloudI as shown in the preceeding sections is simple and efficient.  However, there is one limitation when using the default CloudI / Cowboy configuration - namely that only GET operations are supported.  A simple work around is to use the XML HTTP Request mechanism.  Because your HTML pages might be hosted at a different port or location then the CloudI service, a Cross-Origin Resource Sharing (CORS) request will be demonstrated below using the same general outline used earlier in the Web Socket example.
+
+First, some global variables are defined:
+
+::
+
+    // Customize for your environment
+    var service_host = "http://localhost:6467";
+    var rank_book_service = "/recommend/book/download";
+
+
+Next, a utility function is created:
+
+::
+
+  function createCORSRequest(method, url) {
+    console.log("Creating CORS Request " + method + " " + url);
+
+    var xhr = new XMLHttpRequest();
+    if ("withCredentials" in xhr) {
+
+      // Check if the XMLHttpRequest object has a "withCredentials" property.
+      // "withCredentials" only exists on XMLHTTPRequest2 objects.
+      xhr.open(method, url, true);
+
+    } else if (typeof XDomainRequest != "undefined") {
+
+      // Otherwise, check if XDomainRequest.
+      // XDomainRequest only exists in IE, and is IE's way of making CORS requests.
+      xhr = new XDomainRequest();
+      xhr.open(method, url);
+
+    } else {
+
+      // Otherwise, CORS is not supported by the browser.
+      xhr = null;
+      console.log("XHR not supported by this browser");
+
+    }
+    return xhr;
+  }
+
+
+Next, code for creating and sending the CORS request is defined:
+
+::
+
+  function rank_book(user_ID, item_ID, rating) {
+    // create a CORS request
+    var service_url = service_host + rank_book_service;
+    var xhr = createCORSRequest('POST', service_url);
+    if (!xhr) {
+      throw new Error('CORS not supported');
+    }
+
+    // define a function to handle the response
+    xhr.onload = function() {
+      var responseText = xhr.responseText;
+      console.log(responseText);
+      // process the response.
+      return;
+    };
+
+    // define a function to handle errors
+    xhr.onerror = function() {
+      console.log('There was an error!');
+      return;
+    };
+
+    // send the request
+    xhr.send('?user_ID=\"' + user_ID + '\"' + '&item_id=\"' + item_ID + '\"' + '&rating=\"' + rating + '\"');
+  } 
+ 
+
+.. todo::
+
+  Test the Javascript code listed above
 
 Complete Source
 ===============

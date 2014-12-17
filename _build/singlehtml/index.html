@@ -789,9 +789,80 @@ var obj = JSON.parse(data);
 </pre></div>
 </div>
 </div>
+<div class="section" id="using-ajax-instead-of-web-sockets">
+<span id="index-2"></span><h3>Using AJAX instead of Web Sockets<a class="headerlink" href="#using-ajax-instead-of-web-sockets" title="Permalink to this headline">¶</a></h3>
+<p>The use of Web Sockets for integration of HTML pages with CloudI as shown in the preceeding sections is simple and efficient.  However, there is one limitation when using the default CloudI / Cowboy configuration - namely that only GET operations are supported.  A simple work around is to use the XML HTTP Request mechanism.  Because your HTML pages might be hosted at a different port or location then the CloudI service, a Cross-Origin Resource Sharing (CORS) request will be demonstrated below using the same general outline used earlier in the Web Socket example.</p>
+<p>First, some global variables are defined:</p>
+<div class="highlight-python"><div class="highlight"><pre>// Customize for your environment
+var service_host = &quot;http://localhost:6467&quot;;
+var rank_book_service = &quot;/recommend/book/download&quot;;
+</pre></div>
+</div>
+<p>Next, a utility function is created:</p>
+<div class="highlight-python"><div class="highlight"><pre>function createCORSRequest(method, url) {
+  console.log(&quot;Creating CORS Request &quot; + method + &quot; &quot; + url);
+
+  var xhr = new XMLHttpRequest();
+  if (&quot;withCredentials&quot; in xhr) {
+
+    // Check if the XMLHttpRequest object has a &quot;withCredentials&quot; property.
+    // &quot;withCredentials&quot; only exists on XMLHTTPRequest2 objects.
+    xhr.open(method, url, true);
+
+  } else if (typeof XDomainRequest != &quot;undefined&quot;) {
+
+    // Otherwise, check if XDomainRequest.
+    // XDomainRequest only exists in IE, and is IE&#39;s way of making CORS requests.
+    xhr = new XDomainRequest();
+    xhr.open(method, url);
+
+  } else {
+
+    // Otherwise, CORS is not supported by the browser.
+    xhr = null;
+    console.log(&quot;XHR not supported by this browser&quot;);
+
+  }
+  return xhr;
+}
+</pre></div>
+</div>
+<p>Next, code for creating and sending the CORS request is defined:</p>
+<div class="highlight-python"><div class="highlight"><pre>function rank_book(user_ID, item_ID, rating) {
+  // create a CORS request
+  var service_url = service_host + rank_book_service;
+  var xhr = createCORSRequest(&#39;POST&#39;, service_url);
+  if (!xhr) {
+    throw new Error(&#39;CORS not supported&#39;);
+  }
+
+  // define a function to handle the response
+  xhr.onload = function() {
+    var responseText = xhr.responseText;
+    console.log(responseText);
+    // process the response.
+    return;
+  };
+
+  // define a function to handle errors
+  xhr.onerror = function() {
+    console.log(&#39;There was an error!&#39;);
+    return;
+  };
+
+  // send the request
+  xhr.send(&#39;?user_ID=\&quot;&#39; + user_ID + &#39;\&quot;&#39; + &#39;&amp;item_id=\&quot;&#39; + item_ID + &#39;\&quot;&#39; + &#39;&amp;rating=\&quot;&#39; + rating + &#39;\&quot;&#39;);
+}
+</pre></div>
+</div>
+<div class="admonition-todo admonition" id="index-3">
+<p class="first admonition-title">Todo</p>
+<p class="last">Test the Javascript code listed above</p>
+</div>
+</div>
 <div class="section" id="complete-source">
 <h3>Complete Source<a class="headerlink" href="#complete-source" title="Permalink to this headline">¶</a></h3>
-<div class="admonition-todo admonition" id="index-2">
+<div class="admonition-todo admonition" id="index-4">
 <p class="first admonition-title">Todo</p>
 <p class="last">Add link to the HTML source code</p>
 </div>
@@ -889,26 +960,6 @@ var obj = JSON.parse(data);
 <p>This tutorial is a work in progress.  Open items are listed below.</p>
 <div class="admonition-todo admonition">
 <p class="first admonition-title">Todo</p>
-<p class="last">This section has not yet been written</p>
-</div>
-<p class="todo-source">(The <a class="reference internal" href="index.html#index-0"><em>original entry</em></a> is located in  /home/bruce/Documents/Impact/Projects/CloudI/tutorial/Cluster.rst, line 5.)</p>
-<div class="admonition-todo admonition">
-<p class="first admonition-title">Todo</p>
-<p class="last">This section has not yet been written</p>
-</div>
-<p class="todo-source">(The <a class="reference internal" href="index.html#index-0"><em>original entry</em></a> is located in  /home/bruce/Documents/Impact/Projects/CloudI/tutorial/Java_Integration.rst, line 5.)</p>
-<div class="admonition-todo admonition">
-<p class="first admonition-title">Todo</p>
-<p class="last">This section has not yet been written</p>
-</div>
-<p class="todo-source">(The <a class="reference internal" href="index.html#index-0"><em>original entry</em></a> is located in  /home/bruce/Documents/Impact/Projects/CloudI/tutorial/Security.rst, line 5.)</p>
-<div class="admonition-todo admonition">
-<p class="first admonition-title">Todo</p>
-<p class="last">Add source code link here.</p>
-</div>
-<p class="todo-source">(The <a class="reference internal" href="index.html#index-1"><em>original entry</em></a> is located in  /home/bruce/Documents/Impact/Projects/CloudI/tutorial/Introduction.rst, line 25.)</p>
-<div class="admonition-todo admonition">
-<p class="first admonition-title">Todo</p>
 <p class="last">This section is in the process of being written.</p>
 </div>
 <p class="todo-source">(The <a class="reference internal" href="index.html#index-0"><em>original entry</em></a> is located in  /home/bruce/Documents/Impact/Projects/CloudI/tutorial/Book_Service.rst, line 5.)</p>
@@ -919,9 +970,34 @@ var obj = JSON.parse(data);
 <p class="todo-source">(The <a class="reference internal" href="index.html#index-6"><em>original entry</em></a> is located in  /home/bruce/Documents/Impact/Projects/CloudI/tutorial/Book_Service.rst, line 186.)</p>
 <div class="admonition-todo admonition">
 <p class="first admonition-title">Todo</p>
+<p class="last">This section has not yet been written</p>
+</div>
+<p class="todo-source">(The <a class="reference internal" href="index.html#index-0"><em>original entry</em></a> is located in  /home/bruce/Documents/Impact/Projects/CloudI/tutorial/Cluster.rst, line 5.)</p>
+<div class="admonition-todo admonition">
+<p class="first admonition-title">Todo</p>
+<p class="last">Test the Javascript code listed above</p>
+</div>
+<p class="todo-source">(The <a class="reference internal" href="index.html#index-3"><em>original entry</em></a> is located in  /home/bruce/Documents/Impact/Projects/CloudI/tutorial/HTML_Integration.rst, line 213.)</p>
+<div class="admonition-todo admonition">
+<p class="first admonition-title">Todo</p>
 <p class="last">Add link to the HTML source code</p>
 </div>
-<p class="todo-source">(The <a class="reference internal" href="index.html#index-2"><em>original entry</em></a> is located in  /home/bruce/Documents/Impact/Projects/CloudI/tutorial/HTML_Integration.rst, line 136.)</p>
+<p class="todo-source">(The <a class="reference internal" href="index.html#index-4"><em>original entry</em></a> is located in  /home/bruce/Documents/Impact/Projects/CloudI/tutorial/HTML_Integration.rst, line 220.)</p>
+<div class="admonition-todo admonition">
+<p class="first admonition-title">Todo</p>
+<p class="last">Add source code link here.</p>
+</div>
+<p class="todo-source">(The <a class="reference internal" href="index.html#index-1"><em>original entry</em></a> is located in  /home/bruce/Documents/Impact/Projects/CloudI/tutorial/Introduction.rst, line 25.)</p>
+<div class="admonition-todo admonition">
+<p class="first admonition-title">Todo</p>
+<p class="last">This section has not yet been written</p>
+</div>
+<p class="todo-source">(The <a class="reference internal" href="index.html#index-0"><em>original entry</em></a> is located in  /home/bruce/Documents/Impact/Projects/CloudI/tutorial/Java_Integration.rst, line 5.)</p>
+<div class="admonition-todo admonition">
+<p class="first admonition-title">Todo</p>
+<p class="last">This section has not yet been written</p>
+</div>
+<p class="todo-source">(The <a class="reference internal" href="index.html#index-0"><em>original entry</em></a> is located in  /home/bruce/Documents/Impact/Projects/CloudI/tutorial/Security.rst, line 5.)</p>
 <div class="admonition-todo admonition">
 <p class="first admonition-title">Todo</p>
 <p class="last">This section is in progress</p>
@@ -996,7 +1072,8 @@ var obj = JSON.parse(data);
 <li class="toctree-l1"><a class="reference internal" href="index.html#document-HTML_Integration">6. HTML Integration</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="index.html#calling-the-book-service">6.1. Calling the Book Service</a></li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#parsing-the-results">6.2. Parsing the Results</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#complete-source">6.3. Complete Source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#using-ajax-instead-of-web-sockets">6.3. Using AJAX instead of Web Sockets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#complete-source">6.4. Complete Source</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="index.html#document-Java_Integration">7. Java Integration</a><ul>
@@ -1037,7 +1114,7 @@ var obj = JSON.parse(data);
       </ul>
     </div>
     <div class="footer">
-      Last updated on Dec 06, 2014.
+      Last updated on Dec 16, 2014.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
