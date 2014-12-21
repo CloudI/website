@@ -12,6 +12,48 @@ Once the Book Service has been developed, integration with the HTML pages is str
 
  The HTML pages use the Web Sockets integration method which is part of the HTML5 specification.  Web Sockets may not work correctly on older browsers. 
 
+.. index::
+ single: Cowboy
+ single: Web Socket 
+
+Enabling Web Sockets
+====================
+
+Support for web sockets is disabled in the default configuration of the Cowboy web server used with CloudI.  To enable web sockets follow these steps.
+
+1.  Change the current directory to the installation files for CloudI. Note that your location may be different than what is shown below. 
+
+::
+
+  cd /opt/cloudi/cloudi-1.3.3/src
+
+2.  Change the current directory to the Cowboy HTTP source
+
+::
+
+  cd lib/cloudi_service_http_cowboy/src
+
+
+3.  Edit the **cloudi_service_http_cowboy.erl** file and change the line that looks like:
+
+::
+
+  -define(DEFAULT_USE_WEBSOCKETS,                   false).
+
+to 
+
+::
+
+  -define(DEFAULT_USE_WEBSOCKETS,                   true).
+
+4.  Then run the **make** and **make install** command from the installation source directory and reinstall the software.
+
+::
+
+  cd /opt/cloudi/cloudi-1.3.3/src
+  make
+  sudo make install 
+
 
 Calling the Book Service
 ========================
