@@ -90,7 +90,7 @@ pre {
     background: #ffffff;
 }
 #content div.tabs > div:target > a,
-:target #tab_default > a {
+:target #quick_start > a {
     /* active tab colors */
     border-bottom: 1px solid #181818;
     background: #181818;

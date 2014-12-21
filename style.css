@@ -174,7 +174,7 @@ pre {
     position: absolute;
 }
 #content div.tabs > div:target > div.tab_contents,
-:target #tab_default > div.tab_contents {
+:target #quick_start > div.tab_contents {
     z-index: -1;
     position: absolute;
 }
