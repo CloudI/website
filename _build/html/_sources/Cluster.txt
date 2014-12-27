@@ -2,7 +2,7 @@
 Cluster Configuration
 *********************
 
-CloudI provides a mechanism for easily adding or removing different host computers to a cluster.
+CloudI provides a mechanism for easily adding or removing different host computers to a cluster. Typically each host computer is referred to as a **node**.
 
 Adding Nodes to the Cluster
 ===========================
@@ -11,7 +11,7 @@ Adding a host computer to the CloudI cloud is as simple as installing CloudI on 
 
 .. note::
 
-  The auto-discovery protocol is dependent on the TCP/IP multicast protocol and should generally be limited to computers connected to the same local area network.  
+  The auto-discovery protocol is dependent on the TCP/IP multicast protocol and should generally be limited to computers connected to the same trusted local area network.  
 
   Additional reference is available at  
   `here <http://learnyousomeerlang.com/distribunomicon#setting-up-an-erlang-cluster>`_
@@ -46,3 +46,41 @@ Use the CloudI API to show any nodes (other than the current local host) that it
 ::
 
  curl http://localhost:6467/cloudi/api/rpc/nodes.erl 
+
+
+Service Redundancy
+==================
+
+When a new node is added to a CloudI cluster, it is important to realize that services running on the existing nodes in the cluster are not automatically copied to the new node.  However, you can manually add a service to a node using the CloudI API as described in other sections of this tutorial. 
+
+.. index::
+ single: Destination Refresh 
+ single: Immediate Lookup
+ single: Lazy Lookup 
+ single: Closest Service
+ single: Furthest Service
+ single: Random Service
+ single: Remote Service
+ single: Newest Service
+ single: Oldest Service
+
+Local versus Remote Services
+============================
+
+Note that when multiple services are available that subscribe to the same name pattern, CloudI allows you to control whether a local or remote service is invoked using the **destination refresh** method in the **services_add** API. 
+
+===================================  ==========================================================================================================
+Destination Refresh Method           Description
+===================================  ==========================================================================================================
+lazy_closest or immediate_closest    A service running on the local node will be selected, unless the destination only exists on a remote node.
+lazy_furthest or immediate_furthest  A service running on a remote node will be selected, unless the destination only exists on the local node.
+lazy_random or immediate_random      A service is selected randomly from the subscribed services.
+lazy_local or immediate_local        Only a service on the local node is selected
+lazy_remote or immediate_remote      Only a service on the remote node is selected
+lazy_newest or immediate_newest      Only the most recently subscribed service is selected
+lazy_oldest or immediate_oldest      Only the first subscribed service is selected
+===================================  ==========================================================================================================
+
+The **immediate** prefix instructs CloudI to lookup the service name to get the most current destination result.  The **lazy** prefix uses a cached value instead.  
+More details are available `here <http://cloudi.org/api.html#1_Intro>`_ 
+

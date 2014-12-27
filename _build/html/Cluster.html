@@ -56,13 +56,13 @@
             
   <div class="section" id="cluster-configuration">
 <h1>9. Cluster Configuration<a class="headerlink" href="#cluster-configuration" title="Permalink to this headline">¶</a></h1>
-<p>CloudI provides a mechanism for easily adding or removing different host computers to a cluster.</p>
+<p>CloudI provides a mechanism for easily adding or removing different host computers to a cluster. Typically each host computer is referred to as a <strong>node</strong>.</p>
 <div class="section" id="adding-nodes-to-the-cluster">
 <h2>9.1. Adding Nodes to the Cluster<a class="headerlink" href="#adding-nodes-to-the-cluster" title="Permalink to this headline">¶</a></h2>
 <p>Adding a host computer to the CloudI cloud is as simple as installing CloudI on the computer and starting the CloudI software.  By default, CloudI uses an auto-discovery protocol provided by Erlang to detect new nodes.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>The auto-discovery protocol is dependent on the TCP/IP multicast protocol and should generally be limited to computers connected to the same local area network.</p>
+<p>The auto-discovery protocol is dependent on the TCP/IP multicast protocol and should generally be limited to computers connected to the same trusted local area network.</p>
 <p class="last">Additional reference is available at
 <a class="reference external" href="http://learnyousomeerlang.com/distribunomicon#setting-up-an-erlang-cluster">here</a></p>
 </div>
@@ -90,6 +90,50 @@
 </pre></div>
 </div>
 </div>
+<div class="section" id="service-redundancy">
+<h2>9.4. Service Redundancy<a class="headerlink" href="#service-redundancy" title="Permalink to this headline">¶</a></h2>
+<p>When a new node is added to a CloudI cluster, it is important to realize that services running on the existing nodes in the cluster are not automatically copied to the new node.  However, you can manually add a service to a node using the CloudI API as described in other sections of this tutorial.</p>
+</div>
+<div class="section" id="local-versus-remote-services">
+<span id="index-0"></span><h2>9.5. Local versus Remote Services<a class="headerlink" href="#local-versus-remote-services" title="Permalink to this headline">¶</a></h2>
+<p>Note that when multiple services are available that subscribe to the same name pattern, CloudI allows you to control whether a local or remote service is invoked using the <strong>destination refresh</strong> method in the <strong>services_add</strong> API.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="75%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Destination Refresh Method</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>lazy_closest or immediate_closest</td>
+<td>A service running on the local node will be selected, unless the destination only exists on a remote node.</td>
+</tr>
+<tr class="row-odd"><td>lazy_furthest or immediate_furthest</td>
+<td>A service running on a remote node will be selected, unless the destination only exists on the local node.</td>
+</tr>
+<tr class="row-even"><td>lazy_random or immediate_random</td>
+<td>A service is selected randomly from the subscribed services.</td>
+</tr>
+<tr class="row-odd"><td>lazy_local or immediate_local</td>
+<td>Only a service on the local node is selected</td>
+</tr>
+<tr class="row-even"><td>lazy_remote or immediate_remote</td>
+<td>Only a service on the remote node is selected</td>
+</tr>
+<tr class="row-odd"><td>lazy_newest or immediate_newest</td>
+<td>Only the most recently subscribed service is selected</td>
+</tr>
+<tr class="row-even"><td>lazy_oldest or immediate_oldest</td>
+<td>Only the first subscribed service is selected</td>
+</tr>
+</tbody>
+</table>
+<p>The <strong>immediate</strong> prefix instructs CloudI to lookup the service name to get the most current destination result.  The <strong>lazy</strong> prefix uses a cached value instead.
+More details are available <a class="reference external" href="http://cloudi.org/api.html#1_Intro">here</a></p>
+</div>
 </div>
 
 
@@ -104,6 +148,8 @@
 <li><a class="reference internal" href="#adding-nodes-to-the-cluster">9.1. Adding Nodes to the Cluster</a></li>
 <li><a class="reference internal" href="#failing-over-nodes-in-the-cluster">9.2. Failing Over Nodes In the Cluster</a></li>
 <li><a class="reference internal" href="#testing-the-cluster-configuration">9.3. Testing the Cluster Configuration</a></li>
+<li><a class="reference internal" href="#service-redundancy">9.4. Service Redundancy</a></li>
+<li><a class="reference internal" href="#local-versus-remote-services">9.5. Local versus Remote Services</a></li>
 </ul>
 </li>
 </ul>
@@ -147,7 +193,7 @@
       </ul>
     </div>
     <div class="footer">
-      Last updated on Dec 21, 2014.
+      Last updated on Dec 26, 2014.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
