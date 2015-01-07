@@ -69,7 +69,7 @@ here in case you want to look at the complete implementation.</p>
 <p>This tutorial assumes that you have successfully <a class="reference external" href="http://cloudi.org/faq.html#3_Overview">installed CloudI</a> on a development system and can successfully start and stop it.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The examples shown here were developed on a machine using CloudI version 1.3.3 running Ubuntu Linux version 14.04 operating system.</p>
+<p class="last">The examples shown here were developed on a machine using CloudI version 1.4.0 running Ubuntu Linux version 14.04 operating system.</p>
 </div>
 </div>
 <div class="section" id="where-to-get-help">
@@ -130,8 +130,36 @@ file. An example is shown below where the % sign is used to comment out an entry
 </div>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
-<p class="last">When you configure the CloudI installation, you can easily disable the integration test services using the <strong>&#8211;with-integration-test=no</strong> option.</p>
+<p class="last">Unfortunately, you can not just remove all the test services, because some of them are used to implement core functions that you will likely need.</p>
 </div>
+<p>The Book Recommendation application requires the services shown in the following table.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="32%" />
+<col width="48%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Subscription Path</th>
+<th class="head">Service Name</th>
+<th class="head">Comments</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>/cloudi/api</td>
+<td>cloudi_service_api_requests</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>/tests/websockets</td>
+<td>cloudi_service_http_cowboy</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>/tests/http</td>
+<td>cloudi_service_http_cowboy</td>
+<td>There are two entries for different ports</td>
+</tr>
+</tbody>
+</table>
 <ol class="arabic simple" start="4">
 <li>It is important to realize that all services listed in the <strong>cloudi.conf</strong> file must start successfully when the cloud is first started.
 In other words, the failure of any service listed in the configuration file will keep the entire cloud from starting to ensure an error-free starting state.  Seperate configuration methods will be used to show how a cloud may grow.</li>
@@ -276,8 +304,6 @@ In this tutorial, the
 <a class="reference external" href="http://www.wikipedia.org/wiki/Json">JSON protocol</a>
 will be used with the following libraries:</p>
 <ul class="simple">
-<li>PHP -
-TBD</li>
 <li>Java -
 TBD</li>
 <li>Erlang -
@@ -397,13 +423,10 @@ An excellent resource for designing RESTful API&#8217;s is located <a class="ref
 <img alt="_images/DatabaseDiagram.png" src="_images/DatabaseDiagram.png" />
 <p>The primary tables are the <strong>items</strong> and <strong>users</strong> table.  Several cross reference tables exist including:</p>
 <ul class="simple">
-<li><strong>item_downloads</strong> - stores how many times an item has been downloaded as reported by the source site.</li>
 <li><strong>user_items</strong> - tracks which items a user has downloaded and if they have submitted a rating</li>
 <li><strong>user_item_recommendations</strong> - contains recommendations for a particular user</li>
 <li><strong>user_item_ratings</strong> - holds the rating value that a user submits for an item</li>
 </ul>
-<p>The <strong>lcc_codes</strong> table stores the descriptions of Library of Congress codes.
-The <strong>lcsh_codes</strong> table stores the descriptions of Library of Congress Subject Heading codes.</p>
 </div>
 </div>
 <span id="document-Database_Adapter"></span><div class="section" id="database-adapter-service">
@@ -1073,11 +1096,6 @@ More details are available <a class="reference external" href="http://cloudi.org
 <p class="todo-source">(The <a class="reference internal" href="index.html#index-6"><em>original entry</em></a> is located in  /home/bruce/Documents/Impact/Projects/CloudI/tutorial/Book_Service.rst, line 186.)</p>
 <div class="admonition-todo admonition">
 <p class="first admonition-title">Todo</p>
-<p class="last">Add source code link here.</p>
-</div>
-<p class="todo-source">(The <a class="reference internal" href="index.html#index-1"><em>original entry</em></a> is located in  /home/bruce/Documents/Impact/Projects/CloudI/tutorial/Introduction.rst, line 25.)</p>
-<div class="admonition-todo admonition">
-<p class="first admonition-title">Todo</p>
 <p class="last">This section has not yet been written</p>
 </div>
 <p class="todo-source">(The <a class="reference internal" href="index.html#index-0"><em>original entry</em></a> is located in  /home/bruce/Documents/Impact/Projects/CloudI/tutorial/Java_Integration.rst, line 5.)</p>
@@ -1101,6 +1119,11 @@ More details are available <a class="reference external" href="http://cloudi.org
 <p class="last">Add link to the HTML source code</p>
 </div>
 <p class="todo-source">(The <a class="reference internal" href="index.html#index-5"><em>original entry</em></a> is located in  /home/bruce/Documents/Impact/Projects/CloudI/tutorial/HTML_Integration.rst, line 262.)</p>
+<div class="admonition-todo admonition">
+<p class="first admonition-title">Todo</p>
+<p class="last">Add source code link here.</p>
+</div>
+<p class="todo-source">(The <a class="reference internal" href="index.html#index-1"><em>original entry</em></a> is located in  /home/bruce/Documents/Impact/Projects/CloudI/tutorial/Introduction.rst, line 25.)</p>
 </div>
 </div>
 </div>
@@ -1215,7 +1238,7 @@ More details are available <a class="reference external" href="http://cloudi.org
       </ul>
     </div>
     <div class="footer">
-      Last updated on Dec 27, 2014.
+      Last updated on Jan 07, 2015.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>

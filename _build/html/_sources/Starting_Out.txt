@@ -55,7 +55,18 @@ For initial development, the following suggested changes should be made.
 
 .. tip::
 
- When you configure the CloudI installation, you can easily disable the integration test services using the **--with-integration-test=no** option.
+ Unfortunately, you can not just remove all the test services, because some of them are used to implement core functions that you will likely need.  
+
+
+The Book Recommendation application requires the services shown in the following table.
+
+=================  =========================== =========================================
+Subscription Path  Service Name                Comments
+=================  =========================== =========================================
+/cloudi/api        cloudi_service_api_requests 
+/tests/websockets  cloudi_service_http_cowboy
+/tests/http        cloudi_service_http_cowboy  There are two entries for different ports
+=================  =========================== =========================================
 
 
 4.  It is important to realize that all services listed in the **cloudi.conf** file must start successfully when the cloud is first started.  

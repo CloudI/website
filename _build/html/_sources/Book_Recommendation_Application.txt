@@ -99,10 +99,6 @@ In this tutorial, the
 `JSON protocol <http://www.wikipedia.org/wiki/Json>`_
 will be used with the following libraries:
 
-
-*   PHP -
-    TBD
-
 *   Java -
     TBD
 
@@ -177,11 +173,7 @@ A diagram showing the database tables and their interrelationships is shown belo
 
 The primary tables are the **items** and **users** table.  Several cross reference tables exist including:
 
-* **item_downloads** - stores how many times an item has been downloaded as reported by the source site.  
 * **user_items** - tracks which items a user has downloaded and if they have submitted a rating
 * **user_item_recommendations** - contains recommendations for a particular user
 * **user_item_ratings** - holds the rating value that a user submits for an item
-
-The **lcc_codes** table stores the descriptions of Library of Congress codes.
-The **lcsh_codes** table stores the descriptions of Library of Congress Subject Heading codes.
 

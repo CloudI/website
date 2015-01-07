@@ -102,8 +102,36 @@ file. An example is shown below where the % sign is used to comment out an entry
 </div>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
-<p class="last">When you configure the CloudI installation, you can easily disable the integration test services using the <strong>&#8211;with-integration-test=no</strong> option.</p>
+<p class="last">Unfortunately, you can not just remove all the test services, because some of them are used to implement core functions that you will likely need.</p>
 </div>
+<p>The Book Recommendation application requires the services shown in the following table.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="32%" />
+<col width="48%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Subscription Path</th>
+<th class="head">Service Name</th>
+<th class="head">Comments</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>/cloudi/api</td>
+<td>cloudi_service_api_requests</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>/tests/websockets</td>
+<td>cloudi_service_http_cowboy</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>/tests/http</td>
+<td>cloudi_service_http_cowboy</td>
+<td>There are two entries for different ports</td>
+</tr>
+</tbody>
+</table>
 <ol class="arabic simple" start="4">
 <li>It is important to realize that all services listed in the <strong>cloudi.conf</strong> file must start successfully when the cloud is first started.
 In other words, the failure of any service listed in the configuration file will keep the entire cloud from starting to ensure an error-free starting state.  Seperate configuration methods will be used to show how a cloud may grow.</li>
@@ -244,7 +272,7 @@ sudo cloudi stop
       </ul>
     </div>
     <div class="footer">
-      Last updated on Dec 23, 2014.
+      Last updated on Jan 07, 2015.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
