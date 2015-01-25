@@ -360,6 +360,16 @@ An excellent resource for designing RESTful API&#8217;s is located <a class="ref
 <td>/book/download?id=X&amp;user=Y</td>
 <td>Download a book given the Item ID and User ID</td>
 </tr>
+<tr class="row-odd"><td>Create New User</td>
+<td>GET</td>
+<td>/book/newuser</td>
+<td>Create and return a new user ID</td>
+</tr>
+<tr class="row-even"><td>Get Unrated Books</td>
+<td>GET</td>
+<td>/book/unrated?user=X</td>
+<td>Get the unrated books for a user ID</td>
+</tr>
 <tr class="row-odd"><td>Rank Downloaded Book</td>
 <td>POST</td>
 <td>/book/download/</td>
@@ -731,7 +741,7 @@ curl http://localhost:6467/recommend/book/allbooks?id=1
 <ol class="arabic simple">
 <li>Change the current directory to the installation files for CloudI. Note that your location may be different than what is shown below.</li>
 </ol>
-<div class="highlight-python"><div class="highlight"><pre>cd /opt/cloudi/cloudi-1.3.3/src
+<div class="highlight-python"><div class="highlight"><pre>cd /opt/cloudi/cloudi-1.4.0/src
 </pre></div>
 </div>
 <ol class="arabic simple" start="2">
@@ -751,12 +761,23 @@ curl http://localhost:6467/recommend/book/allbooks?id=1
 </pre></div>
 </div>
 <ol class="arabic simple" start="4">
+<li>Remove the Cowboy runtime library so that it will get rebuilt.</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>cd /usr/local/lib/cloudi-1.4.0/lib
+sudo rm cloudi_service_http_cowboy_1.4.0
+</pre></div>
+</div>
+<ol class="arabic simple" start="5">
 <li>Then run the <strong>make</strong> and <strong>make install</strong> command from the installation source directory and reinstall the software.</li>
 </ol>
-<div class="highlight-python"><div class="highlight"><pre>cd /opt/cloudi/cloudi-1.3.3/src
+<div class="highlight-python"><div class="highlight"><pre>cd /opt/cloudi/cloudi-1.4.0/src
 make
 sudo make install
 </pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Reinstalling CloudI will change the cloudi.conf, app.config, and vm.args files in the runtime library.  The previous versions are automatically saved as cloudi.conf.old, app.config.old, and vm.args.old and you may need to restore these files if you have made any changes.</p>
 </div>
 </div>
 <div class="section" id="calling-the-book-service">
@@ -945,17 +966,57 @@ var rank_book_service = &quot;/recommend/book/download&quot;;
 <h3>Complete Source<a class="headerlink" href="#complete-source" title="Permalink to this headline">¶</a></h3>
 </div>
 </div>
-<span id="document-Security"></span><div class="section" id="security">
-<h2>Security<a class="headerlink" href="#security" title="Permalink to this headline">¶</a></h2>
-<div class="admonition-todo admonition" id="index-0">
-<p class="first admonition-title">Todo</p>
-<p class="last">This section has not yet been written</p>
+<span id="document-Network"></span><div class="section" id="network-configuration">
+<h2>Network Configuration<a class="headerlink" href="#network-configuration" title="Permalink to this headline">¶</a></h2>
+<p>Depending on your application, you may need to modify the default network configuration used by the CloudI components. Some common modifications are listed below.</p>
+<div class="section" id="bind-address">
+<span id="index-0"></span><h3>Bind Address<a class="headerlink" href="#bind-address" title="Permalink to this headline">¶</a></h3>
+<p>By default, the Cowboy web server listens only to the local host network address of 127.0.0.1. If you want CloudI to be accessible on your network, you can change this by following these steps:</p>
+<ol class="arabic simple">
+<li>Change the current directory to the installation files for CloudI. Note that your location may be different than what is shown below.</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>cd /opt/cloudi/cloudi-1.4.0/src
+</pre></div>
 </div>
-<div class="section" id="configuring-the-access-control-lists">
-<h3>Configuring the Access Control Lists<a class="headerlink" href="#configuring-the-access-control-lists" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple" start="2">
+<li>Change the current directory to the Cowboy HTTP source</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>cd lib/cloudi_service_http_cowboy/src
+</pre></div>
 </div>
-<div class="section" id="testing-the-configuration">
-<h3>Testing the Configuration<a class="headerlink" href="#testing-the-configuration" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple" start="3">
+<li>Edit the <strong>cloudi_service_http_cowboy.erl</strong> file and change the line that looks like:</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>-define(DEFAULT_INTERFACE,                  {127,0,0,1}). % ip address
+</pre></div>
+</div>
+<p>to</p>
+<div class="highlight-python"><div class="highlight"><pre>-define(DEFAULT_INTERFACE,                  {0,0,0,0}). % ip address
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">An address of 0.0.0.0 will cause Cowboy to listen to any network interface on the server.</p>
+</div>
+<ol class="arabic simple" start="4">
+<li>Remove the Cowboy runtime library directory so that it will get rebuilt.</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>cd /usr/local/lib/cloudi-1.4.0/lib
+sudo rm cloudi_service_http_cowboy_1.4.0
+</pre></div>
+</div>
+<ol class="arabic simple" start="5">
+<li>Then run the <strong>make</strong> and <strong>make install</strong> command from the installation source directory and reinstall the software.</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>cd /opt/cloudi/cloudi-1.4.0/src
+make
+sudo make install
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Reinstalling CloudI will change the cloudi.conf, app.config, and vm.args files in the runtime library.  The previous versions are automatically saved as cloudi.conf.old, app.config.old, and vm.args.old and you may need to restore these files if you have made any changes.</p>
+</div>
 </div>
 </div>
 <span id="document-Cluster"></span><div class="section" id="cluster-configuration">
@@ -1041,12 +1102,26 @@ More details are available <a class="reference external" href="http://cloudi.org
 </div>
 <span id="document-Trouble_Shooting"></span><div class="section" id="trouble-shooting">
 <h2>Trouble Shooting<a class="headerlink" href="#trouble-shooting" title="Permalink to this headline">¶</a></h2>
-<div class="admonition-todo admonition" id="index-0">
-<p class="first admonition-title">Todo</p>
-<p class="last">This section is in progress</p>
-</div>
 <div class="section" id="source-code-paths">
 <h3>Source Code Paths<a class="headerlink" href="#source-code-paths" title="Permalink to this headline">¶</a></h3>
+<p>A custom application may fail because the source code can not be located correctly.</p>
+<p>In the case of an Erlang application, the source code path can be specified in the <strong>vm.args</strong> file located in the <em>/usr/local/etc/cloudi</em> directory.</p>
+<div class="highlight-python"><div class="highlight"><pre># Book service code path
+-pz /usr/local/lib/cloudi-1.4.0/book/ebin/
+</pre></div>
+</div>
+<p>For a Java application, the path to a JAR file can be specified as a parameter in the configuration.</p>
+<div class="highlight-python"><div class="highlight"><pre>{external,
+       &quot;/tests/http/&quot;,
+       &quot;/usr/bin/java&quot;,
+       % enable assertions
+       &quot;-ea:org.cloudi... &quot;
+       &quot;-jar tests/http/service/jar/service.jar&quot;,
+       [],
+       none, tcp, default,
+       5000, 5000, 5000, undefined, undefined, 1, 4, 5, 300, []},
+</pre></div>
+</div>
 </div>
 <div class="section" id="timeout">
 <h3>Timeout<a class="headerlink" href="#timeout" title="Permalink to this headline">¶</a></h3>
@@ -1065,11 +1140,12 @@ More details are available <a class="reference external" href="http://cloudi.org
 </div>
 <p>Consequently, when the <strong>recommendedbooks</strong> service was invoked the CloudI dispatcher could not find any module that was subscribing to the request and generated a timeout.</p>
 </div>
-<div class="section" id="old-code-appears-to-be-running">
-<h3>Old Code Appears to be Running<a class="headerlink" href="#old-code-appears-to-be-running" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="web-socket-connections-fail">
+<h3>Web Socket Connections Fail<a class="headerlink" href="#web-socket-connections-fail" title="Permalink to this headline">¶</a></h3>
+<p>Verify that web sockets are enabled in the Cowboy configuration.  See the section on <em>Enabling Web Sockets</em> in this tutorial for more details.</p>
 </div>
 <div class="section" id="erlang-crash-dump">
-<span id="index-1"></span><h3>Erlang Crash Dump<a class="headerlink" href="#erlang-crash-dump" title="Permalink to this headline">¶</a></h3>
+<span id="index-0"></span><h3>Erlang Crash Dump<a class="headerlink" href="#erlang-crash-dump" title="Permalink to this headline">¶</a></h3>
 <p>A file named <strong>erl_crash.dump</strong> located in the main CloudI folder is generated when a system-wide error occurs.  Possible causes of this include:</p>
 <ol class="arabic simple">
 <li>Incorrect Configuration File</li>
@@ -1101,29 +1177,19 @@ More details are available <a class="reference external" href="http://cloudi.org
 <p class="todo-source">(The <a class="reference internal" href="index.html#index-0"><em>original entry</em></a> is located in  /home/bruce/Documents/Impact/Projects/CloudI/tutorial/Java_Integration.rst, line 5.)</p>
 <div class="admonition-todo admonition">
 <p class="first admonition-title">Todo</p>
-<p class="last">This section has not yet been written</p>
+<p class="last">Add source code link here.</p>
 </div>
-<p class="todo-source">(The <a class="reference internal" href="index.html#index-0"><em>original entry</em></a> is located in  /home/bruce/Documents/Impact/Projects/CloudI/tutorial/Security.rst, line 5.)</p>
-<div class="admonition-todo admonition">
-<p class="first admonition-title">Todo</p>
-<p class="last">This section is in progress</p>
-</div>
-<p class="todo-source">(The <a class="reference internal" href="index.html#index-0"><em>original entry</em></a> is located in  /home/bruce/Documents/Impact/Projects/CloudI/tutorial/Trouble_Shooting.rst, line 5.)</p>
+<p class="todo-source">(The <a class="reference internal" href="index.html#index-1"><em>original entry</em></a> is located in  /home/bruce/Documents/Impact/Projects/CloudI/tutorial/Introduction.rst, line 25.)</p>
 <div class="admonition-todo admonition">
 <p class="first admonition-title">Todo</p>
 <p class="last">Test the Javascript code listed above</p>
 </div>
-<p class="todo-source">(The <a class="reference internal" href="index.html#index-4"><em>original entry</em></a> is located in  /home/bruce/Documents/Impact/Projects/CloudI/tutorial/HTML_Integration.rst, line 255.)</p>
+<p class="todo-source">(The <a class="reference internal" href="index.html#index-4"><em>original entry</em></a> is located in  /home/bruce/Documents/Impact/Projects/CloudI/tutorial/HTML_Integration.rst, line 267.)</p>
 <div class="admonition-todo admonition">
 <p class="first admonition-title">Todo</p>
 <p class="last">Add link to the HTML source code</p>
 </div>
-<p class="todo-source">(The <a class="reference internal" href="index.html#index-5"><em>original entry</em></a> is located in  /home/bruce/Documents/Impact/Projects/CloudI/tutorial/HTML_Integration.rst, line 262.)</p>
-<div class="admonition-todo admonition">
-<p class="first admonition-title">Todo</p>
-<p class="last">Add source code link here.</p>
-</div>
-<p class="todo-source">(The <a class="reference internal" href="index.html#index-1"><em>original entry</em></a> is located in  /home/bruce/Documents/Impact/Projects/CloudI/tutorial/Introduction.rst, line 25.)</p>
+<p class="todo-source">(The <a class="reference internal" href="index.html#index-5"><em>original entry</em></a> is located in  /home/bruce/Documents/Impact/Projects/CloudI/tutorial/HTML_Integration.rst, line 274.)</p>
 </div>
 </div>
 </div>
@@ -1204,9 +1270,8 @@ More details are available <a class="reference external" href="http://cloudi.org
 <li class="toctree-l2"><a class="reference internal" href="index.html#complete-source">7.3. Complete Source</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="index.html#document-Security">8. Security Configuration</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="index.html#configuring-the-access-control-lists">8.1. Configuring the Access Control Lists</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#testing-the-configuration">8.2. Testing the Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#document-Network">8. Network Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="index.html#bind-address">8.1. Bind Address</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="index.html#document-Cluster">9. Cluster Configuration</a><ul>
@@ -1220,7 +1285,7 @@ More details are available <a class="reference external" href="http://cloudi.org
 <li class="toctree-l1"><a class="reference internal" href="index.html#document-Trouble_Shooting">10. Trouble Shooting</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="index.html#source-code-paths">10.1. Source Code Paths</a></li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#timeout">10.2. Timeout</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#old-code-appears-to-be-running">10.3. Old Code Appears to be Running</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#web-socket-connections-fail">10.3. Web Socket Connections Fail</a></li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#erlang-crash-dump">10.4. Erlang Crash Dump</a></li>
 </ul>
 </li>
@@ -1238,7 +1303,7 @@ More details are available <a class="reference external" href="http://cloudi.org
       </ul>
     </div>
     <div class="footer">
-      Last updated on Jan 07, 2015.
+      Last updated on Jan 25, 2015.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>

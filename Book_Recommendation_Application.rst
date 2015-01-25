@@ -130,6 +130,8 @@ Browse Popular Books      GET    /book/popularbooks             Return list of m
 Browse Recommended Books  GET    /book/recommendedbooks?user=X  Return list of recommended books for the given User ID
 View Book Details         GET    /book/allbooks?id=X            Return details about book given the Item ID 
 Download Book             GET    /book/download?id=X&user=Y	Download a book given the Item ID and User ID
+Create New User           GET    /book/newuser			Create and return a new user ID 
+Get Unrated Books         GET    /book/unrated?user=X		Get the unrated books for a user ID
 Rank Downloaded Book      POST   /book/download/                Update a book's rating given the User ID, Item ID, Rating
 Add Book to Collection    POST   /book/allbooks/		Add a book to the collection   
 ========================  ====== ============================== =========================================================

@@ -25,7 +25,7 @@ Support for web sockets is disabled in the default configuration of the Cowboy w
 
 ::
 
-  cd /opt/cloudi/cloudi-1.3.3/src
+  cd /opt/cloudi/cloudi-1.4.0/src
 
 2.  Change the current directory to the Cowboy HTTP source
 
@@ -46,13 +46,25 @@ to
 
   -define(DEFAULT_USE_WEBSOCKETS,                   true).
 
-4.  Then run the **make** and **make install** command from the installation source directory and reinstall the software.
+4.  Remove the Cowboy runtime library so that it will get rebuilt.
 
 ::
 
-  cd /opt/cloudi/cloudi-1.3.3/src
+  cd /usr/local/lib/cloudi-1.4.0/lib
+  sudo rm cloudi_service_http_cowboy_1.4.0
+
+5.  Then run the **make** and **make install** command from the installation source directory and reinstall the software.
+
+::
+
+  cd /opt/cloudi/cloudi-1.4.0/src
   make
   sudo make install 
+
+.. note::
+
+  Reinstalling CloudI will change the cloudi.conf, app.config, and vm.args files in the runtime library.  The previous versions are automatically saved as cloudi.conf.old, app.config.old, and vm.args.old and you may need to restore these files if you have made any changes.
+
 
 
 Calling the Book Service

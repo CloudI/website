@@ -2,13 +2,31 @@
 Trouble Shooting
 ****************
 
-.. todo::
-
- This section is in progress
-
-
 Source Code Paths
 =================
+
+A custom application may fail because the source code can not be located correctly.  
+
+In the case of an Erlang application, the source code path can be specified in the **vm.args** file located in the */usr/local/etc/cloudi* directory.  
+
+:: 
+
+  # Book service code path
+  -pz /usr/local/lib/cloudi-1.4.0/book/ebin/
+
+For a Java application, the path to a JAR file can be specified as a parameter in the configuration. 
+
+:: 
+
+ {external,
+        "/tests/http/",
+        "/usr/bin/java",
+        % enable assertions
+        "-ea:org.cloudi... "
+        "-jar tests/http/service/jar/service.jar",
+        [],
+        none, tcp, default,
+        5000, 5000, 5000, undefined, undefined, 1, 4, 5, 300, []},
 
 
 Timeout
@@ -33,8 +51,10 @@ However, the pattern was misspelled and should have looked like this:
 Consequently, when the **recommendedbooks** service was invoked the CloudI dispatcher could not find any module that was subscribing to the request and generated a timeout.
 
 
-Old Code Appears to be Running
-==============================
+Web Socket Connections Fail
+===========================
+Verify that web sockets are enabled in the Cowboy configuration.  See the section on *Enabling Web Sockets* in this tutorial for more details.
+
 
 .. index::
  single: erl_crash.dump

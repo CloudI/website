@@ -56,12 +56,26 @@
             
   <div class="section" id="trouble-shooting">
 <h1>10. Trouble Shooting<a class="headerlink" href="#trouble-shooting" title="Permalink to this headline">¶</a></h1>
-<div class="admonition-todo admonition" id="index-0">
-<p class="first admonition-title">Todo</p>
-<p class="last">This section is in progress</p>
-</div>
 <div class="section" id="source-code-paths">
 <h2>10.1. Source Code Paths<a class="headerlink" href="#source-code-paths" title="Permalink to this headline">¶</a></h2>
+<p>A custom application may fail because the source code can not be located correctly.</p>
+<p>In the case of an Erlang application, the source code path can be specified in the <strong>vm.args</strong> file located in the <em>/usr/local/etc/cloudi</em> directory.</p>
+<div class="highlight-python"><div class="highlight"><pre># Book service code path
+-pz /usr/local/lib/cloudi-1.4.0/book/ebin/
+</pre></div>
+</div>
+<p>For a Java application, the path to a JAR file can be specified as a parameter in the configuration.</p>
+<div class="highlight-python"><div class="highlight"><pre>{external,
+       &quot;/tests/http/&quot;,
+       &quot;/usr/bin/java&quot;,
+       % enable assertions
+       &quot;-ea:org.cloudi... &quot;
+       &quot;-jar tests/http/service/jar/service.jar&quot;,
+       [],
+       none, tcp, default,
+       5000, 5000, 5000, undefined, undefined, 1, 4, 5, 300, []},
+</pre></div>
+</div>
 </div>
 <div class="section" id="timeout">
 <h2>10.2. Timeout<a class="headerlink" href="#timeout" title="Permalink to this headline">¶</a></h2>
@@ -80,11 +94,12 @@
 </div>
 <p>Consequently, when the <strong>recommendedbooks</strong> service was invoked the CloudI dispatcher could not find any module that was subscribing to the request and generated a timeout.</p>
 </div>
-<div class="section" id="old-code-appears-to-be-running">
-<h2>10.3. Old Code Appears to be Running<a class="headerlink" href="#old-code-appears-to-be-running" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="web-socket-connections-fail">
+<h2>10.3. Web Socket Connections Fail<a class="headerlink" href="#web-socket-connections-fail" title="Permalink to this headline">¶</a></h2>
+<p>Verify that web sockets are enabled in the Cowboy configuration.  See the section on <em>Enabling Web Sockets</em> in this tutorial for more details.</p>
 </div>
 <div class="section" id="erlang-crash-dump">
-<span id="index-1"></span><h2>10.4. Erlang Crash Dump<a class="headerlink" href="#erlang-crash-dump" title="Permalink to this headline">¶</a></h2>
+<span id="index-0"></span><h2>10.4. Erlang Crash Dump<a class="headerlink" href="#erlang-crash-dump" title="Permalink to this headline">¶</a></h2>
 <p>A file named <strong>erl_crash.dump</strong> located in the main CloudI folder is generated when a system-wide error occurs.  Possible causes of this include:</p>
 <ol class="arabic simple">
 <li>Incorrect Configuration File</li>
@@ -108,7 +123,7 @@
 <li><a class="reference internal" href="#">10. Trouble Shooting</a><ul>
 <li><a class="reference internal" href="#source-code-paths">10.1. Source Code Paths</a></li>
 <li><a class="reference internal" href="#timeout">10.2. Timeout</a></li>
-<li><a class="reference internal" href="#old-code-appears-to-be-running">10.3. Old Code Appears to be Running</a></li>
+<li><a class="reference internal" href="#web-socket-connections-fail">10.3. Web Socket Connections Fail</a></li>
 <li><a class="reference internal" href="#erlang-crash-dump">10.4. Erlang Crash Dump</a></li>
 </ul>
 </li>
@@ -153,7 +168,7 @@
       </ul>
     </div>
     <div class="footer">
-      Last updated on Dec 04, 2014.
+      Last updated on Jan 24, 2015.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
