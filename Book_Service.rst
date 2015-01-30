@@ -182,10 +182,7 @@ The ``cloudi_service_terminate`` function is called when the CloudI server is sh
 
 Complete Source
 ---------------
-
-.. todo::
-
-  Add link to the Book Service source code  
+The complete source is located on GitHub `here <https://github.com/brucekissinger/book_recommendation>`_  in the **service** folder. 
 
 
 

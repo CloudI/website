@@ -93,6 +93,10 @@
 </pre></div>
 </div>
 <p>Consequently, when the <strong>recommendedbooks</strong> service was invoked the CloudI dispatcher could not find any module that was subscribing to the request and generated a timeout.</p>
+<ol class="arabic simple" start="2">
+<li>Timeout Values Are Too Small</li>
+</ol>
+<p>The configuration for each service includes a timeout value.  This value is specified in milliseconds &#8211; not seconds.</p>
 </div>
 <div class="section" id="web-socket-connections-fail">
 <h2>10.3. Web Socket Connections Fail<a class="headerlink" href="#web-socket-connections-fail" title="Permalink to this headline">¶</a></h2>
@@ -168,7 +172,7 @@
       </ul>
     </div>
     <div class="footer">
-      Last updated on Jan 24, 2015.
+      Last updated on Jan 30, 2015.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>

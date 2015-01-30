@@ -14,8 +14,8 @@ Contents:
  :numbered:
 
  Introduction
- Starting Out <Starting_Out>
  Book Recommendation Application <Book_Recommendation_Application>
+ Starting Out <Starting_Out>
  Database Adapter Service <Database_Adapter>
  Book Service <Book_Service>
  HTML Integration <HTML_Integration>

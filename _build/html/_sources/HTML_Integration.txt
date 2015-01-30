@@ -271,9 +271,7 @@ Next, code for creating and sending the CORS request is defined:
 Complete Source
 ===============
 
-.. todo::
-
-  Add link to the HTML source code  
+The complete source is located on GitHub `here <https://github.com/brucekissinger/book_recommendation>`_  in the **html** folder.
 
  
   

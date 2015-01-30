@@ -1,16 +1,19 @@
+************
 Starting Out
-============
+************
+
+Working with CloudI
+===================
 
 .. index::
  single: cloudi.conf
-
 
 Setting up the CloudI Configuration
 -----------------------------------
 
 When CloudI is installed, several default configuration files are created.
-These are generally stored in the
-**/usr/local/lib/cloud_<version>/etc**
+These files are located in the
+**/usr/local/etc/cloudi**
 directory.
 For initial development, the following suggested changes should be made.
    
@@ -173,5 +176,31 @@ This command is useful for viewing what services have been defined in the cloud.
   curl -X POST -d '"/home/user/code/services"' http://localhost:6467/cloudi/api/erlang/code_path_add
 
 
+Working with the Database
+=========================
 
+.. index::
+ single: book.sql
+
+Building the Database 
+---------------------
+A script of SQL commands needed to build the *book* database schema is provided in the **scripts/book.sql** file. You can create this schema using the MySQL command line tool as shown in the example below. 
+
+::
+
+  mysql -u root -p < book.sql
+
+
+Creating Users
+--------------
+You also should create a special user that can connect to the *book* schema and can add, update, or delete records.  An example using the MySQL command line tool is shown below.
+
+::
+
+  mysql -u root -p < book.sql
+  GRANT ALL ON book.* to cloudi@'localhost' IDENTIFIED BY 'secret';
+  quit;
+
+.. note::
+  The GRANT statement also tells MySQL which hosts the user is allowed to connect from.  If CloudI is going to be running in a clustered configuration then you will need to add grant access for each node in the cluster.
 

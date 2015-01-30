@@ -50,6 +50,10 @@ However, the pattern was misspelled and should have looked like this:
 
 Consequently, when the **recommendedbooks** service was invoked the CloudI dispatcher could not find any module that was subscribing to the request and generated a timeout.
 
+2. Timeout Values Are Too Small
+
+The configuration for each service includes a timeout value.  This value is specified in milliseconds -- not seconds.
+
 
 Web Socket Connections Fail
 ===========================

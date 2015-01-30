@@ -61,11 +61,7 @@ It supports the development of services that can be created in many different pr
 <h3>About This Tutorial<a class="headerlink" href="#about-this-tutorial" title="Permalink to this headline">¶</a></h3>
 <p>This tutorial should help you understand the design decisions and implementation steps needed to use CloudI for your own projects.
 A small real-world application is used for illustration and the full source code for the application is located
-here in case you want to look at the complete implementation.</p>
-<div class="admonition-todo admonition" id="index-1">
-<p class="first admonition-title">Todo</p>
-<p class="last">Add source code link here.</p>
-</div>
+<a class="reference external" href="https://github.com/brucekissinger/book_recommendation">here</a> in case you want to look at the complete implementation.</p>
 <p>This tutorial assumes that you have successfully <a class="reference external" href="http://cloudi.org/faq.html#3_Overview">installed CloudI</a> on a development system and can successfully start and stop it.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -73,174 +69,13 @@ here in case you want to look at the complete implementation.</p>
 </div>
 </div>
 <div class="section" id="where-to-get-help">
-<span id="index-2"></span><h3>Where to Get Help<a class="headerlink" href="#where-to-get-help" title="Permalink to this headline">¶</a></h3>
+<span id="index-1"></span><h3>Where to Get Help<a class="headerlink" href="#where-to-get-help" title="Permalink to this headline">¶</a></h3>
 <p>See the
 <a class="reference external" href="http://cloudi.org/support.html">Support</a>
 information on the CloudI web site.
 In addition, there is a Google Group named
 <a class="reference external" href="https://groups.google.com/forum/#!forum/cloudi-questions">CloudI Questions</a>
 that contains discussions of new releases and other user-oriented questions.</p>
-</div>
-</div>
-<span id="document-Starting_Out"></span><div class="section" id="starting-out">
-<h2>Starting Out<a class="headerlink" href="#starting-out" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="setting-up-the-cloudi-configuration">
-<span id="index-0"></span><h3>Setting up the CloudI Configuration<a class="headerlink" href="#setting-up-the-cloudi-configuration" title="Permalink to this headline">¶</a></h3>
-<p>When CloudI is installed, several default configuration files are created.
-These are generally stored in the
-<strong>/usr/local/lib/cloud_&lt;version&gt;/etc</strong>
-directory.
-For initial development, the following suggested changes should be made.</p>
-<ol class="arabic simple">
-<li>Make a copy of the original configuration file.</li>
-</ol>
-<div class="highlight-python"><div class="highlight"><pre>sudo cp /usr/local/etc/cloudi/cloudi.conf /usr/local/etc/cloudi/cloudi.conf.original
-</pre></div>
-</div>
-<ol class="arabic simple" start="2">
-<li>Adjust the log setting by changing the settings in the
-<strong>cloudi.conf</strong>
-file.  The original configuration has a “trace” log level and this generates a very large quantity of messages.
-Setting the level to “debug” is probably more appropriate for development purposes.</li>
-</ol>
-<div class="highlight-python"><div class="highlight"><pre>{logging, [
-        %{file, &quot;path/to/logfile&quot;},
-        {level,
-        debug
-        }, % levels: off, fatal, error, warn, info, debug, trace
-
-       ...
-</pre></div>
-</div>
-<ol class="arabic simple" start="3">
-<li>The standard installation includes a number of test services.
-These test services can consume a fair amount of CPU resources and can clutter up the logs.
-During active development, you are likely going to be restarting the CloudI service frequently, so it makes sense to remove anything you don&#8217;t need.
-You can do this by removing or commenting out the test services located in the
-<strong>cloudi.conf</strong>
-file. An example is shown below where the % sign is used to comment out an entry.</li>
-</ol>
-<div class="highlight-python"><div class="highlight"><pre>%{internal,
-%&quot;/tests/flood/&quot;,
-%cloudi_service_flood,
-%[{flood, &quot;/tests/flood/java&quot;, &lt;&lt;&quot;DATA&quot;&gt;&gt;, 1000}],
-%lazy_closest,
-%5000, 5000, 5000, [api], undefined, 2, 5, 300, []},
-</pre></div>
-</div>
-<div class="admonition tip">
-<p class="first admonition-title">Tip</p>
-<p class="last">Unfortunately, you can not just remove all the test services, because some of them are used to implement core functions that you will likely need.</p>
-</div>
-<p>The Book Recommendation application requires the services shown in the following table.</p>
-<table border="1" class="docutils">
-<colgroup>
-<col width="20%" />
-<col width="32%" />
-<col width="48%" />
-</colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Subscription Path</th>
-<th class="head">Service Name</th>
-<th class="head">Comments</th>
-</tr>
-</thead>
-<tbody valign="top">
-<tr class="row-even"><td>/cloudi/api</td>
-<td>cloudi_service_api_requests</td>
-<td>&nbsp;</td>
-</tr>
-<tr class="row-odd"><td>/tests/websockets</td>
-<td>cloudi_service_http_cowboy</td>
-<td>&nbsp;</td>
-</tr>
-<tr class="row-even"><td>/tests/http</td>
-<td>cloudi_service_http_cowboy</td>
-<td>There are two entries for different ports</td>
-</tr>
-</tbody>
-</table>
-<ol class="arabic simple" start="4">
-<li>It is important to realize that all services listed in the <strong>cloudi.conf</strong> file must start successfully when the cloud is first started.
-In other words, the failure of any service listed in the configuration file will keep the entire cloud from starting to ensure an error-free starting state.  Seperate configuration methods will be used to show how a cloud may grow.</li>
-</ol>
-</div>
-<div class="section" id="viewing-logs">
-<span id="index-1"></span><h3>Viewing Logs<a class="headerlink" href="#viewing-logs" title="Permalink to this headline">¶</a></h3>
-<p>The default location of CloudI log files is the
-<strong>/usr/local/var/log/cloudi/</strong>
-<strong>logs</strong>
-directory.  You can change the location of the log files by modifying the
-<strong>cloudi.conf</strong>
-file and removing the % comment.</p>
-<div class="highlight-python"><div class="highlight"><pre>{logging, [
-%{file, &quot;**path/to/logfile**&quot;},
-{level, debug
-}, % levels: off, fatal, error, warn, info, debug, trace
-</pre></div>
-</div>
-</div>
-<div class="section" id="automating-the-build-process">
-<h3>Automating the Build Process<a class="headerlink" href="#automating-the-build-process" title="Permalink to this headline">¶</a></h3>
-<p>The typical build process when working with CloudI consists of the following steps:</p>
-<ul class="simple">
-<li>Starting CloudI</li>
-<li>Specifying the code path location using the CloudI Service API</li>
-<li>Compilation of custom code</li>
-<li>Adding custom code to CloudI using the CloudI Service API</li>
-<li>Running test services</li>
-<li>Stopping CloudI</li>
-</ul>
-<p>The use of some sort of automated build process to perform these steps is well worth the effort.
-Options range from a simple shell script, to a make file, to more complicated build tool.
-Pick a mechanism that is simple and something that you are familiar with.
-An example shell script for the Book Service (see next section for more details) is listed below.</p>
-<div class="highlight-python"><div class="highlight"><pre>#!/bin/sh
-#
-# These scripts are used to load the Book services into the Cloudi engine
-#
-
-# Add the current directory to the code path
-curl -X POST -d &#39;&quot;&#39;`pwd`&#39;&quot;&#39; http://localhost:6467/cloudi/api/erlang/code_path_add
-
-# Compile all Erlang modules
-erlc -pz /usr/local/lib/cloudi-1.3.3/lib/cloudi_core-1.3.3 -pz /usr/local/lib/cloudi-1.3.3/lib/cloudi_core-1.3.3/ebin book.erl
-
-# Add the Book service
-curl -X POST -d @book.conf http://localhost:6467/cloudi/api/erlang/services_add
-
-# Display list of services
-curl http://localhost:6467/cloudi/api/erlang/services
-
-# Call the Book Service
-curl http://localhost:6467/recommendation/book?item=45388
-</pre></div>
-</div>
-</div>
-<div class="section" id="common-operations">
-<span id="index-2"></span><h3>Common Operations<a class="headerlink" href="#common-operations" title="Permalink to this headline">¶</a></h3>
-<p>Common operations for working with CloudI are shown below.</p>
-<p>1.  Starting / Stopping CloudI</p>
-<div class="highlight-python"><div class="highlight"><pre>sudo cloudi start
-
-sudo cloudi stop
-</pre></div>
-</div>
-<ol class="arabic simple" start="2">
-<li>Listing services</li>
-</ol>
-<p>This command is useful for viewing what services have been defined in the cloud.</p>
-<div class="highlight-python"><div class="highlight"><pre>curl http://localhost:6467/cloudi/api/erlang/services
-</pre></div>
-</div>
-<p>3.  Listing the code search paths</p>
-<div class="highlight-python"><div class="highlight"><pre>curl http://localhost:6467/cloudi/api/erlang/code_path
-</pre></div>
-</div>
-<p>4. Adding a code search path</p>
-<div class="highlight-python"><div class="highlight"><pre>curl -X POST -d &#39;&quot;/home/user/code/services&quot;&#39; http://localhost:6467/cloudi/api/erlang/code_path_add
-</pre></div>
-</div>
 </div>
 </div>
 <span id="document-Book_Recommendation_Application"></span><div class="section" id="book-recommendation-application">
@@ -437,6 +272,193 @@ An excellent resource for designing RESTful API&#8217;s is located <a class="ref
 <li><strong>user_item_recommendations</strong> - contains recommendations for a particular user</li>
 <li><strong>user_item_ratings</strong> - holds the rating value that a user submits for an item</li>
 </ul>
+</div>
+</div>
+<span id="document-Starting_Out"></span><div class="section" id="starting-out">
+<h2>Starting Out<a class="headerlink" href="#starting-out" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="working-with-cloudi">
+<h3>Working with CloudI<a class="headerlink" href="#working-with-cloudi" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="setting-up-the-cloudi-configuration">
+<span id="index-0"></span><h4>Setting up the CloudI Configuration<a class="headerlink" href="#setting-up-the-cloudi-configuration" title="Permalink to this headline">¶</a></h4>
+<p>When CloudI is installed, several default configuration files are created.
+These files are located in the
+<strong>/usr/local/etc/cloudi</strong>
+directory.
+For initial development, the following suggested changes should be made.</p>
+<ol class="arabic simple">
+<li>Make a copy of the original configuration file.</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>sudo cp /usr/local/etc/cloudi/cloudi.conf /usr/local/etc/cloudi/cloudi.conf.original
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li>Adjust the log setting by changing the settings in the
+<strong>cloudi.conf</strong>
+file.  The original configuration has a “trace” log level and this generates a very large quantity of messages.
+Setting the level to “debug” is probably more appropriate for development purposes.</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>{logging, [
+        %{file, &quot;path/to/logfile&quot;},
+        {level,
+        debug
+        }, % levels: off, fatal, error, warn, info, debug, trace
+
+       ...
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li>The standard installation includes a number of test services.
+These test services can consume a fair amount of CPU resources and can clutter up the logs.
+During active development, you are likely going to be restarting the CloudI service frequently, so it makes sense to remove anything you don&#8217;t need.
+You can do this by removing or commenting out the test services located in the
+<strong>cloudi.conf</strong>
+file. An example is shown below where the % sign is used to comment out an entry.</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>%{internal,
+%&quot;/tests/flood/&quot;,
+%cloudi_service_flood,
+%[{flood, &quot;/tests/flood/java&quot;, &lt;&lt;&quot;DATA&quot;&gt;&gt;, 1000}],
+%lazy_closest,
+%5000, 5000, 5000, [api], undefined, 2, 5, 300, []},
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">Unfortunately, you can not just remove all the test services, because some of them are used to implement core functions that you will likely need.</p>
+</div>
+<p>The Book Recommendation application requires the services shown in the following table.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="32%" />
+<col width="48%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Subscription Path</th>
+<th class="head">Service Name</th>
+<th class="head">Comments</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>/cloudi/api</td>
+<td>cloudi_service_api_requests</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>/tests/websockets</td>
+<td>cloudi_service_http_cowboy</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>/tests/http</td>
+<td>cloudi_service_http_cowboy</td>
+<td>There are two entries for different ports</td>
+</tr>
+</tbody>
+</table>
+<ol class="arabic simple" start="4">
+<li>It is important to realize that all services listed in the <strong>cloudi.conf</strong> file must start successfully when the cloud is first started.
+In other words, the failure of any service listed in the configuration file will keep the entire cloud from starting to ensure an error-free starting state.  Seperate configuration methods will be used to show how a cloud may grow.</li>
+</ol>
+</div>
+<div class="section" id="viewing-logs">
+<span id="index-1"></span><h4>Viewing Logs<a class="headerlink" href="#viewing-logs" title="Permalink to this headline">¶</a></h4>
+<p>The default location of CloudI log files is the
+<strong>/usr/local/var/log/cloudi/</strong>
+<strong>logs</strong>
+directory.  You can change the location of the log files by modifying the
+<strong>cloudi.conf</strong>
+file and removing the % comment.</p>
+<div class="highlight-python"><div class="highlight"><pre>{logging, [
+%{file, &quot;**path/to/logfile**&quot;},
+{level, debug
+}, % levels: off, fatal, error, warn, info, debug, trace
+</pre></div>
+</div>
+</div>
+<div class="section" id="automating-the-build-process">
+<h4>Automating the Build Process<a class="headerlink" href="#automating-the-build-process" title="Permalink to this headline">¶</a></h4>
+<p>The typical build process when working with CloudI consists of the following steps:</p>
+<ul class="simple">
+<li>Starting CloudI</li>
+<li>Specifying the code path location using the CloudI Service API</li>
+<li>Compilation of custom code</li>
+<li>Adding custom code to CloudI using the CloudI Service API</li>
+<li>Running test services</li>
+<li>Stopping CloudI</li>
+</ul>
+<p>The use of some sort of automated build process to perform these steps is well worth the effort.
+Options range from a simple shell script, to a make file, to more complicated build tool.
+Pick a mechanism that is simple and something that you are familiar with.
+An example shell script for the Book Service (see next section for more details) is listed below.</p>
+<div class="highlight-python"><div class="highlight"><pre>#!/bin/sh
+#
+# These scripts are used to load the Book services into the Cloudi engine
+#
+
+# Add the current directory to the code path
+curl -X POST -d &#39;&quot;&#39;`pwd`&#39;&quot;&#39; http://localhost:6467/cloudi/api/erlang/code_path_add
+
+# Compile all Erlang modules
+erlc -pz /usr/local/lib/cloudi-1.3.3/lib/cloudi_core-1.3.3 -pz /usr/local/lib/cloudi-1.3.3/lib/cloudi_core-1.3.3/ebin book.erl
+
+# Add the Book service
+curl -X POST -d @book.conf http://localhost:6467/cloudi/api/erlang/services_add
+
+# Display list of services
+curl http://localhost:6467/cloudi/api/erlang/services
+
+# Call the Book Service
+curl http://localhost:6467/recommendation/book?item=45388
+</pre></div>
+</div>
+</div>
+<div class="section" id="common-operations">
+<span id="index-2"></span><h4>Common Operations<a class="headerlink" href="#common-operations" title="Permalink to this headline">¶</a></h4>
+<p>Common operations for working with CloudI are shown below.</p>
+<p>1.  Starting / Stopping CloudI</p>
+<div class="highlight-python"><div class="highlight"><pre>sudo cloudi start
+
+sudo cloudi stop
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li>Listing services</li>
+</ol>
+<p>This command is useful for viewing what services have been defined in the cloud.</p>
+<div class="highlight-python"><div class="highlight"><pre>curl http://localhost:6467/cloudi/api/erlang/services
+</pre></div>
+</div>
+<p>3.  Listing the code search paths</p>
+<div class="highlight-python"><div class="highlight"><pre>curl http://localhost:6467/cloudi/api/erlang/code_path
+</pre></div>
+</div>
+<p>4. Adding a code search path</p>
+<div class="highlight-python"><div class="highlight"><pre>curl -X POST -d &#39;&quot;/home/user/code/services&quot;&#39; http://localhost:6467/cloudi/api/erlang/code_path_add
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="working-with-the-database">
+<h3>Working with the Database<a class="headerlink" href="#working-with-the-database" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="building-the-database">
+<span id="index-3"></span><h4>Building the Database<a class="headerlink" href="#building-the-database" title="Permalink to this headline">¶</a></h4>
+<p>A script of SQL commands needed to build the <em>book</em> database schema is provided in the <strong>scripts/book.sql</strong> file. You can create this schema using the MySQL command line tool as shown in the example below.</p>
+<div class="highlight-python"><div class="highlight"><pre>mysql -u root -p &lt; book.sql
+</pre></div>
+</div>
+</div>
+<div class="section" id="creating-users">
+<h4>Creating Users<a class="headerlink" href="#creating-users" title="Permalink to this headline">¶</a></h4>
+<p>You also should create a special user that can connect to the <em>book</em> schema and can add, update, or delete records.  An example using the MySQL command line tool is shown below.</p>
+<div class="highlight-python"><div class="highlight"><pre>mysql -u root -p &lt; book.sql
+GRANT ALL ON book.* to cloudi@&#39;localhost&#39; IDENTIFIED BY &#39;secret&#39;;
+quit;
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The GRANT statement also tells MySQL which hosts the user is allowed to connect from.  If CloudI is going to be running in a clustered configuration then you will need to add grant access for each node in the cluster.</p>
+</div>
+</div>
 </div>
 </div>
 <span id="document-Database_Adapter"></span><div class="section" id="database-adapter-service">
@@ -697,10 +719,7 @@ Json_result.
 </div>
 <div class="section" id="complete-source">
 <h4>Complete Source<a class="headerlink" href="#complete-source" title="Permalink to this headline">¶</a></h4>
-<div class="admonition-todo admonition" id="index-6">
-<p class="first admonition-title">Todo</p>
-<p class="last">Add link to the Book Service source code</p>
-</div>
+<p>The complete source is located on GitHub <a class="reference external" href="https://github.com/brucekissinger/book_recommendation">here</a>  in the <strong>service</strong> folder.</p>
 </div>
 </div>
 <div class="section" id="adding-the-service-to-cloudi">
@@ -944,10 +963,7 @@ var rank_book_service = &quot;/recommend/book/download&quot;;
 </div>
 <div class="section" id="complete-source">
 <h3>Complete Source<a class="headerlink" href="#complete-source" title="Permalink to this headline">¶</a></h3>
-<div class="admonition-todo admonition" id="index-5">
-<p class="first admonition-title">Todo</p>
-<p class="last">Add link to the HTML source code</p>
-</div>
+<p>The complete source is located on GitHub <a class="reference external" href="https://github.com/brucekissinger/book_recommendation">here</a>  in the <strong>html</strong> folder.</p>
 </div>
 </div>
 <span id="document-Java_Integration"></span><div class="section" id="java-integration">
@@ -1139,6 +1155,10 @@ More details are available <a class="reference external" href="http://cloudi.org
 </pre></div>
 </div>
 <p>Consequently, when the <strong>recommendedbooks</strong> service was invoked the CloudI dispatcher could not find any module that was subscribing to the request and generated a timeout.</p>
+<ol class="arabic simple" start="2">
+<li>Timeout Values Are Too Small</li>
+</ol>
+<p>The configuration for each service includes a timeout value.  This value is specified in milliseconds &#8211; not seconds.</p>
 </div>
 <div class="section" id="web-socket-connections-fail">
 <h3>Web Socket Connections Fail<a class="headerlink" href="#web-socket-connections-fail" title="Permalink to this headline">¶</a></h3>
@@ -1162,34 +1182,19 @@ More details are available <a class="reference external" href="http://cloudi.org
 <p>This tutorial is a work in progress.  Open items are listed below.</p>
 <div class="admonition-todo admonition">
 <p class="first admonition-title">Todo</p>
-<p class="last">This section is in the process of being written.</p>
-</div>
-<p class="todo-source">(The <a class="reference internal" href="index.html#index-0"><em>original entry</em></a> is located in  /home/bruce/Documents/Impact/Projects/CloudI/tutorial/Book_Service.rst, line 5.)</p>
-<div class="admonition-todo admonition">
-<p class="first admonition-title">Todo</p>
-<p class="last">Add link to the Book Service source code</p>
-</div>
-<p class="todo-source">(The <a class="reference internal" href="index.html#index-6"><em>original entry</em></a> is located in  /home/bruce/Documents/Impact/Projects/CloudI/tutorial/Book_Service.rst, line 186.)</p>
-<div class="admonition-todo admonition">
-<p class="first admonition-title">Todo</p>
 <p class="last">This section has not yet been written</p>
 </div>
 <p class="todo-source">(The <a class="reference internal" href="index.html#index-0"><em>original entry</em></a> is located in  /home/bruce/Documents/Impact/Projects/CloudI/tutorial/Java_Integration.rst, line 5.)</p>
 <div class="admonition-todo admonition">
 <p class="first admonition-title">Todo</p>
-<p class="last">Add source code link here.</p>
+<p class="last">This section is in the process of being written.</p>
 </div>
-<p class="todo-source">(The <a class="reference internal" href="index.html#index-1"><em>original entry</em></a> is located in  /home/bruce/Documents/Impact/Projects/CloudI/tutorial/Introduction.rst, line 25.)</p>
+<p class="todo-source">(The <a class="reference internal" href="index.html#index-0"><em>original entry</em></a> is located in  /home/bruce/Documents/Impact/Projects/CloudI/tutorial/Book_Service.rst, line 5.)</p>
 <div class="admonition-todo admonition">
 <p class="first admonition-title">Todo</p>
 <p class="last">Test the Javascript code listed above</p>
 </div>
 <p class="todo-source">(The <a class="reference internal" href="index.html#index-4"><em>original entry</em></a> is located in  /home/bruce/Documents/Impact/Projects/CloudI/tutorial/HTML_Integration.rst, line 267.)</p>
-<div class="admonition-todo admonition">
-<p class="first admonition-title">Todo</p>
-<p class="last">Add link to the HTML source code</p>
-</div>
-<p class="todo-source">(The <a class="reference internal" href="index.html#index-5"><em>original entry</em></a> is located in  /home/bruce/Documents/Impact/Projects/CloudI/tutorial/HTML_Integration.rst, line 274.)</p>
 </div>
 </div>
 </div>
@@ -1215,24 +1220,32 @@ More details are available <a class="reference external" href="http://cloudi.org
 <li class="toctree-l2"><a class="reference internal" href="index.html#where-to-get-help">1.3. Where to Get Help</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="index.html#document-Starting_Out">2. Starting Out</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="index.html#setting-up-the-cloudi-configuration">2.1. Setting up the CloudI Configuration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#viewing-logs">2.2. Viewing Logs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#automating-the-build-process">2.3. Automating the Build Process</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#common-operations">2.4. Common Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#document-Book_Recommendation_Application">2. Book Recommendation Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="index.html#background">2.1. Background</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#current-state-implementation">2.2. Current-State Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#future-state-implementation">2.3. Future-State Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#architectural-decisions">2.4. Architectural Decisions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="index.html#data-transmission">2.4.1. Data Transmission</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#service-api">2.4.2. Service API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#integration-method">2.4.3. Integration Method</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="index.html#document-Book_Recommendation_Application">3. Book Recommendation Application</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="index.html#background">3.1. Background</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#current-state-implementation">3.2. Current-State Implementation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#future-state-implementation">3.3. Future-State Implementation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#architectural-decisions">3.4. Architectural Decisions</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="index.html#data-transmission">3.4.1. Data Transmission</a></li>
-<li class="toctree-l3"><a class="reference internal" href="index.html#service-api">3.4.2. Service API</a></li>
-<li class="toctree-l3"><a class="reference internal" href="index.html#integration-method">3.4.3. Integration Method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#data-model">2.5. Data Model</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#data-model">3.5. Data Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#document-Starting_Out">3. Starting Out</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="index.html#working-with-cloudi">3.1. Working with CloudI</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="index.html#setting-up-the-cloudi-configuration">3.1.1. Setting up the CloudI Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#viewing-logs">3.1.2. Viewing Logs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#automating-the-build-process">3.1.3. Automating the Build Process</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#common-operations">3.1.4. Common Operations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#working-with-the-database">3.2. Working with the Database</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="index.html#building-the-database">3.2.1. Building the Database</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#creating-users">3.2.2. Creating Users</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="index.html#document-Database_Adapter">4. Database Adapter Service</a><ul>
@@ -1303,7 +1316,7 @@ More details are available <a class="reference external" href="http://cloudi.org
       </ul>
     </div>
     <div class="footer">
-      Last updated on Jan 25, 2015.
+      Last updated on Jan 30, 2015.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
