@@ -9,7 +9,7 @@ Depending on your application, you may need to modify the default network config
 
 Bind Address
 ============
-By default, the Cowboy web server listens only to the local host network address of 127.0.0.1. If you want CloudI to be accessible on your network, you can change this by following these steps:
+By default, the Cowboy web server listens only to the local host network address of 127.0.0.1. If you want CloudI to be accessible on your network, you can change this using these steps:
 
 1.  Change the current directory to the installation files for CloudI. Note that your location may be different than what is shown below.
 
@@ -41,7 +41,7 @@ to
   An address of 0.0.0.0 will cause Cowboy to listen to any network interface on the server.
 
 
-4.  Remove the Cowboy runtime library directory so that it will get rebuilt.
+4.  Remove the Cowboy runtime library directory so that it will get rebuilt by the installation process.
 
 ::
 

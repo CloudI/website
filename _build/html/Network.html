@@ -59,7 +59,7 @@
 <p>Depending on your application, you may need to modify the default network configuration used by the CloudI components. Some common modifications are listed below.</p>
 <div class="section" id="bind-address">
 <span id="index-0"></span><h2>8.1. Bind Address<a class="headerlink" href="#bind-address" title="Permalink to this headline">¶</a></h2>
-<p>By default, the Cowboy web server listens only to the local host network address of 127.0.0.1. If you want CloudI to be accessible on your network, you can change this by following these steps:</p>
+<p>By default, the Cowboy web server listens only to the local host network address of 127.0.0.1. If you want CloudI to be accessible on your network, you can change this using these steps:</p>
 <ol class="arabic simple">
 <li>Change the current directory to the installation files for CloudI. Note that your location may be different than what is shown below.</li>
 </ol>
@@ -87,7 +87,7 @@
 <p class="last">An address of 0.0.0.0 will cause Cowboy to listen to any network interface on the server.</p>
 </div>
 <ol class="arabic simple" start="4">
-<li>Remove the Cowboy runtime library directory so that it will get rebuilt.</li>
+<li>Remove the Cowboy runtime library directory so that it will get rebuilt by the installation process.</li>
 </ol>
 <div class="highlight-python"><div class="highlight"><pre>cd /usr/local/lib/cloudi-1.4.0/lib
 sudo rm cloudi_service_http_cowboy_1.4.0
@@ -161,7 +161,7 @@ sudo make install
       </ul>
     </div>
     <div class="footer">
-      Last updated on Jan 25, 2015.
+      Last updated on Feb 04, 2015.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>

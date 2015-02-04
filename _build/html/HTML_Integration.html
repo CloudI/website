@@ -59,11 +59,11 @@
 <p id="index-0">Once the Book Service has been developed, integration with the HTML pages is straightfoward.  Note that the HTML pages use the JQuery Mobile framework which simplifies much of the Javascript coding.  If you use a different (or no) web framework the general principles would remain the same.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The HTML pages use the Web Sockets integration method which is part of the HTML5 specification.  Web Sockets may not work correctly on older browsers.</p>
+<p class="last">The HTML pages use the WebSocket integration method which is part of the HTML5 specification.  WebSockets may not work correctly on older browsers.</p>
 </div>
-<div class="section" id="enabling-web-sockets">
-<span id="index-1"></span><h2>6.1. Enabling Web Sockets<a class="headerlink" href="#enabling-web-sockets" title="Permalink to this headline">¶</a></h2>
-<p>Support for web sockets is disabled in the default configuration of the Cowboy web server used with CloudI.  To enable web sockets follow these steps.</p>
+<div class="section" id="enabling-websockets">
+<span id="index-1"></span><h2>6.1. Enabling WebSockets<a class="headerlink" href="#enabling-websockets" title="Permalink to this headline">¶</a></h2>
+<p>Support for WebSockets is disabled in the default configuration of the Cowboy web server used with CloudI.  To enable WebSockets follow these steps.</p>
 <ol class="arabic simple">
 <li>Change the current directory to the installation files for CloudI. Note that your location may be different than what is shown below.</li>
 </ol>
@@ -87,7 +87,7 @@
 </pre></div>
 </div>
 <ol class="arabic simple" start="4">
-<li>Remove the Cowboy runtime library so that it will get rebuilt.</li>
+<li>Remove the Cowboy runtime library so that it will get rebuilt by the installation process.</li>
 </ol>
 <div class="highlight-python"><div class="highlight"><pre>cd /usr/local/lib/cloudi-1.4.0/lib
 sudo rm cloudi_service_http_cowboy_1.4.0
@@ -117,11 +117,11 @@ var service_name = &quot;/recommend/book/newbooks&quot;;
 var request_type = &quot;get&quot;;
 </pre></div>
 </div>
-<p>Next, the web socket is opened using the following code:</p>
+<p>Next, the WebSocket is opened using the following code:</p>
 <div class="highlight-python"><div class="highlight"><pre>web_socket = new WebSocket(host_url + service_name);
 </pre></div>
 </div>
-<p>Web sockets raise events and a function is defined that will handle the <strong>onopen</strong> event.  In this case, when the socket is opened then the <strong>send</strong> function will be called:</p>
+<p>WebSockets raise events and a function is defined that will handle the <strong>onopen</strong> event.  In this case, when the socket is opened then the <strong>send</strong> function will be called:</p>
 <div class="highlight-python"><div class="highlight"><pre>// define function that is called when the web socket is opened
 web_socket.onopen = function () {
         send();
@@ -197,9 +197,9 @@ var obj = JSON.parse(data);
 </pre></div>
 </div>
 </div>
-<div class="section" id="using-ajax-instead-of-web-sockets">
-<span id="index-3"></span><h2>6.4. Using AJAX instead of Web Sockets<a class="headerlink" href="#using-ajax-instead-of-web-sockets" title="Permalink to this headline">¶</a></h2>
-<p>The use of Web Sockets for integration of HTML pages with CloudI as shown in the preceeding sections is simple and efficient.  However, there is one limitation when using the default CloudI / Cowboy configuration - namely that only GET operations are supported.  A simple work around is to use the XML HTTP Request mechanism.  Because your HTML pages might be hosted at a different port or location then the CloudI service, a Cross-Origin Resource Sharing (CORS) request will be demonstrated below using the same general outline used earlier in the Web Socket example.</p>
+<div class="section" id="using-ajax-instead-of-websockets">
+<span id="index-3"></span><h2>6.4. Using AJAX instead of WebSockets<a class="headerlink" href="#using-ajax-instead-of-websockets" title="Permalink to this headline">¶</a></h2>
+<p>The use of WebSockets for integration of HTML pages with CloudI as shown in the preceeding sections is simple and efficient.  However, there is one limitation when using the default CloudI / Cowboy configuration - namely that only GET operations are supported.  A simple work around is to use the XML HTTP Request mechanism.  Because your HTML pages might be hosted at a different port or location then the CloudI service, a Cross-Origin Resource Sharing (CORS) request will be demonstrated below using the same general outline used earlier in the WebSocket example.</p>
 <p>First, some global variables are defined:</p>
 <div class="highlight-python"><div class="highlight"><pre>// Customize for your environment
 var service_host = &quot;http://localhost:6467&quot;;
@@ -263,10 +263,6 @@ var rank_book_service = &quot;/recommend/book/download&quot;;
 }
 </pre></div>
 </div>
-<div class="admonition-todo admonition" id="index-4">
-<p class="first admonition-title">Todo</p>
-<p class="last">Test the Javascript code listed above</p>
-</div>
 </div>
 <div class="section" id="complete-source">
 <h2>6.5. Complete Source<a class="headerlink" href="#complete-source" title="Permalink to this headline">¶</a></h2>
@@ -283,10 +279,10 @@ var rank_book_service = &quot;/recommend/book/download&quot;;
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">6. HTML Integration</a><ul>
-<li><a class="reference internal" href="#enabling-web-sockets">6.1. Enabling Web Sockets</a></li>
+<li><a class="reference internal" href="#enabling-websockets">6.1. Enabling WebSockets</a></li>
 <li><a class="reference internal" href="#calling-the-book-service">6.2. Calling the Book Service</a></li>
 <li><a class="reference internal" href="#parsing-the-results">6.3. Parsing the Results</a></li>
-<li><a class="reference internal" href="#using-ajax-instead-of-web-sockets">6.4. Using AJAX instead of Web Sockets</a></li>
+<li><a class="reference internal" href="#using-ajax-instead-of-websockets">6.4. Using AJAX instead of WebSockets</a></li>
 <li><a class="reference internal" href="#complete-source">6.5. Complete Source</a></li>
 </ul>
 </li>
@@ -331,7 +327,7 @@ var rank_book_service = &quot;/recommend/book/download&quot;;
       </ul>
     </div>
     <div class="footer">
-      Last updated on Jan 30, 2015.
+      Last updated on Feb 04, 2015.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>

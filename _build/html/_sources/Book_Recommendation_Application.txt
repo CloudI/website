@@ -9,13 +9,12 @@ Book Recommendation Application
 Background
 ==========
 
-The application that will be used for this tutorial is a web-based book recommendation system that provides a list of books available on
+The application used for this tutorial is a web-based book recommendation system that provides a list of books available on
 `Project Gutenberg <http://www.gutenberg.org/>`_
-and provides recommendations of other books that might interest you.
+and provides recommendations of other books.  
 You can run the application at
 `http://www.impactsoftwarelabs.com/book <http://www.impactsoftwarelabs.com/book>`_
-and view the full source code here.
-
+and view the full source code `here <https://github.com/brucekissinger/book_recommendation>`_
 
 A use case diagram showing the major functions is listed below.
 
@@ -93,7 +92,7 @@ Architectural Decisions
 Data Transmission
 -----------------
 
-Because the components will be developed using different languages (PHP, Java, and Erlang), an important decision is to select a language-independent method for transmitting data between each component.
+Because the components will be developed using different languages (Javascript, Java, and Erlang), an important decision is to select a language-independent method for transmitting data between each component.
 CloudI does not impose a specific data transfer mechanism, so you are free to select this.
 In this tutorial, the
 `JSON protocol <http://www.wikipedia.org/wiki/Json>`_
@@ -149,7 +148,7 @@ There are several different methods for applications to call CloudI services. Th
 ================= ================== =====================================================================================
 Application Type  Integration Method Comments                                                                             
 ================= ================== =====================================================================================
-External          HTTP               Using Websocket messages 
+External          HTTP               Using WebSocket protocol
 External          Zero MQ            Use Zero MQ as a messaging bus. See Cloudi FAQ for details                                   
 Internal          CloudI API         Setup Subscribe/Request pairs.  Messages can be synchronous, asynchrous, or broadcast 
 ================= ================== =====================================================================================
@@ -161,7 +160,7 @@ Additional information is available in the CloudI FAQ
 .. note::
  Technically an Internal application could also use the HTTP or ZeroMQ integration methods, but generally the use of the CloudI API is preferred.
  
-For the Book Recommendation application, HTTP REST calls will be used to integrate the HTML pages with the *Book Service*. The Java Utility programs will use the ZeroMQ message bus.
+For this application, HTTP REST calls will be used to integrate the HTML pages with the *Book Service*.  The HTTP request/response messages will be delivered using the WebSocket protocol. The Java Utility programs will use the ZeroMQ message bus.
 
 .. index::
  single: Data Model Diagram

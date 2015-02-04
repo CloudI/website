@@ -2,11 +2,6 @@
 Book Service
 ************
 
-.. todo::
-
- This section is in the process of being written.
-
-
 .. index::
  single: book.conf file
 
@@ -35,6 +30,10 @@ The configuration file for the Book Service is shown below and is stored in a fi
     [{reload, true}, {queue_limit, 50}] 
   }]
 
+
+.. tip:: 
+
+  During initial development, storing the configuration in a separate file can be useful for making and testing incremental changes.  Later when development is complete, the information can be stored directly in the *cloudi.conf* file if desired.
 
 A table describing each of these parameters is listed below.  
 
@@ -73,7 +72,7 @@ undefined  	            Destination allow ACL
 
 Module Outline
 ==============
-The Book Service module is split into several sections.  In our example, the Book Service is developed using the Erlang language, but other language examples are displayed later. 
+The Book Service module is split into several sections.  In this tutorial, the Book Service is developed using the Erlang language, but other languages supported by CloudI could have been used.  
 
  #.  Service initialization logic - needs to be customized for each application
  #.  Code for handling request messages - needs to be customized for each application
@@ -160,7 +159,7 @@ Parsing the Results
 
 Handling Informational Messages
 -------------------------------
-The ``cloudi_service_handle_info`` function is used for handling spontaneous messages to the service.  For example, if this service is linked to another process and that process unexpectedly halts, an exit trap message may be received.  Typically, the response to this message is to do nothing and the pattern shown below can be used.
+The ``cloudi_service_handle_info`` function is used for handling spontaneous messages to the service.  For example, if this service is linked to another process and that process unexpectedly halts, an exit trap message may be received.  Typically, the response to this message is to do nothing and the pattern shown below can be used with no modifications.
 
 ::
 
@@ -202,6 +201,10 @@ Adding the Book Service to CloudI requires three steps.  First, the code is comp
   # add the service using the attached configuration file 
   curl -X post -d @book.conf http://localhost:6467/cloudi/api/erlang/services_add
 
+
+.. tip:: 
+
+  During initial development, adding the source code path and the configuration using the API services as shown above can be useful for making and testing incremental changes.  Later when development is complete, this information can be added directly to the CloudI configuration files if desired.
 
 
 Testing the Service

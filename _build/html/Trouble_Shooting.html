@@ -76,6 +76,7 @@
        5000, 5000, 5000, undefined, undefined, 1, 4, 5, 300, []},
 </pre></div>
 </div>
+<p>Note that the source code path can also be changed dynamically using the <em>code_path_add</em> API service.</p>
 </div>
 <div class="section" id="timeout">
 <h2>10.2. Timeout<a class="headerlink" href="#timeout" title="Permalink to this headline">¶</a></h2>
@@ -84,7 +85,7 @@
 <li>Incorrect Dispatcher Pattern</li>
 </ol>
 <blockquote>
-<div>For example, in the development of the Book Service the original service initialization logic had code that looked like this:</div></blockquote>
+<div>In the development of the Book Service the original service initialization logic had code that looked like this:</div></blockquote>
 <div class="highlight-python"><div class="highlight"><pre>cloudi_service:subscribe(Dispatcher, &quot;recommendbooks/get&quot;)
 </pre></div>
 </div>
@@ -98,9 +99,9 @@
 </ol>
 <p>The configuration for each service includes a timeout value.  This value is specified in milliseconds &#8211; not seconds.</p>
 </div>
-<div class="section" id="web-socket-connections-fail">
-<h2>10.3. Web Socket Connections Fail<a class="headerlink" href="#web-socket-connections-fail" title="Permalink to this headline">¶</a></h2>
-<p>Verify that web sockets are enabled in the Cowboy configuration.  See the section on <em>Enabling Web Sockets</em> in this tutorial for more details.</p>
+<div class="section" id="websocket-connections-fail">
+<h2>10.3. WebSocket Connections Fail<a class="headerlink" href="#websocket-connections-fail" title="Permalink to this headline">¶</a></h2>
+<p>Verify that WebSockets are enabled in the Cowboy configuration.  See the section on <em>Enabling WebSockets</em> in this tutorial for more details.</p>
 </div>
 <div class="section" id="erlang-crash-dump">
 <span id="index-0"></span><h2>10.4. Erlang Crash Dump<a class="headerlink" href="#erlang-crash-dump" title="Permalink to this headline">¶</a></h2>
@@ -127,7 +128,7 @@
 <li><a class="reference internal" href="#">10. Trouble Shooting</a><ul>
 <li><a class="reference internal" href="#source-code-paths">10.1. Source Code Paths</a></li>
 <li><a class="reference internal" href="#timeout">10.2. Timeout</a></li>
-<li><a class="reference internal" href="#web-socket-connections-fail">10.3. Web Socket Connections Fail</a></li>
+<li><a class="reference internal" href="#websocket-connections-fail">10.3. WebSocket Connections Fail</a></li>
 <li><a class="reference internal" href="#erlang-crash-dump">10.4. Erlang Crash Dump</a></li>
 </ul>
 </li>
@@ -172,7 +173,7 @@
       </ul>
     </div>
     <div class="footer">
-      Last updated on Jan 30, 2015.
+      Last updated on Feb 04, 2015.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>

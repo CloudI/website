@@ -28,6 +28,8 @@ For a Java application, the path to a JAR file can be specified as a parameter i
         none, tcp, default,
         5000, 5000, 5000, undefined, undefined, 1, 4, 5, 300, []},
 
+Note that the source code path can also be changed dynamically using the *code_path_add* API service.
+
 
 Timeout
 =======
@@ -36,7 +38,7 @@ There are several possible causes of a timeout error.
 
 1. Incorrect Dispatcher Pattern
 
-  For example, in the development of the Book Service the original service initialization logic had code that looked like this:
+  In the development of the Book Service the original service initialization logic had code that looked like this:
 
 :: 
 
@@ -55,9 +57,9 @@ Consequently, when the **recommendedbooks** service was invoked the CloudI dispa
 The configuration for each service includes a timeout value.  This value is specified in milliseconds -- not seconds.
 
 
-Web Socket Connections Fail
+WebSocket Connections Fail
 ===========================
-Verify that web sockets are enabled in the Cowboy configuration.  See the section on *Enabling Web Sockets* in this tutorial for more details.
+Verify that WebSockets are enabled in the Cowboy configuration.  See the section on *Enabling WebSockets* in this tutorial for more details.
 
 
 .. index::

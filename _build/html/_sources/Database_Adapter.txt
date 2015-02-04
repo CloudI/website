@@ -71,4 +71,4 @@ You can test the database service by using the CloudI module and the associated 
   cloudi:send_sync(Context, "/db/mysql/book", "select * from items where id=1").
 
 .. NOTE::
-	To exit the Erlang shell, press the Control D key simultaneously.
+	To exit the Erlang shell, press the Control D keys simultaneously.

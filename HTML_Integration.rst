@@ -3,23 +3,23 @@ HTML Integration
 ****************
 
 .. index::
- single: Web Socket 
+ single: WebSocket 
 
 
 Once the Book Service has been developed, integration with the HTML pages is straightfoward.  Note that the HTML pages use the JQuery Mobile framework which simplifies much of the Javascript coding.  If you use a different (or no) web framework the general principles would remain the same.  
 
 .. note::
 
- The HTML pages use the Web Sockets integration method which is part of the HTML5 specification.  Web Sockets may not work correctly on older browsers. 
+ The HTML pages use the WebSocket integration method which is part of the HTML5 specification.  WebSockets may not work correctly on older browsers. 
 
 .. index::
  single: Cowboy
- single: Web Socket 
+ single: WebSocket 
 
-Enabling Web Sockets
-====================
+Enabling WebSockets
+===================
 
-Support for web sockets is disabled in the default configuration of the Cowboy web server used with CloudI.  To enable web sockets follow these steps.
+Support for WebSockets is disabled in the default configuration of the Cowboy web server used with CloudI.  To enable WebSockets follow these steps.
 
 1.  Change the current directory to the installation files for CloudI. Note that your location may be different than what is shown below. 
 
@@ -46,7 +46,7 @@ to
 
   -define(DEFAULT_USE_WEBSOCKETS,                   true).
 
-4.  Remove the Cowboy runtime library so that it will get rebuilt.
+4.  Remove the Cowboy runtime library so that it will get rebuilt by the installation process.
 
 ::
 
@@ -82,14 +82,14 @@ First, some global variables are defined:
     var service_name = "/recommend/book/newbooks";
     var request_type = "get";
 
-Next, the web socket is opened using the following code:
+Next, the WebSocket is opened using the following code:
 
 ::
 
   web_socket = new WebSocket(host_url + service_name);
 
 
-Web sockets raise events and a function is defined that will handle the **onopen** event.  In this case, when the socket is opened then the **send** function will be called:
+WebSockets raise events and a function is defined that will handle the **onopen** event.  In this case, when the socket is opened then the **send** function will be called:
 
 :: 
 
@@ -187,10 +187,10 @@ Referencing individual attributes of an item is done like this:
  single: AJAX 
  single: CORS 
 
-Using AJAX instead of Web Sockets
-=================================
+Using AJAX instead of WebSockets
+================================
 
-The use of Web Sockets for integration of HTML pages with CloudI as shown in the preceeding sections is simple and efficient.  However, there is one limitation when using the default CloudI / Cowboy configuration - namely that only GET operations are supported.  A simple work around is to use the XML HTTP Request mechanism.  Because your HTML pages might be hosted at a different port or location then the CloudI service, a Cross-Origin Resource Sharing (CORS) request will be demonstrated below using the same general outline used earlier in the Web Socket example.
+The use of WebSockets for integration of HTML pages with CloudI as shown in the preceeding sections is simple and efficient.  However, there is one limitation when using the default CloudI / Cowboy configuration - namely that only GET operations are supported.  A simple work around is to use the XML HTTP Request mechanism.  Because your HTML pages might be hosted at a different port or location then the CloudI service, a Cross-Origin Resource Sharing (CORS) request will be demonstrated below using the same general outline used earlier in the WebSocket example.
 
 First, some global variables are defined:
 
@@ -264,14 +264,8 @@ Next, code for creating and sending the CORS request is defined:
   } 
  
 
-.. todo::
-
-  Test the Javascript code listed above
-
 Complete Source
 ===============
 
 The complete source is located on GitHub `here <https://github.com/brucekissinger/book_recommendation>`_  in the **html** folder.
 
- 
-  
