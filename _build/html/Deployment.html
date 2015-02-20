@@ -191,6 +191,83 @@ sudo make install
 More details are available <a class="reference external" href="http://cloudi.org/api.html#1_Intro">here</a></p>
 </div>
 </div>
+<div class="section" id="loading-services-on-startup">
+<h2>8.3. Loading Services on Startup<a class="headerlink" href="#loading-services-on-startup" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div>During development, you typically add a service and code path to CloudI using the API.  However, when development has completed, you may wish to have the service start automatically.</div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It is important to realize that all services listed in the cloudi.conf file must start successfully when the cloud is first started. In other words, the failure of any service listed in the configuration file will keep the entire cloud from starting to ensure an error-free starting state.</p>
+</div>
+<p>To add the Book Service to start automatically, follow these steps.</p>
+<ol class="arabic simple">
+<li>Change the current directory to the CloudI run time location. Note that this might be different for your installation</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>cd /usr/local/lib/cloudi-1.4.0/
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li>Create a new directory for the Book service and any compiled files.  The directory name should conform to the language conventions for your service.</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>mkdir book
+mkdir book/ebin
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li>Place the compiled Book Service file (book.beam) in the directory created above.</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>cp /tmp/book.beam book/ebin
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li>Modify the <strong>vm.args</strong> file stored in the <strong>/usr/local/etc/cloudi</strong> directory and add the location of the directory created in Step 2.</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre># Book service code path
+-pz /usr/local/lib/cloudi-1.4.0/book/ebin/
+</pre></div>
+</div>
+<ol class="arabic simple" start="5">
+<li>Modify the <strong>cloudi.conf</strong> file stored in the <strong>/usr/local/etc/cloudi</strong> directory and add the database service described in Section 4.1 and the configuration settings described in Section 5.1.  When completed, the <strong>cloudi.conf</strong> file should contain lines similar to what&#8217;s shown below.</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>%
+% Book Recommendation services
+%
+
+% database service
+{internal,
+        &quot;/db/mysql/&quot;,
+       cloudi_service_db_mysql,
+       [{database, &quot;book&quot;},
+        {timeout, 20000}, % ms
+        {encoding, utf8},
+        {hostname, &quot;dev1&quot;},
+        {username, &quot;cloudi&quot;},
+        {password, &quot;secret&quot;},
+        {port, 3306}],
+       none,
+       50000, 50000, 50000, undefined, undefined, 1, 5, 300, []
+},
+
+% book service
+{internal,
+        &quot;/recommend/book/&quot;,
+        book,
+        [],
+        immediate_random,
+        60000, 60000, 60000, undefined, undefined, 3, 5, 900,
+        [{reload, true}, {queue_limit, 500}]
+}
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">For a production deployment, you might want to modify the <em>destination refresh method</em> to use a random node in the cluster as shown above.  You may also want to increase the number of processes created at startup.  In this example, the database service has <strong>1</strong> process created at startup and the book service has <strong>3</strong> processes created.</p>
+</div>
+<ol class="arabic simple" start="6">
+<li>Restart cloudi and inspect the cloudi.log file to make sure that everything started correctly.</li>
+<li>Repeat Steps 1 through 6 for every node in the cluster.</li>
+</ol>
+</div>
 </div>
 
 
@@ -214,6 +291,7 @@ More details are available <a class="reference external" href="http://cloudi.org
 <li><a class="reference internal" href="#local-versus-remote-services">8.2.5. Local versus Remote Services</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#loading-services-on-startup">8.3. Loading Services on Startup</a></li>
 </ul>
 </li>
 </ul>

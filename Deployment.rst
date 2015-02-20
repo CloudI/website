@@ -153,3 +153,89 @@ lazy_oldest or immediate_oldest      Only the first subscribed service is select
 The **immediate** prefix instructs CloudI to lookup the service name to get the most current destination result.  The **lazy** prefix uses a cached value instead.  
 More details are available `here <http://cloudi.org/api.html#1_Intro>`_ 
 
+===========================
+Loading Services on Startup
+===========================
+
+ During development, you typically add a service and code path to CloudI using the API.  However, when development has completed, you may wish to have the service start automatically.  
+
+.. note::
+
+ It is important to realize that all services listed in the cloudi.conf file must start successfully when the cloud is first started. In other words, the failure of any service listed in the configuration file will keep the entire cloud from starting to ensure an error-free starting state.
+
+To add the Book Service to start automatically, follow these steps.
+
+1.  Change the current directory to the CloudI run time location. Note that this might be different for your installation
+
+::
+
+  cd /usr/local/lib/cloudi-1.4.0/
+
+2.  Create a new directory for the Book service and any compiled files.  The directory name should conform to the language conventions for your service.
+
+::
+
+  mkdir book 
+  mkdir book/ebin
+
+3.  Place the compiled Book Service file (book.beam) in the directory created above.
+
+::
+
+  cp /tmp/book.beam book/ebin
+
+
+4.  Modify the **vm.args** file stored in the **/usr/local/etc/cloudi** directory and add the location of the directory created in Step 2. 
+
+::
+
+  # Book service code path
+  -pz /usr/local/lib/cloudi-1.4.0/book/ebin/
+
+
+5.  Modify the **cloudi.conf** file stored in the **/usr/local/etc/cloudi** directory and add the database service described in Section 4.1 and the configuration settings described in Section 5.1.  When completed, the **cloudi.conf** file should contain lines similar to what's shown below.
+
+::
+
+        %
+        % Book Recommendation services
+        %
+
+        % database service
+        {internal,
+                "/db/mysql/",
+               cloudi_service_db_mysql,
+               [{database, "book"},
+                {timeout, 20000}, % ms
+                {encoding, utf8},
+                {hostname, "dev1"},
+                {username, "cloudi"},
+                {password, "secret"},
+                {port, 3306}],
+               none,
+               50000, 50000, 50000, undefined, undefined, 1, 5, 300, []
+        },
+
+        % book service
+        {internal,
+                "/recommend/book/",
+                book,
+                [],
+                immediate_random,
+                60000, 60000, 60000, undefined, undefined, 3, 5, 900,
+                [{reload, true}, {queue_limit, 500}]
+        }
+ 
+
+.. note::
+
+ For a production deployment, you might want to modify the *destination refresh method* to use a random node in the cluster as shown above.  You may also want to increase the number of processes created at startup.  In this example, the database service has **1** process created at startup and the book service has **3** processes created. 
+
+
+6.  Restart cloudi and inspect the cloudi.log file to make sure that everything started correctly.
+
+7.  Repeat Steps 1 through 6 for every node in the cluster.
+
+
+
+
