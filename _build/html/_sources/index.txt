@@ -20,8 +20,7 @@ Contents:
  Book Service <Book_Service>
  HTML Integration <HTML_Integration>
  Java Integration <Java_Integration>
- Network Configuration <Network>
- Cluster Configuration <Cluster>
+ Deployment <Deployment>
  Trouble Shooting <Trouble_Shooting>
  To Do List <Todo>
 

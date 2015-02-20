@@ -81,6 +81,8 @@ The primary changes are:
 
 *   Modify the various Java utility programs to run as CloudI services and use the *Book Service* rather than calling the MySQL database directly.
 
+.. note::
+ The Future State Implementation could be further simplified by using the Cowboy Web Server rather than the Apache Web Server for serving the HTML pages.  However, in the target environment there are other applications using Apache and Apache is the corporate standard.  
 
 Architectural Decisions
 =======================
@@ -142,7 +144,7 @@ Add Book to Collection    POST   /book/allbooks/		Add a book to the collection
 Integration Method
 ------------------
 
-There are several different methods for applications to call CloudI services. The alternatives depend on whether the application is "external" (i.e., not part of CloudI) or "internal" (i.e., a CloudI service). 
+There are several different methods for applications to call CloudI services. The alternatives depend on whether the application is "external" (i.e., run inside an operating system process external to the Erlang VM) or "internal" (i.e., run inside the Erlang VM).  Applications written in C, C++, Java, JavaScript, Perl, PHP, Python, and Ruby would be of "external" type.  Applications written in Erlang or Elixir would be an "internal" type.
 
 
 ================= ================== =====================================================================================
