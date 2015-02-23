@@ -123,6 +123,42 @@ Handling Requests
 -----------------
 
 .. index::
+ single: cloudi_service_handle_request 
+ single: Logging functions 
+
+A simplified example for handling book service requests is shown below. Note that the underscore pattern is used to handle unexpected requests.
+
+::
+
+ cloudi_service_handle_request(Type, Name, Pattern, _RequestInfo, Request,
+                              _Timeout, _Priority, _TransId, _Pid,
+                              #state{} = State, Dispatcher) ->
+    
+        ?LOG_INFO("Handle Request: Type=~p, Name=~p, Pattern=~p, Request=~p", [Type, Name, Pattern, Request]),
+
+        % based on the pattern and request, perform the appropriate action
+        case Pattern of
+                "/recommend/book/newbooks/get" ->
+                        ReplyRecord = find_new(Dispatcher);
+
+                "/recommend/book/popularbooks/get" ->
+                        ReplyRecord = find_popular(Dispatcher);
+
+                _ ->
+                        ReplyRecord = cloudi_x_jsx:encode(["Invalid Request"])
+        end,
+
+        % send reply
+        ?LOG_DEBUG("Sending reply=~p", [ReplyRecord]),
+        {reply, ReplyRecord, State}.
+
+
+.. tip:: 
+
+  CloudI provides several pre-defined macros for logging. The LOG_INFO and LOG_DEBUG functions are shown in the example above.
+ 
+
+.. index::
  single: cloudi_service:send_sync
 
 Calling the MySQL Database Adapter
@@ -153,6 +189,62 @@ First, a string containing the SQL query is constructed.  Next, the service name
 
 Parsing the Results
 -------------------
+
+The Book Service uses several utility functions named **parse_items** and **parse_item** to handle the data returned from the database and encode it using the JSON format.
+
+::
+
+  parse_items({result_packet, _, Columns, List, _Trailer}) ->
+        Return_value = parse_item(List),
+        Return_value.
+
+  parse_item(List)  ->
+        parse_item(List, []).
+
+  parse_item([H|T], Return_value)  ->
+        % Note that the record can contain different numbers of colulmns
+        % and that the columns need to be in the correct positions
+        case H of 
+                [Id, Title, Author, Language, Date, Web_page, Subject, Downloads] -> 
+                        Item = #item{id=Id, title=Title, creator=Author, language=Language, date_created = Date, web_page=Web_page, subject=Subject, downloads=Downloads},      
+
+                        Encoded_item = cloudi_x_jsx:encode(
+                                [
+                                  {<<"id">>, Item#item.id},
+                                  {<<"title">>, Item#item.title},
+                                  {<<"creator">>, Item#item.creator},
+                                  {<<"language">>, Item#item.language},
+                                  {<<"web_page">>, Item#item.web_page},
+                                  {<<"subject">>, Item#item.subject},
+                                  {<<"downloads">>, Item#item.downloads}
+                                ]);
+
+               [Id, Title] ->
+                        Item = #item{id=Id, title=Title},
+
+                        Encoded_item = cloudi_x_jsx:encode(
+                                [
+                                  {<<"id">>, Item#item.id},
+                                  {<<"title">>, Item#item.title}
+                                ]) 
+        
+        end,    
+
+        ?LOG_TRACE("Item=~p", [Item]),
+
+        Temp_return_value = [Return_value | Encoded_item], 
+        New_return_value = [Temp_return_value | ","], 
+
+        parse_item(T, New_return_value);
+
+  parse_item([], Return_value) ->
+        % strip the trailing comma from the return value
+        Temp = string:strip(Return_value, right, $,),
+
+        % add brackets around the return string
+        string:concat(string:concat("[", Temp), "]").
+
+
 
 .. index::
  single: cloudi_service_handle_info

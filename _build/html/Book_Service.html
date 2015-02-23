@@ -201,9 +201,37 @@ code:load_file(jiffy),
 </div>
 <div class="section" id="handling-requests">
 <h3>5.2.2. Handling Requests<a class="headerlink" href="#handling-requests" title="Permalink to this headline">¶</a></h3>
+<p id="index-2">A simplified example for handling book service requests is shown below. Note that the underscore pattern is used to handle unexpected requests.</p>
+<div class="highlight-python"><div class="highlight"><pre>cloudi_service_handle_request(Type, Name, Pattern, _RequestInfo, Request,
+                             _Timeout, _Priority, _TransId, _Pid,
+                             #state{} = State, Dispatcher) -&gt;
+
+       ?LOG_INFO(&quot;Handle Request: Type=~p, Name=~p, Pattern=~p, Request=~p&quot;, [Type, Name, Pattern, Request]),
+
+       % based on the pattern and request, perform the appropriate action
+       case Pattern of
+               &quot;/recommend/book/newbooks/get&quot; -&gt;
+                       ReplyRecord = find_new(Dispatcher);
+
+               &quot;/recommend/book/popularbooks/get&quot; -&gt;
+                       ReplyRecord = find_popular(Dispatcher);
+
+               _ -&gt;
+                       ReplyRecord = cloudi_x_jsx:encode([&quot;Invalid Request&quot;])
+       end,
+
+       % send reply
+       ?LOG_DEBUG(&quot;Sending reply=~p&quot;, [ReplyRecord]),
+       {reply, ReplyRecord, State}.
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">CloudI provides several pre-defined macros for logging. The LOG_INFO and LOG_DEBUG functions are shown in the example above.</p>
+</div>
 </div>
 <div class="section" id="calling-the-mysql-database-adapter">
-<span id="index-2"></span><h3>5.2.3. Calling the MySQL Database Adapter<a class="headerlink" href="#calling-the-mysql-database-adapter" title="Permalink to this headline">¶</a></h3>
+<span id="index-3"></span><h3>5.2.3. Calling the MySQL Database Adapter<a class="headerlink" href="#calling-the-mysql-database-adapter" title="Permalink to this headline">¶</a></h3>
 <p>The code for calling the MySQL Database Adapter is shown below.</p>
 <div class="highlight-python"><div class="highlight"><pre>Query = &quot;select id, title from items&quot;,
 
@@ -228,9 +256,61 @@ Json_result.
 </div>
 <div class="section" id="parsing-the-results">
 <h3>5.2.4. Parsing the Results<a class="headerlink" href="#parsing-the-results" title="Permalink to this headline">¶</a></h3>
+<p>The Book Service uses several utility functions named <strong>parse_items</strong> and <strong>parse_item</strong> to handle the data returned from the database and encode it using the JSON format.</p>
+<div class="highlight-python"><div class="highlight"><pre>parse_items({result_packet, _, Columns, List, _Trailer}) -&gt;
+      Return_value = parse_item(List),
+      Return_value.
+
+parse_item(List)  -&gt;
+      parse_item(List, []).
+
+parse_item([H|T], Return_value)  -&gt;
+      % Note that the record can contain different numbers of colulmns
+      % and that the columns need to be in the correct positions
+      case H of
+              [Id, Title, Author, Language, Date, Web_page, Subject, Downloads] -&gt;
+                      Item = #item{id=Id, title=Title, creator=Author, language=Language, date_created = Date, web_page=Web_page, subject=Subject, downloads=Downloads},
+
+                      Encoded_item = cloudi_x_jsx:encode(
+                              [
+                                {&lt;&lt;&quot;id&quot;&gt;&gt;, Item#item.id},
+                                {&lt;&lt;&quot;title&quot;&gt;&gt;, Item#item.title},
+                                {&lt;&lt;&quot;creator&quot;&gt;&gt;, Item#item.creator},
+                                {&lt;&lt;&quot;language&quot;&gt;&gt;, Item#item.language},
+                                {&lt;&lt;&quot;web_page&quot;&gt;&gt;, Item#item.web_page},
+                                {&lt;&lt;&quot;subject&quot;&gt;&gt;, Item#item.subject},
+                                {&lt;&lt;&quot;downloads&quot;&gt;&gt;, Item#item.downloads}
+                              ]);
+
+             [Id, Title] -&gt;
+                      Item = #item{id=Id, title=Title},
+
+                      Encoded_item = cloudi_x_jsx:encode(
+                              [
+                                {&lt;&lt;&quot;id&quot;&gt;&gt;, Item#item.id},
+                                {&lt;&lt;&quot;title&quot;&gt;&gt;, Item#item.title}
+                              ])
+
+      end,
+
+      ?LOG_TRACE(&quot;Item=~p&quot;, [Item]),
+
+      Temp_return_value = [Return_value | Encoded_item],
+      New_return_value = [Temp_return_value | &quot;,&quot;],
+
+      parse_item(T, New_return_value);
+
+parse_item([], Return_value) -&gt;
+      % strip the trailing comma from the return value
+      Temp = string:strip(Return_value, right, $,),
+
+      % add brackets around the return string
+      string:concat(string:concat(&quot;[&quot;, Temp), &quot;]&quot;).
+</pre></div>
+</div>
 </div>
 <div class="section" id="handling-informational-messages">
-<span id="index-3"></span><h3>5.2.5. Handling Informational Messages<a class="headerlink" href="#handling-informational-messages" title="Permalink to this headline">¶</a></h3>
+<span id="index-4"></span><h3>5.2.5. Handling Informational Messages<a class="headerlink" href="#handling-informational-messages" title="Permalink to this headline">¶</a></h3>
 <p>The <tt class="docutils literal"><span class="pre">cloudi_service_handle_info</span></tt> function is used for handling spontaneous messages to the service.  For example, if this service is linked to another process and that process unexpectedly halts, an exit trap message may be received.  Typically, the response to this message is to do nothing and the pattern shown below can be used with no modifications.</p>
 <div class="highlight-python"><div class="highlight"><pre>cloudi_service_handle_info(Request, State, _) -&gt;
   {noreply, State}.
@@ -238,7 +318,7 @@ Json_result.
 </div>
 </div>
 <div class="section" id="service-termination">
-<span id="index-4"></span><h3>5.2.6. Service Termination<a class="headerlink" href="#service-termination" title="Permalink to this headline">¶</a></h3>
+<span id="index-5"></span><h3>5.2.6. Service Termination<a class="headerlink" href="#service-termination" title="Permalink to this headline">¶</a></h3>
 <p>The <tt class="docutils literal"><span class="pre">cloudi_service_terminate</span></tt> function is called when the CloudI server is shutting down and about to terminate.  You can add any logic needed to cleanup any resources used by this service or do additional notifications.  If nothing special is needed, you can use the pattern shown below.</p>
 <div class="highlight-python"><div class="highlight"><pre>cloudi_service_terminate(_, #state{}) -&gt;
   ok.
@@ -345,7 +425,7 @@ curl http://localhost:6467/recommend/book/allbooks?id=1
       </ul>
     </div>
     <div class="footer">
-      Last updated on Feb 04, 2015.
+      Last updated on Feb 23, 2015.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
