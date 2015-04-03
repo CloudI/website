@@ -5,7 +5,6 @@
   <meta content="Cloud Framework for fault-tolerant distributed processing with dynamic load balancing" name="description" />
   <meta content="api, cloud, private cloud, framework, erlang, c++, distributed, fault tolerant, distributed systems, fault-tolerant, embarrassingly parallel, divide and conquer, work pool, cloudi" name="keywords" />
   <meta content="global" name="distribution" />
-  <meta content="This document copyright 2013-2014 by Michael Truog" name="copyright" />
   <script type="text/javascript" src="style.js"></script>
   <link rel="stylesheet" type="text/css" href="style.css" />
   <link rel="stylesheet alt" type="text/css" title="print"
@@ -2182,8 +2181,8 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
     <a href="#2_services_add_config_opts_aspects_terminate_before">
     Erlang functions</a> to call in-order before the
     service termination (before an internal service has
-    executed cloudi_service_terminate/2 or an external service
-    Erlang processes terminate).
+    executed cloudi_service_terminate/2 or an external service's
+    process terminates).
   </td></tr><tr><td>
     duo_mode
   </td><td>
