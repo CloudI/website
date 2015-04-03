@@ -208,7 +208,7 @@ The *BookUtilities.conf* file referenced in the script above looks like this:
  
 
 .. note::
- If you use a standalong configuration file, a starting bracket symbol *[* and ending bracket symbol *]* need to be wrapped around the configuration text.  If you embed the configuration in the *cloudi.conf* file then the starting and ending brackets are not needed. 
+ If you use a standalone configuration file, a starting bracket symbol *[* and ending bracket symbol *]* need to be wrapped around the configuration text.  If you embed the configuration in the *cloudi.conf* file then the starting and ending brackets are not needed. 
 
 Running the Java Application
 ============================
