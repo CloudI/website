@@ -173,7 +173,7 @@ Creating the JAR File
 All of the different Java classes that are used by the application need to be added to a JAR file.  Note that this JAR file can be created by hand, but is generally produced by a Java Development Environment.
 
 .. note::
-The JAR **must** contain a *manifest* file that contains both the fully qualified main class and also the full path to the *cloudi.jar* file.  An example of the manifest contents are shown below.
+  The JAR **must** contain a *manifest* file that contains both the fully qualified main class and also the full path to the *cloudi.jar* file.  An example of the manifest contents are shown below.
 
 ::
 
@@ -195,11 +195,20 @@ The *BookUtilities.conf* file referenced in the script above looks like this:
 
 :: 
 
-  [[{prefix, "/book/utility/"},
-  {file_path, "/usr/bin/java"},
-  {args, "-cp /usr/local/lib/cloudi-1.4.0/api/java/ "
-         "-ea:org.cloudi... -jar /home/bruce/Projects/BookUtilities/BookUtilities/deploy/BookUtilities.jar"}]]
+ [
+ {external,
+                "/book/utility/",
+                "/opt/java/jdk1.7.0_05/bin/java",
+                "-cp /usr/local/lib/cloudi-1.4.0/api/java/ "
+                "-ea:org.cloudi... -jar /home/bruce/Projects/BookUtilities/BookUtilities/deploy/BookUtilities.jar",
+                [],
+                lazy_closest, tcp, default,
+                50000, 50000, 50000, undefined, undefined, 1, 1, 5, 300, [] } 
+ ]
  
+
+.. note::
+ If you use a standalong configuration file, a starting bracket symbol *[* and ending bracket symbol *]* need to be wrapped around the configuration text.  If you embed the configuration in the *cloudi.conf* file then the starting and ending brackets are not needed. 
 
 Running the Java Application
 ============================
