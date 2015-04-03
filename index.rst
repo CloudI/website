@@ -20,9 +20,9 @@ Contents:
  Book Service <Book_Service>
  HTML Integration <HTML_Integration>
  Java Integration <Java_Integration>
+ Recommendation Engine Integration <Recommendation_Integration>
  Deployment <Deployment>
  Trouble Shooting <Trouble_Shooting>
- To Do List <Todo>
 
 Indices and tables
 ==================

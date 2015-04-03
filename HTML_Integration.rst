@@ -5,7 +5,6 @@ HTML Integration
 .. index::
  single: WebSocket 
 
-
 Once the Book Service has been developed, integration with the HTML pages is straightfoward.  Note that the HTML pages use the JQuery Mobile framework which simplifies much of the Javascript coding.  If you use a different (or no) web framework the general principles would remain the same.  
 
 .. note::
@@ -15,6 +14,8 @@ Once the Book Service has been developed, integration with the HTML pages is str
 .. index::
  single: Cowboy
  single: WebSocket 
+
+.. _enabling_websockets_reference:
 
 Enabling WebSockets
 ===================

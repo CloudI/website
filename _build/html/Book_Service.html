@@ -149,10 +149,6 @@
 </table>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Access Control Lists (ACLs) are defined in Chapter 9.</p>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
 <p class="last">More information about the configuration settings and additional service options can be found <a class="reference external" href="http://cloudi.org/api.html#2_services_add">here</a></p>
 </div>
 </div>
@@ -186,7 +182,7 @@
   {ok, #state{}}.
 </pre></div>
 </div>
-<p>In the code above, the Book Service defines which messages it subscribes to.  Note that the list of request patterns matches the Service API table shown earlier in Section 3.4.2 with the HTTP method type (<em>get</em> or <em>post</em>) appended.</p>
+<p>In the code above, the Book Service defines which messages it subscribes to.  Note that the list of request patterns matches the Service API table shown earlier in the <a class="reference internal" href="Book_Recommendation_Application.html#service-api-reference"><em>Service API</em></a> section with the HTTP method type (<em>get</em> or <em>post</em>) appended.</p>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
 <p class="last">The initialization section is also a good place to define the code path for any external libraries that this service depends on.  For example, in an earlier version of this code, the Jiffy JSON library was used.  Consequently, the additional lines shown below were added in this section.</p>
@@ -425,7 +421,7 @@ curl http://localhost:6467/recommend/book/allbooks?id=1
       </ul>
     </div>
     <div class="footer">
-      Last updated on Feb 23, 2015.
+      Last updated on Mar 25, 2015.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>

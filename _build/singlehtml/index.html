@@ -150,7 +150,7 @@ TBD</li>
 </ul>
 </div>
 <div class="section" id="service-api">
-<span id="index-4"></span><h4>Service API<a class="headerlink" href="#service-api" title="Permalink to this headline">¶</a></h4>
+<span id="service-api-reference"></span><span id="index-4"></span><h4>Service API<a class="headerlink" href="#service-api" title="Permalink to this headline">¶</a></h4>
 <p>Another important point is to design a consistent RESTful API for interacting with your services.
 CloudI uses the Cowboy HTTP Server to handle requests and Cowboy supports the standard range of REST methods including:
 GET, HEAD, POST, PUT, PATCH, DELETE, and OPTIONS.
@@ -625,10 +625,6 @@ cloudi:send_sync(Context, &quot;/db/mysql/book&quot;, &quot;select * from items 
 </table>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Access Control Lists (ACLs) are defined in Chapter 9.</p>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
 <p class="last">More information about the configuration settings and additional service options can be found <a class="reference external" href="http://cloudi.org/api.html#2_services_add">here</a></p>
 </div>
 </div>
@@ -662,7 +658,7 @@ cloudi:send_sync(Context, &quot;/db/mysql/book&quot;, &quot;select * from items 
   {ok, #state{}}.
 </pre></div>
 </div>
-<p>In the code above, the Book Service defines which messages it subscribes to.  Note that the list of request patterns matches the Service API table shown earlier in Section 3.4.2 with the HTTP method type (<em>get</em> or <em>post</em>) appended.</p>
+<p>In the code above, the Book Service defines which messages it subscribes to.  Note that the list of request patterns matches the Service API table shown earlier in the <a class="reference internal" href="index.html#service-api-reference"><em>Service API</em></a> section with the HTTP method type (<em>get</em> or <em>post</em>) appended.</p>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
 <p class="last">The initialization section is also a good place to define the code path for any external libraries that this service depends on.  For example, in an earlier version of this code, the Jiffy JSON library was used.  Consequently, the additional lines shown below were added in this section.</p>
@@ -843,7 +839,7 @@ curl http://localhost:6467/recommend/book/allbooks?id=1
 <p class="last">The HTML pages use the WebSocket integration method which is part of the HTML5 specification.  WebSockets may not work correctly on older browsers.</p>
 </div>
 <div class="section" id="enabling-websockets">
-<span id="index-1"></span><h3>Enabling WebSockets<a class="headerlink" href="#enabling-websockets" title="Permalink to this headline">¶</a></h3>
+<span id="enabling-websockets-reference"></span><span id="index-1"></span><h3>Enabling WebSockets<a class="headerlink" href="#enabling-websockets" title="Permalink to this headline">¶</a></h3>
 <p>Support for WebSockets is disabled in the default configuration of the Cowboy web server used with CloudI.  To enable WebSockets follow these steps.</p>
 <ol class="arabic simple">
 <li>Change the current directory to the installation files for CloudI. Note that your location may be different than what is shown below.</li>
@@ -1191,9 +1187,9 @@ for (int i = 0; i &lt; tokens.length; ++i) {
 </div>
 </div>
 <div class="section" id="creating-the-jar-file">
-<span id="index-3"></span><h3>Creating the JAR File<a class="headerlink" href="#creating-the-jar-file" title="Permalink to this headline">¶</a></h3>
+<span id="jar-file-reference"></span><span id="index-3"></span><h3>Creating the JAR File<a class="headerlink" href="#creating-the-jar-file" title="Permalink to this headline">¶</a></h3>
 <p>All of the different Java classes that are used by the application need to be added to a JAR file.  Note that this JAR file can be created by hand, but is generally produced by a Java Development Environment.</p>
-<p>The JAR <strong>must</strong> contain a <em>manifest</em> file that contains both the fully qualified main class and also the full path to the <em>cloudi.jar</em> file.  An example is shown below.</p>
+<p>The JAR <strong>must</strong> contain a <em>manifest</em> file that contains both the fully qualified main class and also the full path to the <em>cloudi.jar</em> file.  An example of the manifest contents are shown below.</p>
 <div class="highlight-python"><div class="highlight"><pre>Manifest-Version: 1.0
 Class-Path: /usr/local/lib/cloudi-1.4.0/api/java/cloudi.jar
 Main-Class: com.impactsoftware.bookutilities.Main
@@ -1229,6 +1225,59 @@ curl -X POST -d @BookUtilities.conf http://localhost:6464/cloudi/api/rpc/service
 <div class="section" id="complete-source">
 <h3>Complete Source<a class="headerlink" href="#complete-source" title="Permalink to this headline">¶</a></h3>
 <p>The complete source is located on GitHub <a class="reference external" href="https://github.com/brucekissinger/book_recommendation">here</a>  in the <strong>java</strong> folder.</p>
+</div>
+</div>
+<span id="document-Recommendation_Integration"></span><div class="section" id="recommendation-engine-integration">
+<h2>Recommendation Engine Integration<a class="headerlink" href="#recommendation-engine-integration" title="Permalink to this headline">¶</a></h2>
+<p id="index-0">The Book Recommendation Application uses an open-source recommendation engine named <a class="reference external" href="http://www.mymedialite.net/">MyMediaLite</a>.
+This section provides more detail on how integration with the recommendation engine occurs.</p>
+<div class="section" id="installation-of-mymedialite">
+<h3>Installation of MyMediaLite<a class="headerlink" href="#installation-of-mymedialite" title="Permalink to this headline">¶</a></h3>
+<p>The general steps are:</p>
+<ol class="arabic simple">
+<li>Download MyMediaLite and install in the <em>/opt/book</em> directory</li>
+<li>MyMediaLite uses the .NET framework.  If you are running on a non-Windows operating system you can use the Mono framework to emulate .NET.  The command to install Mono on Ubuntu Linux is:  <em>sudo apt-get install mono-complete</em></li>
+</ol>
+</div>
+<div class="section" id="using-mymedialite">
+<span id="index-1"></span><h3>Using MyMediaLite<a class="headerlink" href="#using-mymedialite" title="Permalink to this headline">¶</a></h3>
+<p>In order to generate book recommendations, MyMediaLite uses several different files as shown below.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="8%" />
+<col width="75%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">File Name</th>
+<th class="head">Direction</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>rating.txt</td>
+<td>Input</td>
+<td>Contains a record for each book and a computed rating based on total downloads</td>
+</tr>
+<tr class="row-odd"><td>rating_test.txt</td>
+<td>Input</td>
+<td>Contains a record for each user, the book id, and their rating for the book.</td>
+</tr>
+<tr class="row-even"><td>item_attributes.txt</td>
+<td>Input</td>
+<td>Contains a record for each book and a unique attribute id for the language and subject</td>
+</tr>
+<tr class="row-odd"><td>item_predict.txt</td>
+<td>Output</td>
+<td>Contains a record for each user and recommended books</td>
+</tr>
+</tbody>
+</table>
+<p>Each of these files is generated by the <em>Book Utility</em> Java code discussed in the previous section.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">MyMediaLite can use a variety of statistical methods for making recommendations.  More information can be found on the project&#8217;s homepage.</p>
+</div>
 </div>
 </div>
 <span id="document-Deployment"></span><div class="section" id="deployment">
@@ -1493,7 +1542,7 @@ mkdir book/ebin
 </div>
 <div class="section" id="websocket-connections-fail">
 <h3>WebSocket Connections Fail<a class="headerlink" href="#websocket-connections-fail" title="Permalink to this headline">¶</a></h3>
-<p>Verify that WebSockets are enabled in the Cowboy configuration.  See the section on <em>Enabling WebSockets</em> in this tutorial for more details.</p>
+<p>Verify that WebSockets are enabled in the Cowboy configuration.  See the section <a class="reference internal" href="index.html#enabling-websockets-reference"><em>Enabling WebSockets</em></a> in this tutorial for more details.</p>
 </div>
 <div class="section" id="erlang-crash-dump">
 <span id="index-0"></span><h3>Erlang Crash Dump<a class="headerlink" href="#erlang-crash-dump" title="Permalink to this headline">¶</a></h3>
@@ -1507,10 +1556,11 @@ mkdir book/ebin
 </ol>
 <p>All services listed in the <strong>cloudi.conf</strong> file must start successfully when the cloud is first started. In other words, the failure of any service listed in the configuration file will keep the entire cloud from starting to ensure an error-free starting state.</p>
 </div>
+<div class="section" id="error-loading-java-jar-file">
+<h3>Error Loading Java JAR File<a class="headerlink" href="#error-loading-java-jar-file" title="Permalink to this headline">¶</a></h3>
+<p>When attempting to load a custom Java application into CloudI using a JAR file, an error of the form  <strong>Error: Could not find or load main class</strong> may be listed in the logs.  A possible cause of this error is a missing or incorrect <em>manifest</em> file inside the JAR file.
+See <a class="reference internal" href="index.html#jar-file-reference"><em>Creating the JAR File</em></a> for an example of the <em>manifest</em> file contents.</p>
 </div>
-<span id="document-Todo"></span><div class="section" id="to-do-list">
-<h2>To Do List<a class="headerlink" href="#to-do-list" title="Permalink to this headline">¶</a></h2>
-<p>This tutorial is a work in progress.  Open items are listed below.</p>
 </div>
 </div>
 </div>
@@ -1607,30 +1657,35 @@ mkdir book/ebin
 <li class="toctree-l2"><a class="reference internal" href="index.html#complete-source">7.7. Complete Source</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="index.html#document-Deployment">8. Deployment</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="index.html#network-configuration">8.1. Network Configuration</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="index.html#bind-address">8.1.1. Bind Address</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#document-Recommendation_Integration">8. Recommendation Engine Integration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="index.html#installation-of-mymedialite">8.1. Installation of MyMediaLite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#using-mymedialite">8.2. Using MyMediaLite</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#cluster-configuration">8.2. Cluster Configuration</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="index.html#adding-nodes-to-the-cluster">8.2.1. Adding Nodes to the Cluster</a></li>
-<li class="toctree-l3"><a class="reference internal" href="index.html#failing-over-nodes-in-the-cluster">8.2.2. Failing Over Nodes In the Cluster</a></li>
-<li class="toctree-l3"><a class="reference internal" href="index.html#testing-the-cluster-configuration">8.2.3. Testing the Cluster Configuration</a></li>
-<li class="toctree-l3"><a class="reference internal" href="index.html#service-redundancy">8.2.4. Service Redundancy</a></li>
-<li class="toctree-l3"><a class="reference internal" href="index.html#local-versus-remote-services">8.2.5. Local versus Remote Services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#document-Deployment">9. Deployment</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="index.html#network-configuration">9.1. Network Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="index.html#bind-address">9.1.1. Bind Address</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#loading-services-on-startup">8.3. Loading Services on Startup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#cluster-configuration">9.2. Cluster Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="index.html#adding-nodes-to-the-cluster">9.2.1. Adding Nodes to the Cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#failing-over-nodes-in-the-cluster">9.2.2. Failing Over Nodes In the Cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#testing-the-cluster-configuration">9.2.3. Testing the Cluster Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#service-redundancy">9.2.4. Service Redundancy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#local-versus-remote-services">9.2.5. Local versus Remote Services</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="index.html#document-Trouble_Shooting">9. Trouble Shooting</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="index.html#source-code-paths">9.1. Source Code Paths</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#timeout">9.2. Timeout</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#websocket-connections-fail">9.3. WebSocket Connections Fail</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#erlang-crash-dump">9.4. Erlang Crash Dump</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#loading-services-on-startup">9.3. Loading Services on Startup</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="index.html#document-Todo">10. To Do List</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#document-Trouble_Shooting">10. Trouble Shooting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="index.html#source-code-paths">10.1. Source Code Paths</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#timeout">10.2. Timeout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#websocket-connections-fail">10.3. WebSocket Connections Fail</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#erlang-crash-dump">10.4. Erlang Crash Dump</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#error-loading-java-jar-file">10.5. Error Loading Java JAR File</a></li>
+</ul>
+</li>
 </ul>
 
         </div>
@@ -1644,7 +1699,7 @@ mkdir book/ebin
       </ul>
     </div>
     <div class="footer">
-      Last updated on Mar 25, 2015.
+      Last updated on Apr 03, 2015.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>9. Trouble Shooting &mdash; CloudI Tutorial</title>
+    <title>10. Trouble Shooting &mdash; CloudI Tutorial</title>
     
     <link rel="stylesheet" href="_static/pyramid.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -24,8 +24,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="CloudI Tutorial" href="index.html" />
-    <link rel="next" title="10. To Do List" href="Todo.html" />
-    <link rel="prev" title="8. Deployment" href="Deployment.html" />
+    <link rel="prev" title="9. Deployment" href="Deployment.html" />
 <!--[if lte IE 6]>
 <link rel="stylesheet" href="_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
 <![endif]-->
@@ -40,10 +39,7 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="Todo.html" title="10. To Do List"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="Deployment.html" title="8. Deployment"
+          <a href="Deployment.html" title="9. Deployment"
              accesskey="P">previous</a> |</li>
         <li><a href="index.html">CloudI Tutorial</a> &raquo;</li> 
       </ul>
@@ -55,9 +51,9 @@
           <div class="body">
             
   <div class="section" id="trouble-shooting">
-<h1>9. Trouble Shooting<a class="headerlink" href="#trouble-shooting" title="Permalink to this headline">¶</a></h1>
+<h1>10. Trouble Shooting<a class="headerlink" href="#trouble-shooting" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="source-code-paths">
-<h2>9.1. Source Code Paths<a class="headerlink" href="#source-code-paths" title="Permalink to this headline">¶</a></h2>
+<h2>10.1. Source Code Paths<a class="headerlink" href="#source-code-paths" title="Permalink to this headline">¶</a></h2>
 <p>A custom application may fail because the source code can not be located correctly.</p>
 <p>In the case of an Erlang application, the source code path can be specified in the <strong>vm.args</strong> file located in the <em>/usr/local/etc/cloudi</em> directory.</p>
 <div class="highlight-python"><div class="highlight"><pre># Book service code path
@@ -79,7 +75,7 @@
 <p>Note that the source code path can also be changed dynamically using the <em>code_path_add</em> API service.</p>
 </div>
 <div class="section" id="timeout">
-<h2>9.2. Timeout<a class="headerlink" href="#timeout" title="Permalink to this headline">¶</a></h2>
+<h2>10.2. Timeout<a class="headerlink" href="#timeout" title="Permalink to this headline">¶</a></h2>
 <p>There are several possible causes of a timeout error.</p>
 <ol class="arabic simple">
 <li>Incorrect Dispatcher Pattern</li>
@@ -100,11 +96,11 @@
 <p>The configuration for each service includes a timeout value.  This value is specified in milliseconds &#8211; not seconds.</p>
 </div>
 <div class="section" id="websocket-connections-fail">
-<h2>9.3. WebSocket Connections Fail<a class="headerlink" href="#websocket-connections-fail" title="Permalink to this headline">¶</a></h2>
-<p>Verify that WebSockets are enabled in the Cowboy configuration.  See the section on <em>Enabling WebSockets</em> in this tutorial for more details.</p>
+<h2>10.3. WebSocket Connections Fail<a class="headerlink" href="#websocket-connections-fail" title="Permalink to this headline">¶</a></h2>
+<p>Verify that WebSockets are enabled in the Cowboy configuration.  See the section <a class="reference internal" href="HTML_Integration.html#enabling-websockets-reference"><em>Enabling WebSockets</em></a> in this tutorial for more details.</p>
 </div>
 <div class="section" id="erlang-crash-dump">
-<span id="index-0"></span><h2>9.4. Erlang Crash Dump<a class="headerlink" href="#erlang-crash-dump" title="Permalink to this headline">¶</a></h2>
+<span id="index-0"></span><h2>10.4. Erlang Crash Dump<a class="headerlink" href="#erlang-crash-dump" title="Permalink to this headline">¶</a></h2>
 <p>A file named <strong>erl_crash.dump</strong> located in the main CloudI folder is generated when a system-wide error occurs.  Possible causes of this include:</p>
 <ol class="arabic simple">
 <li>Incorrect Configuration File</li>
@@ -114,6 +110,11 @@
 <li>Required Service Dependencies Not Met on Startup</li>
 </ol>
 <p>All services listed in the <strong>cloudi.conf</strong> file must start successfully when the cloud is first started. In other words, the failure of any service listed in the configuration file will keep the entire cloud from starting to ensure an error-free starting state.</p>
+</div>
+<div class="section" id="error-loading-java-jar-file">
+<h2>10.5. Error Loading Java JAR File<a class="headerlink" href="#error-loading-java-jar-file" title="Permalink to this headline">¶</a></h2>
+<p>When attempting to load a custom Java application into CloudI using a JAR file, an error of the form  <strong>Error: Could not find or load main class</strong> may be listed in the logs.  A possible cause of this error is a missing or incorrect <em>manifest</em> file inside the JAR file.
+See <a class="reference internal" href="Java_Integration.html#jar-file-reference"><em>Creating the JAR File</em></a> for an example of the <em>manifest</em> file contents.</p>
 </div>
 </div>
 
@@ -125,21 +126,19 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">9. Trouble Shooting</a><ul>
-<li><a class="reference internal" href="#source-code-paths">9.1. Source Code Paths</a></li>
-<li><a class="reference internal" href="#timeout">9.2. Timeout</a></li>
-<li><a class="reference internal" href="#websocket-connections-fail">9.3. WebSocket Connections Fail</a></li>
-<li><a class="reference internal" href="#erlang-crash-dump">9.4. Erlang Crash Dump</a></li>
+<li><a class="reference internal" href="#">10. Trouble Shooting</a><ul>
+<li><a class="reference internal" href="#source-code-paths">10.1. Source Code Paths</a></li>
+<li><a class="reference internal" href="#timeout">10.2. Timeout</a></li>
+<li><a class="reference internal" href="#websocket-connections-fail">10.3. WebSocket Connections Fail</a></li>
+<li><a class="reference internal" href="#erlang-crash-dump">10.4. Erlang Crash Dump</a></li>
+<li><a class="reference internal" href="#error-loading-java-jar-file">10.5. Error Loading Java JAR File</a></li>
 </ul>
 </li>
 </ul>
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="Deployment.html"
-                        title="previous chapter">8. Deployment</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="Todo.html"
-                        title="next chapter">10. To Do List</a></p>
+                        title="previous chapter">9. Deployment</a></p>
 <div id="searchbox" style="display: none">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
@@ -164,16 +163,13 @@
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="Todo.html" title="10. To Do List"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="Deployment.html" title="8. Deployment"
+          <a href="Deployment.html" title="9. Deployment"
              >previous</a> |</li>
         <li><a href="index.html">CloudI Tutorial</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
-      Last updated on Feb 20, 2015.
+      Last updated on Apr 02, 2015.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>

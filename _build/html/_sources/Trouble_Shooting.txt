@@ -59,8 +59,7 @@ The configuration for each service includes a timeout value.  This value is spec
 
 WebSocket Connections Fail
 ===========================
-Verify that WebSockets are enabled in the Cowboy configuration.  See the section on *Enabling WebSockets* in this tutorial for more details.
-
+Verify that WebSockets are enabled in the Cowboy configuration.  See the section :ref:`enabling_websockets_reference` in this tutorial for more details.
 
 .. index::
  single: erl_crash.dump
@@ -81,3 +80,10 @@ If there are syntax errors in the **cloudi.conf** or **app.config** files, the C
 2.  Required Service Dependencies Not Met on Startup
 
 All services listed in the **cloudi.conf** file must start successfully when the cloud is first started. In other words, the failure of any service listed in the configuration file will keep the entire cloud from starting to ensure an error-free starting state. 
+
+
+Error Loading Java JAR File
+===========================
+
+When attempting to load a custom Java application into CloudI using a JAR file, an error of the form  **Error: Could not find or load main class** may be listed in the logs.  A possible cause of this error is a missing or incorrect *manifest* file inside the JAR file. 
+See :ref:`jar_file_reference` for an example of the *manifest* file contents. 

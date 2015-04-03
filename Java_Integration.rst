@@ -166,12 +166,14 @@ The exact format of the response will vary depending on the service that is exec
 .. index::
  single: JAR File
 
+.. _jar_file_reference:
+
 Creating the JAR File
 =====================
 All of the different Java classes that are used by the application need to be added to a JAR file.  Note that this JAR file can be created by hand, but is generally produced by a Java Development Environment.
 
 .. note::
-The JAR **must** contain a *manifest* file that contains both the fully qualified main class and also the full path to the *cloudi.jar* file.  An example is shown below.
+The JAR **must** contain a *manifest* file that contains both the fully qualified main class and also the full path to the *cloudi.jar* file.  An example of the manifest contents are shown below.
 
 ::
 

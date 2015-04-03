@@ -61,11 +61,6 @@ undefined  	            Destination allow ACL
 
 .. note::
 
-  Access Control Lists (ACLs) are defined in Chapter 9. 
-
-
-.. note::
-
  More information about the configuration settings and additional service options can be found `here <http://cloudi.org/api.html#2_services_add>`_
 
 
@@ -104,7 +99,7 @@ Service Initialization Logic
    % return ok
    {ok, #state{}}.
 
-In the code above, the Book Service defines which messages it subscribes to.  Note that the list of request patterns matches the Service API table shown earlier in Section 3.4.2 with the HTTP method type (*get* or *post*) appended. 
+In the code above, the Book Service defines which messages it subscribes to.  Note that the list of request patterns matches the Service API table shown earlier in the :ref:`service-api-reference` section with the HTTP method type (*get* or *post*) appended. 
 
 .. tip:: 
 

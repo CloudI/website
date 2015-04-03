@@ -109,6 +109,8 @@ will be used with the following libraries:
 .. index::
  single: RESTful API 
 
+.. _service-api-reference:
+
 Service API
 -----------
 

@@ -195,9 +195,9 @@ for (int i = 0; i &lt; tokens.length; ++i) {
 </div>
 </div>
 <div class="section" id="creating-the-jar-file">
-<span id="index-3"></span><h2>7.4. Creating the JAR File<a class="headerlink" href="#creating-the-jar-file" title="Permalink to this headline">¶</a></h2>
+<span id="jar-file-reference"></span><span id="index-3"></span><h2>7.4. Creating the JAR File<a class="headerlink" href="#creating-the-jar-file" title="Permalink to this headline">¶</a></h2>
 <p>All of the different Java classes that are used by the application need to be added to a JAR file.  Note that this JAR file can be created by hand, but is generally produced by a Java Development Environment.</p>
-<p>The JAR <strong>must</strong> contain a <em>manifest</em> file that contains both the fully qualified main class and also the full path to the <em>cloudi.jar</em> file.  An example is shown below.</p>
+<p>The JAR <strong>must</strong> contain a <em>manifest</em> file that contains both the fully qualified main class and also the full path to the <em>cloudi.jar</em> file.  An example of the manifest contents are shown below.</p>
 <div class="highlight-python"><div class="highlight"><pre>Manifest-Version: 1.0
 Class-Path: /usr/local/lib/cloudi-1.4.0/api/java/cloudi.jar
 Main-Class: com.impactsoftware.bookutilities.Main
