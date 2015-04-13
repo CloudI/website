@@ -60,8 +60,8 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 
 <div id="content">
   <h1>Frequently Asked Questions</h1>
-  <center><h3>version 1.4.0<br />
-              last updated on February 21<sup>st</sup> 2015</h3></center>
+  <center><h3>version 1.5.0<br />
+              last updated on April 12<sup>th</sup> 2015</h3></center>
 
   <a name="1_contents"></a>
   <h2>1 - Introduction to CloudI</h2>
@@ -122,6 +122,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
     <li><a href="#4_ThreadSafe" >4.11 - Is the CloudI API thread-safe?</a></li>
     <li><a href="#4_Speed"      >4.12 - How can CloudI requests take advantage of cache coherency, minimum network latency, and any logical grouping?</a></li>
     <li><a href="#4_Erlang"     >4.13 - Why not just use Erlang directly?</a></li>
+    <li><a href="#4_Null"       >4.14 - What is a null response (How do timeouts occur)?</a></li>
   </ul>
   <a name="5_contents"></a>
   <h2>5 - Migrating to CloudI</h2>
@@ -456,8 +457,8 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
     <a href="https://github.com/CloudI/CloudI/blob/master/src/lib/cloudi_service_quorum/src/cloudi_service_quorum.erl" target="_blank">cloudi_service_quorum</a>.
     The service request responses will be checked to make sure they
     pass the initialized quorum requirement and the service request will
-    fail (providing a null response) if quorum is not obtained during the
-    service request timeout period.
+    fail (providing a <a href="faq.html#4_Null">null response</a>)
+    if quorum is not obtained during the service request timeout period.
   </p>
   <div class="top"><a href="#1_contents">Top</a></div>
 
@@ -1762,6 +1763,40 @@ sudo cloudi stop
     specific to the business logic being developed, because CloudI is
     continuously tested to ensure it provides both a stable and dependable
     integration framework.
+  </p>
+  <div class="top"><a href="#4_contents">Top</a></div>
+
+  <a name="4_Null"></a>
+  <h3>4.14 - What is a null response (How do timeouts occur)?</h3>
+  <p class="paragraph">
+    A null response is when a service responds to a service request with
+    both ResponseInfo and Response set to a binary of size 0.
+    The sender of the service request will see the null response as a timeout.
+  </p>
+  <p class="paragraph">
+    Whether a service request is completely asynchronous is determined
+    by the service that handles the request (i.e., by returning a null response
+    the service that handles the request is making the service request
+    asynchronous, due to it having control of the request at that point in
+    time).  When a null response is used, the sender will not know whether the
+    service request was handled or if the timeout expired.
+    (By using the phrase "completely asynchronous" above, the service name
+    lookup blocking for the timeout period is ignored due to being a typical
+    fault-tolerance requirement, though blocking can be disabled with the
+    <a href="api.html#2_services_add_config_opts">'request_name_lookup'
+    service configuration option</a>.)
+  </p>
+  <p class="paragraph">
+    To avoid blocking the sender for the timeout period when a null response is
+    used the <a href="api.html#2_services_add_config_opts">'response_timeout_immediate_max' service configuration option</a>
+    can be set to change how large a timeout value must be to provide the
+    null response to the sender (i.e., some timeouts are short enough that
+    there is no need to provide the null response, due to it wasting
+    computational time, since it is the same as a timeout).  The timeout value
+    will also be influenced by the <a href="api.html#2_services_add_config_opts">'request_timeout_adjustment' service configuration option</a>
+    (due to it decreasing the timeout value based on the time spent
+     handling the service request, i.e., not just the time spent before the
+     service request is handled (which always reduces the timeout value)).
   </p>
   <div class="top"><a href="#4_contents">Top</a></div>
 
