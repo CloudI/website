@@ -1,0 +1,342 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>9. Deployment &mdash; CloudI Tutorial</title>
+    
+    <link rel="stylesheet" href="_static/pyramid.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.3.3 Beta',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="CloudI Tutorial" href="index.html" />
+    <link rel="next" title="10. Trouble Shooting" href="Trouble_Shooting.html" />
+    <link rel="prev" title="8. Recommendation Engine Integration" href="Recommendation_Integration.html" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+  </head>
+  <body>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Trouble_Shooting.html" title="10. Trouble Shooting"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Recommendation_Integration.html" title="8. Recommendation Engine Integration"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">CloudI Tutorial</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="deployment">
+<h1>9. Deployment<a class="headerlink" href="#deployment" title="Permalink to this headline">¶</a></h1>
+<p>There are several optional activities that you may want to do to deploy your application for production usage.</p>
+<div class="section" id="network-configuration">
+<h2>9.1. Network Configuration<a class="headerlink" href="#network-configuration" title="Permalink to this headline">¶</a></h2>
+<p>Depending on your application, you may need to modify the default network configuration used by the CloudI components. Some common modifications are listed below.</p>
+<div class="section" id="bind-address">
+<span id="index-0"></span><h3>9.1.1. Bind Address<a class="headerlink" href="#bind-address" title="Permalink to this headline">¶</a></h3>
+<p>By default, the Cowboy web server listens only to the local host network address of 127.0.0.1. If you want CloudI to be accessible on your network, you can change this using these steps:</p>
+<ol class="arabic simple">
+<li>Change the current directory to the installation files for CloudI. Note that your location may be different than what is shown below.</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>cd /opt/cloudi/cloudi-1.4.0/src
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li>Change the current directory to the Cowboy HTTP source</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>cd lib/cloudi_service_http_cowboy/src
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li>Edit the <strong>cloudi_service_http_cowboy.erl</strong> file and change the line that looks like:</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>-define(DEFAULT_INTERFACE,                  {127,0,0,1}). % ip address
+</pre></div>
+</div>
+<p>to</p>
+<div class="highlight-python"><div class="highlight"><pre>-define(DEFAULT_INTERFACE,                  {0,0,0,0}). % ip address
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">An address of 0.0.0.0 will cause Cowboy to listen to any network interface on the server.</p>
+</div>
+<ol class="arabic simple" start="4">
+<li>Remove the Cowboy runtime library directory so that it will get rebuilt by the installation process.</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>cd /usr/local/lib/cloudi-1.4.0/lib
+sudo rm cloudi_service_http_cowboy_1.4.0
+</pre></div>
+</div>
+<ol class="arabic simple" start="5">
+<li>Then run the <strong>make</strong> and <strong>make install</strong> command from the installation source directory and reinstall the software.</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>cd /opt/cloudi/cloudi-1.4.0/src
+make
+sudo make install
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Reinstalling CloudI will change the cloudi.conf, app.config, and vm.args files in the runtime library.  The previous versions are automatically saved as cloudi.conf.old, app.config.old, and vm.args.old and you may need to restore these files if you have made any changes.</p>
+</div>
+</div>
+</div>
+<div class="section" id="cluster-configuration">
+<h2>9.2. Cluster Configuration<a class="headerlink" href="#cluster-configuration" title="Permalink to this headline">¶</a></h2>
+<p>CloudI provides a mechanism for easily adding or removing different host computers to a cluster. Typically each host computer is referred to as a <strong>node</strong>.</p>
+<div class="section" id="adding-nodes-to-the-cluster">
+<h3>9.2.1. Adding Nodes to the Cluster<a class="headerlink" href="#adding-nodes-to-the-cluster" title="Permalink to this headline">¶</a></h3>
+<p>Adding a host computer to the CloudI cloud is as simple as installing CloudI on the computer and starting the CloudI software.  By default, CloudI uses an auto-discovery protocol provided by Erlang to detect new nodes.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The auto-discovery protocol is dependent on the TCP/IP multicast protocol and should generally be limited to computers connected to the same trusted local area network.</p>
+<p class="last">Additional reference is available at
+<a class="reference external" href="http://learnyousomeerlang.com/distribunomicon#setting-up-an-erlang-cluster">here</a></p>
+</div>
+<p>You can also manually add a node to the CloudI cluster using the API as shown by the following example.</p>
+<div class="highlight-python"><div class="highlight"><pre>curl -X POST -d &quot;[&#39;cloud001@cluster1&#39;]&quot; http://localhost:6467/cloudi/api/rpc/nodes_add.erl
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">CloudI also supports the Amazon Web Services (AWS) EC2 distributed Erlang node auto-discovery configuration (auto-discovery within a single region).  See the CloudI API <a class="reference external" href="http://cloudi.org/api.html#2_nodes_set">here</a> for more details.</p>
+</div>
+</div>
+<div class="section" id="failing-over-nodes-in-the-cluster">
+<h3>9.2.2. Failing Over Nodes In the Cluster<a class="headerlink" href="#failing-over-nodes-in-the-cluster" title="Permalink to this headline">¶</a></h3>
+<p>If a node was added using the auto-discovery protocol described above, it is automatically removed if it becomes unavailable.</p>
+<p>If you manually added the node using the CloudI API, you can remove it using the API as shown in the example below.</p>
+<div class="highlight-python"><div class="highlight"><pre>curl -X POST -d &quot;[&#39;cloud001@cluster1&#39;]&quot; http://localhost:6467/cloudi/api/rpc/nodes_remove.erl
+</pre></div>
+</div>
+</div>
+<div class="section" id="testing-the-cluster-configuration">
+<h3>9.2.3. Testing the Cluster Configuration<a class="headerlink" href="#testing-the-cluster-configuration" title="Permalink to this headline">¶</a></h3>
+<p>Use the CloudI API to show any nodes (other than the current local host) that it is aware of.</p>
+<div class="highlight-python"><div class="highlight"><pre>curl http://localhost:6467/cloudi/api/rpc/nodes.erl
+</pre></div>
+</div>
+</div>
+<div class="section" id="service-redundancy">
+<h3>9.2.4. Service Redundancy<a class="headerlink" href="#service-redundancy" title="Permalink to this headline">¶</a></h3>
+<p>When a new node is added to a CloudI cluster, it is important to realize that services running on the existing nodes in the cluster are not automatically copied to the new node.  However, you can manually add a service to a node using the CloudI API as described in other sections of this tutorial.</p>
+</div>
+<div class="section" id="local-versus-remote-services">
+<span id="index-1"></span><h3>9.2.5. Local versus Remote Services<a class="headerlink" href="#local-versus-remote-services" title="Permalink to this headline">¶</a></h3>
+<p>Note that when multiple services are available that subscribe to the same name pattern, CloudI allows you to control whether a local or remote service is invoked using the <strong>destination refresh</strong> method in the <strong>services_add</strong> API.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="75%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Destination Refresh Method</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>lazy_closest or immediate_closest</td>
+<td>A service running on the local node will be selected, unless the destination only exists on a remote node.</td>
+</tr>
+<tr class="row-odd"><td>lazy_furthest or immediate_furthest</td>
+<td>A service running on a remote node will be selected, unless the destination only exists on the local node.</td>
+</tr>
+<tr class="row-even"><td>lazy_random or immediate_random</td>
+<td>A service is selected randomly from the subscribed services.</td>
+</tr>
+<tr class="row-odd"><td>lazy_local or immediate_local</td>
+<td>Only a service on the local node is selected</td>
+</tr>
+<tr class="row-even"><td>lazy_remote or immediate_remote</td>
+<td>Only a service on the remote node is selected</td>
+</tr>
+<tr class="row-odd"><td>lazy_newest or immediate_newest</td>
+<td>Only the most recently subscribed service is selected</td>
+</tr>
+<tr class="row-even"><td>lazy_oldest or immediate_oldest</td>
+<td>Only the first subscribed service is selected</td>
+</tr>
+</tbody>
+</table>
+<p>The <strong>immediate</strong> prefix instructs CloudI to lookup the service name to get the most current destination result.  The <strong>lazy</strong> prefix uses a cached value instead.
+More details are available <a class="reference external" href="http://cloudi.org/api.html#1_Intro">here</a></p>
+</div>
+</div>
+<div class="section" id="loading-services-on-startup">
+<h2>9.3. Loading Services on Startup<a class="headerlink" href="#loading-services-on-startup" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div>During development, you typically add a service and code path to CloudI using the API.  However, when development has completed, you may wish to have the service start automatically.</div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It is important to realize that all services listed in the cloudi.conf file must start successfully when the cloud is first started. In other words, the failure of any service listed in the configuration file will keep the entire cloud from starting to ensure an error-free starting state.</p>
+</div>
+<p>To add the Book Service to start automatically, follow these steps.</p>
+<ol class="arabic simple">
+<li>Change the current directory to the CloudI run time location. Note that this might be different for your installation</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>cd /usr/local/lib/cloudi-1.4.0/
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li>Create a new directory for the Book service and any compiled files.  The directory name should conform to the language conventions for your service.</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>mkdir book
+mkdir book/ebin
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li>Place the compiled Book Service file (book.beam) in the directory created above.</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>cp /tmp/book.beam book/ebin
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li>Modify the <strong>vm.args</strong> file stored in the <strong>/usr/local/etc/cloudi</strong> directory and add the location of the directory created in Step 2.</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre># Book service code path
+-pz /usr/local/lib/cloudi-1.4.0/book/ebin/
+</pre></div>
+</div>
+<ol class="arabic simple" start="5">
+<li>Modify the <strong>cloudi.conf</strong> file stored in the <strong>/usr/local/etc/cloudi</strong> directory and add the database service described in Section 4.1 and the configuration settings described in Section 5.1.  When completed, the <strong>cloudi.conf</strong> file should contain lines similar to what&#8217;s shown below.</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>%
+% Book Recommendation services
+%
+
+% database service
+{internal,
+        &quot;/db/mysql/&quot;,
+       cloudi_service_db_mysql,
+       [{database, &quot;book&quot;},
+        {timeout, 20000}, % ms
+        {encoding, utf8},
+        {hostname, &quot;dev1&quot;},
+        {username, &quot;cloudi&quot;},
+        {password, &quot;secret&quot;},
+        {port, 3306}],
+       none,
+       50000, 50000, 50000, undefined, undefined, 1, 5, 300, []
+},
+
+% book service
+{internal,
+        &quot;/recommend/book/&quot;,
+        book,
+        [],
+        immediate_random,
+        60000, 60000, 60000, undefined, undefined, 3, 5, 900,
+        [{reload, true}, {queue_limit, 500}]
+}
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">For a production deployment, you might want to modify the <em>destination refresh method</em> to use a random node in the cluster as shown above.  You may also want to increase the number of processes created at startup.  In this example, the database service has <strong>1</strong> process created at startup and the book service has <strong>3</strong> processes created.</p>
+</div>
+<ol class="arabic simple" start="6">
+<li>Restart cloudi and inspect the cloudi.log file to make sure that everything started correctly.</li>
+<li>Repeat Steps 1 through 6 for every node in the cluster.</li>
+</ol>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">9. Deployment</a><ul>
+<li><a class="reference internal" href="#network-configuration">9.1. Network Configuration</a><ul>
+<li><a class="reference internal" href="#bind-address">9.1.1. Bind Address</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#cluster-configuration">9.2. Cluster Configuration</a><ul>
+<li><a class="reference internal" href="#adding-nodes-to-the-cluster">9.2.1. Adding Nodes to the Cluster</a></li>
+<li><a class="reference internal" href="#failing-over-nodes-in-the-cluster">9.2.2. Failing Over Nodes In the Cluster</a></li>
+<li><a class="reference internal" href="#testing-the-cluster-configuration">9.2.3. Testing the Cluster Configuration</a></li>
+<li><a class="reference internal" href="#service-redundancy">9.2.4. Service Redundancy</a></li>
+<li><a class="reference internal" href="#local-versus-remote-services">9.2.5. Local versus Remote Services</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#loading-services-on-startup">9.3. Loading Services on Startup</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Recommendation_Integration.html"
+                        title="previous chapter">8. Recommendation Engine Integration</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="Trouble_Shooting.html"
+                        title="next chapter">10. Trouble Shooting</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="Trouble_Shooting.html" title="10. Trouble Shooting"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="Recommendation_Integration.html" title="8. Recommendation Engine Integration"
+             >previous</a> |</li>
+        <li><a href="index.html">CloudI Tutorial</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      Last updated on Apr 02, 2015.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

@@ -14,16 +14,15 @@ Contents:
  :numbered:
 
  Introduction
- Starting Out <Starting_Out>
  Book Recommendation Application <Book_Recommendation_Application>
+ Starting Out <Starting_Out>
  Database Adapter Service <Database_Adapter>
  Book Service <Book_Service>
  HTML Integration <HTML_Integration>
  Java Integration <Java_Integration>
- Security Configuration <Security>
- Cluster Configuration <Cluster>
+ Recommendation Engine Integration <Recommendation_Integration>
+ Deployment <Deployment>
  Trouble Shooting <Trouble_Shooting>
- To Do List <Todo>
 
 Indices and tables
 ==================

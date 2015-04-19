@@ -56,12 +56,8 @@
             
   <div class="section" id="book-service">
 <h1>5. Book Service<a class="headerlink" href="#book-service" title="Permalink to this headline">¶</a></h1>
-<div class="admonition-todo admonition" id="index-0">
-<p class="first admonition-title">Todo</p>
-<p class="last">This section is in the process of being written.</p>
-</div>
 <div class="section" id="configuration-file">
-<span id="index-1"></span><h2>5.1. Configuration File<a class="headerlink" href="#configuration-file" title="Permalink to this headline">¶</a></h2>
+<span id="index-0"></span><h2>5.1. Configuration File<a class="headerlink" href="#configuration-file" title="Permalink to this headline">¶</a></h2>
 <p>Every service running in Cloudi needs certain configuration information to be defined.  Typically, this information is stored in a separate file for each service and specified when the service is added.</p>
 <p>The configuration file for the Book Service is shown below and is stored in a file named <strong>book.conf</strong>.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="p">[{</span>
@@ -81,6 +77,10 @@
   <span class="p">[{</span><span class="nb">reload</span><span class="p">,</span> <span class="n">true</span><span class="p">},</span> <span class="p">{</span><span class="n">queue_limit</span><span class="p">,</span> <span class="mi">50</span><span class="p">}]</span>
 <span class="p">}]</span>
 </pre></div>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">During initial development, storing the configuration in a separate file can be useful for making and testing incremental changes.  Later when development is complete, the information can be stored directly in the <em>cloudi.conf</em> file if desired.</p>
 </div>
 <p>A table describing each of these parameters is listed below.</p>
 <table border="1" class="docutils">
@@ -149,16 +149,12 @@
 </table>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Access Control Lists (ACLs) are defined in Chapter 9.</p>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
 <p class="last">More information about the configuration settings and additional service options can be found <a class="reference external" href="http://cloudi.org/api.html#2_services_add">here</a></p>
 </div>
 </div>
 <div class="section" id="module-outline">
 <h2>5.2. Module Outline<a class="headerlink" href="#module-outline" title="Permalink to this headline">¶</a></h2>
-<p>The Book Service module is split into several sections.  In our example, the Book Service is developed using the Erlang language, but other language examples are displayed later.</p>
+<p>The Book Service module is split into several sections.  In this tutorial, the Book Service is developed using the Erlang language, but other languages supported by CloudI could have been used.</p>
 <blockquote>
 <div><ol class="arabic simple">
 <li>Service initialization logic - needs to be customized for each application</li>
@@ -170,7 +166,7 @@
 </div></blockquote>
 <p>Each of these sections is described in more detail below.</p>
 <div class="section" id="service-initialization-logic">
-<span id="index-2"></span><h3>5.2.1. Service Initialization Logic<a class="headerlink" href="#service-initialization-logic" title="Permalink to this headline">¶</a></h3>
+<span id="index-1"></span><h3>5.2.1. Service Initialization Logic<a class="headerlink" href="#service-initialization-logic" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-python"><div class="highlight"><pre>cloudi_service_init(_Args, _Prefix, Dispatcher) -&gt;
 
   % subscribe to different request patterns
@@ -186,7 +182,7 @@
   {ok, #state{}}.
 </pre></div>
 </div>
-<p>In the code above, the Book Service defines which messages it subscribes to.  Note that the list of request patterns matches the Service API table shown earlier in Section 3.4.2 with the HTTP method type (<em>get</em> or <em>post</em>) appended.</p>
+<p>In the code above, the Book Service defines which messages it subscribes to.  Note that the list of request patterns matches the Service API table shown earlier in the <a class="reference internal" href="Book_Recommendation_Application.html#service-api-reference"><em>Service API</em></a> section with the HTTP method type (<em>get</em> or <em>post</em>) appended.</p>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
 <p class="last">The initialization section is also a good place to define the code path for any external libraries that this service depends on.  For example, in an earlier version of this code, the Jiffy JSON library was used.  Consequently, the additional lines shown below were added in this section.</p>
@@ -201,6 +197,34 @@ code:load_file(jiffy),
 </div>
 <div class="section" id="handling-requests">
 <h3>5.2.2. Handling Requests<a class="headerlink" href="#handling-requests" title="Permalink to this headline">¶</a></h3>
+<p id="index-2">A simplified example for handling book service requests is shown below. Note that the underscore pattern is used to handle unexpected requests.</p>
+<div class="highlight-python"><div class="highlight"><pre>cloudi_service_handle_request(Type, Name, Pattern, _RequestInfo, Request,
+                             _Timeout, _Priority, _TransId, _Pid,
+                             #state{} = State, Dispatcher) -&gt;
+
+       ?LOG_INFO(&quot;Handle Request: Type=~p, Name=~p, Pattern=~p, Request=~p&quot;, [Type, Name, Pattern, Request]),
+
+       % based on the pattern and request, perform the appropriate action
+       case Pattern of
+               &quot;/recommend/book/newbooks/get&quot; -&gt;
+                       ReplyRecord = find_new(Dispatcher);
+
+               &quot;/recommend/book/popularbooks/get&quot; -&gt;
+                       ReplyRecord = find_popular(Dispatcher);
+
+               _ -&gt;
+                       ReplyRecord = cloudi_x_jsx:encode([&quot;Invalid Request&quot;])
+       end,
+
+       % send reply
+       ?LOG_DEBUG(&quot;Sending reply=~p&quot;, [ReplyRecord]),
+       {reply, ReplyRecord, State}.
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">CloudI provides several pre-defined macros for logging. The LOG_INFO and LOG_DEBUG functions are shown in the example above.</p>
+</div>
 </div>
 <div class="section" id="calling-the-mysql-database-adapter">
 <span id="index-3"></span><h3>5.2.3. Calling the MySQL Database Adapter<a class="headerlink" href="#calling-the-mysql-database-adapter" title="Permalink to this headline">¶</a></h3>
@@ -228,10 +252,62 @@ Json_result.
 </div>
 <div class="section" id="parsing-the-results">
 <h3>5.2.4. Parsing the Results<a class="headerlink" href="#parsing-the-results" title="Permalink to this headline">¶</a></h3>
+<p>The Book Service uses several utility functions named <strong>parse_items</strong> and <strong>parse_item</strong> to handle the data returned from the database and encode it using the JSON format.</p>
+<div class="highlight-python"><div class="highlight"><pre>parse_items({result_packet, _, Columns, List, _Trailer}) -&gt;
+      Return_value = parse_item(List),
+      Return_value.
+
+parse_item(List)  -&gt;
+      parse_item(List, []).
+
+parse_item([H|T], Return_value)  -&gt;
+      % Note that the record can contain different numbers of colulmns
+      % and that the columns need to be in the correct positions
+      case H of
+              [Id, Title, Author, Language, Date, Web_page, Subject, Downloads] -&gt;
+                      Item = #item{id=Id, title=Title, creator=Author, language=Language, date_created = Date, web_page=Web_page, subject=Subject, downloads=Downloads},
+
+                      Encoded_item = cloudi_x_jsx:encode(
+                              [
+                                {&lt;&lt;&quot;id&quot;&gt;&gt;, Item#item.id},
+                                {&lt;&lt;&quot;title&quot;&gt;&gt;, Item#item.title},
+                                {&lt;&lt;&quot;creator&quot;&gt;&gt;, Item#item.creator},
+                                {&lt;&lt;&quot;language&quot;&gt;&gt;, Item#item.language},
+                                {&lt;&lt;&quot;web_page&quot;&gt;&gt;, Item#item.web_page},
+                                {&lt;&lt;&quot;subject&quot;&gt;&gt;, Item#item.subject},
+                                {&lt;&lt;&quot;downloads&quot;&gt;&gt;, Item#item.downloads}
+                              ]);
+
+             [Id, Title] -&gt;
+                      Item = #item{id=Id, title=Title},
+
+                      Encoded_item = cloudi_x_jsx:encode(
+                              [
+                                {&lt;&lt;&quot;id&quot;&gt;&gt;, Item#item.id},
+                                {&lt;&lt;&quot;title&quot;&gt;&gt;, Item#item.title}
+                              ])
+
+      end,
+
+      ?LOG_TRACE(&quot;Item=~p&quot;, [Item]),
+
+      Temp_return_value = [Return_value | Encoded_item],
+      New_return_value = [Temp_return_value | &quot;,&quot;],
+
+      parse_item(T, New_return_value);
+
+parse_item([], Return_value) -&gt;
+      % strip the trailing comma from the return value
+      Temp = string:strip(Return_value, right, $,),
+
+      % add brackets around the return string
+      string:concat(string:concat(&quot;[&quot;, Temp), &quot;]&quot;).
+</pre></div>
+</div>
 </div>
 <div class="section" id="handling-informational-messages">
 <span id="index-4"></span><h3>5.2.5. Handling Informational Messages<a class="headerlink" href="#handling-informational-messages" title="Permalink to this headline">¶</a></h3>
-<p>The <tt class="docutils literal"><span class="pre">cloudi_service_handle_info</span></tt> function is used for handling spontaneous messages to the service.  For example, if this service is linked to another process and that process unexpectedly halts, an exit trap message may be received.  Typically, the response to this message is to do nothing and the pattern shown below can be used.</p>
+<p>The <tt class="docutils literal"><span class="pre">cloudi_service_handle_info</span></tt> function is used for handling spontaneous messages to the service.  For example, if this service is linked to another process and that process unexpectedly halts, an exit trap message may be received.  Typically, the response to this message is to do nothing and the pattern shown below can be used with no modifications.</p>
 <div class="highlight-python"><div class="highlight"><pre>cloudi_service_handle_info(Request, State, _) -&gt;
   {noreply, State}.
 </pre></div>
@@ -247,10 +323,7 @@ Json_result.
 </div>
 <div class="section" id="complete-source">
 <h3>5.2.7. Complete Source<a class="headerlink" href="#complete-source" title="Permalink to this headline">¶</a></h3>
-<div class="admonition-todo admonition" id="index-6">
-<p class="first admonition-title">Todo</p>
-<p class="last">Add link to the Book Service source code</p>
-</div>
+<p>The complete source is located on GitHub <a class="reference external" href="https://github.com/brucekissinger/book_recommendation">here</a>  in the <strong>service</strong> folder.</p>
 </div>
 </div>
 <div class="section" id="adding-the-service-to-cloudi">
@@ -265,6 +338,10 @@ curl -X POST -d /opt/cloudi/book/ebin http://localhost:6467/cloudi/api/erlang/co
 # add the service using the attached configuration file
 curl -X post -d @book.conf http://localhost:6467/cloudi/api/erlang/services_add
 </pre></div>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">During initial development, adding the source code path and the configuration using the API services as shown above can be useful for making and testing incremental changes.  Later when development is complete, this information can be added directly to the CloudI configuration files if desired.</p>
 </div>
 </div>
 <div class="section" id="testing-the-service">
@@ -344,7 +421,7 @@ curl http://localhost:6467/recommend/book/allbooks?id=1
       </ul>
     </div>
     <div class="footer">
-      Last updated on Dec 03, 2014.
+      Last updated on Mar 25, 2015.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>

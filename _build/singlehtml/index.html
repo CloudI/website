@@ -61,19 +61,15 @@ It supports the development of services that can be created in many different pr
 <h3>About This Tutorial<a class="headerlink" href="#about-this-tutorial" title="Permalink to this headline">¶</a></h3>
 <p>This tutorial should help you understand the design decisions and implementation steps needed to use CloudI for your own projects.
 A small real-world application is used for illustration and the full source code for the application is located
-here in case you want to look at the complete implementation.</p>
-<div class="admonition-todo admonition" id="index-1">
-<p class="first admonition-title">Todo</p>
-<p class="last">Add source code link here.</p>
-</div>
+<a class="reference external" href="https://github.com/brucekissinger/book_recommendation">here</a> in case you want to look at the complete implementation.</p>
 <p>This tutorial assumes that you have successfully <a class="reference external" href="http://cloudi.org/faq.html#3_Overview">installed CloudI</a> on a development system and can successfully start and stop it.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The examples shown here were developed on a machine using CloudI version 1.3.3 running Ubuntu Linux version 14.04 operating system.</p>
+<p class="last">The examples shown here were developed on a machine using CloudI version 1.4.0 running Ubuntu Linux version 14.04 operating system.</p>
 </div>
 </div>
 <div class="section" id="where-to-get-help">
-<span id="index-2"></span><h3>Where to Get Help<a class="headerlink" href="#where-to-get-help" title="Permalink to this headline">¶</a></h3>
+<span id="index-1"></span><h3>Where to Get Help<a class="headerlink" href="#where-to-get-help" title="Permalink to this headline">¶</a></h3>
 <p>See the
 <a class="reference external" href="http://cloudi.org/support.html">Support</a>
 information on the CloudI web site.
@@ -82,145 +78,16 @@ In addition, there is a Google Group named
 that contains discussions of new releases and other user-oriented questions.</p>
 </div>
 </div>
-<span id="document-Starting_Out"></span><div class="section" id="starting-out">
-<h2>Starting Out<a class="headerlink" href="#starting-out" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="setting-up-the-cloudi-configuration">
-<span id="index-0"></span><h3>Setting up the CloudI Configuration<a class="headerlink" href="#setting-up-the-cloudi-configuration" title="Permalink to this headline">¶</a></h3>
-<p>When CloudI is installed, several default configuration files are created.
-These are generally stored in the
-<strong>/usr/local/lib/cloud_&lt;version&gt;/etc</strong>
-directory.
-For initial development, the following suggested changes should be made.</p>
-<ol class="arabic simple">
-<li>Make a copy of the original configuration file.</li>
-</ol>
-<div class="highlight-python"><div class="highlight"><pre>sudo cp /usr/local/etc/cloudi/cloudi.conf /usr/local/etc/cloudi/cloudi.conf.original
-</pre></div>
-</div>
-<ol class="arabic simple" start="2">
-<li>Adjust the log setting by changing the settings in the
-<strong>cloudi.conf</strong>
-file.  The original configuration has a “trace” log level and this generates a very large quantity of messages.
-Setting the level to “debug” is probably more appropriate for development purposes.</li>
-</ol>
-<div class="highlight-python"><div class="highlight"><pre>{logging, [
-        %{file, &quot;path/to/logfile&quot;},
-        {level,
-        debug
-        }, % levels: off, fatal, error, warn, info, debug, trace
-
-       ...
-</pre></div>
-</div>
-<ol class="arabic simple" start="3">
-<li>The standard installation includes a number of test services.
-These test services can consume a fair amount of CPU resources and can clutter up the logs.
-During active development, you are likely going to be restarting the CloudI service frequently, so it makes sense to remove anything you don&#8217;t need.
-You can do this by removing or commenting out the test services located in the
-<strong>cloudi.conf</strong>
-file. An example is shown below where the % sign is used to comment out an entry.</li>
-</ol>
-<div class="highlight-python"><div class="highlight"><pre>%{internal,
-%&quot;/tests/flood/&quot;,
-%cloudi_service_flood,
-%[{flood, &quot;/tests/flood/java&quot;, &lt;&lt;&quot;DATA&quot;&gt;&gt;, 1000}],
-%lazy_closest,
-%5000, 5000, 5000, [api], undefined, 2, 5, 300, []},
-</pre></div>
-</div>
-<ol class="arabic simple" start="4">
-<li>It is important to realize that all services listed in the <strong>cloudi.conf</strong> file must start successfully when the cloud is first started.
-In other words, the failure of any service listed in the configuration file will keep the entire cloud from starting to ensure an error-free starting state.  Seperate configuration methods will be used to show how a cloud may grow.</li>
-</ol>
-</div>
-<div class="section" id="viewing-logs">
-<span id="index-1"></span><h3>Viewing Logs<a class="headerlink" href="#viewing-logs" title="Permalink to this headline">¶</a></h3>
-<p>The default location of CloudI log files is the
-<strong>/usr/local/var/log/cloudi/</strong>
-<strong>logs</strong>
-directory.  You can change the location of the log files by modifying the
-<strong>cloudi.conf</strong>
-file and removing the % comment.</p>
-<div class="highlight-python"><div class="highlight"><pre>{logging, [
-%{file, &quot;**path/to/logfile**&quot;},
-{level, debug
-}, % levels: off, fatal, error, warn, info, debug, trace
-</pre></div>
-</div>
-</div>
-<div class="section" id="automating-the-build-process">
-<h3>Automating the Build Process<a class="headerlink" href="#automating-the-build-process" title="Permalink to this headline">¶</a></h3>
-<p>The typical build process when working with CloudI consists of the following steps:</p>
-<ul class="simple">
-<li>Starting CloudI</li>
-<li>Specifying the code path location using the CloudI Service API</li>
-<li>Compilation of custom code</li>
-<li>Adding custom code to CloudI using the CloudI Service API</li>
-<li>Running test services</li>
-<li>Stopping CloudI</li>
-</ul>
-<p>The use of some sort of automated build process to perform these steps is well worth the effort.
-Options range from a simple shell script, to a make file, to more complicated build tool.
-Pick a mechanism that is simple and something that you are familiar with.
-An example shell script for the Book Service (see next section for more details) is listed below.</p>
-<div class="highlight-python"><div class="highlight"><pre>#!/bin/sh
-#
-# These scripts are used to load the Book services into the Cloudi engine
-#
-
-# Add the current directory to the code path
-curl -X POST -d &#39;&quot;&#39;`pwd`&#39;&quot;&#39; http://localhost:6467/cloudi/api/erlang/code_path_add
-
-# Compile all Erlang modules
-erlc -pz /usr/local/lib/cloudi-1.3.3/lib/cloudi_core-1.3.3 -pz /usr/local/lib/cloudi-1.3.3/lib/cloudi_core-1.3.3/ebin book.erl
-
-# Add the Book service
-curl -X POST -d @book.conf http://localhost:6467/cloudi/api/erlang/services_add
-
-# Display list of services
-curl http://localhost:6467/cloudi/api/erlang/services
-
-# Call the Book Service
-curl http://localhost:6467/recommendation/book?item=45388
-</pre></div>
-</div>
-</div>
-<div class="section" id="common-operations">
-<span id="index-2"></span><h3>Common Operations<a class="headerlink" href="#common-operations" title="Permalink to this headline">¶</a></h3>
-<p>Common operations for working with CloudI are shown below.</p>
-<p>1.  Starting / Stopping CloudI</p>
-<div class="highlight-python"><div class="highlight"><pre>sudo cloudi start
-
-sudo cloudi stop
-</pre></div>
-</div>
-<ol class="arabic simple" start="2">
-<li>Listing services</li>
-</ol>
-<p>This command is useful for viewing what services have been defined in the cloud.</p>
-<div class="highlight-python"><div class="highlight"><pre>curl http://localhost:6467/cloudi/api/erlang/services
-</pre></div>
-</div>
-<p>3.  Listing the code search paths</p>
-<div class="highlight-python"><div class="highlight"><pre>curl http://localhost:6467/cloudi/api/erlang/code_path
-</pre></div>
-</div>
-<p>4. Adding a code search path</p>
-<div class="highlight-python"><div class="highlight"><pre>curl -X POST -d &#39;&quot;/home/user/code/services&quot;&#39; http://localhost:6467/cloudi/api/erlang/code_path_add
-</pre></div>
-</div>
-</div>
-</div>
 <span id="document-Book_Recommendation_Application"></span><div class="section" id="book-recommendation-application">
 <h2>Book Recommendation Application<a class="headerlink" href="#book-recommendation-application" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="background">
 <span id="index-0"></span><h3>Background<a class="headerlink" href="#background" title="Permalink to this headline">¶</a></h3>
-<p>The application that will be used for this tutorial is a web-based book recommendation system that provides a list of books available on
+<p>The application used for this tutorial is a web-based book recommendation system that provides a list of books available on
 <a class="reference external" href="http://www.gutenberg.org/">Project Gutenberg</a>
-and provides recommendations of other books that might interest you.
+and provides recommendations of other books.
 You can run the application at
 <a class="reference external" href="http://www.impactsoftwarelabs.com/book">http://www.impactsoftwarelabs.com/book</a>
-and view the full source code here.</p>
+and view the full source code <a class="reference external" href="https://github.com/brucekissinger/book_recommendation">here</a></p>
 <p>A use case diagram showing the major functions is listed below.</p>
 <img alt="_images/UseCaseOverview.jpg" src="_images/UseCaseOverview.jpg" />
 </div>
@@ -259,21 +126,23 @@ to provide location transparency for the MySQL database backend.</li>
 <li>HTML pages will call the
 <em>Book Service</em>
 directly using Websockets rather than being generated by PHP on the server side.</li>
-<li>Modify the various Java utility programs to run as CloudI services and use the <em>Book Service</em> rather than calling the MySQL database directly.</li>
+<li>Modify the various Java utility programs to run as CloudI services and use the <em>MySQL Service Adapter</em> rather than calling the MySQL database directly.</li>
 </ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The Future State Implementation could be further simplified by using the Cowboy Web Server rather than the Apache Web Server for serving the HTML pages.  However, in the target environment there are other applications using Apache and Apache is the corporate standard.</p>
+</div>
 </div>
 <div class="section" id="architectural-decisions">
 <h3>Architectural Decisions<a class="headerlink" href="#architectural-decisions" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="data-transmission">
 <span id="index-3"></span><h4>Data Transmission<a class="headerlink" href="#data-transmission" title="Permalink to this headline">¶</a></h4>
-<p>Because the components will be developed using different languages (PHP, Java, and Erlang), an important decision is to select a language-independent method for transmitting data between each component.
+<p>Because the components will be developed using different languages (Javascript, Java, and Erlang), an important decision is to select a language-independent method for transmitting data between each component.
 CloudI does not impose a specific data transfer mechanism, so you are free to select this.
 In this tutorial, the
 <a class="reference external" href="http://www.wikipedia.org/wiki/Json">JSON protocol</a>
 will be used with the following libraries:</p>
 <ul class="simple">
-<li>PHP -
-TBD</li>
 <li>Java -
 TBD</li>
 <li>Erlang -
@@ -281,7 +150,7 @@ TBD</li>
 </ul>
 </div>
 <div class="section" id="service-api">
-<span id="index-4"></span><h4>Service API<a class="headerlink" href="#service-api" title="Permalink to this headline">¶</a></h4>
+<span id="service-api-reference"></span><span id="index-4"></span><h4>Service API<a class="headerlink" href="#service-api" title="Permalink to this headline">¶</a></h4>
 <p>Another important point is to design a consistent RESTful API for interacting with your services.
 CloudI uses the Cowboy HTTP Server to handle requests and Cowboy supports the standard range of REST methods including:
 GET, HEAD, POST, PUT, PATCH, DELETE, and OPTIONS.
@@ -330,6 +199,16 @@ An excellent resource for designing RESTful API&#8217;s is located <a class="ref
 <td>/book/download?id=X&amp;user=Y</td>
 <td>Download a book given the Item ID and User ID</td>
 </tr>
+<tr class="row-odd"><td>Create New User</td>
+<td>GET</td>
+<td>/book/newuser</td>
+<td>Create and return a new user ID</td>
+</tr>
+<tr class="row-even"><td>Get Unrated Books</td>
+<td>GET</td>
+<td>/book/unrated?user=X</td>
+<td>Get the unrated books for a user ID</td>
+</tr>
 <tr class="row-odd"><td>Rank Downloaded Book</td>
 <td>POST</td>
 <td>/book/download/</td>
@@ -349,7 +228,7 @@ An excellent resource for designing RESTful API&#8217;s is located <a class="ref
 </div>
 <div class="section" id="integration-method">
 <h4>Integration Method<a class="headerlink" href="#integration-method" title="Permalink to this headline">¶</a></h4>
-<p>There are several different methods for applications to call CloudI services. The alternatives depend on whether the application is &#8220;external&#8221; (i.e., not part of CloudI) or &#8220;internal&#8221; (i.e., a CloudI service).</p>
+<p>There are several different methods for applications to call CloudI services. The alternatives depend on whether the application is &#8220;external&#8221; (i.e., run inside an operating system process external to the Erlang VM) or &#8220;internal&#8221; (i.e., run inside the Erlang VM).  Applications written in C, C++, Java, JavaScript, Perl, PHP, Python, and Ruby would be of &#8220;external&#8221; type.  Applications written in Erlang or Elixir would be an &#8220;internal&#8221; type.</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="14%" />
@@ -365,7 +244,7 @@ An excellent resource for designing RESTful API&#8217;s is located <a class="ref
 <tbody valign="top">
 <tr class="row-even"><td>External</td>
 <td>HTTP</td>
-<td>Using Websocket messages</td>
+<td>Using WebSocket protocol</td>
 </tr>
 <tr class="row-odd"><td>External</td>
 <td>Zero MQ</td>
@@ -384,7 +263,7 @@ An excellent resource for designing RESTful API&#8217;s is located <a class="ref
 <p class="first admonition-title">Note</p>
 <p class="last">Technically an Internal application could also use the HTTP or ZeroMQ integration methods, but generally the use of the CloudI API is preferred.</p>
 </div>
-<p>For the Book Recommendation application, HTTP REST calls will be used to integrate the HTML pages with the <em>Book Service</em>. The Java Utility programs will use the ZeroMQ message bus.</p>
+<p>For this application, HTTP REST calls will be used to integrate the HTML pages with the <em>Book Service</em>.  The HTTP request/response messages will be delivered using the WebSocket protocol. The Java Utility programs will use the ZeroMQ message bus.</p>
 </div>
 </div>
 <div class="section" id="data-model">
@@ -393,13 +272,197 @@ An excellent resource for designing RESTful API&#8217;s is located <a class="ref
 <img alt="_images/DatabaseDiagram.png" src="_images/DatabaseDiagram.png" />
 <p>The primary tables are the <strong>items</strong> and <strong>users</strong> table.  Several cross reference tables exist including:</p>
 <ul class="simple">
-<li><strong>item_downloads</strong> - stores how many times an item has been downloaded as reported by the source site.</li>
 <li><strong>user_items</strong> - tracks which items a user has downloaded and if they have submitted a rating</li>
 <li><strong>user_item_recommendations</strong> - contains recommendations for a particular user</li>
 <li><strong>user_item_ratings</strong> - holds the rating value that a user submits for an item</li>
 </ul>
-<p>The <strong>lcc_codes</strong> table stores the descriptions of Library of Congress codes.
-The <strong>lcsh_codes</strong> table stores the descriptions of Library of Congress Subject Heading codes.</p>
+</div>
+</div>
+<span id="document-Starting_Out"></span><div class="section" id="starting-out">
+<h2>Starting Out<a class="headerlink" href="#starting-out" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="working-with-cloudi">
+<h3>Working with CloudI<a class="headerlink" href="#working-with-cloudi" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="setting-up-the-cloudi-configuration">
+<span id="index-0"></span><h4>Setting up the CloudI Configuration<a class="headerlink" href="#setting-up-the-cloudi-configuration" title="Permalink to this headline">¶</a></h4>
+<p>When CloudI is installed, several default configuration files are created.
+These files are located in the
+<strong>/usr/local/etc/cloudi</strong>
+directory.
+For initial development, the following suggested changes should be made.</p>
+<ol class="arabic simple">
+<li>Make a copy of the original configuration file.</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>sudo cp /usr/local/etc/cloudi/cloudi.conf /usr/local/etc/cloudi/cloudi.conf.original
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li>Adjust the log setting by changing the settings in the
+<strong>cloudi.conf</strong>
+file.  The original configuration has a “trace” log level and this generates a very large quantity of messages.
+Setting the level to “debug” is probably more appropriate for development purposes.</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>{logging, [
+        %{file, &quot;path/to/logfile&quot;},
+        {level,
+        debug
+        }, % levels: off, fatal, error, warn, info, debug, trace
+
+       ...
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li>The standard installation includes a number of test services.
+These test services can consume a fair amount of CPU resources and can clutter up the logs.
+During active development, you are likely going to be restarting the CloudI service frequently, so it makes sense to remove anything you don&#8217;t need.
+You can do this by removing or commenting out the test services located in the
+<strong>cloudi.conf</strong>
+file. An example is shown below where the % sign is used to comment out an entry.</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>%{internal,
+%&quot;/tests/flood/&quot;,
+%cloudi_service_flood,
+%[{flood, &quot;/tests/flood/java&quot;, &lt;&lt;&quot;DATA&quot;&gt;&gt;, 1000}],
+%lazy_closest,
+%5000, 5000, 5000, [api], undefined, 2, 5, 300, []},
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">Unfortunately, you can not just remove all the test services, because some of them are used to implement core functions that you will likely need.</p>
+</div>
+<p>The Book Recommendation application requires the services shown in the following table.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="32%" />
+<col width="48%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Subscription Path</th>
+<th class="head">Service Name</th>
+<th class="head">Comments</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>/cloudi/api</td>
+<td>cloudi_service_api_requests</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>/tests/websockets</td>
+<td>cloudi_service_http_cowboy</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>/tests/http</td>
+<td>cloudi_service_http_cowboy</td>
+<td>There are two entries for different ports</td>
+</tr>
+</tbody>
+</table>
+<ol class="arabic simple" start="4">
+<li>It is important to realize that all services listed in the <strong>cloudi.conf</strong> file must start successfully when the cloud is first started.
+In other words, the failure of any service listed in the configuration file will keep the entire cloud from starting to ensure an error-free starting state.  Seperate configuration methods will be used to show how a cloud may grow.</li>
+</ol>
+</div>
+<div class="section" id="viewing-logs">
+<span id="index-1"></span><h4>Viewing Logs<a class="headerlink" href="#viewing-logs" title="Permalink to this headline">¶</a></h4>
+<p>The default location of CloudI log files is the
+<strong>/usr/local/var/log/cloudi/</strong>
+<strong>logs</strong>
+directory.  You can change the location of the log files by modifying the
+<strong>cloudi.conf</strong>
+file and removing the % comment.</p>
+<div class="highlight-python"><div class="highlight"><pre>{logging, [
+%{file, &quot;**path/to/logfile**&quot;},
+{level, debug
+}, % levels: off, fatal, error, warn, info, debug, trace
+</pre></div>
+</div>
+</div>
+<div class="section" id="automating-the-build-process">
+<h4>Automating the Build Process<a class="headerlink" href="#automating-the-build-process" title="Permalink to this headline">¶</a></h4>
+<p>The typical build process when working with CloudI consists of the following steps:</p>
+<ul class="simple">
+<li>Starting CloudI</li>
+<li>Specifying the code path location using the CloudI Service API</li>
+<li>Compilation of custom code</li>
+<li>Adding custom code to CloudI using the CloudI Service API</li>
+<li>Running test services</li>
+<li>Stopping CloudI</li>
+</ul>
+<p>The use of some sort of automated build process to perform these steps is well worth the effort.
+Options range from a simple shell script, to a make file, to more complicated build tool.
+Pick a mechanism that is simple and something that you are familiar with.
+An example shell script for the Book Service (see next section for more details) is listed below.</p>
+<div class="highlight-python"><div class="highlight"><pre>#!/bin/sh
+#
+# These scripts are used to load the Book services into the Cloudi engine
+#
+
+# Add the current directory to the code path
+curl -X POST -d &#39;&quot;&#39;`pwd`&#39;&quot;&#39; http://localhost:6467/cloudi/api/erlang/code_path_add
+
+# Compile all Erlang modules
+erlc -pz /usr/local/lib/cloudi-1.3.3/lib/cloudi_core-1.3.3 -pz /usr/local/lib/cloudi-1.3.3/lib/cloudi_core-1.3.3/ebin book.erl
+
+# Add the Book service
+curl -X POST -d @book.conf http://localhost:6467/cloudi/api/erlang/services_add
+
+# Display list of services
+curl http://localhost:6467/cloudi/api/erlang/services
+
+# Call the Book Service
+curl http://localhost:6467/recommendation/book?item=45388
+</pre></div>
+</div>
+</div>
+<div class="section" id="common-operations">
+<span id="index-2"></span><h4>Common Operations<a class="headerlink" href="#common-operations" title="Permalink to this headline">¶</a></h4>
+<p>Common operations for working with CloudI are shown below.</p>
+<p>1.  Starting / Stopping CloudI</p>
+<div class="highlight-python"><div class="highlight"><pre>sudo cloudi start
+
+sudo cloudi stop
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li>Listing services</li>
+</ol>
+<p>This command is useful for viewing what services have been defined in the cloud.</p>
+<div class="highlight-python"><div class="highlight"><pre>curl http://localhost:6467/cloudi/api/erlang/services
+</pre></div>
+</div>
+<p>3.  Listing the code search paths</p>
+<div class="highlight-python"><div class="highlight"><pre>curl http://localhost:6467/cloudi/api/erlang/code_path
+</pre></div>
+</div>
+<p>4. Adding a code search path</p>
+<div class="highlight-python"><div class="highlight"><pre>curl -X POST -d &#39;&quot;/home/user/code/services&quot;&#39; http://localhost:6467/cloudi/api/erlang/code_path_add
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="working-with-the-database">
+<h3>Working with the Database<a class="headerlink" href="#working-with-the-database" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="building-the-database">
+<span id="index-3"></span><h4>Building the Database<a class="headerlink" href="#building-the-database" title="Permalink to this headline">¶</a></h4>
+<p>A script of SQL commands needed to build the <em>book</em> database schema is provided in the <strong>scripts/book.sql</strong> file. You can create this schema using the MySQL command line tool as shown in the example below.</p>
+<div class="highlight-python"><div class="highlight"><pre>mysql -u root -p &lt; book.sql
+</pre></div>
+</div>
+</div>
+<div class="section" id="creating-users">
+<h4>Creating Users<a class="headerlink" href="#creating-users" title="Permalink to this headline">¶</a></h4>
+<p>You also should create a special user that can connect to the <em>book</em> schema and can add, update, or delete records.  An example using the MySQL command line tool is shown below.</p>
+<div class="highlight-python"><div class="highlight"><pre>mysql -u root -p &lt; book.sql
+GRANT ALL ON book.* to cloudi@&#39;localhost&#39; IDENTIFIED BY &#39;secret&#39;;
+quit;
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The GRANT statement also tells MySQL which hosts the user is allowed to connect from.  If CloudI is going to be running in a clustered configuration then you will need to add grant access for each node in the cluster.</p>
+</div>
+</div>
 </div>
 </div>
 <span id="document-Database_Adapter"></span><div class="section" id="database-adapter-service">
@@ -463,18 +526,14 @@ cloudi:send_sync(Context, &quot;/db/mysql/book&quot;, &quot;select * from items 
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">To exit the Erlang shell, press the Control D key simultaneously.</p>
+<p class="last">To exit the Erlang shell, press the Control D keys simultaneously.</p>
 </div>
 </div>
 </div>
 <span id="document-Book_Service"></span><div class="section" id="book-service">
 <h2>Book Service<a class="headerlink" href="#book-service" title="Permalink to this headline">¶</a></h2>
-<div class="admonition-todo admonition" id="index-0">
-<p class="first admonition-title">Todo</p>
-<p class="last">This section is in the process of being written.</p>
-</div>
 <div class="section" id="configuration-file">
-<span id="index-1"></span><h3>Configuration File<a class="headerlink" href="#configuration-file" title="Permalink to this headline">¶</a></h3>
+<span id="index-0"></span><h3>Configuration File<a class="headerlink" href="#configuration-file" title="Permalink to this headline">¶</a></h3>
 <p>Every service running in Cloudi needs certain configuration information to be defined.  Typically, this information is stored in a separate file for each service and specified when the service is added.</p>
 <p>The configuration file for the Book Service is shown below and is stored in a file named <strong>book.conf</strong>.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="p">[{</span>
@@ -494,6 +553,10 @@ cloudi:send_sync(Context, &quot;/db/mysql/book&quot;, &quot;select * from items 
   <span class="p">[{</span><span class="nb">reload</span><span class="p">,</span> <span class="n">true</span><span class="p">},</span> <span class="p">{</span><span class="n">queue_limit</span><span class="p">,</span> <span class="mi">50</span><span class="p">}]</span>
 <span class="p">}]</span>
 </pre></div>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">During initial development, storing the configuration in a separate file can be useful for making and testing incremental changes.  Later when development is complete, the information can be stored directly in the <em>cloudi.conf</em> file if desired.</p>
 </div>
 <p>A table describing each of these parameters is listed below.</p>
 <table border="1" class="docutils">
@@ -562,16 +625,12 @@ cloudi:send_sync(Context, &quot;/db/mysql/book&quot;, &quot;select * from items 
 </table>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Access Control Lists (ACLs) are defined in Chapter 9.</p>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
 <p class="last">More information about the configuration settings and additional service options can be found <a class="reference external" href="http://cloudi.org/api.html#2_services_add">here</a></p>
 </div>
 </div>
 <div class="section" id="module-outline">
 <h3>Module Outline<a class="headerlink" href="#module-outline" title="Permalink to this headline">¶</a></h3>
-<p>The Book Service module is split into several sections.  In our example, the Book Service is developed using the Erlang language, but other language examples are displayed later.</p>
+<p>The Book Service module is split into several sections.  In this tutorial, the Book Service is developed using the Erlang language, but other languages supported by CloudI could have been used.</p>
 <blockquote>
 <div><ol class="arabic simple">
 <li>Service initialization logic - needs to be customized for each application</li>
@@ -583,7 +642,7 @@ cloudi:send_sync(Context, &quot;/db/mysql/book&quot;, &quot;select * from items 
 </div></blockquote>
 <p>Each of these sections is described in more detail below.</p>
 <div class="section" id="service-initialization-logic">
-<span id="index-2"></span><h4>Service Initialization Logic<a class="headerlink" href="#service-initialization-logic" title="Permalink to this headline">¶</a></h4>
+<span id="index-1"></span><h4>Service Initialization Logic<a class="headerlink" href="#service-initialization-logic" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-python"><div class="highlight"><pre>cloudi_service_init(_Args, _Prefix, Dispatcher) -&gt;
 
   % subscribe to different request patterns
@@ -599,7 +658,7 @@ cloudi:send_sync(Context, &quot;/db/mysql/book&quot;, &quot;select * from items 
   {ok, #state{}}.
 </pre></div>
 </div>
-<p>In the code above, the Book Service defines which messages it subscribes to.  Note that the list of request patterns matches the Service API table shown earlier in Section 3.4.2 with the HTTP method type (<em>get</em> or <em>post</em>) appended.</p>
+<p>In the code above, the Book Service defines which messages it subscribes to.  Note that the list of request patterns matches the Service API table shown earlier in the <a class="reference internal" href="index.html#service-api-reference"><em>Service API</em></a> section with the HTTP method type (<em>get</em> or <em>post</em>) appended.</p>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
 <p class="last">The initialization section is also a good place to define the code path for any external libraries that this service depends on.  For example, in an earlier version of this code, the Jiffy JSON library was used.  Consequently, the additional lines shown below were added in this section.</p>
@@ -614,6 +673,34 @@ code:load_file(jiffy),
 </div>
 <div class="section" id="handling-requests">
 <h4>Handling Requests<a class="headerlink" href="#handling-requests" title="Permalink to this headline">¶</a></h4>
+<p id="index-2">A simplified example for handling book service requests is shown below. Note that the underscore pattern is used to handle unexpected requests.</p>
+<div class="highlight-python"><div class="highlight"><pre>cloudi_service_handle_request(Type, Name, Pattern, _RequestInfo, Request,
+                             _Timeout, _Priority, _TransId, _Pid,
+                             #state{} = State, Dispatcher) -&gt;
+
+       ?LOG_INFO(&quot;Handle Request: Type=~p, Name=~p, Pattern=~p, Request=~p&quot;, [Type, Name, Pattern, Request]),
+
+       % based on the pattern and request, perform the appropriate action
+       case Pattern of
+               &quot;/recommend/book/newbooks/get&quot; -&gt;
+                       ReplyRecord = find_new(Dispatcher);
+
+               &quot;/recommend/book/popularbooks/get&quot; -&gt;
+                       ReplyRecord = find_popular(Dispatcher);
+
+               _ -&gt;
+                       ReplyRecord = cloudi_x_jsx:encode([&quot;Invalid Request&quot;])
+       end,
+
+       % send reply
+       ?LOG_DEBUG(&quot;Sending reply=~p&quot;, [ReplyRecord]),
+       {reply, ReplyRecord, State}.
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">CloudI provides several pre-defined macros for logging. The LOG_INFO and LOG_DEBUG functions are shown in the example above.</p>
+</div>
 </div>
 <div class="section" id="calling-the-mysql-database-adapter">
 <span id="index-3"></span><h4>Calling the MySQL Database Adapter<a class="headerlink" href="#calling-the-mysql-database-adapter" title="Permalink to this headline">¶</a></h4>
@@ -641,10 +728,62 @@ Json_result.
 </div>
 <div class="section" id="parsing-the-results">
 <h4>Parsing the Results<a class="headerlink" href="#parsing-the-results" title="Permalink to this headline">¶</a></h4>
+<p>The Book Service uses several utility functions named <strong>parse_items</strong> and <strong>parse_item</strong> to handle the data returned from the database and encode it using the JSON format.</p>
+<div class="highlight-python"><div class="highlight"><pre>parse_items({result_packet, _, Columns, List, _Trailer}) -&gt;
+      Return_value = parse_item(List),
+      Return_value.
+
+parse_item(List)  -&gt;
+      parse_item(List, []).
+
+parse_item([H|T], Return_value)  -&gt;
+      % Note that the record can contain different numbers of colulmns
+      % and that the columns need to be in the correct positions
+      case H of
+              [Id, Title, Author, Language, Date, Web_page, Subject, Downloads] -&gt;
+                      Item = #item{id=Id, title=Title, creator=Author, language=Language, date_created = Date, web_page=Web_page, subject=Subject, downloads=Downloads},
+
+                      Encoded_item = cloudi_x_jsx:encode(
+                              [
+                                {&lt;&lt;&quot;id&quot;&gt;&gt;, Item#item.id},
+                                {&lt;&lt;&quot;title&quot;&gt;&gt;, Item#item.title},
+                                {&lt;&lt;&quot;creator&quot;&gt;&gt;, Item#item.creator},
+                                {&lt;&lt;&quot;language&quot;&gt;&gt;, Item#item.language},
+                                {&lt;&lt;&quot;web_page&quot;&gt;&gt;, Item#item.web_page},
+                                {&lt;&lt;&quot;subject&quot;&gt;&gt;, Item#item.subject},
+                                {&lt;&lt;&quot;downloads&quot;&gt;&gt;, Item#item.downloads}
+                              ]);
+
+             [Id, Title] -&gt;
+                      Item = #item{id=Id, title=Title},
+
+                      Encoded_item = cloudi_x_jsx:encode(
+                              [
+                                {&lt;&lt;&quot;id&quot;&gt;&gt;, Item#item.id},
+                                {&lt;&lt;&quot;title&quot;&gt;&gt;, Item#item.title}
+                              ])
+
+      end,
+
+      ?LOG_TRACE(&quot;Item=~p&quot;, [Item]),
+
+      Temp_return_value = [Return_value | Encoded_item],
+      New_return_value = [Temp_return_value | &quot;,&quot;],
+
+      parse_item(T, New_return_value);
+
+parse_item([], Return_value) -&gt;
+      % strip the trailing comma from the return value
+      Temp = string:strip(Return_value, right, $,),
+
+      % add brackets around the return string
+      string:concat(string:concat(&quot;[&quot;, Temp), &quot;]&quot;).
+</pre></div>
+</div>
 </div>
 <div class="section" id="handling-informational-messages">
 <span id="index-4"></span><h4>Handling Informational Messages<a class="headerlink" href="#handling-informational-messages" title="Permalink to this headline">¶</a></h4>
-<p>The <tt class="docutils literal"><span class="pre">cloudi_service_handle_info</span></tt> function is used for handling spontaneous messages to the service.  For example, if this service is linked to another process and that process unexpectedly halts, an exit trap message may be received.  Typically, the response to this message is to do nothing and the pattern shown below can be used.</p>
+<p>The <tt class="docutils literal"><span class="pre">cloudi_service_handle_info</span></tt> function is used for handling spontaneous messages to the service.  For example, if this service is linked to another process and that process unexpectedly halts, an exit trap message may be received.  Typically, the response to this message is to do nothing and the pattern shown below can be used with no modifications.</p>
 <div class="highlight-python"><div class="highlight"><pre>cloudi_service_handle_info(Request, State, _) -&gt;
   {noreply, State}.
 </pre></div>
@@ -660,10 +799,7 @@ Json_result.
 </div>
 <div class="section" id="complete-source">
 <h4>Complete Source<a class="headerlink" href="#complete-source" title="Permalink to this headline">¶</a></h4>
-<div class="admonition-todo admonition" id="index-6">
-<p class="first admonition-title">Todo</p>
-<p class="last">Add link to the Book Service source code</p>
-</div>
+<p>The complete source is located on GitHub <a class="reference external" href="https://github.com/brucekissinger/book_recommendation">here</a>  in the <strong>service</strong> folder.</p>
 </div>
 </div>
 <div class="section" id="adding-the-service-to-cloudi">
@@ -678,6 +814,10 @@ curl -X POST -d /opt/cloudi/book/ebin http://localhost:6467/cloudi/api/erlang/co
 # add the service using the attached configuration file
 curl -X post -d @book.conf http://localhost:6467/cloudi/api/erlang/services_add
 </pre></div>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">During initial development, adding the source code path and the configuration using the API services as shown above can be useful for making and testing incremental changes.  Later when development is complete, this information can be added directly to the CloudI configuration files if desired.</p>
 </div>
 </div>
 <div class="section" id="testing-the-service">
@@ -696,7 +836,52 @@ curl http://localhost:6467/recommend/book/allbooks?id=1
 <p id="index-0">Once the Book Service has been developed, integration with the HTML pages is straightfoward.  Note that the HTML pages use the JQuery Mobile framework which simplifies much of the Javascript coding.  If you use a different (or no) web framework the general principles would remain the same.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The HTML pages use the Web Sockets integration method which is part of the HTML5 specification.  Web Sockets may not work correctly on older browsers.</p>
+<p class="last">The HTML pages use the WebSocket integration method which is part of the HTML5 specification.  WebSockets may not work correctly on older browsers.</p>
+</div>
+<div class="section" id="enabling-websockets">
+<span id="enabling-websockets-reference"></span><span id="index-1"></span><h3>Enabling WebSockets<a class="headerlink" href="#enabling-websockets" title="Permalink to this headline">¶</a></h3>
+<p>Support for WebSockets is disabled in the default configuration of the Cowboy web server used with CloudI.  To enable WebSockets follow these steps.</p>
+<ol class="arabic simple">
+<li>Change the current directory to the installation files for CloudI. Note that your location may be different than what is shown below.</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>cd /opt/cloudi/cloudi-1.4.0/src
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li>Change the current directory to the Cowboy HTTP source</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>cd lib/cloudi_service_http_cowboy/src
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li>Edit the <strong>cloudi_service_http_cowboy.erl</strong> file and change the line that looks like:</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>-define(DEFAULT_USE_WEBSOCKETS,                   false).
+</pre></div>
+</div>
+<p>to</p>
+<div class="highlight-python"><div class="highlight"><pre>-define(DEFAULT_USE_WEBSOCKETS,                   true).
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li>Remove the Cowboy runtime library so that it will get rebuilt by the installation process.</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>cd /usr/local/lib/cloudi-1.4.0/lib
+sudo rm cloudi_service_http_cowboy_1.4.0
+</pre></div>
+</div>
+<ol class="arabic simple" start="5">
+<li>Then run the <strong>make</strong> and <strong>make install</strong> command from the installation source directory and reinstall the software.</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>cd /opt/cloudi/cloudi-1.4.0/src
+make
+sudo make install
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Reinstalling CloudI will change the cloudi.conf, app.config, and vm.args files in the runtime library.  The previous versions are automatically saved as cloudi.conf.old, app.config.old, and vm.args.old and you may need to restore these files if you have made any changes.</p>
+</div>
 </div>
 <div class="section" id="calling-the-book-service">
 <h3>Calling the Book Service<a class="headerlink" href="#calling-the-book-service" title="Permalink to this headline">¶</a></h3>
@@ -709,11 +894,11 @@ var service_name = &quot;/recommend/book/newbooks&quot;;
 var request_type = &quot;get&quot;;
 </pre></div>
 </div>
-<p>Next, the web socket is opened using the following code:</p>
+<p>Next, the WebSocket is opened using the following code:</p>
 <div class="highlight-python"><div class="highlight"><pre>web_socket = new WebSocket(host_url + service_name);
 </pre></div>
 </div>
-<p>Web sockets raise events and a function is defined that will handle the <strong>onopen</strong> event.  In this case, when the socket is opened then the <strong>send</strong> function will be called:</p>
+<p>WebSockets raise events and a function is defined that will handle the <strong>onopen</strong> event.  In this case, when the socket is opened then the <strong>send</strong> function will be called:</p>
 <div class="highlight-python"><div class="highlight"><pre>// define function that is called when the web socket is opened
 web_socket.onopen = function () {
         send();
@@ -749,7 +934,7 @@ web_socket.onopen = function () {
 <p>The detailed processing of the message is performed by the <strong>handle_message</strong> function described below.</p>
 </div>
 <div class="section" id="parsing-the-results">
-<span id="index-1"></span><h3>Parsing the Results<a class="headerlink" href="#parsing-the-results" title="Permalink to this headline">¶</a></h3>
+<span id="index-2"></span><h3>Parsing the Results<a class="headerlink" href="#parsing-the-results" title="Permalink to this headline">¶</a></h3>
 <p>A simplified version of the <strong>handle_message</strong> function is shown below:</p>
 <div class="highlight-python"><div class="highlight"><pre>handle_message = function (data) {
 
@@ -789,67 +974,563 @@ var obj = JSON.parse(data);
 </pre></div>
 </div>
 </div>
+<div class="section" id="using-ajax-instead-of-websockets">
+<span id="index-3"></span><h3>Using AJAX instead of WebSockets<a class="headerlink" href="#using-ajax-instead-of-websockets" title="Permalink to this headline">¶</a></h3>
+<p>The use of WebSockets for integration of HTML pages with CloudI as shown in the preceeding sections is simple and efficient.  However, there is one limitation when using the default CloudI / Cowboy configuration - namely that only GET operations are supported.  A simple work around is to use the XML HTTP Request mechanism.  Because your HTML pages might be hosted at a different port or location then the CloudI service, a Cross-Origin Resource Sharing (CORS) request will be demonstrated below using the same general outline used earlier in the WebSocket example.</p>
+<p>First, some global variables are defined:</p>
+<div class="highlight-python"><div class="highlight"><pre>// Customize for your environment
+var service_host = &quot;http://localhost:6467&quot;;
+var rank_book_service = &quot;/recommend/book/download&quot;;
+</pre></div>
+</div>
+<p>Next, a utility function is created:</p>
+<div class="highlight-python"><div class="highlight"><pre>function createCORSRequest(method, url) {
+  console.log(&quot;Creating CORS Request &quot; + method + &quot; &quot; + url);
+
+  var xhr = new XMLHttpRequest();
+  if (&quot;withCredentials&quot; in xhr) {
+
+    // Check if the XMLHttpRequest object has a &quot;withCredentials&quot; property.
+    // &quot;withCredentials&quot; only exists on XMLHTTPRequest2 objects.
+    xhr.open(method, url, true);
+
+  } else if (typeof XDomainRequest != &quot;undefined&quot;) {
+
+    // Otherwise, check if XDomainRequest.
+    // XDomainRequest only exists in IE, and is IE&#39;s way of making CORS requests.
+    xhr = new XDomainRequest();
+    xhr.open(method, url);
+
+  } else {
+
+    // Otherwise, CORS is not supported by the browser.
+    xhr = null;
+    console.log(&quot;XHR not supported by this browser&quot;);
+
+  }
+  return xhr;
+}
+</pre></div>
+</div>
+<p>Next, code for creating and sending the CORS request is defined:</p>
+<div class="highlight-python"><div class="highlight"><pre>function rank_book(user_ID, item_ID, rating) {
+  // create a CORS request
+  var service_url = service_host + rank_book_service;
+  var xhr = createCORSRequest(&#39;POST&#39;, service_url);
+  if (!xhr) {
+    throw new Error(&#39;CORS not supported&#39;);
+  }
+
+  // define a function to handle the response
+  xhr.onload = function() {
+    var responseText = xhr.responseText;
+    console.log(responseText);
+    // process the response.
+    return;
+  };
+
+  // define a function to handle errors
+  xhr.onerror = function() {
+    console.log(&#39;There was an error!&#39;);
+    return;
+  };
+
+  // send the request
+  xhr.send(&#39;?user_ID=\&quot;&#39; + user_ID + &#39;\&quot;&#39; + &#39;&amp;item_id=\&quot;&#39; + item_ID + &#39;\&quot;&#39; + &#39;&amp;rating=\&quot;&#39; + rating + &#39;\&quot;&#39;);
+}
+</pre></div>
+</div>
+</div>
 <div class="section" id="complete-source">
 <h3>Complete Source<a class="headerlink" href="#complete-source" title="Permalink to this headline">¶</a></h3>
-<div class="admonition-todo admonition" id="index-2">
-<p class="first admonition-title">Todo</p>
-<p class="last">Add link to the HTML source code</p>
-</div>
+<p>The complete source is located on GitHub <a class="reference external" href="https://github.com/brucekissinger/book_recommendation">here</a>  in the <strong>html</strong> folder.</p>
 </div>
 </div>
 <span id="document-Java_Integration"></span><div class="section" id="java-integration">
 <h2>Java Integration<a class="headerlink" href="#java-integration" title="Permalink to this headline">¶</a></h2>
-<div class="admonition-todo admonition" id="index-0">
-<p class="first admonition-title">Todo</p>
-<p class="last">This section has not yet been written</p>
+<p id="index-0">There are several Java utility classes that need to be revised to run within the CloudI environment and to call the MySQL Database Adapter service rather than calling the MySQL database directly.</p>
+<div class="section" id="integrating-a-java-application-with-cloudi">
+<h3>Integrating a Java Application with CloudI<a class="headerlink" href="#integrating-a-java-application-with-cloudi" title="Permalink to this headline">¶</a></h3>
+<p>The general steps for adding a Java application to Cloudi are:</p>
+<ol class="arabic simple">
+<li>Create a new class named <em>Main</em> that will initialize the CloudI API</li>
+<li>Create a new class named <em>Task</em> that subscribes to various Cloudi requests and delegates the processing of these requests to different Java methods.</li>
+<li>Create a JAR file that contains the different Java classes.</li>
+<li>Add the JAR file to the CloudI configuration.</li>
+<li>Test the application.</li>
+</ol>
+<p>Each of these steps are described in more detail below.</p>
+<div class="section" id="main-java-class">
+<span id="index-1"></span><h4>Main.java Class<a class="headerlink" href="#main-java-class" title="Permalink to this headline">¶</a></h4>
+<p>A new file named <em>Main.java</em> will be created with the following contents.</p>
+<div class="highlight-python"><div class="highlight"><pre>import org.cloudi.API;
+
+public class Main {
+  public static void main(String[] args) {
+      try {
+          final int thread_count = API.thread_count();
+          assert (thread_count == 1);
+          Task t = new Task(0);
+          t.run();
+      } catch (API.InvalidInputException e) {
+          e.printStackTrace(API.err);
+      }
+  }
+}
+</pre></div>
 </div>
-<div class="section" id="calling-the-book-service">
-<h3>Calling the Book Service<a class="headerlink" href="#calling-the-book-service" title="Permalink to this headline">¶</a></h3>
+<p>This code is used to initialize the Java class and to create and run a new instance of the <em>Task</em> class.</p>
 </div>
-<div class="section" id="parsing-the-results">
-<h3>Parsing the Results<a class="headerlink" href="#parsing-the-results" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="task-java-class">
+<span id="index-2"></span><h4>Task.java Class<a class="headerlink" href="#task-java-class" title="Permalink to this headline">¶</a></h4>
+<p>A new file named <em>Task.java</em> will be created with the following contents.</p>
+<div class="highlight-python"><div class="highlight"><pre>import com.ericsson.otp.erlang.OtpErlangPid;
+import java.io.UnsupportedEncodingException;
+import org.cloudi.API;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+
+public class Task {
+  private API api;
+
+  public Task(final int thread_index) {
+      try {
+          this.api = new API(thread_index);
+      } catch (API.InvalidInputException e) {
+          e.printStackTrace(API.err);
+          System.exit(1);
+      } catch (API.MessageDecodingException e) {j
+          e.printStackTrace(API.err);
+          System.exit(1);
+      } catch (API.TerminateException e) {
+          System.exit(1);
+      }
+  }
+
+
+  public void run() {
+
+      try {
+
+          // subscribe to different CloudI services
+          this.api.subscribe(&quot;load_catalog/get&quot;, this, &quot;startLoadCatalog&quot;);
+          this.api.subscribe(&quot;generate_ratings/get&quot;, this, &quot;startGenerateRatings&quot;);
+          this.api.subscribe(&quot;load_predictions/get&quot;, this, &quot;startLoadPredictions&quot;);
+
+          // accept service requests
+          this.api.poll();
+
+      } catch (API.TerminateException e) {
+          API.err.println(&quot;Book Utilities TerminateException caught &quot; + e.getMessage());
+      } catch (Exception e) {
+          API.err.println(&quot;Book Utilities Exception caught &quot; + e.getMessage());
+      }
+  }
+</pre></div>
+</div>
+<p>The code listed above creates a new instance of the <em>Task</em> class and then subscribes to various service requests.  For example, the following code is used to tell CloudI that when the <em>load_catalog/get</em> request is received, the <em>startLoadCatalog</em> Java method will be executed.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">this</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="s">&quot;load_catalog/get&quot;</span><span class="p">,</span> <span class="n">this</span><span class="p">,</span> <span class="s">&quot;startLoadCatalog&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>An example of the <em>startLoadCatalog</em> method is shown below.</p>
+<div class="highlight-python"><div class="highlight"><pre>/**
+  * This method calls the RecommendationData class
+  */
+ public Object startGenerateRatings(Integer command, String name, String pattern,
+                            byte[] request_info, byte[] request,
+                            Integer timeout, Byte priority, byte[] trans_id,
+                            OtpErlangPid pid) {
+
+     API.out.println(&quot;startGenerateRatings starts&quot;);
+
+     // create a new instance of the RecommendationData class
+     RecommendationData recommendationData = new RecommendationData();
+     recommendationData.setCloudIAPI(api);
+     recommendationData.generateItemRatings();
+
+     API.out.println(&quot;startGenerateRatings ends&quot;);
+     return (&quot;startGenerateRatings ends&quot;.getBytes());
+ }
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="calling-the-mysql-database-adapter-service">
+<h3>Calling the MySQL Database Adapter Service<a class="headerlink" href="#calling-the-mysql-database-adapter-service" title="Permalink to this headline">¶</a></h3>
+<p>The legacy Java code will be modified to call the MySQL Database Adapter service rather than using the JDBC protocol to interact with the database directly.  The following code shows an example.</p>
+<div class="highlight-python"><div class="highlight"><pre>byte[] service_request =
+              (&quot;SELECT max(download_quantity) FROM items&quot;).getBytes();
+
+org.cloudi.API.Response response =
+              api.send_sync(&quot;/db/mysql/book&quot;, service_request);
+</pre></div>
+</div>
+</div>
+<div class="section" id="parsing-the-response">
+<h3>Parsing the Response<a class="headerlink" href="#parsing-the-response" title="Permalink to this headline">¶</a></h3>
+<p>The exact format of the response will vary depending on the service that is executed.  In this example, the response consists of several binary characters followed by <em>[6974]</em> where 6974 happens to be the value returned.</p>
+<div class="highlight-python"><div class="highlight"><pre>String response_string = new String(response.response, &quot;UTF-8&quot;);
+
+// process results
+String[] tokens = response_string.split(startDelimiter);
+
+for (int i = 0; i &lt; tokens.length; ++i) {
+
+    // parse the max download value
+    int end = tokens[i].indexOf(&quot;]&quot;);
+    if (end &gt; 0) {
+      maxDownloads = new Double(tokens[i].substring(0, end));
+    }
+}
+</pre></div>
+</div>
+</div>
+<div class="section" id="creating-the-jar-file">
+<span id="jar-file-reference"></span><span id="index-3"></span><h3>Creating the JAR File<a class="headerlink" href="#creating-the-jar-file" title="Permalink to this headline">¶</a></h3>
+<p>All of the different Java classes that are used by the application need to be added to a JAR file.  Note that this JAR file can be created by hand, but is generally produced by a Java Development Environment.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The JAR <strong>must</strong> contain a <em>manifest</em> file that contains both the fully qualified main class and also the full path to the <em>cloudi.jar</em> file.  An example of the manifest contents are shown below.</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>Manifest-Version: 1.0
+Class-Path: /usr/local/lib/cloudi-1.4.0/api/java/cloudi.jar
+Main-Class: com.impactsoftware.bookutilities.Main
+</pre></div>
+</div>
+</div>
+<div class="section" id="adding-the-java-application-to-cloudi">
+<h3>Adding the Java Application to CloudI<a class="headerlink" href="#adding-the-java-application-to-cloudi" title="Permalink to this headline">¶</a></h3>
+<p>Adding the Java application to Cloudi can be done either at runtime by calling the CloudI API or by adding the configuration information to the <em>cloudi.conf</em> file.  A script to call the runtime API is shown below.</p>
+<div class="highlight-python"><div class="highlight"><pre>#!/bin/sh
+curl -X POST -d @BookUtilities.conf http://localhost:6464/cloudi/api/rpc/services_add.erl
+</pre></div>
+</div>
+<p>The <em>BookUtilities.conf</em> file referenced in the script above looks like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">[</span>
+<span class="p">{</span><span class="n">external</span><span class="p">,</span>
+               <span class="s">&quot;/book/utility/&quot;</span><span class="p">,</span>
+               <span class="s">&quot;/opt/java/jdk1.7.0_05/bin/java&quot;</span><span class="p">,</span>
+               <span class="s">&quot;-cp /usr/local/lib/cloudi-1.4.0/api/java/ &quot;</span>
+               <span class="s">&quot;-ea:org.cloudi... -jar /home/bruce/Projects/BookUtilities/BookUtilities/deploy/BookUtilities.jar&quot;</span><span class="p">,</span>
+               <span class="p">[],</span>
+               <span class="n">lazy_closest</span><span class="p">,</span> <span class="n">tcp</span><span class="p">,</span> <span class="n">default</span><span class="p">,</span>
+               <span class="mi">50000</span><span class="p">,</span> <span class="mi">50000</span><span class="p">,</span> <span class="mi">50000</span><span class="p">,</span> <span class="n">undefined</span><span class="p">,</span> <span class="n">undefined</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="p">[]</span> <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you use a standalong configuration file, a starting bracket symbol <em>[</em> and ending bracket symbol <em>]</em> need to be wrapped around the configuration text.  If you embed the configuration in the <em>cloudi.conf</em> file then the starting and ending brackets are not needed.</p>
+</div>
+</div>
+<div class="section" id="running-the-java-application">
+<h3>Running the Java Application<a class="headerlink" href="#running-the-java-application" title="Permalink to this headline">¶</a></h3>
+<p>Once the Java application has been added to the CloudI environment, it can be executed using several different methods.  An example of using an HTTP request to launch the application is shown below.</p>
+<div class="highlight-python"><div class="highlight"><pre>curl http://localhost:6464/book/utility/generate_ratings
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Note that the first part of the request (e.g., <em>book/utility</em>) is defined in the configuration file described in the previous section.  The second part (e.g., <em>generate_ratings</em>) was specfied in the <em>Task.java</em> class in the CloudI API <em>subscribe</em> method.</p>
+</div>
 </div>
 <div class="section" id="complete-source">
 <h3>Complete Source<a class="headerlink" href="#complete-source" title="Permalink to this headline">¶</a></h3>
+<p>The complete source is located on GitHub <a class="reference external" href="https://github.com/brucekissinger/book_recommendation">here</a>  in the <strong>java</strong> folder.</p>
 </div>
 </div>
-<span id="document-Security"></span><div class="section" id="security">
-<h2>Security<a class="headerlink" href="#security" title="Permalink to this headline">¶</a></h2>
-<div class="admonition-todo admonition" id="index-0">
-<p class="first admonition-title">Todo</p>
-<p class="last">This section has not yet been written</p>
+<span id="document-Recommendation_Integration"></span><div class="section" id="recommendation-engine-integration">
+<h2>Recommendation Engine Integration<a class="headerlink" href="#recommendation-engine-integration" title="Permalink to this headline">¶</a></h2>
+<p id="index-0">The Book Recommendation Application uses an open-source recommendation engine named <a class="reference external" href="http://www.mymedialite.net/">MyMediaLite</a>.
+This section provides more detail on how integration with the recommendation engine occurs.</p>
+<div class="section" id="installation-of-mymedialite">
+<h3>Installation of MyMediaLite<a class="headerlink" href="#installation-of-mymedialite" title="Permalink to this headline">¶</a></h3>
+<p>The general steps are:</p>
+<ol class="arabic simple">
+<li>Download MyMediaLite and install in the <em>/opt/book</em> directory</li>
+<li>MyMediaLite uses the .NET framework.  If you are running on a non-Windows operating system you can use the Mono framework to emulate .NET.  The command to install Mono on Ubuntu Linux is:  <em>sudo apt-get install mono-complete</em></li>
+</ol>
 </div>
-<div class="section" id="configuring-the-access-control-lists">
-<h3>Configuring the Access Control Lists<a class="headerlink" href="#configuring-the-access-control-lists" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="using-mymedialite">
+<span id="index-1"></span><h3>Using MyMediaLite<a class="headerlink" href="#using-mymedialite" title="Permalink to this headline">¶</a></h3>
+<p>In order to generate book recommendations, MyMediaLite uses several different files as shown below.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="8%" />
+<col width="75%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">File Name</th>
+<th class="head">Direction</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>rating.txt</td>
+<td>Input</td>
+<td>Contains a record for each book and a computed rating based on total downloads</td>
+</tr>
+<tr class="row-odd"><td>rating_test.txt</td>
+<td>Input</td>
+<td>Contains a record for each user, the book id, and their rating for the book.</td>
+</tr>
+<tr class="row-even"><td>item_attributes.txt</td>
+<td>Input</td>
+<td>Contains a record for each book and a unique attribute id for the language and subject</td>
+</tr>
+<tr class="row-odd"><td>item_predict.txt</td>
+<td>Output</td>
+<td>Contains a record for each user and recommended books</td>
+</tr>
+</tbody>
+</table>
+<p>Each of these files is generated by the <em>Book Utility</em> Java code discussed in the previous section.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">MyMediaLite can use a variety of statistical methods for making recommendations.  More information can be found on the project&#8217;s homepage.</p>
 </div>
-<div class="section" id="testing-the-configuration">
-<h3>Testing the Configuration<a class="headerlink" href="#testing-the-configuration" title="Permalink to this headline">¶</a></h3>
 </div>
 </div>
-<span id="document-Cluster"></span><div class="section" id="cluster-configuration">
-<h2>Cluster Configuration<a class="headerlink" href="#cluster-configuration" title="Permalink to this headline">¶</a></h2>
-<div class="admonition-todo admonition" id="index-0">
-<p class="first admonition-title">Todo</p>
-<p class="last">This section has not yet been written</p>
+<span id="document-Deployment"></span><div class="section" id="deployment">
+<h2>Deployment<a class="headerlink" href="#deployment" title="Permalink to this headline">¶</a></h2>
+<p>There are several optional activities that you may want to do to deploy your application for production usage.</p>
+<div class="section" id="network-configuration">
+<h3>Network Configuration<a class="headerlink" href="#network-configuration" title="Permalink to this headline">¶</a></h3>
+<p>Depending on your application, you may need to modify the default network configuration used by the CloudI components. Some common modifications are listed below.</p>
+<div class="section" id="bind-address">
+<span id="index-0"></span><h4>Bind Address<a class="headerlink" href="#bind-address" title="Permalink to this headline">¶</a></h4>
+<p>By default, the Cowboy web server listens only to the local host network address of 127.0.0.1. If you want CloudI to be accessible on your network, you can change this using these steps:</p>
+<ol class="arabic simple">
+<li>Change the current directory to the installation files for CloudI. Note that your location may be different than what is shown below.</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>cd /opt/cloudi/cloudi-1.4.0/src
+</pre></div>
 </div>
+<ol class="arabic simple" start="2">
+<li>Change the current directory to the Cowboy HTTP source</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>cd lib/cloudi_service_http_cowboy/src
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li>Edit the <strong>cloudi_service_http_cowboy.erl</strong> file and change the line that looks like:</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>-define(DEFAULT_INTERFACE,                  {127,0,0,1}). % ip address
+</pre></div>
+</div>
+<p>to</p>
+<div class="highlight-python"><div class="highlight"><pre>-define(DEFAULT_INTERFACE,                  {0,0,0,0}). % ip address
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">An address of 0.0.0.0 will cause Cowboy to listen to any network interface on the server.</p>
+</div>
+<ol class="arabic simple" start="4">
+<li>Remove the Cowboy runtime library directory so that it will get rebuilt by the installation process.</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>cd /usr/local/lib/cloudi-1.4.0/lib
+sudo rm cloudi_service_http_cowboy_1.4.0
+</pre></div>
+</div>
+<ol class="arabic simple" start="5">
+<li>Then run the <strong>make</strong> and <strong>make install</strong> command from the installation source directory and reinstall the software.</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>cd /opt/cloudi/cloudi-1.4.0/src
+make
+sudo make install
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Reinstalling CloudI will change the cloudi.conf, app.config, and vm.args files in the runtime library.  The previous versions are automatically saved as cloudi.conf.old, app.config.old, and vm.args.old and you may need to restore these files if you have made any changes.</p>
+</div>
+</div>
+</div>
+<div class="section" id="cluster-configuration">
+<h3>Cluster Configuration<a class="headerlink" href="#cluster-configuration" title="Permalink to this headline">¶</a></h3>
+<p>CloudI provides a mechanism for easily adding or removing different host computers to a cluster. Typically each host computer is referred to as a <strong>node</strong>.</p>
 <div class="section" id="adding-nodes-to-the-cluster">
-<h3>Adding Nodes to the Cluster<a class="headerlink" href="#adding-nodes-to-the-cluster" title="Permalink to this headline">¶</a></h3>
+<h4>Adding Nodes to the Cluster<a class="headerlink" href="#adding-nodes-to-the-cluster" title="Permalink to this headline">¶</a></h4>
+<p>Adding a host computer to the CloudI cloud is as simple as installing CloudI on the computer and starting the CloudI software.  By default, CloudI uses an auto-discovery protocol provided by Erlang to detect new nodes.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The auto-discovery protocol is dependent on the TCP/IP multicast protocol and should generally be limited to computers connected to the same trusted local area network.</p>
+<p class="last">Additional reference is available at
+<a class="reference external" href="http://learnyousomeerlang.com/distribunomicon#setting-up-an-erlang-cluster">here</a></p>
+</div>
+<p>You can also manually add a node to the CloudI cluster using the API as shown by the following example.</p>
+<div class="highlight-python"><div class="highlight"><pre>curl -X POST -d &quot;[&#39;cloud001@cluster1&#39;]&quot; http://localhost:6467/cloudi/api/rpc/nodes_add.erl
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">CloudI also supports the Amazon Web Services (AWS) EC2 distributed Erlang node auto-discovery configuration (auto-discovery within a single region).  See the CloudI API <a class="reference external" href="http://cloudi.org/api.html#2_nodes_set">here</a> for more details.</p>
+</div>
 </div>
 <div class="section" id="failing-over-nodes-in-the-cluster">
-<h3>Failing Over Nodes In the Cluster<a class="headerlink" href="#failing-over-nodes-in-the-cluster" title="Permalink to this headline">¶</a></h3>
+<h4>Failing Over Nodes In the Cluster<a class="headerlink" href="#failing-over-nodes-in-the-cluster" title="Permalink to this headline">¶</a></h4>
+<p>If a node was added using the auto-discovery protocol described above, it is automatically removed if it becomes unavailable.</p>
+<p>If you manually added the node using the CloudI API, you can remove it using the API as shown in the example below.</p>
+<div class="highlight-python"><div class="highlight"><pre>curl -X POST -d &quot;[&#39;cloud001@cluster1&#39;]&quot; http://localhost:6467/cloudi/api/rpc/nodes_remove.erl
+</pre></div>
+</div>
 </div>
 <div class="section" id="testing-the-cluster-configuration">
-<h3>Testing the Cluster Configuration<a class="headerlink" href="#testing-the-cluster-configuration" title="Permalink to this headline">¶</a></h3>
+<h4>Testing the Cluster Configuration<a class="headerlink" href="#testing-the-cluster-configuration" title="Permalink to this headline">¶</a></h4>
+<p>Use the CloudI API to show any nodes (other than the current local host) that it is aware of.</p>
+<div class="highlight-python"><div class="highlight"><pre>curl http://localhost:6467/cloudi/api/rpc/nodes.erl
+</pre></div>
+</div>
+</div>
+<div class="section" id="service-redundancy">
+<h4>Service Redundancy<a class="headerlink" href="#service-redundancy" title="Permalink to this headline">¶</a></h4>
+<p>When a new node is added to a CloudI cluster, it is important to realize that services running on the existing nodes in the cluster are not automatically copied to the new node.  However, you can manually add a service to a node using the CloudI API as described in other sections of this tutorial.</p>
+</div>
+<div class="section" id="local-versus-remote-services">
+<span id="index-1"></span><h4>Local versus Remote Services<a class="headerlink" href="#local-versus-remote-services" title="Permalink to this headline">¶</a></h4>
+<p>Note that when multiple services are available that subscribe to the same name pattern, CloudI allows you to control whether a local or remote service is invoked using the <strong>destination refresh</strong> method in the <strong>services_add</strong> API.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="75%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Destination Refresh Method</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>lazy_closest or immediate_closest</td>
+<td>A service running on the local node will be selected, unless the destination only exists on a remote node.</td>
+</tr>
+<tr class="row-odd"><td>lazy_furthest or immediate_furthest</td>
+<td>A service running on a remote node will be selected, unless the destination only exists on the local node.</td>
+</tr>
+<tr class="row-even"><td>lazy_random or immediate_random</td>
+<td>A service is selected randomly from the subscribed services.</td>
+</tr>
+<tr class="row-odd"><td>lazy_local or immediate_local</td>
+<td>Only a service on the local node is selected</td>
+</tr>
+<tr class="row-even"><td>lazy_remote or immediate_remote</td>
+<td>Only a service on the remote node is selected</td>
+</tr>
+<tr class="row-odd"><td>lazy_newest or immediate_newest</td>
+<td>Only the most recently subscribed service is selected</td>
+</tr>
+<tr class="row-even"><td>lazy_oldest or immediate_oldest</td>
+<td>Only the first subscribed service is selected</td>
+</tr>
+</tbody>
+</table>
+<p>The <strong>immediate</strong> prefix instructs CloudI to lookup the service name to get the most current destination result.  The <strong>lazy</strong> prefix uses a cached value instead.
+More details are available <a class="reference external" href="http://cloudi.org/api.html#1_Intro">here</a></p>
+</div>
+</div>
+<div class="section" id="loading-services-on-startup">
+<h3>Loading Services on Startup<a class="headerlink" href="#loading-services-on-startup" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>During development, you typically add a service and code path to CloudI using the API.  However, when development has completed, you may wish to have the service start automatically.</div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It is important to realize that all services listed in the cloudi.conf file must start successfully when the cloud is first started. In other words, the failure of any service listed in the configuration file will keep the entire cloud from starting to ensure an error-free starting state.</p>
+</div>
+<p>To add the Book Service to start automatically, follow these steps.</p>
+<ol class="arabic simple">
+<li>Change the current directory to the CloudI run time location. Note that this might be different for your installation</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>cd /usr/local/lib/cloudi-1.4.0/
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li>Create a new directory for the Book service and any compiled files.  The directory name should conform to the language conventions for your service.</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>mkdir book
+mkdir book/ebin
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li>Place the compiled Book Service file (book.beam) in the directory created above.</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>cp /tmp/book.beam book/ebin
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li>Modify the <strong>vm.args</strong> file stored in the <strong>/usr/local/etc/cloudi</strong> directory and add the location of the directory created in Step 2.</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre># Book service code path
+-pz /usr/local/lib/cloudi-1.4.0/book/ebin/
+</pre></div>
+</div>
+<ol class="arabic simple" start="5">
+<li>Modify the <strong>cloudi.conf</strong> file stored in the <strong>/usr/local/etc/cloudi</strong> directory and add the database service described in Section 4.1 and the configuration settings described in Section 5.1.  When completed, the <strong>cloudi.conf</strong> file should contain lines similar to what&#8217;s shown below.</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>%
+% Book Recommendation services
+%
+
+% database service
+{internal,
+        &quot;/db/mysql/&quot;,
+       cloudi_service_db_mysql,
+       [{database, &quot;book&quot;},
+        {timeout, 20000}, % ms
+        {encoding, utf8},
+        {hostname, &quot;dev1&quot;},
+        {username, &quot;cloudi&quot;},
+        {password, &quot;secret&quot;},
+        {port, 3306}],
+       none,
+       50000, 50000, 50000, undefined, undefined, 1, 5, 300, []
+},
+
+% book service
+{internal,
+        &quot;/recommend/book/&quot;,
+        book,
+        [],
+        immediate_random,
+        60000, 60000, 60000, undefined, undefined, 3, 5, 900,
+        [{reload, true}, {queue_limit, 500}]
+}
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">For a production deployment, you might want to modify the <em>destination refresh method</em> to use a random node in the cluster as shown above.  You may also want to increase the number of processes created at startup.  In this example, the database service has <strong>1</strong> process created at startup and the book service has <strong>3</strong> processes created.</p>
+</div>
+<ol class="arabic simple" start="6">
+<li>Restart cloudi and inspect the cloudi.log file to make sure that everything started correctly.</li>
+<li>Repeat Steps 1 through 6 for every node in the cluster.</li>
+</ol>
 </div>
 </div>
 <span id="document-Trouble_Shooting"></span><div class="section" id="trouble-shooting">
 <h2>Trouble Shooting<a class="headerlink" href="#trouble-shooting" title="Permalink to this headline">¶</a></h2>
-<div class="admonition-todo admonition" id="index-0">
-<p class="first admonition-title">Todo</p>
-<p class="last">This section is in progress</p>
-</div>
 <div class="section" id="source-code-paths">
 <h3>Source Code Paths<a class="headerlink" href="#source-code-paths" title="Permalink to this headline">¶</a></h3>
+<p>A custom application may fail because the source code can not be located correctly.</p>
+<p>In the case of an Erlang application, the source code path can be specified in the <strong>vm.args</strong> file located in the <em>/usr/local/etc/cloudi</em> directory.</p>
+<div class="highlight-python"><div class="highlight"><pre># Book service code path
+-pz /usr/local/lib/cloudi-1.4.0/book/ebin/
+</pre></div>
+</div>
+<p>For a Java application, the path to a JAR file can be specified as a parameter in the configuration.</p>
+<div class="highlight-python"><div class="highlight"><pre>{external,
+       &quot;/tests/http/&quot;,
+       &quot;/usr/bin/java&quot;,
+       % enable assertions
+       &quot;-ea:org.cloudi... &quot;
+       &quot;-jar tests/http/service/jar/service.jar&quot;,
+       [],
+       none, tcp, default,
+       5000, 5000, 5000, undefined, undefined, 1, 4, 5, 300, []},
+</pre></div>
+</div>
+<p>Note that the source code path can also be changed dynamically using the <em>code_path_add</em> API service.</p>
 </div>
 <div class="section" id="timeout">
 <h3>Timeout<a class="headerlink" href="#timeout" title="Permalink to this headline">¶</a></h3>
@@ -858,7 +1539,7 @@ var obj = JSON.parse(data);
 <li>Incorrect Dispatcher Pattern</li>
 </ol>
 <blockquote>
-<div>For example, in the development of the Book Service the original service initialization logic had code that looked like this:</div></blockquote>
+<div>In the development of the Book Service the original service initialization logic had code that looked like this:</div></blockquote>
 <div class="highlight-python"><div class="highlight"><pre>cloudi_service:subscribe(Dispatcher, &quot;recommendbooks/get&quot;)
 </pre></div>
 </div>
@@ -867,12 +1548,17 @@ var obj = JSON.parse(data);
 </pre></div>
 </div>
 <p>Consequently, when the <strong>recommendedbooks</strong> service was invoked the CloudI dispatcher could not find any module that was subscribing to the request and generated a timeout.</p>
+<ol class="arabic simple" start="2">
+<li>Timeout Values Are Too Small</li>
+</ol>
+<p>The configuration for each service includes a timeout value.  This value is specified in milliseconds &#8211; not seconds.</p>
 </div>
-<div class="section" id="old-code-appears-to-be-running">
-<h3>Old Code Appears to be Running<a class="headerlink" href="#old-code-appears-to-be-running" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="websocket-connections-fail">
+<h3>WebSocket Connections Fail<a class="headerlink" href="#websocket-connections-fail" title="Permalink to this headline">¶</a></h3>
+<p>Verify that WebSockets are enabled in the Cowboy configuration.  See the section <a class="reference internal" href="index.html#enabling-websockets-reference"><em>Enabling WebSockets</em></a> in this tutorial for more details.</p>
 </div>
 <div class="section" id="erlang-crash-dump">
-<span id="index-1"></span><h3>Erlang Crash Dump<a class="headerlink" href="#erlang-crash-dump" title="Permalink to this headline">¶</a></h3>
+<span id="index-0"></span><h3>Erlang Crash Dump<a class="headerlink" href="#erlang-crash-dump" title="Permalink to this headline">¶</a></h3>
 <p>A file named <strong>erl_crash.dump</strong> located in the main CloudI folder is generated when a system-wide error occurs.  Possible causes of this include:</p>
 <ol class="arabic simple">
 <li>Incorrect Configuration File</li>
@@ -883,50 +1569,11 @@ var obj = JSON.parse(data);
 </ol>
 <p>All services listed in the <strong>cloudi.conf</strong> file must start successfully when the cloud is first started. In other words, the failure of any service listed in the configuration file will keep the entire cloud from starting to ensure an error-free starting state.</p>
 </div>
+<div class="section" id="error-loading-java-jar-file">
+<h3>Error Loading Java JAR File<a class="headerlink" href="#error-loading-java-jar-file" title="Permalink to this headline">¶</a></h3>
+<p>When attempting to load a custom Java application into CloudI using a JAR file, an error of the form  <strong>Error: Could not find or load main class</strong> may be listed in the logs.  A possible cause of this error is a missing or incorrect <em>manifest</em> file inside the JAR file.
+See <a class="reference internal" href="index.html#jar-file-reference"><em>Creating the JAR File</em></a> for an example of the <em>manifest</em> file contents.</p>
 </div>
-<span id="document-Todo"></span><div class="section" id="to-do-list">
-<h2>To Do List<a class="headerlink" href="#to-do-list" title="Permalink to this headline">¶</a></h2>
-<p>This tutorial is a work in progress.  Open items are listed below.</p>
-<div class="admonition-todo admonition">
-<p class="first admonition-title">Todo</p>
-<p class="last">This section has not yet been written</p>
-</div>
-<p class="todo-source">(The <a class="reference internal" href="index.html#index-0"><em>original entry</em></a> is located in  /home/bruce/Documents/Impact/Projects/CloudI/tutorial/Cluster.rst, line 5.)</p>
-<div class="admonition-todo admonition">
-<p class="first admonition-title">Todo</p>
-<p class="last">This section has not yet been written</p>
-</div>
-<p class="todo-source">(The <a class="reference internal" href="index.html#index-0"><em>original entry</em></a> is located in  /home/bruce/Documents/Impact/Projects/CloudI/tutorial/Java_Integration.rst, line 5.)</p>
-<div class="admonition-todo admonition">
-<p class="first admonition-title">Todo</p>
-<p class="last">This section has not yet been written</p>
-</div>
-<p class="todo-source">(The <a class="reference internal" href="index.html#index-0"><em>original entry</em></a> is located in  /home/bruce/Documents/Impact/Projects/CloudI/tutorial/Security.rst, line 5.)</p>
-<div class="admonition-todo admonition">
-<p class="first admonition-title">Todo</p>
-<p class="last">Add source code link here.</p>
-</div>
-<p class="todo-source">(The <a class="reference internal" href="index.html#index-1"><em>original entry</em></a> is located in  /home/bruce/Documents/Impact/Projects/CloudI/tutorial/Introduction.rst, line 25.)</p>
-<div class="admonition-todo admonition">
-<p class="first admonition-title">Todo</p>
-<p class="last">This section is in the process of being written.</p>
-</div>
-<p class="todo-source">(The <a class="reference internal" href="index.html#index-0"><em>original entry</em></a> is located in  /home/bruce/Documents/Impact/Projects/CloudI/tutorial/Book_Service.rst, line 5.)</p>
-<div class="admonition-todo admonition">
-<p class="first admonition-title">Todo</p>
-<p class="last">Add link to the Book Service source code</p>
-</div>
-<p class="todo-source">(The <a class="reference internal" href="index.html#index-6"><em>original entry</em></a> is located in  /home/bruce/Documents/Impact/Projects/CloudI/tutorial/Book_Service.rst, line 186.)</p>
-<div class="admonition-todo admonition">
-<p class="first admonition-title">Todo</p>
-<p class="last">Add link to the HTML source code</p>
-</div>
-<p class="todo-source">(The <a class="reference internal" href="index.html#index-2"><em>original entry</em></a> is located in  /home/bruce/Documents/Impact/Projects/CloudI/tutorial/HTML_Integration.rst, line 136.)</p>
-<div class="admonition-todo admonition">
-<p class="first admonition-title">Todo</p>
-<p class="last">This section is in progress</p>
-</div>
-<p class="todo-source">(The <a class="reference internal" href="index.html#index-0"><em>original entry</em></a> is located in  /home/bruce/Documents/Impact/Projects/CloudI/tutorial/Trouble_Shooting.rst, line 5.)</p>
 </div>
 </div>
 </div>
@@ -952,24 +1599,32 @@ var obj = JSON.parse(data);
 <li class="toctree-l2"><a class="reference internal" href="index.html#where-to-get-help">1.3. Where to Get Help</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="index.html#document-Starting_Out">2. Starting Out</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="index.html#setting-up-the-cloudi-configuration">2.1. Setting up the CloudI Configuration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#viewing-logs">2.2. Viewing Logs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#automating-the-build-process">2.3. Automating the Build Process</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#common-operations">2.4. Common Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#document-Book_Recommendation_Application">2. Book Recommendation Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="index.html#background">2.1. Background</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#current-state-implementation">2.2. Current-State Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#future-state-implementation">2.3. Future-State Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#architectural-decisions">2.4. Architectural Decisions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="index.html#data-transmission">2.4.1. Data Transmission</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#service-api">2.4.2. Service API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#integration-method">2.4.3. Integration Method</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="index.html#document-Book_Recommendation_Application">3. Book Recommendation Application</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="index.html#background">3.1. Background</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#current-state-implementation">3.2. Current-State Implementation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#future-state-implementation">3.3. Future-State Implementation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#architectural-decisions">3.4. Architectural Decisions</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="index.html#data-transmission">3.4.1. Data Transmission</a></li>
-<li class="toctree-l3"><a class="reference internal" href="index.html#service-api">3.4.2. Service API</a></li>
-<li class="toctree-l3"><a class="reference internal" href="index.html#integration-method">3.4.3. Integration Method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#data-model">2.5. Data Model</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#data-model">3.5. Data Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#document-Starting_Out">3. Starting Out</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="index.html#working-with-cloudi">3.1. Working with CloudI</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="index.html#setting-up-the-cloudi-configuration">3.1.1. Setting up the CloudI Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#viewing-logs">3.1.2. Viewing Logs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#automating-the-build-process">3.1.3. Automating the Build Process</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#common-operations">3.1.4. Common Operations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#working-with-the-database">3.2. Working with the Database</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="index.html#building-the-database">3.2.1. Building the Database</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#creating-users">3.2.2. Creating Users</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="index.html#document-Database_Adapter">4. Database Adapter Service</a><ul>
@@ -994,36 +1649,56 @@ var obj = JSON.parse(data);
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="index.html#document-HTML_Integration">6. HTML Integration</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="index.html#calling-the-book-service">6.1. Calling the Book Service</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#parsing-the-results">6.2. Parsing the Results</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#complete-source">6.3. Complete Source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#enabling-websockets">6.1. Enabling WebSockets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#calling-the-book-service">6.2. Calling the Book Service</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#parsing-the-results">6.3. Parsing the Results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#using-ajax-instead-of-websockets">6.4. Using AJAX instead of WebSockets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#complete-source">6.5. Complete Source</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="index.html#document-Java_Integration">7. Java Integration</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="index.html#calling-the-book-service">7.1. Calling the Book Service</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#parsing-the-results">7.2. Parsing the Results</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#complete-source">7.3. Complete Source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#integrating-a-java-application-with-cloudi">7.1. Integrating a Java Application with CloudI</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="index.html#main-java-class">7.1.1. Main.java Class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#task-java-class">7.1.2. Task.java Class</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="index.html#document-Security">8. Security Configuration</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="index.html#configuring-the-access-control-lists">8.1. Configuring the Access Control Lists</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#testing-the-configuration">8.2. Testing the Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#calling-the-mysql-database-adapter-service">7.2. Calling the MySQL Database Adapter Service</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#parsing-the-response">7.3. Parsing the Response</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#creating-the-jar-file">7.4. Creating the JAR File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#adding-the-java-application-to-cloudi">7.5. Adding the Java Application to CloudI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#running-the-java-application">7.6. Running the Java Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#complete-source">7.7. Complete Source</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="index.html#document-Cluster">9. Cluster Configuration</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="index.html#adding-nodes-to-the-cluster">9.1. Adding Nodes to the Cluster</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#failing-over-nodes-in-the-cluster">9.2. Failing Over Nodes In the Cluster</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#testing-the-cluster-configuration">9.3. Testing the Cluster Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#document-Recommendation_Integration">8. Recommendation Engine Integration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="index.html#installation-of-mymedialite">8.1. Installation of MyMediaLite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#using-mymedialite">8.2. Using MyMediaLite</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#document-Deployment">9. Deployment</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="index.html#network-configuration">9.1. Network Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="index.html#bind-address">9.1.1. Bind Address</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#cluster-configuration">9.2. Cluster Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="index.html#adding-nodes-to-the-cluster">9.2.1. Adding Nodes to the Cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#failing-over-nodes-in-the-cluster">9.2.2. Failing Over Nodes In the Cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#testing-the-cluster-configuration">9.2.3. Testing the Cluster Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#service-redundancy">9.2.4. Service Redundancy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#local-versus-remote-services">9.2.5. Local versus Remote Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#loading-services-on-startup">9.3. Loading Services on Startup</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="index.html#document-Trouble_Shooting">10. Trouble Shooting</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="index.html#source-code-paths">10.1. Source Code Paths</a></li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#timeout">10.2. Timeout</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#old-code-appears-to-be-running">10.3. Old Code Appears to be Running</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#websocket-connections-fail">10.3. WebSocket Connections Fail</a></li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#erlang-crash-dump">10.4. Erlang Crash Dump</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#error-loading-java-jar-file">10.5. Error Loading Java JAR File</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="index.html#document-Todo">11. To Do List</a></li>
 </ul>
 
         </div>
@@ -1037,7 +1712,7 @@ var obj = JSON.parse(data);
       </ul>
     </div>
     <div class="footer">
-      Last updated on Dec 06, 2014.
+      Last updated on Apr 03, 2015.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>

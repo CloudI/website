@@ -20,16 +20,12 @@ About This Tutorial
 
 This tutorial should help you understand the design decisions and implementation steps needed to use CloudI for your own projects.
 A small real-world application is used for illustration and the full source code for the application is located
-here in case you want to look at the complete implementation.
-
-.. todo::
- Add source code link here.
-
+`here <https://github.com/brucekissinger/book_recommendation>`_ in case you want to look at the complete implementation.
 
 This tutorial assumes that you have successfully `installed CloudI <http://cloudi.org/faq.html#3_Overview>`_ on a development system and can successfully start and stop it.
 
 .. note::
- The examples shown here were developed on a machine using CloudI version 1.3.3 running Ubuntu Linux version 14.04 operating system.
+ The examples shown here were developed on a machine using CloudI version 1.4.0 running Ubuntu Linux version 14.04 operating system.
 
 
 .. index::
