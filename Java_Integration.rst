@@ -178,7 +178,7 @@ All of the different Java classes that are used by the application need to be ad
 ::
 
   Manifest-Version: 1.0
-  Class-Path: /usr/local/lib/cloudi-1.4.0/api/java/cloudi.jar
+  Class-Path: /usr/local/lib/cloudi-1.5.0/api/java/cloudi.jar
   Main-Class: com.impactsoftware.bookutilities.Main
 
 
@@ -199,7 +199,7 @@ The *BookUtilities.conf* file referenced in the script above looks like this:
  {external,
                 "/book/utility/",
                 "/opt/java/jdk1.7.0_05/bin/java",
-                "-cp /usr/local/lib/cloudi-1.4.0/api/java/ "
+                "-cp /usr/local/lib/cloudi-1.5.0/api/java/ "
                 "-ea:org.cloudi... -jar /home/bruce/Projects/BookUtilities/BookUtilities/deploy/BookUtilities.jar",
                 [],
                 lazy_closest, tcp, default,

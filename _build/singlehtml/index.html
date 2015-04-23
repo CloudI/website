@@ -65,7 +65,7 @@ A small real-world application is used for illustration and the full source code
 <p>This tutorial assumes that you have successfully <a class="reference external" href="http://cloudi.org/faq.html#3_Overview">installed CloudI</a> on a development system and can successfully start and stop it.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The examples shown here were developed on a machine using CloudI version 1.4.0 running Ubuntu Linux version 14.04 operating system.</p>
+<p class="last">The examples shown here were developed on a machine using CloudI version 1.5.0 running Ubuntu Linux version 14.04 operating system.</p>
 </div>
 </div>
 <div class="section" id="where-to-get-help">
@@ -844,7 +844,7 @@ curl http://localhost:6467/recommend/book/allbooks?id=1
 <ol class="arabic simple">
 <li>Change the current directory to the installation files for CloudI. Note that your location may be different than what is shown below.</li>
 </ol>
-<div class="highlight-python"><div class="highlight"><pre>cd /opt/cloudi/cloudi-1.4.0/src
+<div class="highlight-python"><div class="highlight"><pre>cd /opt/cloudi/cloudi-1.5.0/src
 </pre></div>
 </div>
 <ol class="arabic simple" start="2">
@@ -866,14 +866,14 @@ curl http://localhost:6467/recommend/book/allbooks?id=1
 <ol class="arabic simple" start="4">
 <li>Remove the Cowboy runtime library so that it will get rebuilt by the installation process.</li>
 </ol>
-<div class="highlight-python"><div class="highlight"><pre>cd /usr/local/lib/cloudi-1.4.0/lib
-sudo rm cloudi_service_http_cowboy_1.4.0
+<div class="highlight-python"><div class="highlight"><pre>cd /usr/local/lib/cloudi-1.5.0/lib
+sudo rm cloudi_service_http_cowboy_1.5.0
 </pre></div>
 </div>
 <ol class="arabic simple" start="5">
 <li>Then run the <strong>make</strong> and <strong>make install</strong> command from the installation source directory and reinstall the software.</li>
 </ol>
-<div class="highlight-python"><div class="highlight"><pre>cd /opt/cloudi/cloudi-1.4.0/src
+<div class="highlight-python"><div class="highlight"><pre>cd /opt/cloudi/cloudi-1.5.0/src
 make
 sudo make install
 </pre></div>
@@ -1194,7 +1194,7 @@ for (int i = 0; i &lt; tokens.length; ++i) {
 <p class="last">The JAR <strong>must</strong> contain a <em>manifest</em> file that contains both the fully qualified main class and also the full path to the <em>cloudi.jar</em> file.  An example of the manifest contents are shown below.</p>
 </div>
 <div class="highlight-python"><div class="highlight"><pre>Manifest-Version: 1.0
-Class-Path: /usr/local/lib/cloudi-1.4.0/api/java/cloudi.jar
+Class-Path: /usr/local/lib/cloudi-1.5.0/api/java/cloudi.jar
 Main-Class: com.impactsoftware.bookutilities.Main
 </pre></div>
 </div>
@@ -1211,7 +1211,7 @@ curl -X POST -d @BookUtilities.conf http://localhost:6464/cloudi/api/rpc/service
 <span class="p">{</span><span class="n">external</span><span class="p">,</span>
                <span class="s">&quot;/book/utility/&quot;</span><span class="p">,</span>
                <span class="s">&quot;/opt/java/jdk1.7.0_05/bin/java&quot;</span><span class="p">,</span>
-               <span class="s">&quot;-cp /usr/local/lib/cloudi-1.4.0/api/java/ &quot;</span>
+               <span class="s">&quot;-cp /usr/local/lib/cloudi-1.5.0/api/java/ &quot;</span>
                <span class="s">&quot;-ea:org.cloudi... -jar /home/bruce/Projects/BookUtilities/BookUtilities/deploy/BookUtilities.jar&quot;</span><span class="p">,</span>
                <span class="p">[],</span>
                <span class="n">lazy_closest</span><span class="p">,</span> <span class="n">tcp</span><span class="p">,</span> <span class="n">default</span><span class="p">,</span>
@@ -1221,7 +1221,7 @@ curl -X POST -d @BookUtilities.conf http://localhost:6464/cloudi/api/rpc/service
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">If you use a standalong configuration file, a starting bracket symbol <em>[</em> and ending bracket symbol <em>]</em> need to be wrapped around the configuration text.  If you embed the configuration in the <em>cloudi.conf</em> file then the starting and ending brackets are not needed.</p>
+<p class="last">If you use a standalone configuration file, a starting bracket symbol <em>[</em> and ending bracket symbol <em>]</em> need to be wrapped around the configuration text.  If you embed the configuration in the <em>cloudi.conf</em> file then the starting and ending brackets are not needed.</p>
 </div>
 </div>
 <div class="section" id="running-the-java-application">
@@ -1305,7 +1305,7 @@ This section provides more detail on how integration with the recommendation eng
 <ol class="arabic simple">
 <li>Change the current directory to the installation files for CloudI. Note that your location may be different than what is shown below.</li>
 </ol>
-<div class="highlight-python"><div class="highlight"><pre>cd /opt/cloudi/cloudi-1.4.0/src
+<div class="highlight-python"><div class="highlight"><pre>cd /opt/cloudi/cloudi-1.5.0/src
 </pre></div>
 </div>
 <ol class="arabic simple" start="2">
@@ -1331,14 +1331,14 @@ This section provides more detail on how integration with the recommendation eng
 <ol class="arabic simple" start="4">
 <li>Remove the Cowboy runtime library directory so that it will get rebuilt by the installation process.</li>
 </ol>
-<div class="highlight-python"><div class="highlight"><pre>cd /usr/local/lib/cloudi-1.4.0/lib
-sudo rm cloudi_service_http_cowboy_1.4.0
+<div class="highlight-python"><div class="highlight"><pre>cd /usr/local/lib/cloudi-1.5.0/lib
+sudo rm cloudi_service_http_cowboy_1.5.0
 </pre></div>
 </div>
 <ol class="arabic simple" start="5">
 <li>Then run the <strong>make</strong> and <strong>make install</strong> command from the installation source directory and reinstall the software.</li>
 </ol>
-<div class="highlight-python"><div class="highlight"><pre>cd /opt/cloudi/cloudi-1.4.0/src
+<div class="highlight-python"><div class="highlight"><pre>cd /opt/cloudi/cloudi-1.5.0/src
 make
 sudo make install
 </pre></div>
@@ -1442,7 +1442,7 @@ More details are available <a class="reference external" href="http://cloudi.org
 <ol class="arabic simple">
 <li>Change the current directory to the CloudI run time location. Note that this might be different for your installation</li>
 </ol>
-<div class="highlight-python"><div class="highlight"><pre>cd /usr/local/lib/cloudi-1.4.0/
+<div class="highlight-python"><div class="highlight"><pre>cd /usr/local/lib/cloudi-1.5.0/
 </pre></div>
 </div>
 <ol class="arabic simple" start="2">
@@ -1462,7 +1462,7 @@ mkdir book/ebin
 <li>Modify the <strong>vm.args</strong> file stored in the <strong>/usr/local/etc/cloudi</strong> directory and add the location of the directory created in Step 2.</li>
 </ol>
 <div class="highlight-python"><div class="highlight"><pre># Book service code path
--pz /usr/local/lib/cloudi-1.4.0/book/ebin/
+-pz /usr/local/lib/cloudi-1.5.0/book/ebin/
 </pre></div>
 </div>
 <ol class="arabic simple" start="5">
@@ -1515,7 +1515,7 @@ mkdir book/ebin
 <p>A custom application may fail because the source code can not be located correctly.</p>
 <p>In the case of an Erlang application, the source code path can be specified in the <strong>vm.args</strong> file located in the <em>/usr/local/etc/cloudi</em> directory.</p>
 <div class="highlight-python"><div class="highlight"><pre># Book service code path
--pz /usr/local/lib/cloudi-1.4.0/book/ebin/
+-pz /usr/local/lib/cloudi-1.5.0/book/ebin/
 </pre></div>
 </div>
 <p>For a Java application, the path to a JAR file can be specified as a parameter in the configuration.</p>
@@ -1712,7 +1712,7 @@ See <a class="reference internal" href="index.html#jar-file-reference"><em>Creat
       </ul>
     </div>
     <div class="footer">
-      Last updated on Apr 03, 2015.
+      Last updated on Apr 23, 2015.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>

@@ -21,7 +21,7 @@ By default, the Cowboy web server listens only to the local host network address
 
 ::
 
-  cd /opt/cloudi/cloudi-1.4.0/src
+  cd /opt/cloudi/cloudi-1.5.0/src
 
 2.  Change the current directory to the Cowboy HTTP source
 
@@ -51,14 +51,14 @@ to
 
 ::
 
-  cd /usr/local/lib/cloudi-1.4.0/lib
-  sudo rm cloudi_service_http_cowboy_1.4.0
+  cd /usr/local/lib/cloudi-1.5.0/lib
+  sudo rm cloudi_service_http_cowboy_1.5.0
 
 5.  Then run the **make** and **make install** command from the installation source directory and reinstall the software.
 
 ::
 
-  cd /opt/cloudi/cloudi-1.4.0/src
+  cd /opt/cloudi/cloudi-1.5.0/src
   make
   sudo make install 
  
@@ -169,7 +169,7 @@ To add the Book Service to start automatically, follow these steps.
 
 ::
 
-  cd /usr/local/lib/cloudi-1.4.0/
+  cd /usr/local/lib/cloudi-1.5.0/
 
 2.  Create a new directory for the Book service and any compiled files.  The directory name should conform to the language conventions for your service.
 
@@ -190,7 +190,7 @@ To add the Book Service to start automatically, follow these steps.
 ::
 
   # Book service code path
-  -pz /usr/local/lib/cloudi-1.4.0/book/ebin/
+  -pz /usr/local/lib/cloudi-1.5.0/book/ebin/
 
 
 5.  Modify the **cloudi.conf** file stored in the **/usr/local/etc/cloudi** directory and add the database service described in Section 4.1 and the configuration settings described in Section 5.1.  When completed, the **cloudi.conf** file should contain lines similar to what's shown below.

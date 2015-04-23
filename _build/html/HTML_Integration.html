@@ -67,7 +67,7 @@
 <ol class="arabic simple">
 <li>Change the current directory to the installation files for CloudI. Note that your location may be different than what is shown below.</li>
 </ol>
-<div class="highlight-python"><div class="highlight"><pre>cd /opt/cloudi/cloudi-1.4.0/src
+<div class="highlight-python"><div class="highlight"><pre>cd /opt/cloudi/cloudi-1.5.0/src
 </pre></div>
 </div>
 <ol class="arabic simple" start="2">
@@ -89,14 +89,14 @@
 <ol class="arabic simple" start="4">
 <li>Remove the Cowboy runtime library so that it will get rebuilt by the installation process.</li>
 </ol>
-<div class="highlight-python"><div class="highlight"><pre>cd /usr/local/lib/cloudi-1.4.0/lib
-sudo rm cloudi_service_http_cowboy_1.4.0
+<div class="highlight-python"><div class="highlight"><pre>cd /usr/local/lib/cloudi-1.5.0/lib
+sudo rm cloudi_service_http_cowboy_1.5.0
 </pre></div>
 </div>
 <ol class="arabic simple" start="5">
 <li>Then run the <strong>make</strong> and <strong>make install</strong> command from the installation source directory and reinstall the software.</li>
 </ol>
-<div class="highlight-python"><div class="highlight"><pre>cd /opt/cloudi/cloudi-1.4.0/src
+<div class="highlight-python"><div class="highlight"><pre>cd /opt/cloudi/cloudi-1.5.0/src
 make
 sudo make install
 </pre></div>
@@ -327,7 +327,7 @@ var rank_book_service = &quot;/recommend/book/download&quot;;
       </ul>
     </div>
     <div class="footer">
-      Last updated on Mar 25, 2015.
+      Last updated on Apr 23, 2015.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>

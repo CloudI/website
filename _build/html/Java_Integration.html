@@ -202,7 +202,7 @@ for (int i = 0; i &lt; tokens.length; ++i) {
 <p class="last">The JAR <strong>must</strong> contain a <em>manifest</em> file that contains both the fully qualified main class and also the full path to the <em>cloudi.jar</em> file.  An example of the manifest contents are shown below.</p>
 </div>
 <div class="highlight-python"><div class="highlight"><pre>Manifest-Version: 1.0
-Class-Path: /usr/local/lib/cloudi-1.4.0/api/java/cloudi.jar
+Class-Path: /usr/local/lib/cloudi-1.5.0/api/java/cloudi.jar
 Main-Class: com.impactsoftware.bookutilities.Main
 </pre></div>
 </div>
@@ -219,7 +219,7 @@ curl -X POST -d @BookUtilities.conf http://localhost:6464/cloudi/api/rpc/service
 <span class="p">{</span><span class="n">external</span><span class="p">,</span>
                <span class="s">&quot;/book/utility/&quot;</span><span class="p">,</span>
                <span class="s">&quot;/opt/java/jdk1.7.0_05/bin/java&quot;</span><span class="p">,</span>
-               <span class="s">&quot;-cp /usr/local/lib/cloudi-1.4.0/api/java/ &quot;</span>
+               <span class="s">&quot;-cp /usr/local/lib/cloudi-1.5.0/api/java/ &quot;</span>
                <span class="s">&quot;-ea:org.cloudi... -jar /home/bruce/Projects/BookUtilities/BookUtilities/deploy/BookUtilities.jar&quot;</span><span class="p">,</span>
                <span class="p">[],</span>
                <span class="n">lazy_closest</span><span class="p">,</span> <span class="n">tcp</span><span class="p">,</span> <span class="n">default</span><span class="p">,</span>
@@ -229,7 +229,7 @@ curl -X POST -d @BookUtilities.conf http://localhost:6464/cloudi/api/rpc/service
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">If you use a standalong configuration file, a starting bracket symbol <em>[</em> and ending bracket symbol <em>]</em> need to be wrapped around the configuration text.  If you embed the configuration in the <em>cloudi.conf</em> file then the starting and ending brackets are not needed.</p>
+<p class="last">If you use a standalone configuration file, a starting bracket symbol <em>[</em> and ending bracket symbol <em>]</em> need to be wrapped around the configuration text.  If you embed the configuration in the <em>cloudi.conf</em> file then the starting and ending brackets are not needed.</p>
 </div>
 </div>
 <div class="section" id="running-the-java-application">
@@ -312,7 +312,7 @@ curl -X POST -d @BookUtilities.conf http://localhost:6464/cloudi/api/rpc/service
       </ul>
     </div>
     <div class="footer">
-      Last updated on Apr 03, 2015.
+      Last updated on Apr 23, 2015.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
