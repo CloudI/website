@@ -130,7 +130,7 @@ An example shell script for the Book Service (see next section for more details)
   curl -X POST -d '"'`pwd`'"' http://localhost:6467/cloudi/api/erlang/code_path_add
 
   # Compile all Erlang modules
-  erlc -pz /usr/local/lib/cloudi-1.3.3/lib/cloudi_core-1.3.3 -pz /usr/local/lib/cloudi-1.3.3/lib/cloudi_core-1.3.3/ebin book.erl 
+  erlc -pz /usr/local/lib/cloudi-1.5.0/lib/cloudi_core-1.5.0 -pz /usr/local/lib/cloudi-1.5.0/lib/cloudi_core-1.5.0/ebin book.erl 
 
   # Add the Book service
   curl -X POST -d @book.conf http://localhost:6467/cloudi/api/erlang/services_add

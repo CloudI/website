@@ -278,7 +278,7 @@ Adding the Book Service to CloudI requires three steps.  First, the code is comp
 :: 
 
   # compile code
-  erlc -pz /usr/local/lib/cloudi-1.3.3/lib/cloudi_core-1.3.3 -pz /usr/local/lib/cloudi-1.3.3/lib/cloudi_core-1.3.3/ebin book.erl
+  erlc -pz /usr/local/lib/cloudi-1.5.0/lib/cloudi_core-1.5.0 -pz /usr/local/lib/cloudi-1.5.0/lib/cloudi_core-1.5.0/ebin book.erl
 
   # add the source code path
   curl -X POST -d /opt/cloudi/book/ebin http://localhost:6467/cloudi/api/erlang/code_path_add
