@@ -12,7 +12,7 @@ In the case of an Erlang application, the source code path can be specified in t
 :: 
 
   # Book service code path
-  -pz /usr/local/lib/cloudi-1.4.0/book/ebin/
+  -pz /usr/local/lib/cloudi-1.5.0/book/ebin/
 
 For a Java application, the path to a JAR file can be specified as a parameter in the configuration. 
 

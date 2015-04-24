@@ -25,7 +25,7 @@ A small real-world application is used for illustration and the full source code
 This tutorial assumes that you have successfully `installed CloudI <http://cloudi.org/faq.html#3_Overview>`_ on a development system and can successfully start and stop it.
 
 .. note::
- The examples shown here were developed on a machine using CloudI version 1.4.0 running Ubuntu Linux version 14.04 operating system.
+ The examples shown here were developed on a machine using CloudI version 1.5.0 running Ubuntu Linux version 14.04 operating system.
 
 
 .. index::

@@ -26,7 +26,7 @@ Support for WebSockets is disabled in the default configuration of the Cowboy we
 
 ::
 
-  cd /opt/cloudi/cloudi-1.4.0/src
+  cd /opt/cloudi/cloudi-1.5.0/src
 
 2.  Change the current directory to the Cowboy HTTP source
 
@@ -51,14 +51,14 @@ to
 
 ::
 
-  cd /usr/local/lib/cloudi-1.4.0/lib
-  sudo rm cloudi_service_http_cowboy_1.4.0
+  cd /usr/local/lib/cloudi-1.5.0/lib
+  sudo rm cloudi_service_http_cowboy_1.5.0
 
 5.  Then run the **make** and **make install** command from the installation source directory and reinstall the software.
 
 ::
 
-  cd /opt/cloudi/cloudi-1.4.0/src
+  cd /opt/cloudi/cloudi-1.5.0/src
   make
   sudo make install 
 
