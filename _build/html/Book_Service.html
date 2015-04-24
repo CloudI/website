@@ -167,19 +167,20 @@
 <p>Each of these sections is described in more detail below.</p>
 <div class="section" id="service-initialization-logic">
 <span id="index-1"></span><h3>5.2.1. Service Initialization Logic<a class="headerlink" href="#service-initialization-logic" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-python"><div class="highlight"><pre>cloudi_service_init(_Args, _Prefix, Dispatcher) -&gt;
+<div class="highlight-python"><div class="highlight"><pre>cloudi_service_init(_Args, _Prefix, _Timeout, Dispatcher) -&gt;
 
-  % subscribe to different request patterns
-  cloudi_service:subscribe(Dispatcher, &quot;newbooks/get&quot;),
-  cloudi_service:subscribe(Dispatcher, &quot;popularbooks/get&quot;),
-  cloudi_service:subscribe(Dispatcher, &quot;recommendedbooks/get&quot;),
-  cloudi_service:subscribe(Dispatcher, &quot;allbooks/get&quot;),
-  cloudi_service:subscribe(Dispatcher, &quot;allbooks/post&quot;),
-  cloudi_service:subscribe(Dispatcher, &quot;download/get&quot;),
-  cloudi_service:subscribe(Dispatcher, &quot;download/post&quot;),
+   % subscribe to different request patterns
+   cloudi_service:subscribe(Dispatcher, &quot;newbooks/get&quot;),
+   cloudi_service:subscribe(Dispatcher, &quot;popularbooks/get&quot;),
+   cloudi_service:subscribe(Dispatcher, &quot;recommendedbooks/get&quot;),
+   cloudi_service:subscribe(Dispatcher, &quot;allbooks/get&quot;),
+   cloudi_service:subscribe(Dispatcher, &quot;download/get&quot;),
+   cloudi_service:subscribe(Dispatcher, &quot;rate/get&quot;),
+   cloudi_service:subscribe(Dispatcher, &quot;newuser/get&quot;),
+   cloudi_service:subscribe(Dispatcher, &quot;unrated/get&quot;),
 
-  % return ok
-  {ok, #state{}}.
+   % return ok
+   {ok, #state{}}.
 </pre></div>
 </div>
 <p>In the code above, the Book Service defines which messages it subscribes to.  Note that the list of request patterns matches the Service API table shown earlier in the <a class="reference internal" href="Book_Recommendation_Application.html#service-api-reference"><em>Service API</em></a> section with the HTTP method type (<em>get</em> or <em>post</em>) appended.</p>
@@ -316,10 +317,14 @@ parse_item([], Return_value) -&gt;
 <div class="section" id="service-termination">
 <span id="index-5"></span><h3>5.2.6. Service Termination<a class="headerlink" href="#service-termination" title="Permalink to this headline">¶</a></h3>
 <p>The <tt class="docutils literal"><span class="pre">cloudi_service_terminate</span></tt> function is called when the CloudI server is shutting down and about to terminate.  You can add any logic needed to cleanup any resources used by this service or do additional notifications.  If nothing special is needed, you can use the pattern shown below.</p>
-<div class="highlight-python"><div class="highlight"><pre>cloudi_service_terminate(_, #state{}) -&gt;
-  ok.
-</pre></div>
-</div>
+<dl class="docutils">
+<dt>::</dt>
+<dd><dl class="first last docutils">
+<dt>cloudi_service_terminate(_Reason, _Timeout, #state{}) -&gt;</dt>
+<dd>ok.</dd>
+</dl>
+</dd>
+</dl>
 </div>
 <div class="section" id="complete-source">
 <h3>5.2.7. Complete Source<a class="headerlink" href="#complete-source" title="Permalink to this headline">¶</a></h3>
@@ -421,7 +426,7 @@ curl http://localhost:6467/recommend/book/allbooks?id=1
       </ul>
     </div>
     <div class="footer">
-      Last updated on Mar 25, 2015.
+      Last updated on Apr 24, 2015.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>

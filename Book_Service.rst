@@ -85,19 +85,20 @@ Service Initialization Logic
 
 ::
 
- cloudi_service_init(_Args, _Prefix, Dispatcher) ->
+ cloudi_service_init(_Args, _Prefix, _Timeout, Dispatcher) ->
 
-   % subscribe to different request patterns
-   cloudi_service:subscribe(Dispatcher, "newbooks/get"),
-   cloudi_service:subscribe(Dispatcher, "popularbooks/get"),
-   cloudi_service:subscribe(Dispatcher, "recommendedbooks/get"),
-   cloudi_service:subscribe(Dispatcher, "allbooks/get"),
-   cloudi_service:subscribe(Dispatcher, "allbooks/post"),
-   cloudi_service:subscribe(Dispatcher, "download/get"),
-   cloudi_service:subscribe(Dispatcher, "download/post"),
+    % subscribe to different request patterns
+    cloudi_service:subscribe(Dispatcher, "newbooks/get"),
+    cloudi_service:subscribe(Dispatcher, "popularbooks/get"),
+    cloudi_service:subscribe(Dispatcher, "recommendedbooks/get"),
+    cloudi_service:subscribe(Dispatcher, "allbooks/get"),
+    cloudi_service:subscribe(Dispatcher, "download/get"),
+    cloudi_service:subscribe(Dispatcher, "rate/get"),
+    cloudi_service:subscribe(Dispatcher, "newuser/get"),
+    cloudi_service:subscribe(Dispatcher, "unrated/get"),
 
-   % return ok
-   {ok, #state{}}.
+    % return ok
+    {ok, #state{}}.
 
 In the code above, the Book Service defines which messages it subscribes to.  Note that the list of request patterns matches the Service API table shown earlier in the :ref:`service-api-reference` section with the HTTP method type (*get* or *post*) appended. 
 
@@ -261,15 +262,12 @@ Service Termination
 The ``cloudi_service_terminate`` function is called when the CloudI server is shutting down and about to terminate.  You can add any logic needed to cleanup any resources used by this service or do additional notifications.  If nothing special is needed, you can use the pattern shown below.    
 
 ::
-
-  cloudi_service_terminate(_, #state{}) ->
+  cloudi_service_terminate(_Reason, _Timeout, #state{}) ->
     ok.
-
 
 Complete Source
 ---------------
 The complete source is located on GitHub `here <https://github.com/brucekissinger/book_recommendation>`_  in the **service** folder. 
-
 
 
 Adding the Service to CloudI
