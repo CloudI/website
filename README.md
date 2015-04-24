@@ -9,7 +9,7 @@ This tutorial should help you understand the design decisions and implementation
 
 Documentation Format
 ====================
-The tutorial uses version 1.3.1 of the `Sphinx Documentation Generator (see http://sphinx-doc.org/)  which uses an enhanced markdown format.  Sphinx supports a variety of output formats that can be generated using the included Makefile.  
+The tutorial uses version 1.3.1 of the Sphinx Documentation Generator (see http://sphinx-doc.org/)  which uses an enhanced markdown format.  Sphinx supports a variety of output formats that can be generated using the included Makefile.  
 
 
 Common Operations 
