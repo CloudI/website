@@ -9,10 +9,10 @@ There are several Java utility classes that need to be revised to run within the
 
 Integrating a Java Application with CloudI
 ==========================================
-The general steps for adding a Java application to Cloudi are:
+The general steps for adding a Java application to CloudI are:
 
 1.  Create a new class named *Main* that will initialize the CloudI API
-2.  Create a new class named *Task* that subscribes to various Cloudi requests and delegates the processing of these requests to different Java methods.
+2.  Create a new class named *Task* that subscribes to various CloudI requests and delegates the processing of these requests to different Java methods.
 3.  Create a JAR file that contains the different Java classes.
 4.  Add the JAR file to the CloudI configuration.
 5.  Test the application.
@@ -184,7 +184,7 @@ All of the different Java classes that are used by the application need to be ad
 
 Adding the Java Application to CloudI
 =====================================
-Adding the Java application to Cloudi can be done either at runtime by calling the CloudI API or by adding the configuration information to the *cloudi.conf* file.  A script to call the runtime API is shown below.
+Adding the Java application to CloudI can be done either at runtime by calling the CloudI API or by adding the configuration information to the *cloudi.conf* file.  A script to call the runtime API is shown below.
 
 ::
 

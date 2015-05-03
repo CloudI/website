@@ -8,7 +8,7 @@ So What's CloudI?
 -----------------
 
 CloudI is an open-source integration cloud that can be deployed publicly or privately.
-It supports the development of services that can be created in many different programming languages and provides scalability and fault-tolerance.
+It supports the development of services that can be created in many different programming languages by providing both fault-tolerance and scalability.
 
 
 More information can be found in the CloudI FAQ
@@ -20,7 +20,7 @@ About This Tutorial
 
 This tutorial should help you understand the design decisions and implementation steps needed to use CloudI for your own projects.
 A small real-world application is used for illustration and the full source code for the application is located
-`here <https://github.com/brucekissinger/book_recommendation>`_ in case you want to look at the complete implementation.
+`here <https://github.com/CloudI/tutorial_book_service_example>`_ in case you want to look at the complete implementation.
 
 This tutorial assumes that you have successfully `installed CloudI <http://cloudi.org/faq.html#3_Overview>`_ on a development system and can successfully start and stop it.
 

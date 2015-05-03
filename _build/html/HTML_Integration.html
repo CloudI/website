@@ -1,3 +1,4 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -13,7 +14,7 @@
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
+        URL_ROOT:    '',
         VERSION:     '1.5.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
@@ -26,6 +27,8 @@
     <link rel="top" title="CloudI Tutorial" href="index.html" />
     <link rel="next" title="7. Java Integration" href="Java_Integration.html" />
     <link rel="prev" title="5. Book Service" href="Book_Service.html" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
 <!--[if lte IE 6]>
 <link rel="stylesheet" href="_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
 <![endif]-->
@@ -67,39 +70,33 @@
 <ol class="arabic simple">
 <li>Change the current directory to the installation files for CloudI. Note that your location may be different than what is shown below.</li>
 </ol>
-<div class="highlight-python"><div class="highlight"><pre>cd /opt/cloudi/cloudi-1.5.0/src
-</pre></div>
+<div class="highlight-python"><pre>cd /opt/cloudi/cloudi-1.5.0/src</pre>
 </div>
 <ol class="arabic simple" start="2">
 <li>Change the current directory to the Cowboy HTTP source</li>
 </ol>
-<div class="highlight-python"><div class="highlight"><pre>cd lib/cloudi_service_http_cowboy/src
-</pre></div>
+<div class="highlight-python"><pre>cd lib/cloudi_service_http_cowboy/src</pre>
 </div>
 <ol class="arabic simple" start="3">
 <li>Edit the <strong>cloudi_service_http_cowboy.erl</strong> file and change the line that looks like:</li>
 </ol>
-<div class="highlight-python"><div class="highlight"><pre>-define(DEFAULT_USE_WEBSOCKETS,                   false).
-</pre></div>
+<div class="highlight-python"><pre>-define(DEFAULT_USE_WEBSOCKETS,                   false).</pre>
 </div>
 <p>to</p>
-<div class="highlight-python"><div class="highlight"><pre>-define(DEFAULT_USE_WEBSOCKETS,                   true).
-</pre></div>
+<div class="highlight-python"><pre>-define(DEFAULT_USE_WEBSOCKETS,                   true).</pre>
 </div>
 <ol class="arabic simple" start="4">
 <li>Remove the Cowboy runtime library so that it will get rebuilt by the installation process.</li>
 </ol>
-<div class="highlight-python"><div class="highlight"><pre>cd /usr/local/lib/cloudi-1.5.0/lib
-sudo rm cloudi_service_http_cowboy_1.5.0
-</pre></div>
+<div class="highlight-python"><pre>cd /usr/local/lib/cloudi-1.5.0/lib
+sudo rm cloudi_service_http_cowboy_1.5.0</pre>
 </div>
 <ol class="arabic simple" start="5">
 <li>Then run the <strong>make</strong> and <strong>make install</strong> command from the installation source directory and reinstall the software.</li>
 </ol>
-<div class="highlight-python"><div class="highlight"><pre>cd /opt/cloudi/cloudi-1.5.0/src
+<div class="highlight-python"><pre>cd /opt/cloudi/cloudi-1.5.0/src
 make
-sudo make install
-</pre></div>
+sudo make install</pre>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -110,39 +107,35 @@ sudo make install
 <h2>6.2. Calling the Book Service<a class="headerlink" href="#calling-the-book-service" title="Permalink to this headline">¶</a></h2>
 <p>Invocation of the Book Service is done using Javascript and consists of several different functions shown below.</p>
 <p>First, some global variables are defined:</p>
-<div class="highlight-python"><div class="highlight"><pre>// Customize for your environment
+<div class="highlight-python"><pre>// Customize for your environment
 var web_socket = undefined;
-var host_url = &quot;ws://127.0.0.1:6464&quot;;
-var service_name = &quot;/recommend/book/newbooks&quot;;
-var request_type = &quot;get&quot;;
-</pre></div>
+var host_url = "ws://127.0.0.1:6464";
+var service_name = "/recommend/book/newbooks";
+var request_type = "get";</pre>
 </div>
 <p>Next, the WebSocket is opened using the following code:</p>
-<div class="highlight-python"><div class="highlight"><pre>web_socket = new WebSocket(host_url + service_name);
-</pre></div>
+<div class="highlight-python"><pre>web_socket = new WebSocket(host_url + service_name);</pre>
 </div>
 <p>WebSockets raise events and a function is defined that will handle the <strong>onopen</strong> event.  In this case, when the socket is opened then the <strong>send</strong> function will be called:</p>
-<div class="highlight-python"><div class="highlight"><pre>// define function that is called when the web socket is opened
+<div class="highlight-python"><pre>// define function that is called when the web socket is opened
 web_socket.onopen = function () {
         send();
-};
-</pre></div>
+};</pre>
 </div>
 <p>The <strong>send</strong> function is defined as follows:</p>
-<div class="highlight-python"><div class="highlight"><pre>function send() {
+<div class="highlight-python"><pre>function send() {
     // if the web socket is in an open status then send the request
     if (web_socket.readyState == web_socket.OPEN) {
         web_socket.send(request_type);
     }
-}
-</pre></div>
+}</pre>
 </div>
 <p>When a message is received by the socket, the <strong>onmessage</strong> event is raised, and is handled by the following function:</p>
-<div class="highlight-python"><div class="highlight"><pre>web_socket.onmessage = function (evt) {
+<div class="highlight-python"><pre>web_socket.onmessage = function (evt) {
     var data = evt.data;
-    if (is(&quot;Blob&quot;, data)) {
+    if (is("Blob", data)) {
         var reader = new FileReader();
-        reader.readAsText(data, &quot;text/plain&quot;);
+        reader.readAsText(data, "text/plain");
         reader.onload = function (reader_evt) {
             data = reader_evt.target.result;
             handle_message(data);
@@ -151,45 +144,42 @@ web_socket.onopen = function () {
     else {
         handle_message(data);
     }
-};
-</pre></div>
+};</pre>
 </div>
 <p>The detailed processing of the message is performed by the <strong>handle_message</strong> function described below.</p>
 </div>
 <div class="section" id="parsing-the-results">
 <span id="index-2"></span><h2>6.3. Parsing the Results<a class="headerlink" href="#parsing-the-results" title="Permalink to this headline">¶</a></h2>
 <p>A simplified version of the <strong>handle_message</strong> function is shown below:</p>
-<div class="highlight-python"><div class="highlight"><pre>handle_message = function (data) {
+<div class="highlight-python"><pre>handle_message = function (data) {
 
-    if (data.startsWith(&quot;notification:&quot;)) {
+    if (data.startsWith("notification:")) {
         // client state check to determine this is an incoming
         // service request, not an incoming response
-        var response = &quot;ok&quot;;
+        var response = "ok";
         web_socket.send(response);
     }
     else {
-        if (data != &quot;got connect! yay!&quot;) {
+        if (data != "got connect! yay!") {
 
             // parse the JSON array
             var obj = JSON.parse(data);
 
             // add items to the list
             $.each(obj, function (i, item) {
-                //alert(&quot;Item ID = &quot; + item.id);
-                //alert(&quot;Title = &quot; + item.title);
-                var tag = &quot;&lt;li&gt;&quot; + item.title + &quot;&lt;/li&gt;&quot;;
-                $(&quot;#itemList&quot;).append(tag).listview(&#39;refresh&#39;);
+                //alert("Item ID = " + item.id);
+                //alert("Title = " + item.title);
+                var tag = "&lt;li&gt;" + item.title + "&lt;/li&gt;";
+                $("#itemList").append(tag).listview('refresh');
             });
 
         }
     }
-};
-</pre></div>
+};</pre>
 </div>
 <p>Parsing the JSON string that contains an array of <strong>items</strong> returned by the Book Service is very simple and performed by the code:</p>
-<div class="highlight-python"><div class="highlight"><pre>// parse the JSON array
-var obj = JSON.parse(data);
-</pre></div>
+<div class="highlight-python"><pre>// parse the JSON array
+var obj = JSON.parse(data);</pre>
 </div>
 <p>Referencing individual attributes of an item is done like this:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">item</span><span class="o">.</span><span class="n">id</span>
@@ -201,26 +191,25 @@ var obj = JSON.parse(data);
 <span id="index-3"></span><h2>6.4. Using AJAX instead of WebSockets<a class="headerlink" href="#using-ajax-instead-of-websockets" title="Permalink to this headline">¶</a></h2>
 <p>The use of WebSockets for integration of HTML pages with CloudI as shown in the preceeding sections is simple and efficient.  However, there is one limitation when using the default CloudI / Cowboy configuration - namely that only GET operations are supported.  A simple work around is to use the XML HTTP Request mechanism.  Because your HTML pages might be hosted at a different port or location then the CloudI service, a Cross-Origin Resource Sharing (CORS) request will be demonstrated below using the same general outline used earlier in the WebSocket example.</p>
 <p>First, some global variables are defined:</p>
-<div class="highlight-python"><div class="highlight"><pre>// Customize for your environment
-var service_host = &quot;http://localhost:6467&quot;;
-var rank_book_service = &quot;/recommend/book/download&quot;;
-</pre></div>
+<div class="highlight-python"><pre>// Customize for your environment
+var service_host = "http://localhost:6467";
+var rank_book_service = "/recommend/book/download";</pre>
 </div>
 <p>Next, a utility function is created:</p>
-<div class="highlight-python"><div class="highlight"><pre>function createCORSRequest(method, url) {
-  console.log(&quot;Creating CORS Request &quot; + method + &quot; &quot; + url);
+<div class="highlight-python"><pre>function createCORSRequest(method, url) {
+  console.log("Creating CORS Request " + method + " " + url);
 
   var xhr = new XMLHttpRequest();
-  if (&quot;withCredentials&quot; in xhr) {
+  if ("withCredentials" in xhr) {
 
-    // Check if the XMLHttpRequest object has a &quot;withCredentials&quot; property.
-    // &quot;withCredentials&quot; only exists on XMLHTTPRequest2 objects.
+    // Check if the XMLHttpRequest object has a "withCredentials" property.
+    // "withCredentials" only exists on XMLHTTPRequest2 objects.
     xhr.open(method, url, true);
 
-  } else if (typeof XDomainRequest != &quot;undefined&quot;) {
+  } else if (typeof XDomainRequest != "undefined") {
 
     // Otherwise, check if XDomainRequest.
-    // XDomainRequest only exists in IE, and is IE&#39;s way of making CORS requests.
+    // XDomainRequest only exists in IE, and is IE's way of making CORS requests.
     xhr = new XDomainRequest();
     xhr.open(method, url);
 
@@ -228,20 +217,19 @@ var rank_book_service = &quot;/recommend/book/download&quot;;
 
     // Otherwise, CORS is not supported by the browser.
     xhr = null;
-    console.log(&quot;XHR not supported by this browser&quot;);
+    console.log("XHR not supported by this browser");
 
   }
   return xhr;
-}
-</pre></div>
+}</pre>
 </div>
 <p>Next, code for creating and sending the CORS request is defined:</p>
-<div class="highlight-python"><div class="highlight"><pre>function rank_book(user_ID, item_ID, rating) {
+<div class="highlight-python"><pre>function rank_book(user_ID, item_ID, rating) {
   // create a CORS request
   var service_url = service_host + rank_book_service;
-  var xhr = createCORSRequest(&#39;POST&#39;, service_url);
+  var xhr = createCORSRequest('POST', service_url);
   if (!xhr) {
-    throw new Error(&#39;CORS not supported&#39;);
+    throw new Error('CORS not supported');
   }
 
   // define a function to handle the response
@@ -254,14 +242,13 @@ var rank_book_service = &quot;/recommend/book/download&quot;;
 
   // define a function to handle errors
   xhr.onerror = function() {
-    console.log(&#39;There was an error!&#39;);
+    console.log('There was an error!');
     return;
   };
 
   // send the request
-  xhr.send(&#39;?user_ID=\&quot;&#39; + user_ID + &#39;\&quot;&#39; + &#39;&amp;item_id=\&quot;&#39; + item_ID + &#39;\&quot;&#39; + &#39;&amp;rating=\&quot;&#39; + rating + &#39;\&quot;&#39;);
-}
-</pre></div>
+  xhr.send('?user_ID=\"' + user_ID + '\"' + '&amp;item_id=\"' + item_ID + '\"' + '&amp;rating=\"' + rating + '\"');
+}</pre>
 </div>
 </div>
 <div class="section" id="complete-source">
@@ -327,8 +314,8 @@ var rank_book_service = &quot;/recommend/book/download&quot;;
       </ul>
     </div>
     <div class="footer">
-      Last updated on Apr 24, 2015.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Last updated on May 02, 2015.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
   </body>
 </html>

@@ -13,8 +13,8 @@ The application used for this tutorial is a web-based book recommendation system
 `Project Gutenberg <http://www.gutenberg.org/>`_
 and provides recommendations of other books.  
 You can run the application at
-`http://www.impactsoftwarelabs.com/book <http://www.impactsoftwarelabs.com/book>`_
-and view the full source code `here <https://github.com/brucekissinger/book_recommendation>`_
+`http://cloudi.org/example/tutorial_book_service <http://cloudi.org/example/tutorial_book_service>`_
+and view the full source code `here <https://github.com/CloudI/tutorial_book_service_example>`_
 
 A use case diagram showing the major functions is listed below.
 
@@ -40,15 +40,13 @@ The primary components are:
 
 
 *   An open-source recommendation engine named
-    `MyMediaLite <http://www.mymedialite.net/>`_
+    `LensKit <http://lenskit.org/>`_
     is used to process each user's book ratings and generate recommendations.
 
 
 *   Small Java programs are used to interact with the recommendation engine, and to download and process the book catalog.
 
-
-
-The book catalog contains approximately 50,000 books and the number of users is relatively small.
+The book catalog contains approximately 50,000 books.
 
 .. index::
  single: Future State Diagram
@@ -68,12 +66,12 @@ The primary changes are:
 *   Creation of a
     *Book Service*
     that will interact with the web pages using a RESTful API.
-    This service will be managed and executed using CloudI
+    This service will be executed by CloudI
     and will be created using the Erlang programming language.
 
 *   Use of a CloudI
     *MySQL Service Adapter*
-    to provide location transparency for the MySQL database backend.
+    to provide flexibility for the MySQL database backend.
 
 *   HTML pages will call the 
     *Book Service*
@@ -82,7 +80,7 @@ The primary changes are:
 *   Modify the various Java utility programs to run as CloudI services and use the *MySQL Service Adapter* rather than calling the MySQL database directly.
 
 .. note::
- The Future State Implementation could be further simplified by using the Cowboy Web Server rather than the Apache Web Server for serving the HTML pages.  However, in the target environment there are other applications using Apache and Apache is the corporate standard.  
+ The Future-State Implementation could be further simplified by using the Cowboy Web Server rather than the Apache Web Server for serving the HTML pages.
 
 Architectural Decisions
 =======================
@@ -95,16 +93,23 @@ Data Transmission
 -----------------
 
 Because the components will be developed using different languages (Javascript, Java, and Erlang), an important decision is to select a language-independent method for transmitting data between each component.
-CloudI does not impose a specific data transfer mechanism, so you are free to select this.
+CloudI does not impose a specific data protocol, so you are free to select this.
 In this tutorial, the
 `JSON protocol <http://www.wikipedia.org/wiki/Json>`_
 will be used with the following libraries:
+
+.. note::
+ TODO: Fix Java JSON dependency.
 
 *   Java -
     TBD
 
 *   Erlang -
-    `jsx <https://github.com/talentdeficit/jsx>`_.  Note that jsx is built into the Cloudi distribution and is located in the module named **cloudi_x_jsx**.
+    `jsx <https://github.com/talentdeficit/jsx>`_.  Note that jsx is built into the CloudI distribution and is located in the module named **cloudi_x_jsx**
+    
+.. note::
+
+ CloudI Erlang dependencies have a **cloudi_x_** prefix added to their modules to avoid version conflicts with any of your Erlang dependencies.
 
 .. index::
  single: RESTful API 
@@ -115,56 +120,42 @@ Service API
 -----------
 
 Another important point is to design a consistent RESTful API for interacting with your services.
-CloudI uses the Cowboy HTTP Server to handle requests and Cowboy supports the standard range of REST methods including:
+The tutorial uses the CloudI Service integration with the Cowboy HTTP Server to handle requests.  The Cowboy HTTP Server supports the standard range of HTTP methods including:
 GET, HEAD, POST, PUT, PATCH, DELETE, and OPTIONS.
-Additional information about Cowboy is available
-`here <http://ninenines.eu/docs/en/cowboy/HEAD/>`_
 .
 An excellent resource for designing RESTful API's is located `here <https://restful-api-design.readthedocs.org/en/latest/intro.html>`_
 
 The table below lists the different use cases, HTTP methods, and URL examples implemented by the Book Service. Note that the top-level URL will be **/book**
 
 
-========================  ====== ============================== =========================================================
-Use Case                  Method URL                            Description
-========================  ====== ============================== =========================================================
-Browse New Books          GET    /book/newbooks                 Return list of new books
-Browse Popular Books      GET    /book/popularbooks             Return list of most-popular books
-Browse Recommended Books  GET    /book/recommendedbooks?user=X  Return list of recommended books for the given User ID
-View Book Details         GET    /book/allbooks?id=X            Return details about book given the Item ID 
-Download Book             GET    /book/download?id=X&user=Y	Download a book given the Item ID and User ID
-Create New User           GET    /book/newuser			Create and return a new user ID 
-Get Unrated Books         GET    /book/unrated?user=X		Get the unrated books for a user ID
-Rank Downloaded Book      POST   /book/download/                Update a book's rating given the User ID, Item ID, Rating
-Add Book to Collection    POST   /book/allbooks/		Add a book to the collection   
-========================  ====== ============================== =========================================================
+========================  ====== ========================================== =========================================================
+Use Case                  Method URL                                        Description
+========================  ====== ========================================== =========================================================
+Browse New Books          GET    /recommend/book/newbooks                   Return list of new books
+Browse Popular Books      GET    /recommend/book/popularbooks               Return list of most-popular books
+Browse Recommended Books  GET    /recommend/book/recommendedbooks?user=X    Return list of recommended books for the given User ID
+View Book Details         GET    /recommend/book/allbooks?id=X              Return details about book given the Item ID 
+Download Book             GET    /recommend/book/download?id=X&user=Y       Download a book given the Item ID and User ID
+Create New User           GET    /recommend/book/newuser                    Create and return a new user ID 
+Get Unrated Books         GET    /recommend/book/unrated?user=X             Get the unrated books for a user ID
+Rank Downloaded Book      GET    /recommend/book/rate?id=X&user=Y&rating=Z  Update a book's rating given the User ID, Item ID, Rating
+Add Book to Collection    POST   /recommend/book/                           Add a book to the collection   
+========================  ====== ========================================== =========================================================
 
 .. note::
- As described later in this tutorial, access control lists are developed using URL patterns.  Consequently, give some thought to developing a consistent URL structure.  
+ As described later in this tutorial, Access Control Lists (ACLs) are can be used as URL patterns.  Consequently, give some thought to developing a hierarchical URL structure.  
 
 
 Integration Method
 ------------------
 
-There are several different methods for applications to call CloudI services. The alternatives depend on whether the application is "external" (i.e., run inside an operating system process external to the Erlang VM) or "internal" (i.e., run inside the Erlang VM).  Applications written in C, C++, Java, JavaScript, Perl, PHP, Python, and Ruby would be of "external" type.  Applications written in Erlang or Elixir would be an "internal" type.
-
-
-================= ================== =====================================================================================
-Application Type  Integration Method Comments                                                                             
-================= ================== =====================================================================================
-External          HTTP               Using WebSocket protocol
-External          Zero MQ            Use Zero MQ as a messaging bus. See Cloudi FAQ for details                                   
-Internal          CloudI API         Setup Subscribe/Request pairs.  Messages can be synchronous, asynchrous, or broadcast 
-================= ================== =====================================================================================
+To benefit from CloudI features it is necessary to utilize CloudI services.  To create a CloudI service it is necessary to use an implementation of the CloudI API.  There are two types of CloudI services used for CloudI integration.  An "external" CloudI service runs inside an operating system process external to the Erlang VM to keep memory isolated.  CloudI API integration with C, C++, Java, JavaScript, Perl, PHP, Python, or Ruby creates an "external" CloudI service.  An "internal" CloudI service runs inside the Erlang VM.  CloudI API integration with Erlang or Elixir creates an "internal" CloudI service.
 
 Additional information is available in the CloudI FAQ
 `here <http://cloudi.org/faq.html#4_API>`_
 .
 
-.. note::
- Technically an Internal application could also use the HTTP or ZeroMQ integration methods, but generally the use of the CloudI API is preferred.
- 
-For this application, HTTP REST calls will be used to integrate the HTML pages with the *Book Service*.  The HTTP request/response messages will be delivered using the WebSocket protocol. The Java Utility programs will use the ZeroMQ message bus.
+For this service, HTTP REST calls will be used to integrate the HTML pages with the *Book Service*.  The HTTP request/response messages will be delivered using the WebSocket protocol.
 
 .. index::
  single: Data Model Diagram

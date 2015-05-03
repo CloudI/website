@@ -1,3 +1,4 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -13,7 +14,7 @@
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
+        URL_ROOT:    '',
         VERSION:     '1.5.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
@@ -26,6 +27,8 @@
     <link rel="top" title="CloudI Tutorial" href="index.html" />
     <link rel="next" title="8. Recommendation Engine Integration" href="Recommendation_Integration.html" />
     <link rel="prev" title="6. HTML Integration" href="HTML_Integration.html" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
 <!--[if lte IE 6]>
 <link rel="stylesheet" href="_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
 <![endif]-->
@@ -59,10 +62,10 @@
 <p id="index-0">There are several Java utility classes that need to be revised to run within the CloudI environment and to call the MySQL Database Adapter service rather than calling the MySQL database directly.</p>
 <div class="section" id="integrating-a-java-application-with-cloudi">
 <h2>7.1. Integrating a Java Application with CloudI<a class="headerlink" href="#integrating-a-java-application-with-cloudi" title="Permalink to this headline">¶</a></h2>
-<p>The general steps for adding a Java application to Cloudi are:</p>
+<p>The general steps for adding a Java application to CloudI are:</p>
 <ol class="arabic simple">
 <li>Create a new class named <em>Main</em> that will initialize the CloudI API</li>
-<li>Create a new class named <em>Task</em> that subscribes to various Cloudi requests and delegates the processing of these requests to different Java methods.</li>
+<li>Create a new class named <em>Task</em> that subscribes to various CloudI requests and delegates the processing of these requests to different Java methods.</li>
 <li>Create a JAR file that contains the different Java classes.</li>
 <li>Add the JAR file to the CloudI configuration.</li>
 <li>Test the application.</li>
@@ -71,7 +74,7 @@
 <div class="section" id="main-java-class">
 <span id="index-1"></span><h3>7.1.1. Main.java Class<a class="headerlink" href="#main-java-class" title="Permalink to this headline">¶</a></h3>
 <p>A new file named <em>Main.java</em> will be created with the following contents.</p>
-<div class="highlight-python"><div class="highlight"><pre>import org.cloudi.API;
+<div class="highlight-python"><pre>import org.cloudi.API;
 
 public class Main {
   public static void main(String[] args) {
@@ -84,15 +87,14 @@ public class Main {
           e.printStackTrace(API.err);
       }
   }
-}
-</pre></div>
+}</pre>
 </div>
 <p>This code is used to initialize the Java class and to create and run a new instance of the <em>Task</em> class.</p>
 </div>
 <div class="section" id="task-java-class">
 <span id="index-2"></span><h3>7.1.2. Task.java Class<a class="headerlink" href="#task-java-class" title="Permalink to this headline">¶</a></h3>
 <p>A new file named <em>Task.java</em> will be created with the following contents.</p>
-<div class="highlight-python"><div class="highlight"><pre>import com.ericsson.otp.erlang.OtpErlangPid;
+<div class="highlight-python"><pre>import com.ericsson.otp.erlang.OtpErlangPid;
 import java.io.UnsupportedEncodingException;
 import org.cloudi.API;
 import javax.xml.parsers.SAXParser;
@@ -122,27 +124,26 @@ public class Task {
       try {
 
           // subscribe to different CloudI services
-          this.api.subscribe(&quot;load_catalog/get&quot;, this, &quot;startLoadCatalog&quot;);
-          this.api.subscribe(&quot;generate_ratings/get&quot;, this, &quot;startGenerateRatings&quot;);
-          this.api.subscribe(&quot;load_predictions/get&quot;, this, &quot;startLoadPredictions&quot;);
+          this.api.subscribe("load_catalog/get", this, "startLoadCatalog");
+          this.api.subscribe("generate_ratings/get", this, "startGenerateRatings");
+          this.api.subscribe("load_predictions/get", this, "startLoadPredictions");
 
           // accept service requests
           this.api.poll();
 
       } catch (API.TerminateException e) {
-          API.err.println(&quot;Book Utilities TerminateException caught &quot; + e.getMessage());
+          API.err.println("Book Utilities TerminateException caught " + e.getMessage());
       } catch (Exception e) {
-          API.err.println(&quot;Book Utilities Exception caught &quot; + e.getMessage());
+          API.err.println("Book Utilities Exception caught " + e.getMessage());
       }
-  }
-</pre></div>
+  }</pre>
 </div>
 <p>The code listed above creates a new instance of the <em>Task</em> class and then subscribes to various service requests.  For example, the following code is used to tell CloudI that when the <em>load_catalog/get</em> request is received, the <em>startLoadCatalog</em> Java method will be executed.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">this</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="s">&quot;load_catalog/get&quot;</span><span class="p">,</span> <span class="n">this</span><span class="p">,</span> <span class="s">&quot;startLoadCatalog&quot;</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>An example of the <em>startLoadCatalog</em> method is shown below.</p>
-<div class="highlight-python"><div class="highlight"><pre>/**
+<div class="highlight-python"><pre>/**
   * This method calls the RecommendationData class
   */
  public Object startGenerateRatings(Integer command, String name, String pattern,
@@ -150,35 +151,33 @@ public class Task {
                             Integer timeout, Byte priority, byte[] trans_id,
                             OtpErlangPid pid) {
 
-     API.out.println(&quot;startGenerateRatings starts&quot;);
+     API.out.println("startGenerateRatings starts");
 
      // create a new instance of the RecommendationData class
      RecommendationData recommendationData = new RecommendationData();
      recommendationData.setCloudIAPI(api);
      recommendationData.generateItemRatings();
 
-     API.out.println(&quot;startGenerateRatings ends&quot;);
-     return (&quot;startGenerateRatings ends&quot;.getBytes());
- }
-</pre></div>
+     API.out.println("startGenerateRatings ends");
+     return ("startGenerateRatings ends".getBytes());
+ }</pre>
 </div>
 </div>
 </div>
 <div class="section" id="calling-the-mysql-database-adapter-service">
 <h2>7.2. Calling the MySQL Database Adapter Service<a class="headerlink" href="#calling-the-mysql-database-adapter-service" title="Permalink to this headline">¶</a></h2>
 <p>The legacy Java code will be modified to call the MySQL Database Adapter service rather than using the JDBC protocol to interact with the database directly.  The following code shows an example.</p>
-<div class="highlight-python"><div class="highlight"><pre>byte[] service_request =
-              (&quot;SELECT max(download_quantity) FROM items&quot;).getBytes();
+<div class="highlight-python"><pre>byte[] service_request =
+              ("SELECT max(download_quantity) FROM items").getBytes();
 
 org.cloudi.API.Response response =
-              api.send_sync(&quot;/db/mysql/book&quot;, service_request);
-</pre></div>
+              api.send_sync("/db/mysql/book", service_request);</pre>
 </div>
 </div>
 <div class="section" id="parsing-the-response">
 <h2>7.3. Parsing the Response<a class="headerlink" href="#parsing-the-response" title="Permalink to this headline">¶</a></h2>
 <p>The exact format of the response will vary depending on the service that is executed.  In this example, the response consists of several binary characters followed by <em>[6974]</em> where 6974 happens to be the value returned.</p>
-<div class="highlight-python"><div class="highlight"><pre>String response_string = new String(response.response, &quot;UTF-8&quot;);
+<div class="highlight-python"><pre>String response_string = new String(response.response, "UTF-8");
 
 // process results
 String[] tokens = response_string.split(startDelimiter);
@@ -186,12 +185,11 @@ String[] tokens = response_string.split(startDelimiter);
 for (int i = 0; i &lt; tokens.length; ++i) {
 
     // parse the max download value
-    int end = tokens[i].indexOf(&quot;]&quot;);
+    int end = tokens[i].indexOf("]");
     if (end &gt; 0) {
       maxDownloads = new Double(tokens[i].substring(0, end));
     }
-}
-</pre></div>
+}</pre>
 </div>
 </div>
 <div class="section" id="creating-the-jar-file">
@@ -201,18 +199,16 @@ for (int i = 0; i &lt; tokens.length; ++i) {
 <p class="first admonition-title">Note</p>
 <p class="last">The JAR <strong>must</strong> contain a <em>manifest</em> file that contains both the fully qualified main class and also the full path to the <em>cloudi.jar</em> file.  An example of the manifest contents are shown below.</p>
 </div>
-<div class="highlight-python"><div class="highlight"><pre>Manifest-Version: 1.0
+<div class="highlight-python"><pre>Manifest-Version: 1.0
 Class-Path: /usr/local/lib/cloudi-1.5.0/api/java/cloudi.jar
-Main-Class: com.impactsoftware.bookutilities.Main
-</pre></div>
+Main-Class: com.impactsoftware.bookutilities.Main</pre>
 </div>
 </div>
 <div class="section" id="adding-the-java-application-to-cloudi">
 <h2>7.5. Adding the Java Application to CloudI<a class="headerlink" href="#adding-the-java-application-to-cloudi" title="Permalink to this headline">¶</a></h2>
-<p>Adding the Java application to Cloudi can be done either at runtime by calling the CloudI API or by adding the configuration information to the <em>cloudi.conf</em> file.  A script to call the runtime API is shown below.</p>
-<div class="highlight-python"><div class="highlight"><pre>#!/bin/sh
-curl -X POST -d @BookUtilities.conf http://localhost:6464/cloudi/api/rpc/services_add.erl
-</pre></div>
+<p>Adding the Java application to CloudI can be done either at runtime by calling the CloudI API or by adding the configuration information to the <em>cloudi.conf</em> file.  A script to call the runtime API is shown below.</p>
+<div class="highlight-python"><pre>#!/bin/sh
+curl -X POST -d @BookUtilities.conf http://localhost:6464/cloudi/api/rpc/services_add.erl</pre>
 </div>
 <p>The <em>BookUtilities.conf</em> file referenced in the script above looks like this:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="p">[</span>
@@ -235,8 +231,7 @@ curl -X POST -d @BookUtilities.conf http://localhost:6464/cloudi/api/rpc/service
 <div class="section" id="running-the-java-application">
 <h2>7.6. Running the Java Application<a class="headerlink" href="#running-the-java-application" title="Permalink to this headline">¶</a></h2>
 <p>Once the Java application has been added to the CloudI environment, it can be executed using several different methods.  An example of using an HTTP request to launch the application is shown below.</p>
-<div class="highlight-python"><div class="highlight"><pre>curl http://localhost:6464/book/utility/generate_ratings
-</pre></div>
+<div class="highlight-python"><pre>curl http://localhost:6464/book/utility/generate_ratings</pre>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -312,8 +307,8 @@ curl -X POST -d @BookUtilities.conf http://localhost:6464/cloudi/api/rpc/service
       </ul>
     </div>
     <div class="footer">
-      Last updated on Apr 24, 2015.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Last updated on May 02, 2015.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
   </body>
 </html>

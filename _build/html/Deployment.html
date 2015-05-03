@@ -1,3 +1,4 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -13,7 +14,7 @@
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
+        URL_ROOT:    '',
         VERSION:     '1.5.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
@@ -26,6 +27,8 @@
     <link rel="top" title="CloudI Tutorial" href="index.html" />
     <link rel="next" title="10. Trouble Shooting" href="Trouble_Shooting.html" />
     <link rel="prev" title="8. Recommendation Engine Integration" href="Recommendation_Integration.html" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
 <!--[if lte IE 6]>
 <link rel="stylesheet" href="_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
 <![endif]-->
@@ -66,24 +69,20 @@
 <ol class="arabic simple">
 <li>Change the current directory to the installation files for CloudI. Note that your location may be different than what is shown below.</li>
 </ol>
-<div class="highlight-python"><div class="highlight"><pre>cd /opt/cloudi/cloudi-1.5.0/src
-</pre></div>
+<div class="highlight-python"><pre>cd /opt/cloudi/cloudi-1.5.0/src</pre>
 </div>
 <ol class="arabic simple" start="2">
 <li>Change the current directory to the Cowboy HTTP source</li>
 </ol>
-<div class="highlight-python"><div class="highlight"><pre>cd lib/cloudi_service_http_cowboy/src
-</pre></div>
+<div class="highlight-python"><pre>cd lib/cloudi_service_http_cowboy/src</pre>
 </div>
 <ol class="arabic simple" start="3">
 <li>Edit the <strong>cloudi_service_http_cowboy.erl</strong> file and change the line that looks like:</li>
 </ol>
-<div class="highlight-python"><div class="highlight"><pre>-define(DEFAULT_INTERFACE,                  {127,0,0,1}). % ip address
-</pre></div>
+<div class="highlight-python"><pre>-define(DEFAULT_INTERFACE,                  {127,0,0,1}). % ip address</pre>
 </div>
 <p>to</p>
-<div class="highlight-python"><div class="highlight"><pre>-define(DEFAULT_INTERFACE,                  {0,0,0,0}). % ip address
-</pre></div>
+<div class="highlight-python"><pre>-define(DEFAULT_INTERFACE,                  {0,0,0,0}). % ip address</pre>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -92,17 +91,15 @@
 <ol class="arabic simple" start="4">
 <li>Remove the Cowboy runtime library directory so that it will get rebuilt by the installation process.</li>
 </ol>
-<div class="highlight-python"><div class="highlight"><pre>cd /usr/local/lib/cloudi-1.5.0/lib
-sudo rm cloudi_service_http_cowboy_1.5.0
-</pre></div>
+<div class="highlight-python"><pre>cd /usr/local/lib/cloudi-1.5.0/lib
+sudo rm cloudi_service_http_cowboy_1.5.0</pre>
 </div>
 <ol class="arabic simple" start="5">
 <li>Then run the <strong>make</strong> and <strong>make install</strong> command from the installation source directory and reinstall the software.</li>
 </ol>
-<div class="highlight-python"><div class="highlight"><pre>cd /opt/cloudi/cloudi-1.5.0/src
+<div class="highlight-python"><pre>cd /opt/cloudi/cloudi-1.5.0/src
 make
-sudo make install
-</pre></div>
+sudo make install</pre>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -123,8 +120,7 @@ sudo make install
 <a class="reference external" href="http://learnyousomeerlang.com/distribunomicon#setting-up-an-erlang-cluster">here</a></p>
 </div>
 <p>You can also manually add a node to the CloudI cluster using the API as shown by the following example.</p>
-<div class="highlight-python"><div class="highlight"><pre>curl -X POST -d &quot;[&#39;cloud001@cluster1&#39;]&quot; http://localhost:6467/cloudi/api/rpc/nodes_add.erl
-</pre></div>
+<div class="highlight-python"><pre>curl -X POST -d "['cloud001@cluster1']" http://localhost:6467/cloudi/api/rpc/nodes_add.erl</pre>
 </div>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
@@ -135,15 +131,13 @@ sudo make install
 <h3>9.2.2. Failing Over Nodes In the Cluster<a class="headerlink" href="#failing-over-nodes-in-the-cluster" title="Permalink to this headline">¶</a></h3>
 <p>If a node was added using the auto-discovery protocol described above, it is automatically removed if it becomes unavailable.</p>
 <p>If you manually added the node using the CloudI API, you can remove it using the API as shown in the example below.</p>
-<div class="highlight-python"><div class="highlight"><pre>curl -X POST -d &quot;[&#39;cloud001@cluster1&#39;]&quot; http://localhost:6467/cloudi/api/rpc/nodes_remove.erl
-</pre></div>
+<div class="highlight-python"><pre>curl -X POST -d "['cloud001@cluster1']" http://localhost:6467/cloudi/api/rpc/nodes_remove.erl</pre>
 </div>
 </div>
 <div class="section" id="testing-the-cluster-configuration">
 <h3>9.2.3. Testing the Cluster Configuration<a class="headerlink" href="#testing-the-cluster-configuration" title="Permalink to this headline">¶</a></h3>
 <p>Use the CloudI API to show any nodes (other than the current local host) that it is aware of.</p>
-<div class="highlight-python"><div class="highlight"><pre>curl http://localhost:6467/cloudi/api/rpc/nodes.erl
-</pre></div>
+<div class="highlight-python"><pre>curl http://localhost:6467/cloudi/api/rpc/nodes.erl</pre>
 </div>
 </div>
 <div class="section" id="service-redundancy">
@@ -203,46 +197,42 @@ More details are available <a class="reference external" href="http://cloudi.org
 <ol class="arabic simple">
 <li>Change the current directory to the CloudI run time location. Note that this might be different for your installation</li>
 </ol>
-<div class="highlight-python"><div class="highlight"><pre>cd /usr/local/lib/cloudi-1.5.0/
-</pre></div>
+<div class="highlight-python"><pre>cd /usr/local/lib/cloudi-1.5.0/</pre>
 </div>
 <ol class="arabic simple" start="2">
 <li>Create a new directory for the Book service and any compiled files.  The directory name should conform to the language conventions for your service.</li>
 </ol>
-<div class="highlight-python"><div class="highlight"><pre>mkdir book
-mkdir book/ebin
-</pre></div>
+<div class="highlight-python"><pre>mkdir book
+mkdir book/ebin</pre>
 </div>
 <ol class="arabic simple" start="3">
 <li>Place the compiled Book Service file (book.beam) in the directory created above.</li>
 </ol>
-<div class="highlight-python"><div class="highlight"><pre>cp /tmp/book.beam book/ebin
-</pre></div>
+<div class="highlight-python"><pre>cp /tmp/book.beam book/ebin</pre>
 </div>
 <ol class="arabic simple" start="4">
 <li>Modify the <strong>vm.args</strong> file stored in the <strong>/usr/local/etc/cloudi</strong> directory and add the location of the directory created in Step 2.</li>
 </ol>
-<div class="highlight-python"><div class="highlight"><pre># Book service code path
--pz /usr/local/lib/cloudi-1.5.0/book/ebin/
-</pre></div>
+<div class="highlight-python"><pre># Book service code path
+-pz /usr/local/lib/cloudi-1.5.0/book/ebin/</pre>
 </div>
 <ol class="arabic simple" start="5">
 <li>Modify the <strong>cloudi.conf</strong> file stored in the <strong>/usr/local/etc/cloudi</strong> directory and add the database service described in Section 4.1 and the configuration settings described in Section 5.1.  When completed, the <strong>cloudi.conf</strong> file should contain lines similar to what&#8217;s shown below.</li>
 </ol>
-<div class="highlight-python"><div class="highlight"><pre>%
+<div class="highlight-python"><pre>%
 % Book Recommendation services
 %
 
 % database service
 {internal,
-        &quot;/db/mysql/&quot;,
+        "/db/mysql/",
        cloudi_service_db_mysql,
-       [{database, &quot;book&quot;},
+       [{database, "book"},
         {timeout, 20000}, % ms
         {encoding, utf8},
-        {hostname, &quot;dev1&quot;},
-        {username, &quot;cloudi&quot;},
-        {password, &quot;secret&quot;},
+        {hostname, "dev1"},
+        {username, "cloudi"},
+        {password, "secret"},
         {port, 3306}],
        none,
        50000, 50000, 50000, undefined, undefined, 1, 5, 300, []
@@ -250,14 +240,13 @@ mkdir book/ebin
 
 % book service
 {internal,
-        &quot;/recommend/book/&quot;,
+        "/recommend/book/",
         book,
         [],
         immediate_random,
         60000, 60000, 60000, undefined, undefined, 3, 5, 900,
         [{reload, true}, {queue_limit, 500}]
-}
-</pre></div>
+}</pre>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -335,8 +324,8 @@ mkdir book/ebin
       </ul>
     </div>
     <div class="footer">
-      Last updated on Apr 24, 2015.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Last updated on May 02, 2015.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
   </body>
 </html>

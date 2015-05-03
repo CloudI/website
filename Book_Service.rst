@@ -2,66 +2,24 @@
 Book Service
 ************
 
-.. index::
- single: book.conf file
-
 Configuration File
 ==================
-Every service running in Cloudi needs certain configuration information to be defined.  Typically, this information is stored in a separate file for each service and specified when the service is added.  
+Every service running in CloudI needs certain configuration information to be defined.  It is possible to dynamically add or remove services while CloudI is running and doing so can facilitate transparent updates or transitions between service implementations.  However, during system development it is safest to fully utilize the **cloudi.conf** CloudI configuration file for all the critical services the system requires, to ensure the critical services initialize upon CloudI startup.
 
-The configuration file for the Book Service is shown below and is stored in a file named **book.conf**.
+Add the book service to the **/usr/local/etc/cloudi/cloudi.conf** file and restart CloudI:
 
 ::
 
-  [{
-    internal,
-    "/recommend/book/",   
-    book,		  
-    [],			  
-    immediate_closest,   
-    5000,		
-    5000, 	
-    5000, 
-    undefined, 	
-    undefined, 
-    1,	
-    5, 
-    300,
-    [{reload, true}, {queue_limit, 50}] 
-  }]
+ {services, [
+   ...
+   [{prefix, "/recommend/book/"},
+    {module, book}],
+   ...
+  ]}.
 
-
-.. tip:: 
-
-  During initial development, storing the configuration in a separate file can be useful for making and testing incremental changes.  Later when development is complete, the information can be stored directly in the *cloudi.conf* file if desired.
-
-A table describing each of these parameters is listed below.  
-
-=========================   ==============================================================================================
-Parameter Value		    Description	
-=========================   ==============================================================================================
-internal		    Service type - either internal or external
-"/recommend/book/"          Service name prefix
-book		            Erlang module name
-[]			    Module initializion list
-immediate_closest           Destination refresh method
-5000 		            Initialization timeout in milliseconds
-5000  		            Default asynchronous timeout in milliseconds
-5000  		            Default synchronous timeout in milliseconds
-undefined  		    Destination deny ACL
-undefined  	            Destination allow ACL
-1 			    Process count 
-5   		            Maximum number of restarts 
-300  		            Maximum time in seconds 
-[                           Beginning of service options property list
-{reload, true}              Automatically reload the service when the module's file is updated on the filesystem
-{queue_limit, 50}           Limit the total number of incoming service requests that are queued while the service is busy
-] 	                    End of service options property list
-=========================   ==============================================================================================
 
 .. note::
-
- More information about the configuration settings and additional service options can be found `here <http://cloudi.org/api.html#2_services_add>`_
+ Many service configuration arguments are available with typical defaults.  More information about the available service configuration arguments is available `here <http://cloudi.org/api.html#2_services_add>`_
 
 
 
@@ -93,27 +51,18 @@ Service Initialization Logic
     cloudi_service:subscribe(Dispatcher, "recommendedbooks/get"),
     cloudi_service:subscribe(Dispatcher, "allbooks/get"),
     cloudi_service:subscribe(Dispatcher, "download/get"),
-    cloudi_service:subscribe(Dispatcher, "rate/get"),
     cloudi_service:subscribe(Dispatcher, "newuser/get"),
     cloudi_service:subscribe(Dispatcher, "unrated/get"),
+    cloudi_service:subscribe(Dispatcher, "rate/get"),
+    cloudi_service:subscribe(Dispatcher, "/post"),
 
     % return ok
     {ok, #state{}}.
 
 In the code above, the Book Service defines which messages it subscribes to.  Note that the list of request patterns matches the Service API table shown earlier in the :ref:`service-api-reference` section with the HTTP method type (*get* or *post*) appended. 
 
-.. tip:: 
-
-  The initialization section is also a good place to define the code path for any external libraries that this service depends on.  For example, in an earlier version of this code, the Jiffy JSON library was used.  Consequently, the additional lines shown below were added in this section.
-
-::
-
-  % Add the path to the Jiffy source
-  code:add_path("/usr/lib/erlang/lib/jiffy-0.8.5/ebin"), 
-
-  % Load Jiffy module manually
-  code:load_file(jiffy),
-
+.. note::
+ TODO: first pass continue from here:
 
 Handling Requests
 -----------------
@@ -159,29 +108,19 @@ A simplified example for handling book service requests is shown below. Note tha
 
 Calling the MySQL Database Adapter
 ----------------------------------
-The code for calling the MySQL Database Adapter is shown below.
+Example Erlang source code for calling the MySQL Database Adapter is shown below:
 
 ::
 
-  Query = "select id, title from items",
+  Query = "SELECT id, title FROM items",
+  case cloudi_service:send_sync(Dispatcher, "/db/mysql/book", Query) of
+      {ok, Result} ->
+          parse_items(Result);
+      {error, _} ->
+          cloudi_x_jsx:encode(<<"No data found">>)
+  end.
 
-  Status = cloudi_service:send_sync(Dispatcher,
-    "/db/mysql/book",
-    <<>>,
-    Query,
-    undefined,
-    undefined),
-
-  case Status of
-    {ok , Result} ->
-      Json_result = parse_items(Result);
-    _ ->
-      Json_result = cloudi_x_jsx:encode(<<"No data found">>)
-    end,
-
-  Json_result.
-
-First, a string containing the SQL query is constructed.  Next, the service named ``/db/mysql/book`` is invoked and the query is passed to it.  Then the value of the ``Status`` variable is matched and if the ``Status`` is ``ok``, the contents of the ``Result`` variable are parsed which returns a JSON encoded response.  If the ``Status`` is anything other than ``ok`` then the JSON encoded message ``No data found`` is returned.
+First, a string containing the SQL query is constructed.  Next, the service named ``"/db/mysql/book"`` is used to create a synchronous service request with the query.  Then the result of the query is matched to determine if the service request received a response (meaning the transaction is complete).  If the ``ok`` tuple is matched, the service request received a valid service response which indicates the MySQL database handled the query successfully (even if the SQL in the query produced an SQL error).  If the ``error`` tuple is matched, the service request did not receive a service response which would be caused by the timeout value being exceeded for the response or the MySQL CloudI service not existing.
 
 Parsing the Results
 -------------------
@@ -267,7 +206,7 @@ The ``cloudi_service_terminate`` function is called when the CloudI server is sh
 
 Complete Source
 ---------------
-The complete source is located on GitHub `here <https://github.com/brucekissinger/book_recommendation>`_  in the **service** folder. 
+The complete source is located on GitHub `here <https://github.com/CloudI/tutorial_book_service_example>`_  in the **service** folder. 
 
 
 Adding the Service to CloudI
