@@ -61,7 +61,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 <div id="content">
   <h1>CloudI API Documentation</h1>
   <center><h3>version 1.5.0<br />
-              last updated on May 7<sup>th</sup> 2015</h3></center>
+              last updated on May 9<sup>th</sup> 2015</h3></center>
 
   <a name="Service"></a>
   <h2>CloudI API - Making a Service</h2>
@@ -2126,6 +2126,14 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
     (the supported resource limits can be found in the <a href="http://manpages.ubuntu.com/manpages/natty/man2/setrlimit.2.html" target="_blank">setrlimit</a>
     manpage).
   </td></tr><tr><td>
+    <a href="#2_services_add_config_opts_owner">
+    owner</a>
+  </td><td>
+    []
+  </td><td>
+    (external services only) Set the owner of any OS processes an
+    external service creates. <br /><b>(new in 1.5.1)</b>
+  </td></tr><tr><td>
     <a href="#2_services_add_config_opts_aspects_init_after">
     aspects_init_after</a>
   </td><td>
@@ -2452,6 +2460,26 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
     vmem
   </td><td>
     The maximum size of an OS process' mapped address space in bytes.
+  </td></tr></table>
+  <a name="2_services_add_config_opts_owner"></a>
+  <h4>owner:</h4>
+  <p class="paragraph">
+    Set the owner of an external service's OS processes.
+  </p>
+  <table><tr><th>
+    Option
+  </th><th>
+    Details
+  </th></tr><tr><td>
+    user
+  </td><td>
+    Set the user as either a positive integer user id or a string username.
+    If a group is not specified in the owner service configuration option the
+    user's group is used.
+  </td></tr><tr><td>
+    group
+  </td><td>
+    Set the group as either a positive integer group id or a string group name.
   </td></tr></table>
   <a name="2_services_add_config_opts_aspects_init_after"></a>
   <h4>aspects_init_after:</h4>
