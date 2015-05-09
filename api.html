@@ -2124,7 +2124,8 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
     use the settings within the cloudi_core Erlang application configuration.
     The resource limits are based on what the OS supports
     (the supported resource limits can be found in the <a href="http://manpages.ubuntu.com/manpages/natty/man2/setrlimit.2.html" target="_blank">setrlimit</a>
-    manpage).
+    manpage). If the 'owner' service configuration option is set,
+    it will influence the limits that may be set.
   </td></tr><tr><td>
     <a href="#2_services_add_config_opts_owner">
     owner</a>
