@@ -61,7 +61,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 <div id="content">
   <h1>CloudI API Documentation</h1>
   <center><h3>version 1.5.0<br />
-              last updated on May 9<sup>th</sup> 2015</h3></center>
+              last updated on May 14<sup>th</sup> 2015</h3></center>
 
   <a name="Service"></a>
   <h2>CloudI API - Making a Service</h2>
@@ -302,14 +302,16 @@ cloudi.API.thread_count()
 CloudI::API.thread_count()
 </pre>
   </td></tr></table>
+  <a name="1_initialization_timeout"></a>
   <p class="paragraph">
     An internal service uses the configured initialization timeout to limit the
     execution time spent within the cloudi_service_init/4 cloudi_service
     behaviour callback function.  An external service uses the configured
     initialization timeout to limit the execution time spent between
     creating an instance of the CloudI API and calling the CloudI API
-    <a href="#1_poll">poll</a> function.  During the service initialization
-    the CloudI API functions that may not be called are:
+    <a href="#1_poll">poll</a> function (for the first time).
+    During the service initialization the CloudI API functions that may not be
+    called are:
     <a href="#1_send_sync">send_sync</a>,
     <a href="#1_recv_async">recv_async</a>,
     <a href="#1_return">return</a> and

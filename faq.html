@@ -61,7 +61,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 <div id="content">
   <h1>Frequently Asked Questions</h1>
   <center><h3>version 1.5.0<br />
-              last updated on May 2<sup>nd</sup> 2015</h3></center>
+              last updated on May 14<sup>th</sup> 2015</h3></center>
 
   <a name="1_contents"></a>
   <h2>1 - Introduction to CloudI</h2>
@@ -95,7 +95,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
     <li><a href="#2_Twitter"       >2.5 - Twitter</a></li>
     <li><a href="#2_Presentations" >2.6 - Presentations</a></li>
     <li><a href="#2_Articles"      >2.7 - Articles</a></li>
-    <li><a href="#2_Reporting Bugs">2.8 - Reporting Bugs</a></li>
+    <li><a href="#2_ReportingBugs" >2.8 - Reporting Bugs</a></li>
   </ul>
   <a name="3_contents"></a>
   <h2>3 - CloudI Installation Guide</h2>
@@ -160,6 +160,11 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
     <li><a href="#7_riak"       >7.7 - riak Integration</a></li>
     <li><a href="#7_TokyoTyrant">7.8 - Tokyo Tyrant Integration</a></li>
     <li><a href="#7_Other"      >7.9 - Other Database Integration</a></li>
+  </ul>
+  <a name="8_contents"></a>
+  <h2>8 - Troubleshooting</h2>
+  <ul class="faq">
+    <li><a href="#8_start"      >8.1 - Why does CloudI stop shortly after being started?</a></li>
   </ul>
 
   <hr \>
@@ -867,7 +872,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
   </td></tr></table>
   <div class="top"><a href="#2_contents">Top</a></div>
 
-  <a name="2_Reporting Bugs"></a>
+  <a name="2_ReportingBugs"></a>
   <h3>2.8 - Reporting Bugs</h3>
   <table><tr><td>
   Bug Reports:
@@ -883,6 +888,9 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
     mailing list or utilize the <a href="http://webchat.freenode.net?randomnick=1&channels=cloudi" target="_blank">IRC chat room</a>.
     Otherwise, you can easily enter a bug report for the problem by using the
     <a href="https://github.com/CloudI/CloudI/issues/new" target="_blank">online form</a>.
+    If you are unable to provide information about the problem publicly,
+    specify the information is private in an email to
+    <a href="mailto:mjtruog@gmail.com">Michael Truog</a>.
   </p>
   <div class="top"><a href="#2_contents">Top</a></div>
 
@@ -1153,14 +1161,17 @@ sudo cloudi stop
     services or utilize CloudI services.  The current integration points are:
     <ul>
       <li>CloudI API</li>
-      <li>ZeroMQ</li>
       <li>HTTP</li>
-      <li>Supported databases
+      <li>ZeroMQ</li>
+      <li>Supported databases:
       <ul>
+        <li>Cassandra</li>
         <li>CouchDB</li>
+        <li>elasticsearch</li>
         <li>memcached</li>
         <li>MySQL</li>
         <li>PostgreSQL</li>
+        <li>riak</li>
         <li>Tokyo Tyrant</li>
       </ul>
       </li>
@@ -1308,8 +1319,26 @@ sudo cloudi stop
     CloudI API.  This means that there can be one ioloop per thread per process
     for maximum throughput.
   </p>
+  <a name="4_API_HTTP"></a>
+  <h4><a href="#6_HTTP">HTTP</a></h4>
+  <p class="paragraph">
+    The Erlang service cloudi_service_http_cowboy
+    (or cloudi_service_http_elli) accepts HTTP traffic and
+    makes the HTTP requests CloudI requests where the HTTP path in the URL
+    is used as the service name.
+    By default, the HTTP method is specified as a suffix on the HTTP path
+    (e.g., "/index.html/get") but this can be disabled with the
+    "use_method_suffix" configuration parameter.
+    When a HTTP request is received
+    the corresponding service name will be called with the request contents
+    (uncompressed, if the request was compressed).  The headers are passed
+    within the "request info" as key-value pairs that is request meta-data.
+    The content type of the
+    response is either forced by the configuration (with "content_type") or
+    it is determined by the file extension on the service name.
+  </p>
   <a name="4_API_ZeroMQ"></a>
-  <h4>ZeroMQ</h4>
+  <h4><a href="#6_ZeroMQ">ZeroMQ</a></h4>
   <p class="paragraph">
     ZeroMQ integration provides a way of connecting to external <a href="http://www.zeromq.org/" target="_blank">ZeroMQ</a>
     messaging or other CloudI nodes by using ZeroMQ as the messaging bus.
@@ -1368,24 +1397,6 @@ sudo cloudi stop
     immediate_closest,
     5000, 5000, 5000, [api], undefined, 2, 5, 300, []}
     </pre>
-  </p>
-  <a name="4_API_HTTP"></a>
-  <h4>HTTP</h4>
-  <p class="paragraph">
-    The Erlang service cloudi_service_http_cowboy
-    (or cloudi_service_http_elli) accepts HTTP traffic and
-    makes the HTTP requests CloudI requests where the HTTP path in the URL
-    is used as the service name.
-    By default, the HTTP method is specified as a suffix on the HTTP path
-    (e.g., "/index.html/get") but this can be disabled with the
-    "use_method_suffix" configuration parameter.
-    When a HTTP request is received
-    the corresponding service name will be called with the request contents
-    (uncompressed, if the request was compressed).  The headers are passed
-    within the "request info" as key-value pairs that is request meta-data.
-    The content type of the
-    response is either forced by the configuration (with "content_type") or
-    it is determined by the file extension on the service name.
   </p>
   <h4>Supported Databases</h4>
   <p class="paragraph">
@@ -2840,6 +2851,32 @@ sudo cloudi stop
     used within the CloudI framework.
   </p>
   <div class="top"><a href="#7_contents">Top</a></div>
+
+  <hr \>
+  <h2>8 - Troubleshooting</h2>
+
+  <a name="8_start"></a>
+  <h3>8.1 - Why does CloudI stop shortly after being started?</h3>
+  <p class="paragraph">
+  If any services listed in the CloudI configuration file fail to initialize
+  CloudI will shutdown.  This behavior is required to make sure CloudI services
+  are able to fail-fast when services are unable to initialize.  If this has
+  happened while running the integration tests, please make sure to submit
+  the problem (with the /usr/local/var/log/cloudi/cloudi.log file and the
+  build's config.log file) as <a href="#2_ReportingBugs">a bug</a>.
+  </p>
+  <p class="paragraph">
+  The best place to have validation in a service is during service
+  <a href="api.html#1_initialization_timeout">initialization</a>
+  so the service's starting state is confirmed to be correct.
+  Performing verification during service initialization is important due to
+  the lifetime of a service's execution being typically undefined.
+  Critical CloudI services should have their configuration in the CloudI
+  configuration file (instead of using the CloudI Service API to dynamically
+  start the services with <a href="api.html#2_services_add">services_add</a>)
+  to take advantage of fail-fast service initialization.
+  </p>
+  <div class="top"><a href="#8_contents">Top</a></div>
 
 </div>
 
