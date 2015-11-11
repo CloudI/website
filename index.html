@@ -156,7 +156,8 @@ cat &lt;&lt; EOF &gt; hello_world.conf
   {env, [{"LD_LIBRARY_PATH",
           "/usr/local/lib/cloudi-1.5.0/api/c/"},
          {"DYLD_LIBRARY_PATH",
-          "/usr/local/lib/cloudi-1.5.0/api/c/"}]}]]
+          "/usr/local/lib/cloudi-1.5.0/api/c/"}]},
+  {protocol, tcp}]]
 EOF
 </pre>
       </li>
@@ -277,7 +278,8 @@ cat &lt;&lt; EOF &gt; hello_world.conf
   {env, [{"LD_LIBRARY_PATH",
           "/usr/local/lib/cloudi-1.5.0/api/c/"},
          {"DYLD_LIBRARY_PATH",
-          "/usr/local/lib/cloudi-1.5.0/api/c/"}]}]]
+          "/usr/local/lib/cloudi-1.5.0/api/c/"}]},
+  {protocol, tcp}]]
 EOF
 </pre>
       </li>
@@ -690,7 +692,8 @@ cat &lt;&lt; EOF &gt; hello_world.conf
 [[{prefix, "/quickstart/java/"},
   {file_path, "$JAVA"},
   {args, "-cp /usr/local/lib/cloudi-1.5.0/api/java/ "
-         "-ea:org.cloudi... -jar $PWD/hello_world.jar"}]]
+         "-ea:org.cloudi... -jar $PWD/hello_world.jar"},
+  {protocol, tcp}]]
 EOF
 </pre>
       </li>
@@ -792,7 +795,8 @@ export PWD=`pwd`
 cat &lt;&lt; EOF &gt; hello_world.conf
 [[{prefix, "/quickstart/javascript/"},
   {file_path, "$NODE"},
-  {args, "$PWD/hello_world.js"}]]
+  {args, "$PWD/hello_world.js"},
+  {protocol, tcp}]]
 EOF
 </pre>
       </li>
@@ -894,7 +898,8 @@ cat &lt;&lt; EOF &gt; hello_world.conf
 [[{prefix, "/quickstart/perl/"},
   {file_path, "$PERL"},
   {args, "$PWD/hello_world.pl"},
-  {env, [{"PERL5LIB", "/usr/local/lib/cloudi-1.5.0/api/perl"}]}]]
+  {env, [{"PERL5LIB", "/usr/local/lib/cloudi-1.5.0/api/perl"}]},
+  {protocol, tcp}]]
 EOF
 </pre>
       </li>
@@ -1002,7 +1007,8 @@ export PWD=`pwd`
 cat &lt;&lt; EOF &gt; hello_world.conf
 [[{prefix, "/quickstart/php/"},
   {file_path, "$PHP"},
-  {args, "$PWD/hello_world.php"}]]
+  {args, "$PWD/hello_world.php"},
+  {protocol, tcp}]]
 EOF
 </pre>
       </li>
@@ -1093,7 +1099,8 @@ export PWD=`pwd`
 cat &lt;&lt; EOF &gt; hello_world.conf
 [[{prefix, "/quickstart/python/"},
   {file_path, "$PYTHON"},
-  {args, "$PWD/hello_world.py"}]]
+  {args, "$PWD/hello_world.py"},
+  {protocol, tcp}]]
 EOF
 </pre>
       </li>
@@ -1201,7 +1208,8 @@ export PWD=`pwd`
 cat &lt;&lt; EOF &gt; hello_world.conf
 [[{prefix, "/quickstart/ruby/"},
   {file_path, "$RUBY"},
-  {args, "$PWD/hello_world.rb"}]]
+  {args, "$PWD/hello_world.rb"},
+  {protocol, tcp}]]
 EOF
 </pre>
       </li>
