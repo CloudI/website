@@ -2936,13 +2936,20 @@ curl -X POST -d "[{reconnect_delay, 300}]" http://localhost:6467/cloudi/api/rpc/
     <a href="#2_nodes_set_config_discovery_ec2">EC2 access credentials</a>.
   </td></tr></table>
   <a name="2_nodes_set_config_discovery_multicast"></a>
-  <h4>multicast:</h4>
+  <h4>multicast (LAN auto-discovery):</h4>
   <table><tr><th>
     Option
   </th><th>
     Default
   </th><th>
     Details
+  </th></tr><tr><td>
+    interface
+  </td><td>
+    {0,0,0,0}
+  </td><td>
+    The interface address (for UDP).
+    <br /><b>(new in 1.5.1)</b>
   </th></tr><tr><td>
     address
   </td><td>
@@ -2954,17 +2961,17 @@ curl -X POST -d "[{reconnect_delay, 300}]" http://localhost:6467/cloudi/api/rpc/
   </td><td>
     4475
   </td><td>
-    The LAN multicast port (for UDP).
+    The multicast port (for UDP).
   </td></tr><tr><td>
     ttl
   </td><td>
     1
   </td><td>
-    The LAN multicast TTL
+    The multicast TTL
     (<a href="http://tools.ietf.org/rfc/rfc2730.txt" target="_blank">RFC</a>, <a href="http://www.tldp.org/HOWTO/Multicast-HOWTO-2.html#ss2.3" target="_blank">Linux</a>).
   </td></tr></table>
   <a name="2_nodes_set_config_discovery_ec2"></a>
-  <h4>ec2:</h4>
+  <h4>ec2 (AWS EC2 auto-discovery):</h4>
   <table><tr><th>
     Option
   </th><th>
