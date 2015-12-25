@@ -53,7 +53,10 @@ Cloud<font style="font-family: serif">I</font><img src="images/cloud.png" />
 
   <p>http://cloudi.org (and <a href="http://ndforge.com" target="_blank">http://ndforge.com</a>) Configuration
   <pre>
-% last updated on Sat Apr 18 05:27:56 UTC 2015 with CloudI 1.5.0 / Erlang R16B03
+% last updated on Fri Dec 25 03:00:31 UTC 2015 with CloudI 1.5.1 / Erlang 18.2.1
+
+%-*-Mode:erlang;coding:utf-8;tab-width:4;c-basic-offset:4;indent-tabs-mode:()-*-
+% ex: set ft=erlang fenc=utf-8 sts=4 ts=4 sw=4 et nomod:
 {acl, [
     {api,
      ["/cloudi/api/*"]},
@@ -69,6 +72,7 @@ Cloud<font style="font-family: serif">I</font><img src="images/cloud.png" />
       "*/*/loadbalancer_health_check/index.html/get"]}
 ]}.
 {services, [
+
     % CloudI Service API interface
 
     {internal,
@@ -87,7 +91,7 @@ Cloud<font style="font-family: serif">I</font><img src="images/cloud.png" />
       {refresh, 900},     % 15 minutes
       {cache, refresh}],  % 7.5 minutes
      none,
-     60000, 5000, 5000, [api], undefined, 4, 5, 300, []},
+     60000, 5000, 5000, undefined, undefined, 4, 5, 300, []},
 
     % cloudi.org files
 
@@ -98,7 +102,7 @@ Cloud<font style="font-family: serif">I</font><img src="images/cloud.png" />
       {refresh, 900},     % 15 minutes
       {cache, refresh}],  % 7.5 minutes
      none,
-     1200000, 5000, 5000, [api], undefined, 4, 5, 300, []},
+     1200000, 5000, 5000, undefined, undefined, 4, 5, 300, []},
 
     % ec2 load-balancer health check
 
@@ -107,7 +111,7 @@ Cloud<font style="font-family: serif">I</font><img src="images/cloud.png" />
      cloudi_service_filesystem,
      [{directory, "${HOME}/www/private/"}],
      none,
-     5000, 5000, 5000, [api], undefined, 1, 5, 300, []},
+     5000, 5000, 5000, undefined, undefined, 1, 5, 300, []},
 
     % HTTP traffic
 
@@ -166,24 +170,12 @@ Cloud<font style="font-family: serif">I</font><img src="images/cloud.png" />
      [{ec2,
        [{access_key_id, "PUT_IT_HERE"},
         {secret_access_key, "PUT_IT_HERE"},
-        {groups, ["www"]}]}]}
+        {groups, ["www-vpc"]}]}]}
 ]}.
 {logging, [
-    {formatters,
-     [{any,
-       [{formatter, cloudi_core_i_logger},
-        {formatter_config,
-         [{mode, legacy}]}]},
-      {['STDOUT'],
-       [{formatter, cloudi_core_i_logger},
-        {formatter_config,
-         [{mode, legacy_stdout}]}]},
-      {['STDERR'],
-       [{formatter, cloudi_core_i_logger},
-        {formatter_config,
-         [{mode, legacy_stderr}]}]}]},
     {level, debug} % levels: off, fatal, error, warn, info, debug, trace
 ]}.
+
   </pre>
   </p>
 </div>
