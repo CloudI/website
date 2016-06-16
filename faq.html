@@ -61,7 +61,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 <div id="content">
   <h1>Frequently Asked Questions</h1>
   <center><h3>version 1.5.1<br />
-              last updated on February 11<sup>th</sup> 2016</h3></center>
+              last updated on June 16<sup>th</sup> 2016</h3></center>
 
   <a name="1_contents"></a>
   <h2>1 - Introduction to CloudI</h2>
@@ -208,71 +208,43 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 
   <a name="1_Clouds"></a>
   <h3>1.3 - How does CloudI compare to other "Clouds"?</h3>
-  <p class="block">
-    Currently, "Clouds" generally fall into two categories:
-    <table><tr><td>
-    &#149;</td><td>Infrastructure as a Service (IaaS)
-    </td><td>- Hypervisor "Clouds"
-    </td></tr><tr><td>
-    &#149;</td><td>Platform as a Service (PaaS)
-    </td><td>- Integration "Clouds"
-    </td></tr></table>
-  </p>
+
   <h4>Hypervisor "Clouds"</h4>
   <p class="paragraph">
-    Hypervisor "Clouds" are the most popular type of Cloud because of the
-    amount of revenue they can generate as a service.
-    Popular examples include:
-    <a href="http://en.wikipedia.org/wiki/Amazon_EC2" target="_blank">Amazon Web Services (AWS)</a>,
-    <a href="http://en.wikipedia.org/wiki/OpenStack" target="_blank">OpenStack</a>,
-    <a href="http://en.wikipedia.org/wiki/Cloud.com" target="_blank">CloudStack</a>,
-    <a href="http://en.wikipedia.org/wiki/Eucalyptus_%28computing%29" target="_blank">Eucalyptus</a>,
-    <a href="http://en.wikipedia.org/wiki/OpenNebula" target="_blank">OpenNebula</a>,
-    and
-    <a href="http://en.wikipedia.org/wiki/Nimbus_%28cloud_computing%29" target="_blank">Nimbus</a>.  The <a href="http://en.wikipedia.org/wiki/Hypervisors" target="_blank">Hypervisor</a>
+    Hypervisor "Clouds" are the most popular type of Cloud because any
+    <a href="http://en.wikipedia.org/wiki/Legacy_software" target="_blank">legacy</a>
+    source code can be put into an image (or container)
+    to reduce the resources required.
+    The <a href="http://en.wikipedia.org/wiki/Hypervisors" target="_blank">Hypervisor</a>
     has existed since 1965 when software was used on the IBM 360/65 to
     emulate an IBM 7080 with computation time split between the separate modes.
-    Modern Hypervisors provide Operating System virtualization to provide
-    better security and reliability.  There is meant to be minimal software
-    development effort when utilizing a virtualized Operating System, so
-    it is an obvious choice for source code that is not actively developed
-    (<a href="http://en.wikipedia.org/wiki/Legacy_software" target="_blank">legacy software</a>)
-    and lacks reliability/scalability.  Part of the reason Hypervisors
-    have not been popular in the past is because virtualization increases
-    the hardware requirements for the same amount of processing.  Hardware
-    has advanced enough that many software applications are unable to fully
-    utilize the hardware capacity that has become commonplace.  For software
-    that is often idle, Hypervisors can provide cost savings on both
-    hardware and power without software modifications.
+    Modern Hypervisors provide Operating System virtualization to more
+    fully utilize hardware resources.  Using virtualization can provide
+    easier management of a <a href="https://en.wikipedia.org/wiki/Monolithic_system" target="_blank">Monolithic Architecture</a>
+    so the source code's limitations can be managed without software
+    development and are instead an <a href="https://en.wikipedia.org/wiki/Information_management#Operationalising_Information_Management" target="_blank">operations</a> concern.
   </p>
-  <h4>Integration "Clouds"</h4>
+
+  <h4>CloudI as a “Programming Model for Cloud Computing”</h4>
   <p class="paragraph">
-    Integration "Clouds" provide software developers with a platform for
-    simpler integration development.
-    Popular examples include:
-    <a href="http://en.wikipedia.org/wiki/AppScale" target="_blank">AppScale</a>,
-    <a href="http://en.wikipedia.org/wiki/Cloud_Foundry" target="_blank">CloudFoundry</a>,
-    <a href="http://en.wikipedia.org/wiki/OpenShift" target="_blank">OpenShift</a>,
-    and
-    <a href="http://en.wikipedia.org/wiki/Heroku" target="_blank">Heroku</a>.
-    Generally, Integration "Clouds" provide software packages for common
-    scripting language deployment scenarios (typically JavaScript, Ruby or
-    Python web frameworks).  Integration "Clouds" (PaaS) normally do not
-    provide fault-tolerance or reliability, so they are typically deployed
-    with a Hypervisor.
+    CloudI was classified as a "Programming Model for Cloud Computing" in the
+    book: <a href="https://www.amazon.com/Essentials-Cloud-Computing-K-Chandrasekaran/dp/1482205432" target="_blank">Chandrasekaran, K. "Essentials of Cloud Computing". Chapman and Hall/CRC, 2014. ISBN 978-1-4822-0543-5 (p198-199)</a>.
+    While the book does have various errors, it is a significant effort to
+    classify all the forms of Cloud Computing.  CloudI use does require
+    software development for using the CloudI API which allows CloudI to
+    function as an application server and messaging bus with the
+    developed source code isolated within a service.  However, CloudI
+    usage can exist with or without virtualization, offering both
+    development and deployment flexibility.
   </p>
   <p class="paragraph">
-    CloudI is an Integration Cloud that focuses on flexible integration
-    that is efficient, scalable, and fault-tolerant.  CloudI does not
-    force a user to use particular software libraries but instead provides
-    light-weight interfaces for integration.  Scalability and fault-tolerance
-    are both provided by CloudI's usage of the 
-    <a href="http://en.wikipedia.org/wiki/Erlang_%28programming_language%29" target="_blank">Erlang programming language</a>.
-    This means that no Hypervisor or commercial service is necessary to make
-    CloudI's processes reliable, so there can be a performance benefit when
-    using CloudI.  Scalability is a natural gain with CloudI's Erlang
-    concurrency which reduces the amount of power and hardware necessary to
-    facilitate external connections, making CloudI a greener solution!
+    CloudI does not require using a particular online service and can be
+    deployed without an Internet connection on an <a href="https://en.wikipedia.org/wiki/Air_gap_%28networking%29" target="_blank">airgap network</a>
+    if security is required.  Scalability and fault-tolerance are both
+    provided by CloudI's usage of the <a href="http://en.wikipedia.org/wiki/Erlang_%28programming_language%29" target="_blank">Erlang programming language</a>.
+    Scalability is a natural gain with CloudI's Erlang
+    concurrency which reduces the amount of power and hardware necessary
+    for concurrent processing.
   </p>
   <div class="top"><a href="#1_contents">Top</a></div>
 
@@ -633,10 +605,9 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
     Model when working with the original definition of the Actor Model as it was
     provided in <a href="http://ijcai.org/Past%20Proceedings/IJCAI-73/PDF/027B.pdf" target="_blank">Carl Hewitt, Peter Bishop and Richard Steiger. "A Universal Modular Actor Formalism for Artificial Intelligence" (PDF), IJCAI'73</a>.
     Instead, the Erlang VM provides processes which are most similar to
-    "Fog Cutter" computational agents, based on the paper <a href="http://arxiv.org/abs/1008.1459" target="_blank">by Carl Hewitt, "Actor Model of Computation: Scalable Robust Information Systems"</a>.
+    "Fog Cutter Actors", based on the paper <a href="http://arxiv.org/abs/1008.1459" target="_blank">by Carl Hewitt, "Actor Model of Computation: Scalable Robust Information Systems"</a>.
     Unfortunately, no better term currently exists to refer to the design of
-    Erlang processes, aside from a comparison to a "Fog Cutter" computational
-    agent.
+    Erlang processes, aside from a comparison to a "Fog Cutter Actor".
   </p>
   <p class="paragraph">
     CloudI services are similar to Erlang processes and Erlang processes are
@@ -718,6 +689,18 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
     The service memory footprint is kept small by relying on Erlang processes
     for their light-weight messaging (Erlang processes have been referred to
     elsewhere as "Nanoservices").
+  </p>
+  <p class="paragraph">
+    The main requirements of a <a href="https://en.wikipedia.org/wiki/Microservices" target="_blank">Microservices Architecture (MSA)</a> are:
+    <ul>
+      <li>Services must be <a href="api.html#2_services_update">easy to replace</a></li>
+      <li>Services are organized based on capabilities</li>
+      <li>Services can be implemented with heterogeneous technology transparently</li>
+      <li>All Service entities are equal rather than hierarchical (a property enforced by Inversion of Control (IoC) in a microservices framework)</li>
+    </ul>
+    CloudI services satisfy these requirements and are more fine-grained than
+    monolithic SOA services (many CloudI services can be used within a
+    single application rather than requiring an application be a service).
   </p>
   <p class="paragraph">
     Using Erlang processes to provide a service abstraction allows all
