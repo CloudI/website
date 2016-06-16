@@ -2285,8 +2285,7 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
     max_heap_size, sensitive, message_queue_data).  The dispatcher process
     lifetime is tied to the service lifetime, making it a long-lived
     Erlang process that avoids the accumulation of memory.  The dispatcher
-    process is used in internal services to execute cloudi_service_init/4 and
-    cloudi_service_terminate/3.
+    process is used in internal services to execute cloudi_service_init/4.
   </td></tr><tr><td>
     init_pid_options (new in 1.5.2)
   </td><td>
