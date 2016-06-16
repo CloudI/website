@@ -2275,7 +2275,8 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
     the Erlang application dependencies, module loading,
     and module compilation if necessary).
   </td></tr><tr><td>
-    dispatcher_pid_options (new in 1.5.2)
+    dispatcher_pid_options
+    <br />(new in 1.5.2)
   </td><td>
     []
   </td><td>
@@ -2287,7 +2288,8 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
     Erlang process that avoids the accumulation of memory.  The dispatcher
     process is used in internal services to execute cloudi_service_init/4.
   </td></tr><tr><td>
-    init_pid_options (new in 1.5.2)
+    init_pid_options
+    <br />(new in 1.5.2)
   </td><td>
     []
   </td><td>
@@ -2304,7 +2306,8 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
     (internal services only) How many service requests to handle before
     utilizing a new Erlang process for a new incoming service request.
   </td></tr><tr><td>
-    request_pid_options (modified in 1.5.2)
+    request_pid_options
+    <br />(modified in 1.5.2)
   </td><td>
     []
   </td><td>
@@ -2322,7 +2325,8 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
     Erlang process is the second process that is utilized when duo_mode is true
     (duo_mode requires that this is set to infinity).
   </td></tr><tr><td>
-    info_pid_options (modified in 1.5.2)
+    info_pid_options
+    <br />(modified in 1.5.2)
   </td><td>
     []
   </td><td>
