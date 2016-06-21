@@ -146,7 +146,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
       <li>The CloudI service that receives a request determines whether a reply occurs (returning no response data is the same as not providing a reply)</li>
       <li>All required callbacks are minimal (only a single request callback is necessary for a CloudI service to handle requests) to keep CloudI services simpler, so they are less error-prone than other solutions</li>
       <li>Requests are not persisted to database storage to avoid persisting errors since errors are often transient and only relate to a specific context</li>
-      <li>All CloudI API programming language integration makes CloudI services first-class processes within the Erlang VM to provide consistent functionality and fault-tolerance</li>
+      <li>All CloudI API programming language integration makes CloudI services first-class processes within the Erlang VM to provide consistent functionality and fault tolerance</li>
       <li>Every CloudI API request contains a priority</li>
       <li>Every CloudI API request contains a unique v1 UUID for identifying the request and its response</li>
       <li>Every CloudI API request contains a timeout which is updated based on the queuing and processing delays the request encounters</li>
@@ -2135,7 +2135,7 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
   </td><td>
     false
   </td><td>
-    Add instability to the service for testing systems fault-tolerance.
+    Add instability to the service for testing systems fault tolerance.
     If set to 'system', use the settings within the cloudi_core Erlang
     application configuration.  When set to a list ([])
     <a href="#2_services_add_config_opts_monkey_chaos">

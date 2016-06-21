@@ -1,0 +1,117 @@
+// process with "asciidoctor tutorial.adoc"
+= CloudI User Tutorial
+:toc:
+
+== Java CloudI API User Tutorial
+
+(will add here)
+
+== Erlang CloudI API User Tutorial
+
+(will add here, notes:)
+
+=== How Does cloudi_service Usage Differ From gen_server Usage?
+
+(will add here)
+
+==== What Extra Benefits Does Using cloudi_service Provide?
+
+(will add here)
+
+=== How Do You Execute cloudi_service Usage?
+
+(will add here)
+
+== Service Development Guidelines
+
+The information below can help guide your development of custom services:
+
+=== How To Design A Service
+
+Service creation requires splitting functionality based on capabilities so
+that functionality and its associated development risk is isolated.
+However, the latency associated with the functionality should also be
+isolated within the programming language best suited to the task.  Part of the
+decision to isolate service latency is minimizing the amount of data that
+must be exchanged in service requests.
+
+A common reason for creating a service is to isolate the risk associated with
+an external component that is sufficiently complex and is likely to require a
+variable amount of latency which needs to be managed as a unique entity to
+provide dependable processing (e.g., a large source code library, a database,
+a messaging bus, a filesystem, a third-party API, etc.).  It is also
+common to create separate services due to source code libraries existing in
+a separate programming language.
+
+The simplest approach to service development, when creating a new service,
+is to develop the business logic that is necessary using as many services as
+required based on design requirements, basic testing, and benchmarking
+(if required), without isolating the use of external components.  Then, as
+risks are identified during development, functionality can be moved into
+separate services to manage source code that needs fault tolerance guarantees.
+With this approach, the business logic will always have fault tolerance
+guarantees to keep all source code changes (which may include changing
+the external components used) isolated from other development during the
+lifetime of the business logic source code service(s).
+
+CloudI services provide process pooling automatically when their configuration
+has a link:api.html#2_services_add[count_process or count_thread (of an external service)^]
+greater than 1.  A CloudI service's process pooling can be adjusted dynamically
+based on the incoming service request rate by using the link:api.html#2_services_add_config_opts_count_process_dynamic[count_process_dynamic^]
+service configuration option.  When a service request is sent it will
+automatically select a service execution process (which represents an
+external service thread within an OS process or an internal service
+Erlang process within the Erlang VM) randomly from those available,
+due to link:api.html#1_subscribe[subscribing^] 
+with the same service name pattern.
+
+Relying on this process pooling keeps services dependable and helps to reduce
+their potential complexity, since a service developer only needs to focus on
+developing serial source code.  The main exception to the pursuit of serial
+source code is due to the use of global state, which may require locking
+for consistency.  Ideally, the use of global state can be avoided in the
+service source code because global state naturally increase latency unless
+low-level atomic operations are used to avoid locking.
+
+=== What Programming Language Should Be Used For Service Development?
+
+The decision of what programming language to use is generally based on the
+knowledge of the developer.  The libraries that already exist and are known to
+be dependable will often determine which programming language to use.
+
+If the system (the combination of services during development) will be sending
+service requests from many separate services or will be receiving service
+requests within many separate services, usage of separate programming languages
+for each separate service can increase the computational requirements for the
+system, or at least will be a service configuration task to determine
+based on the computing resources available.  External CloudI service instances
+(any CloudI service written in a programming language that doesn't execute
+on the Erlang VM) can create more than one OS process, but must create at least
+one OS process, so that service memory is isolated and the service processing
+is fault-tolerant.  If the service request messaging is able to keep many
+separate external CloudI services busy the processing will be at the mercy of
+the OS kernel scheduler, which may make it easy to exhaust the computational
+resources available.
+
+Controlling the potential service request latency with the selection of the
+programming languages can avoid prematurely exhausting computational resources.
+A good approach is using as few programming languages that can reasonably be
+used for the business logic design.  Based on CloudI
+link:faq.html#5_LoadTesting[loadtesting^]
+(ordered based on average latency during the loadtest), service requests
+are handled with low latency in Erlang, C/C++, Java, Python/C
+(less than 6 milliseconds) and higher latency in Python, Ruby, Perl, PHP
+(greater than 2000 milliseconds) just due to inefficiencies within the
+programming language runtimes.  By considering the latency requirements of
+the system early during development it will be easier to scale the deployment
+and avoid wasted development effort.
+
+If a programming language that runs on the Erlang VM is used, it is possible
+to develop with finer-grained fault tolerance in an internal CloudI service
+due to the usage of Erlang processes (similar to user-level threads with
+isolated memory) by CloudI.  External CloudI services require that the
+memory used for execution of the service is isolated within an OS process and
+it is possible to hide an extreme amount of risk to reliability within a
+single external service instance, making this approach coarser-grained
+fault tolerance.
+
