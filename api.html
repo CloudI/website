@@ -3272,8 +3272,8 @@ curl -X POST -d "[{reconnect_delay, 300}]" http://localhost:6464/cloudi/api/rpc/
     The EC2 auto-discovery requires that the security group(s) used
     by the instances expose distributed Erlang ports (with TCP rules):
     <ul>
-      <li>port 4369 (epmd) 10.0.0.0/8</li>
-      <li>ports 4374-4474 (inet_dist_listen) 10.0.0.0/8</li>
+      <li>port 4369 (epmd) <a href="http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Subnets.html" target="_blank">10.0.0.0/8</a></li>
+      <li>ports 4374-4474 (inet_dist_listen) <a href="http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Subnets.html" target="_blank">10.0.0.0/8</a></li>
     </ul>
     The EC2 auto-discovery needs distributed Erlang longnames usage
     so -name should be used instead of -sname within the vm.args
