@@ -20,7 +20,8 @@ related to these concepts are:
 
 The tutorials below focus on a single programming language to show that
 service development with CloudI only requires the use of a single
-programming language.
+programming language.  If a supported programming language doesn't yet
+have a tutorial written yet, it is best to refer to the <<CloudI Examples>>.
 
 === link:tutorial_java.html[Java Tutorial]
 
