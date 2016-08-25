@@ -137,7 +137,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
   <a name="6_contents"></a>
   <h2>6 - Services</h2>
   <ul class="faq">
-    <li><a href="#6_C"          >6.1 - C++/C Service Implementation</a></li>
+    <li><a href="#6_C"          >6.1 - C/C++ Service Implementation</a></li>
     <li><a href="#6_Erlang"     >6.2 - Erlang Service Implementation</a></li>
     <li><a href="#6_Java"       >6.3 - Java Service Implementation</a></li>
     <li><a href="#6_JavaScript" >6.4 - JavaScript/node.js Service Implementation</a></li>
@@ -150,22 +150,9 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
     <li><a href="#6_FaultTolerance">6.11 - Service Fault Tolerance</a></li>
   </ul>
   <a name="7_contents"></a>
-  <h2>7 - Databases</h2>
+  <h2>7 - Troubleshooting</h2>
   <ul class="faq">
-    <li><a href="#7_Cassandra"  >7.1 - Cassandra Integration</a></li>
-    <li><a href="#7_CouchDB"    >7.2 - CouchDB Integration</a></li>
-    <li><a href="#7_elasticsearch">7.3 - Elasticsearch Integration</a></li>
-    <li><a href="#7_memcached"  >7.4 - memcached Integration</a></li>
-    <li><a href="#7_MySQL"      >7.5 - MySQL Integration</a></li>
-    <li><a href="#7_PostgreSQL" >7.6 - PostgreSQL Integration</a></li>
-    <li><a href="#7_riak"       >7.7 - riak Integration</a></li>
-    <li><a href="#7_TokyoTyrant">7.8 - Tokyo Tyrant Integration</a></li>
-    <li><a href="#7_Other"      >7.9 - Other Database Integration</a></li>
-  </ul>
-  <a name="8_contents"></a>
-  <h2>8 - Troubleshooting</h2>
-  <ul class="faq">
-    <li><a href="#8_start"      >8.1 - Why does CloudI stop shortly after being started?</a></li>
+    <li><a href="#7_start"      >7.1 - Why does CloudI stop shortly after being started?</a></li>
   </ul>
 
   <hr \>
@@ -954,16 +941,16 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
   <p class="paragraph">
     All the supported programming languages are expected by the configure
     script and are required when executing all the integration tests
-    (with the provided cloudi.conf containing the integration test
+    (with the provided cloudi_tests.conf containing the integration test
      service configurations).
     The dependencies are a C compiler, a C++ compiler,
-    Erlang (&ge; <a href="http://www.erlang.org/download.html" target="_blank">R16</a>),
+    Erlang (&ge; <a href="http://www.erlang.org/download.html" target="_blank">18.0</a>),
     Java Development Kit (JDK &ge; 1.5), node.js (&ge; 0.8.0),
     Perl (&ge; 5.10), PHP (&ge; 5.3.6), Python (&ge; 2.7), and
     Ruby (&ge; 1.9).  Use the <a href="#3_Options">--disable-LANGUAGE-support configure argument</a>
     to disable support for a programming language and the
     --with-integration-tests-ran=no configure argument to use a minimal
-    cloudi.conf file in the installation.
+    cloudi.conf file in the installation (<a href="https://github.com/CloudI/CloudI/blob/master/src/cloudi_minimal.conf.in" target="_blank">src/cloudi_minimal.conf.in</a>).
   </p>
   <p class="paragraph">
     Dependencies as they are packaged for different operating systems are
@@ -973,7 +960,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
     </th><th>
     Packages
     </th></tr><tr><td>
-    Ubuntu 12.04<br />(apt-get install &lt;package(s)&gt;)
+    Ubuntu<br />(apt-get install &lt;package(s)&gt;)
     </td><td>
     <ul>
       <li>erlang</li>
@@ -1045,8 +1032,8 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
     </td></tr><tr><td nowrap>
     --without-integration-tests
     </td><td>
-    Do not build and install the integration tests or utilize the default
-    configuration that causes them to run at startup
+    Do not build and install the integration tests or utilize the
+    integration tests configuration that causes them to run at startup
     </td></tr></table>
   </p>
   <p class="paragraph">
@@ -1127,8 +1114,9 @@ sudo cloudi stop
     Below is a summary of the layout of the CloudI
     <a href="api.html#CloudI">configuration</a> file.  The
     ()s have been used to specify the configuration parameters that are
-    supplied.  You can find this file in
-    <a href="https://github.com/CloudI/CloudI/blob/master/src/cloudi.conf.in" target="_blank">src/cloudi.conf.in</a>
+    supplied.  You can find the integration tests configuration file in
+    <a href="https://github.com/CloudI/CloudI/blob/master/src/cloudi_tests.conf.in" target="_blank">src/cloudi_tests.conf.in</a>
+    (and the default configuration <a href="https://github.com/CloudI/CloudI/blob/master/src/cloudi_minimal.conf.in" target="_blank">src/cloudi_minimal.conf.in</a>)
     within the source code repository (in its state before it gets modified
     by the local operating system configuration parameters) or
     PREFIX/etc/cloudi/cloudi.conf after the installation.
@@ -1183,22 +1171,6 @@ sudo cloudi stop
 ]</a>}.
 </pre>
   </p>
-  <p class="paragraph">
-    The default configuration runs a variety of integration tests
-    which are used to test CloudI:
-    <ul>
-      <li>hexpi</li>
-      <li>http</li>
-      <li>http_req</li>
-      <li>zeromq</li>
-      <li>msg_size</li>
-      <li>messaging</li>
-    </ul>
-    Some of the tests are explained within <a href="#6_C">"6 - Services"</a>.
-    All of the tests can be found within the source code repository in
-    <a href="https://github.com/CloudI/CloudI/tree/master/src/tests" target="_blank">src/tests</a>.  There is no reason to keep the tests within the
-    configuration once you start using CloudI for your own integration.
-  </p>
   <div class="top"><a href="#3_contents">Top</a></div>
 
   <hr \>
@@ -1206,27 +1178,7 @@ sudo cloudi stop
 
   <a name="4_API"></a>
   <h3>4.1 - How do I integrate external software with CloudI?</h3>
-  <p class="paragraph">
-    There are many integration points for external software to become CloudI
-    services or utilize CloudI services.  The current integration points are:
-    <ul>
-      <li>CloudI API</li>
-      <li>HTTP</li>
-      <li>ZeroMQ</li>
-      <li>Supported databases:
-      <ul>
-        <li>Cassandra</li>
-        <li>CouchDB</li>
-        <li>elasticsearch</li>
-        <li>memcached</li>
-        <li>MySQL</li>
-        <li>PostgreSQL</li>
-        <li>riak</li>
-        <li>Tokyo Tyrant</li>
-      </ul>
-      </li>
-    </ul>
-  </p>
+
   <h4><a href="api.html#Service">CloudI API</a></h4>
   <p class="paragraph">
     The CloudI API provides a light-weight interface for creating services
@@ -1387,77 +1339,14 @@ sudo cloudi stop
     response is either forced by the configuration (with "content_type") or
     it is determined by the file extension on the service name.
   </p>
-  <a name="4_API_ZeroMQ"></a>
-  <h4><a href="#6_ZeroMQ">ZeroMQ</a></h4>
+  <h4>Supported Databases</h4>
   <p class="paragraph">
-    ZeroMQ integration provides a way of connecting to external <a href="http://www.zeromq.org/" target="_blank">ZeroMQ</a>
-    messaging or other CloudI nodes by using ZeroMQ as the messaging bus.
-    The cloudi_service_zeromq service is an Erlang service that provides
-    ZeroMQ integration by defining a set of mappings between service names
-    and the ZeroMQ destinations.  To use ZeroMQ with CloudI, you need to make
-    sure and enable ZeroMQ with the configuration script (with
-    "./configure --with-zeromq").  The cloudi_service_zeromq configuration
-    (in the cloudi.conf file or through the CloudI Service API
-     <a href="api.html#2_services_add">services_add/2</a> function)
-    allows key/value tuples with the following key atoms: outbound, inbound,
-    publish, subscribe, push, and pull, which are the following ZeroMQ
-    equivalents: ZMQ_REQ, ZMQ_REP, ZMQ_PUB, ZMQ_SUB, ZMQ_PUSH, and ZMQ_PULL,
-    respectively.  The value is a tuple that contains a mapping key/value
-    where the key is the service name suffix and the value is the list of
-    ZeroMQ endpoints.  However, the publish and subscribe ZeroMQ configuration
-    is slightly more complex because instead of a service name, it contains
-    a list of key/value ZeroMQ subscription mapping where the key is the
-    service name suffix and the value is the ZeroMQ subscription string.
-    The example configuration file entry below should illustrate the ZeroMQ
-    service configuration:
-    <pre>
-% an entry in the cloudi.conf configuration file
-% that uses the ZeroMQ service
-{internal,
-    "/tests/zeromq/",
-    % inbound/outbound message paths much be acyclic
-    % (if they are not, you will receive a erlzmq EFSM error
-    %  because the ZeroMQ REQ has received 2 zmq_send calls)
-    cloudi_service_zeromq,
-    % outbound ZeroMQ requests connect a CloudI name to a ZeroMQ endpoint
-    [{outbound, {"zigzag_start", ["ipc:///tmp/cloudizigzagstart"]}},
-    % inbound ZeroMQ replies connect a ZeroMQ endpoint to a CloudI name
-     {inbound, {"zigzag_step1", ["ipc:///tmp/cloudizigzagstart"]}},
-     {outbound, {"zigzag_step1", ["inproc://zigzagstep1"]}},
-     {inbound, {"zigzag_step2", ["inproc://zigzagstep1"]}},
-    % ZeroMQ publish connects a CloudI name to a ZeroMQ (subscribe) name
-    % as {CloudI name (suffix), ZeroMQ name for message prefix}
-    % for any number of endpoints
-     {publish, {[{"zigzag_step2", "/zeromq/step2"}],
-                ["inproc://zigzagstep2a",
-                 "ipc:///tmp/cloudizigzagstep2b",
-                 "inproc://zigzagstep2c",
-                 "ipc:///tmp/cloudizigzagstep2d"]}},
-    % ZeroMQ subscribe connects a CloudI name to a ZeroMQ (subscribe) name
-    % as {CloudI name (suffix), ZeroMQ name for subscribe setsocketopt}
-    % for any number of endpoints
-     {subscribe, {[{"zigzag_step3a", "/zeromq/step2"},
-                   {"zigzag_step3b", "/zeromq/step2"}],
-                  ["inproc://zigzagstep2a",
-                   "ipc:///tmp/cloudizigzagstep2b",
-                   "inproc://zigzagstep2c",
-                   "ipc:///tmp/cloudizigzagstep2d"]}},
-     {outbound, {"zigzag_step3a", ["inproc://zigzagstep3"]}},
-     {inbound, {"zigzag_finish", ["inproc://zigzagstep3"]}}],
-    immediate_closest,
-    5000, 5000, 5000, [api], undefined, 2, 5, 300, []}
-    </pre>
-  </p>
-  <h4><a href="#7_contents">Supported Databases</a></h4>
-  <p class="paragraph">
-    All the supported databases can be accessed by CloudI services.
-    The CloudI Erlang service that provides database support
-    (e.g., cloudi_service_db_pgsql, cloudi_service_db_mysql, etc.) uses
-    the database name as the service name suffix.  Services can send requests
-    to the database service name in the appropriate format to
-    interact with the database.  The format to send is either SQL for an
-    SQL database or a command tuple if it is a NoSQL database
-    (e.g., {'set', "key", "value"}).
+    While various database CloudI services have been created and used,
+    it is much better to focus on using your native database client
+    within the business logic of a CloudI service.  Otherwise, it would be
+    difficult to manage the fault-tolerance related to database usage
+    since many errors in business logic are due to database usage
+    unique to the business logic.
   </p>
   <div class="top"><a href="#4_contents">Top</a></div>
 
@@ -2112,7 +2001,7 @@ sudo cloudi stop
   <h2>6 - Services</h2>
 
   <a name="6_C"></a>
-  <h3>6.1 - C++/C Service Implementation</h3>
+  <h3>6.1 - C/C++ Service Implementation</h3>
   <p class="paragraph">
     There are separate header files that provide both a C CloudI API
     (<a href="https://github.com/CloudI/CloudI/blob/master/src/api/c/cloudi.h" target="_blank">cloudi.h</a>)
@@ -2315,7 +2204,7 @@ sudo cloudi stop
           ZeroMQ Test (with
           <a href="#6_ZeroMQ">cloudi_service_zeromq configuration</a>)</li>
     </ul>
-    An example configuration (from the <a href="https://github.com/CloudI/CloudI/blob/master/src/cloudi.conf.in" target="_blank">default CloudI configuration</a>)
+    An example configuration (from the <a href="https://github.com/CloudI/CloudI/blob/master/src/cloudi_tests.conf.in" target="_blank">integration tests CloudI configuration</a>)
     is provided below:
     <pre>
 {external,
@@ -2367,7 +2256,7 @@ sudo cloudi stop
     that matches the Uniform Resource Locator (URL) path.  A simple example
     caches static filesystem files recursively so that the file path is
     the service name suffix (with the "/get" HTTP method suffix at the end,
-    e.g., "index.html/get").  The example can be found in the <a href="https://github.com/CloudI/CloudI/blob/master/src/cloudi.conf.in" target="_blank">default CloudI configuration</a>
+    e.g., "index.html/get").  The example can be found in the <a href="https://github.com/CloudI/CloudI/blob/master/src/cloudi_tests.conf.in" target="_blank">integration tests CloudI configuration</a>
     usage of the <a href="https://github.com/CloudI/CloudI/blob/master/src/lib/cloudi_service_filesystem/src/cloudi_service_filesystem.erl" target="_blank">cloudi_service_filesystem</a> which is shown below:
     <pre>
 {internal,
@@ -2472,7 +2361,7 @@ sudo cloudi stop
     integration is provided by the cloudi_service_zeromq Erlang CloudI service.
     The CloudI configuration uses the cloudi_service_zeromq service to create
     service names that represent ZeroMQ messaging endpoints.  There are three
-    ZeroMQ configuration examples in the <a href="https://github.com/CloudI/CloudI/blob/master/src/cloudi.conf.in" target="_blank">default CloudI configuration</a>
+    ZeroMQ configuration examples in the <a href="https://github.com/CloudI/CloudI/blob/master/src/cloudi_tests.conf.in" target="_blank">integration tests CloudI configuration</a> (commented within the file)
     which are (partially) shown below:
     <pre>
 % Zig-Zag test
@@ -2568,7 +2457,7 @@ sudo cloudi stop
     (i.e., any service names that match the prefix) which it proxies with
     mcast_async_active to all available service name destinations, using
     the suffix that was matched.  So, if cloudi_service_quorum was started
-    with the prefix "/byzantine", like the example found in the <a href="https://github.com/CloudI/CloudI/blob/master/src/cloudi.conf.in" target="_blank">default CloudI configuration</a>:
+    with the prefix "/byzantine", like the example found in the <a href="https://github.com/CloudI/CloudI/blob/master/src/cloudi_tests.conf.in" target="_blank">integration tests CloudI configuration</a>:
     <pre>
     {internal,
         "/byzantine",
@@ -2601,316 +2490,11 @@ sudo cloudi stop
   <div class="top"><a href="#6_contents">Top</a></div>
 
   <hr \>
-  <h2>7 - Databases</h2>
-
-  <a name="7_Cassandra"></a>
-  <h3>7.1 - Cassandra Integration</h3>
-  <p class="paragraph">
-    Both the cloudi_service_db_cassandra internal service and the
-    cloudi_service_db_cassandra_cql internal service can be used for
-    Cassandra usage from other CloudI services.  The
-    cloudi_service_db_cassandra internal service uses
-    <a href="http://en.wikipedia.org/wiki/Apache_Thrift" target="_blank">Apache Thrift</a>
-    for Cassandra communication while the
-    cloudi_service_db_cassandra_cql internal service uses
-    <a href="https://cassandra.apache.org/doc/cql/CQL.html" target="_blank">CQL</a>
-    for Cassandra communication.  Functions are provided in both
-    internal service modules for usage by other internal services.
-    External services can send binary data to cloudi_service_db_cassandra.
-    The service name used to communicate with Cassandra is the configured
-    database service name prefix with the connection name appended
-    (i.e., "/db/cassandra/thrift_cloudi_tests" and
-     "/db/cassandra/cql_cloudi_tests" in the examples below).
-  </p>
-  <p class="paragraph">
-    An example configuration for a Cassandra Apache Thrift connection
-    in a single service configuration entry is below:
-<pre>
-    {internal,
-        "/db/cassandra/",
-        cloudi_service_db_cassandra,
-        [{connection_name, "thrift_cloudi_tests"},
-         {connection_options,
-          [{thrift_host, "127.0.0.1"},
-           {thrift_port, 9160}]}],
-        none,
-        5000, 5000, 5000, undefined, undefined, 1, 5, 300, []}
-</pre>
-  </p>
-  <p class="paragraph">
-    An example configuration for a Cassandra CQL connection
-    in a single service configuration entry is below:
-<pre>
-    {internal,
-        "/db/cassandra/",
-        cloudi_service_db_cassandra_cql,
-        [{service_name, "cql_cloudi_tests"},
-         {connection_options,
-          [{host, "127.0.0.1"},
-           {port, 9042},
-           {keepalive, true},
-           {use, undefined},
-           {cql_version, &lt;&lt;"3.1.5"&gt;&gt;},
-           {auto_reconnect, true}]},
-         {consistency, quorum}],
-        none,
-        5000, 5000, 5000, undefined, undefined, 1, 5, 300, []}
-</pre>
-  </p>
-  <div class="top"><a href="#7_contents">Top</a></div>
-
-  <a name="7_CouchDB"></a>
-  <h3>7.2 - CouchDB Integration</h3>
-  <p class="paragraph">
-    The cloudi_service_db_couchdb internal service accepts requests from other
-    CloudI services.  Functions are provided by the cloudi_service_db_couchdb
-    module for usage by other internal services.  External services can send
-    binary data to cloudi_service_db_couchdb.  The service name used to
-    communicate with the database is the configured database service name
-    prefix with the database name appended
-    (i.e., "/db/couchdb/cloudi_tests" in the example below).
-  </p>
-  <p class="paragraph">
-    An example configuration for a single database that is represented as a
-    single service is below:
-<pre>
-    {internal,
-        "/db/couchdb/",
-        cloudi_service_db_couchdb,
-        [{database, "cloudi_tests"},
-         {timeout, 20000}, % ms
-         {hostname, "127.0.0.1"},
-         {port, 5984}],
-        none,
-        5000, 5000, 5000, undefined, undefined, 1, 5, 300, []}
-</pre>
-  </p>
-  <div class="top"><a href="#7_contents">Top</a></div>
-
-  <a name="7_elasticsearch"></a>
-  <h3>7.3 - elasticsearch Integration</h3>
-  <p class="paragraph">
-    The cloudi_service_db_elasticsearch internal service accepts requests from
-    other CloudI services.  The cloudi_service_db_elasticsearch internal
-    service uses <a href="http://en.wikipedia.org/wiki/Apache_Thrift" target="_blank">Apache Thrift</a>
-    for elasticsearch communication, so the Thrift elasticsearch plugin needs
-    to be installed for the driver.  Functions are provided by the
-    cloudi_service_db_elasticsearch module for usage by other internal
-    services.  External services can send binary data to
-    cloudi_service_db_elasticsearch.  The service name used to
-    communicate with the database is the configured database service name
-    prefix with the database name appended (represents a connection)
-    (i.e., "/db/elasticsearch/cloudi_tests" in the example below).
-  </p>
-  <p class="paragraph">
-    An example configuration for a single connection that is represented as a
-    single service is below:
-<pre>
-    {internal,
-        "/db/elasticsearch/",
-        cloudi_service_db_elasticsearch,
-        [{pool_options, []},
-         {connection_options, 
-          [{thrift_host, "127.0.0.1"},
-           {thrift_port, 9500},
-           {thrift_options,
-            [{framed, false}]},
-           {binary_response, false},
-           {retry_interval, 500},
-           {retry_amount, 5}]},
-         {database, "cloudi_tests"}],
-        none,
-        5000, 5000, 5000, undefined, undefined, 1, 5, 300, []}
-</pre>
-  </p>
-  <div class="top"><a href="#7_contents">Top</a></div>
-
-  <a name="7_memcached"></a>
-  <h3>7.4 - memcached Integration</h3>
-  <p class="paragraph">
-    The cloudi_service_db_memcached internal service accepts requests from other
-    CloudI services.  Functions are provided by the cloudi_service_db_memcached
-    module for usage by other internal services.  External services can send
-    binary data to cloudi_service_db_memcached.  The service name used to
-    communicate with the database is the configured database service name
-    prefix with the database name appended
-    (i.e., "/db/memcached/cloudi_tests" in the example below).
-  </p>
-  <p class="paragraph">
-    An example configuration for a single database that is represented as a
-    single service is below:
-<pre>
-    {internal,
-        "/db/memcached/",
-        cloudi_service_db_memcached,
-        [{database, "cloudi_tests",
-          [{"127.0.0.1", 11211, 1}]}],
-        none,
-        5000, 5000, 5000, undefined, undefined, 1, 5, 300, []}
-</pre>
-    The list of host-port-connection_count tuples is used for providing
-    <a href="http://www.last.fm/user/RJ/journal/2007/04/10/rz_libketama_-_a_consistent_hashing_algo_for_memcache_clients" target="_blank">continuum hashing</a>
-    of database keys.  Using continuum hashing avoids rehashing all the keys
-    (i.e., cached-misses) when a memcached node fails.
-  </p>
-  <div class="top"><a href="#7_contents">Top</a></div>
-
-  <a name="7_MySQL"></a>
-  <h3>7.5 - MySQL Integration</h3>
-  <p class="paragraph">
-    The cloudi_service_db_mysql internal service accepts requests from other
-    CloudI services.  Functions are provided by the cloudi_service_db_mysql
-    module for usage by other internal services.  External services can send
-    binary SQL queries to cloudi_service_db_mysql.  The service name used to
-    communicate with the database is the configured database service name
-    prefix with the database name appended
-    (i.e., "/db/mysql/cloudi_tests" in the example below).
-  </p>
-  <p class="paragraph">
-    An example configuration for a single database that is represented as a
-    single service is below:
-<pre>
-    {internal,
-        "/db/mysql/",
-        cloudi_service_db_mysql,
-        [{database, "cloudi_tests"},
-         {timeout, 20000}, % ms
-         {encoding, utf8},
-         {hostname, "127.0.0.1"},
-         {username, "cloudi"},
-         {password, "XXXXXXXXX"},
-         {port, 3306},
-         {internal_interface, common},
-         {debug, true}],
-        none,
-        5000, 5000, 5000, undefined, undefined, 1, 5, 300, []}
-</pre>
-  </p>
-    Setting the internal_interface configuration argument to
-    'common' makes sure the result of a service request is consistent with
-    cloudi_service_db_pgsql usage of 'common' for internal_interface.
-  <div class="top"><a href="#7_contents">Top</a></div>
-
-  <a name="7_PostgreSQL"></a>
-  <h3>7.6 - PostgreSQL Integration</h3>
-  <p class="paragraph">
-    The cloudi_service_db_pgsql internal service accepts requests from other
-    CloudI services.  Functions are provided by the cloudi_service_db_pgsql
-    module for usage by other internal services.  External services can send
-    binary SQL queries to cloudi_service_db_pgsql.  The service name used to
-    communicate with the database is the configured database service name
-    prefix with the database name appended
-    (i.e., "/db/pgsql/cloudi_tests" in the example below).
-  </p>
-  <p class="paragraph">
-    An example configuration for a single database that is represented as a
-    single service is below:
-<pre>
-    {internal,
-        "/db/pgsql/",
-        cloudi_service_db_pgsql,
-        [{database, "cloudi_tests"},
-         {timeout, 20000}, % ms
-         {hostname, "127.0.0.1"},
-         {username, "cloudi"},
-         {password, "XXXXXXXXX"},
-         {port, 5432},
-         {driver, semiocast},
-         {internal_interface, common},
-         {debug, true}],
-        none,
-        5000, 5000, 5000, undefined, undefined, 1, 5, 300, []}
-</pre>
-    The driver configuration argument allows one of the three supported
-    Erlang PostgreSQL drivers to be used ('epgsql_wg', 'epgsql', or
-    'semiocast').  Setting the internal_interface configuration argument to
-    'common' makes sure all the drivers provide the same format for the result
-    which is consistent with cloudi_service_db_mysql usage of 'common' for
-    internal_interface.
-  </p>
-  <div class="top"><a href="#7_contents">Top</a></div>
-
-  <a name="7_riak"></a>
-  <h3>7.7 - riak Integration</h3>
-  <p class="paragraph">
-    The cloudi_service_db_riak internal service accepts requests from other
-    CloudI services.  Functions are provided by the cloudi_service_db_riak
-    module for usage by other internal services.  External services can send
-    binary data to cloudi_service_db_riak.  The service name used to
-    communicate with the database is the configured database service name
-    prefix with the bucket name appended
-    (i.e., "/db/riak/cloudi_tests" in the example below).
-  </p>
-  <p class="paragraph">
-    An example configuration for a single bucket that is represented as a
-    single service is below (if bucket is omitted any bucket can be used):
-<pre>
-    {internal,
-        "/db/riak/",
-        cloudi_service_db_riak,
-        [{hostname, "127.0.0.1"},
-         {port, 8087},
-         {bucket, "cloudi_tests"},
-         {debug, true}],
-        none,
-        5000, 5000, 5000, undefined, undefined, 1, 5, 300, []}
-</pre>
-  </p>
-  <div class="top"><a href="#7_contents">Top</a></div>
-
-  <a name="7_TokyoTyrant"></a>
-  <h3>7.8 - Tokyo Tyrant Integration</h3>
-  <p class="paragraph">
-    The cloudi_service_db_tokyotyrant internal service accepts requests from
-    other CloudI services.  Functions are provided by the
-    cloudi_service_db_tokyotyrant module for usage by other internal services.
-    External services can send binary data to cloudi_service_db_tokyotyrant.
-    The service name used to communicate with the database is the configured
-    database service name prefix with the database name appended
-    (i.e., "/db/tokyotyrant/cloudi_tests" in the example below).
-  </p>
-  <p class="paragraph">
-    An example configuration for a single database that is represented as a
-    single service is below:
-<pre>
-    {internal,
-        "/db/tokyotyrant/",
-        cloudi_service_db_tokyotyrant,
-        [{database, "cloudi_tests"},
-         {timeout, 20000}, % ms
-         {hostname, "127.0.0.1"},
-         {port, 1978}],
-        none,
-        5000, 5000, 5000, undefined, undefined, 1, 5, 300, []}
-</pre>
-  </p>
-  <div class="top"><a href="#7_contents">Top</a></div>
-
-  <a name="7_Other"></a>
-  <h3>7.9 - Other Database Integration</h3>
-  <p class="paragraph">
-    Other databases can easily be integrated with CloudI.  The best database
-    integration uses a database driver implemented completely in Erlang and
-    uses a cloudi_service_db_name module to implement CloudI service integration
-    with the cloudi_service behavior.  By using a database driver written in
-    Erlang the source code is naturally more scalable and fault-tolerant.  If
-    the database driver used an Erlang NIF or an Erlang port driver instead,
-    the driver would not be isolated from the Erlang VM (though the
-    implementation might be more efficient).  The database driver would
-    typically communicate with the database by using a socket with TCP.
-  </p>
-  <p class="paragraph">
-    Database integration can be done in other complex ways if required,
-    but the integration approach previously mentioned is a typical approach
-    used within the CloudI framework.
-  </p>
-  <div class="top"><a href="#7_contents">Top</a></div>
-
-  <hr \>
-  <h2>8 - Troubleshooting</h2>
+  <h2>7 - Troubleshooting</h2>
 
   <a name="8_start"></a>
-  <h3>8.1 - Why does CloudI stop shortly after being started?</h3>
+  <a name="7_start"></a>
+  <h3>7.1 - Why does CloudI stop shortly after being started?</h3>
   <p class="paragraph">
   If any services listed in the CloudI configuration file fail to initialize
   CloudI will shutdown.  This behavior is required to make sure CloudI services
@@ -2930,7 +2514,7 @@ sudo cloudi stop
   start the services with <a href="api.html#2_services_add">services_add</a>)
   to take advantage of fail-fast service initialization.
   </p>
-  <div class="top"><a href="#8_contents">Top</a></div>
+  <div class="top"><a href="#7_contents">Top</a></div>
 
 </div>
 
