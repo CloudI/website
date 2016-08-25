@@ -18,6 +18,10 @@ related to these concepts are:
 
 == Programming Language CloudI API Tutorials
 
+The tutorials below focus on a single programming language to show that
+service development with CloudI only requires the use of a single
+programming language.
+
 === link:tutorial_java.html[Java Tutorial]
 
 == CloudI Examples
@@ -56,7 +60,7 @@ C::
   * link:https://github.com/okeuday/odroid_display[LCD Display Service]
 Erlang::
   * link:https://github.com/CloudI/CloudI/tree/master/examples#examples[Embedding CloudI Into An Erlang Project]
-  * link:https://github.com/CloudI/CloudI#integration[Included Services]
+  * link:https://github.com/CloudI/CloudI#integration[Services Included With CloudI]
 Java::
   * link:https://github.com/CloudI/cloudi_tutorial_java[Java Tutorial]
 Python::
