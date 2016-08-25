@@ -12,7 +12,7 @@ vendor lock-in.
 CloudI Frequently Asked Questions (FAQ) information that can provide more depth
 related to these concepts are:
 
-* link:faq.html#1_SOA[Does CloudI provide a Microservice Architecture?]
+* link:faq.html#1_Microservices[Does CloudI provide a Microservice Architecture?]
 * link:faq.html#1_Messaging[How does CloudI compare to other open source messaging?]
 * link:faq.html#1_Clouds[How does CloudI compare to other "Clouds"?]
 
