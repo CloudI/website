@@ -2,29 +2,70 @@
 = CloudI User Tutorial
 :toc:
 
-== Java CloudI API User Tutorial
+== Why Use CloudI?
 
-(will add here)
+CloudI enforces fault-tolerance constraints on source code while allowing
+source code to be efficient and scalable.  With CloudI, you can create a
+system with Microservices that doesn't require virtualization or
+vendor lock-in.
 
-== Erlang CloudI API User Tutorial
+CloudI Frequently Asked Questions (FAQ) information that can provide more depth
+related to these concepts are:
 
-(will add here, notes:)
+* link:faq.html#1_SOA[Does CloudI provide a Microservice Architecture?]
+* link:faq.html#1_Messaging[How does CloudI compare to other open source messaging?]
+* link:faq.html#1_Clouds[How does CloudI compare to other "Clouds"?]
 
-=== How Does cloudi_service Usage Differ From gen_server Usage?
+== Programming Language CloudI API Tutorials
 
-(will add here)
+=== link:tutorial_java.html[Java Tutorial]
 
-==== What Extra Benefits Does Using cloudi_service Provide?
+== CloudI Examples
 
-(will add here)
+All Supported Programming Languages::
+  * link:https://github.com/CloudI/CloudI/tree/master/doc#readme[Quick Start]
+  * Basic HTTP Request Integration Test
+  ** link:https://github.com/CloudI/CloudI/blob/master/src/tests/http_req/c_src/main.c[C]
+  ** link:https://github.com/CloudI/CloudI/blob/master/src/tests/http_req/src/cloudi_service_http_req.erl[Erlang]
+  ** link:https://github.com/CloudI/CloudI/blob/master/src/tests/http_req/org/cloudi/tests/http_req/Task.java[Java]
+  ** link:https://github.com/CloudI/CloudI/blob/master/src/tests/http_req/http_req.js[Javascript/node.js]
+  ** link:https://github.com/CloudI/CloudI/blob/master/src/tests/http_req/http_req.pl[Perl]
+  ** link:https://github.com/CloudI/CloudI/blob/master/src/tests/http_req/http_req.php[PHP]
+  ** link:https://github.com/CloudI/CloudI/blob/master/src/tests/http_req/http_req.py[Python] and link:https://github.com/CloudI/CloudI/blob/master/src/tests/http_req/http_req_c.py[Python/C]
+  ** link:https://github.com/CloudI/CloudI/blob/master/src/tests/http_req/http_req.rb[Ruby]
+  * Basic Message Size (Forwarding) Integration Test
+  ** link:https://github.com/CloudI/CloudI/blob/master/src/tests/msg_size/cxx_src/main.cpp[C++]
+  ** link:https://github.com/CloudI/CloudI/blob/master/src/tests/msg_size/src/cloudi_service_msg_size.erl[Erlang]
+  ** link:https://github.com/CloudI/CloudI/blob/master/src/tests/msg_size/org/cloudi/tests/msg_size/Task.java[Java]
+  ** link:https://github.com/CloudI/CloudI/blob/master/src/tests/msg_size/msg_size.js[Javascript/node.js]
+  ** link:https://github.com/CloudI/CloudI/blob/master/src/tests/msg_size/msg_size.pl[Perl]
+  ** link:https://github.com/CloudI/CloudI/blob/master/src/tests/msg_size/msg_size.php[PHP]
+  ** link:https://github.com/CloudI/CloudI/blob/master/src/tests/msg_size/msg_size.py[Python] and link:https://github.com/CloudI/CloudI/blob/master/src/tests/msg_size/msg_size_c.py[Python/C]
+  ** link:https://github.com/CloudI/CloudI/blob/master/src/tests/msg_size/msg_size.rb[Ruby]
+  * Basic Messaging Integration Test
+  ** link:https://github.com/CloudI/CloudI/blob/master/src/tests/messaging/cxx_src/main.cpp[C++]
+  ** Erlang (link:https://github.com/CloudI/CloudI/blob/master/src/tests/messaging/src/cloudi_service_messaging_sequence1.erl[Sequence 1] link:https://github.com/CloudI/CloudI/blob/master/src/tests/messaging/src/cloudi_service_messaging_sequence2.erl[Sequence 2] link:https://github.com/CloudI/CloudI/blob/master/src/tests/messaging/src/cloudi_service_messaging_sequence3.erl[Sequence 3] link:https://github.com/CloudI/CloudI/blob/master/src/tests/messaging/src/cloudi_service_messaging_sequence4.erl[Sequence 4])
+  ** link:https://github.com/CloudI/CloudI/blob/master/src/tests/messaging/org/cloudi/tests/messaging/Task.java[Java]
+  ** link:https://github.com/CloudI/CloudI/blob/master/src/tests/messaging/messaging.js[Javascript/node.js]
+  ** link:https://github.com/CloudI/CloudI/blob/master/src/tests/messaging/MessagingTask.pm[Perl]
+  ** link:https://github.com/CloudI/CloudI/blob/master/src/tests/messaging/messaging.php[PHP]
+  ** link:https://github.com/CloudI/CloudI/blob/master/src/tests/messaging/messaging.py[Python] and link:https://github.com/CloudI/CloudI/blob/master/src/tests/messaging/messaging_c.py[Python/C]
+  ** link:https://github.com/CloudI/CloudI/blob/master/src/tests/messaging/messaging.rb[Ruby]
+C::
+  * link:https://github.com/okeuday/sillymud[MUD Game Server Using CloudI]
+  * link:https://github.com/okeuday/odroid_display[LCD Display Service]
+Erlang::
+  * link:https://github.com/CloudI/CloudI/tree/master/examples#examples[Embedding CloudI Into An Erlang Project]
+  * link:https://github.com/CloudI/CloudI#integration[Included Services]
+Java::
+  * link:https://github.com/CloudI/cloudi_tutorial_java[Java Tutorial]
+Python::
+  * link:https://github.com/okeuday/odroid_fish[UTF8 Fish Swimming]
 
-=== How Do You Execute cloudi_service Usage?
+== Guidelines For Making Your Own Services
 
-(will add here)
-
-== Service Development Guidelines
-
-The information below can help guide your development of custom services:
+The information below can help guide your development of custom services
+with any supported programming language:
 
 === How To Design A Service
 
@@ -108,12 +149,12 @@ A good approach is using as few programming languages that can reasonably be
 used for the business logic design.  Based on CloudI
 link:faq.html#5_LoadTesting[loadtesting^]
 (ordered based on average latency during the loadtest), service requests
-are handled with low latency in Erlang, C/C++, Java, Python/C
-(less than 6 milliseconds) and higher latency in Python, Ruby, Perl, PHP
-(greater than 2000 milliseconds) just due to inefficiencies within the
-programming language runtimes.  By considering the latency requirements of
-the system early during development it will be easier to scale the deployment
-and avoid wasted development effort.
+are handled with low latency in Erlang/Elixir, C/C++, Java, Python/C
+(less than 6 milliseconds) and higher latency in Python, Ruby, Perl, PHP,
+Javascript/node.js (greater than 2000 milliseconds) just due to inefficiencies
+within the programming language runtimes.  By considering the latency
+requirements of the system early during development it will be easier to
+scale the deployment and avoid wasted development effort.
 
 If a programming language that runs on the Erlang VM is used, it is possible
 to develop with finer-grained fault tolerance in an internal CloudI service
