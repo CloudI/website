@@ -106,4 +106,16 @@ function element_select(element)
         textRange.moveToElementText(element);
         textRange.select();
     }
+    try
+    {
+        // copy requires:
+        // Internet Explorer 10+
+        // Google Chrome 43+ (~April 2015)
+        // Mozilla Firefox 41+ (shipping ~September 2015)
+        // Opera 29+ (based on Chromium 42, ~April 2015)
+        document.execCommand('copy');
+    }
+    catch (err)
+    {
+    }
 }
