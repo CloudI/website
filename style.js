@@ -88,3 +88,22 @@ var cookie = style_read_cookie("style");
 var title = cookie ? cookie : style_get_preferred_stylesheet();
 style_set_active_stylesheet(title);
 
+function element_select(element)
+{
+    if (window.getSelection && document.createRange)
+    {
+        // IE 9 and non-IE
+        var range = document.createRange();
+        range.selectNodeContents(element);
+        var selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+    }
+    else if (document.body.createTextRange)
+    {
+        // IE < 9
+        var textRange = document.body.createTextRange();
+        textRange.moveToElementText(element);
+        textRange.select();
+    }
+}

@@ -151,7 +151,6 @@ pre {
 #content div.tabs {
     z-index: 0;
     position: relative;
-    min-height: 30em; /* quickstart height */
 }
 #content div.tabs > div {
     display: inline;
@@ -173,8 +172,7 @@ pre {
 #content div.tabs > div:not(:target) > div.tab_contents {
     position: absolute;
 }
-#content div.tabs > div:target > div.tab_contents,
-:target #quick_start > div.tab_contents {
+#content div.tabs > div:target > div.tab_contents {
     z-index: -1;
     position: absolute;
 }
