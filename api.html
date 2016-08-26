@@ -1326,8 +1326,10 @@ cloudi_service:mcast_async(Dispatcher :: pid(),
   <a href="#1_mcast_async_Java">Java</a>
   <div class="tab_contents">
 <pre onclick="element_select(this);">
-List&lt;TransId&gt; org.cloudi.API.mcast_async(String name, byte[] request_info,
-                                         byte[] request, Integer timeout,
+List&lt;TransId&gt; org.cloudi.API.mcast_async(String name,
+                                         byte[] request_info,
+                                         byte[] request,
+                                         Integer timeout,
                                          Byte priority);
 </pre>
   </div>
@@ -1469,7 +1471,8 @@ cloudi_service:mcast_async_active(Dispatcher :: pid(),
                                   Request :: any(),
                                   Timeout :: non_neg_integer() |
                                              'undefined' | 'immediate',
-                                  Priority :: integer() | 'undefined') -&gt;
+                                  Priority :: integer() |
+                                              'undefined') -&gt;
     {'ok', TransIdList :: list(&lt;&lt;_:128&gt;&gt;)} |
     {'error', Reason :: atom()}.
 </pre>
