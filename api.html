@@ -61,7 +61,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 <div id="content">
   <h1>CloudI API Documentation</h1>
   <center><h3>version 1.5.1<br />
-              last updated on August 25<sup>th</sup> 2016</h3></center>
+              last updated on August 29<sup>th</sup> 2016</h3></center>
 
   <a name="Service"></a>
   <h2>CloudI API - Making a Service</h2>
@@ -293,6 +293,30 @@ int org.cloudi.API.thread_count();
 </pre>
   </div>
   </div> <!-- Java -->
+  <div id="1_initialization_JavaScript">
+  <a href="#1_initialization_JavaScript">JavaScript</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+CloudI.API.thread_count();
+</pre>
+  </div>
+  </div> <!-- JavaScript -->
+  <div id="1_initialization_Perl">
+  <a href="#1_initialization_Perl">Perl</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+CloudI::API-&gt;thread_count();
+</pre>
+  </div>
+  </div> <!-- Perl -->
+  <div id="1_initialization_PHP">
+  <a href="#1_initialization_PHP">PHP</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+\CloudI\API::thread_count();
+</pre>
+  </div>
+  </div> <!-- PHP -->
   <div id="1_initialization_Python">
   <a href="#1_initialization_Python">Python</a>
   <div class="tab_contents">
@@ -480,6 +504,14 @@ int CloudI::API::subscribe(STRING pattern,
 </pre>
   </div>
   </div> <!-- C++ -->
+  <div id="1_subscribe_Elixir">
+  <a href="#1_subscribe_Elixir">Elixir</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+:cloudi_service.subscribe(dispatcher, pattern)
+</pre>
+  </div>
+  </div> <!-- Elixir -->
   <div id="1_subscribe_Erlang">
   <a href="#1_subscribe_Erlang">Erlang</a>
   <div class="tab_contents">
@@ -499,6 +531,32 @@ void org.cloudi.API.subscribe(final String pattern,
 </pre>
   </div>
   </div> <!-- Java -->
+  <div id="1_subscribe_JavaScript">
+  <a href="#1_subscribe_JavaScript">JavaScript</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+var callback = function () {};
+CloudI.API.subscribe(pattern, object, object_function, callback);
+</pre>
+  </div>
+  </div> <!-- JavaScript -->
+  <div id="1_subscribe_Perl">
+  <a href="#1_subscribe_Perl">Perl</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+CloudI::API-&gt;subscribe($pattern, $function);
+CloudI::API-&gt;subscribe($pattern, $object, $method);
+</pre>
+  </div>
+  </div> <!-- Perl -->
+  <div id="1_subscribe_PHP">
+  <a href="#1_subscribe_PHP">PHP</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+\CloudI\API::subscribe($pattern, $object, $method);
+</pre>
+  </div>
+  </div> <!-- PHP -->
   <div id="1_subscribe_Python">
   <a href="#1_subscribe_Python">Python</a>
   <div class="tab_contents">
@@ -571,6 +629,14 @@ int CloudI::API::subscribe_count(STRING pattern) const;
 </pre>
   </div>
   </div> <!-- C++ -->
+  <div id="1_subscribe_count_Elixir">
+  <a href="#1_subscribe_count_Elixir">Elixir</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+:cloudi_service.subscribe_count(dispatcher, pattern)
+</pre>
+  </div>
+  </div> <!-- Elixir -->
   <div id="1_subscribe_count_Erlang">
   <a href="#1_subscribe_count_Erlang">Erlang</a>
   <div class="tab_contents">
@@ -590,6 +656,31 @@ int org.cloudi.API.subscribe_count(final String pattern);
 </pre>
   </div>
   </div> <!-- Java -->
+  <div id="1_subscribe_count_JavaScript">
+  <a href="#1_subscribe_count_JavaScript">JavaScript</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+var callback = function (count) {};
+CloudI.API.subscribe_count(pattern, callback);
+</pre>
+  </div>
+  </div> <!-- JavaScript -->
+  <div id="1_subscribe_count_Perl">
+  <a href="#1_subscribe_count_Perl">Perl</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+CloudI::API-&gt;subscribe_count($pattern);
+</pre>
+  </div>
+  </div> <!-- Perl -->
+  <div id="1_subscribe_count_PHP">
+  <a href="#1_subscribe_count_PHP">PHP</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+\CloudI\API::subscribe_count($pattern);
+</pre>
+  </div>
+  </div> <!-- PHP -->
   <div id="1_subscribe_count_Python">
   <a href="#1_subscribe_count_Python">Python</a>
   <div class="tab_contents">
@@ -654,6 +745,14 @@ int CloudI::API::unsubscribe(STRING pattern) const;
 </pre>
   </div>
   </div> <!-- C++ -->
+  <div id="1_unsubscribe_Elixir">
+  <a href="#1_unsubscribe_Elixir">Elixir</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+:cloudi_service.unsubscribe(dispatcher, pattern)
+</pre>
+  </div>
+  </div> <!-- Elixir -->
   <div id="1_unsubscribe_Erlang">
   <a href="#1_unsubscribe_Erlang">Erlang</a>
   <div class="tab_contents">
@@ -671,6 +770,31 @@ void org.cloudi.API.unsubscribe(final String pattern);
 </pre>
   </div>
   </div> <!-- Java -->
+  <div id="1_unsubscribe_JavaScript">
+  <a href="#1_unsubscribe_JavaScript">JavaScript</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+var callback = function () {};
+CloudI.API.unsubscribe(pattern, callback);
+</pre>
+  </div>
+  </div> <!-- JavaScript -->
+  <div id="1_unsubscribe_Perl">
+  <a href="#1_unsubscribe_Perl">Perl</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+CloudI::API-&gt;unsubscribe($pattern);
+</pre>
+  </div>
+  </div> <!-- Perl -->
+  <div id="1_unsubscribe_PHP">
+  <a href="#1_unsubscribe_PHP">PHP</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+\CloudI\API::unsubscribe($pattern);
+</pre>
+  </div>
+  </div> <!-- PHP -->
   <div id="1_unsubscribe_Python">
   <a href="#1_unsubscribe_Python">Python</a>
   <div class="tab_contents">
@@ -707,6 +831,14 @@ CloudI::API.unsubscribe(pattern)
   <a name="1_get_pid"></a>
   <h3>1.6 - get_pid (internal services only)</h3>
   <div class="tabs" style="min-height: 10em;">
+  <div id="1_get_pid_Elixir">
+  <a href="#1_get_pid_Elixir">Elixir</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+:cloudi_service.get_pid(dispatcher, name, timeout)
+</pre>
+  </div>
+  </div> <!-- Elixir -->
   <div id="1_get_pid_Erlang">
   <a href="#1_get_pid_Erlang">Erlang</a>
   <div class="tab_contents">
@@ -753,6 +885,14 @@ cloudi_service:get_pid(Dispatcher :: pid(),
   <a name="1_get_pids"></a>
   <h3>1.7 - get_pids (internal services only)</h3>
   <div class="tabs" style="min-height: 10em;">
+  <div id="1_get_pids_Elixir">
+  <a href="#1_get_pids_Elixir">Elixir</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+:cloudi_service.get_pids(dispatcher, name, timeout)
+</pre>
+  </div>
+  </div> <!-- Elixir -->
   <div id="1_get_pids_Erlang">
   <a href="#1_get_pids_Erlang">Erlang</a>
   <div class="tab_contents">
@@ -831,6 +971,18 @@ int CloudI::API::send_sync(STRING name,
 </pre>
   </div>
   </div> <!-- C++ -->
+  <div id="1_send_sync_Elixir">
+  <a href="#1_send_sync_Elixir">Elixir</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+:cloudi_service.send_sync(dispatcher, name,
+                          request_info, request, timeout, priority)
+:cloudi_service.send_sync(dispatcher, name,
+                          request_info, request, timeout, priority,
+                          pattern_pid)
+</pre>
+  </div>
+  </div> <!-- Elixir -->
   <div id="1_send_sync_Erlang">
   <a href="#1_send_sync_Erlang">Erlang</a>
   <div class="tab_contents">
@@ -869,6 +1021,34 @@ Response org.cloudi.API.send_sync(String name, byte[] request_info,
 </pre>
   </div>
   </div> <!-- Java -->
+  <div id="1_send_sync_JavaScript">
+  <a href="#1_send_sync_JavaScript">JavaScript</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+CloudI.API.send_sync(name, request, callback,
+                     timeout, request_info, priority);
+</pre>
+  </div>
+  </div> <!-- JavaScript -->
+  <div id="1_send_sync_Perl">
+  <a href="#1_send_sync_Perl">Perl</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+CloudI::API-&gt;send_sync($name, $request,
+                       $timeout, $request_info, $priority);
+</pre>
+  </div>
+  </div> <!-- Perl -->
+  <div id="1_send_sync_PHP">
+  <a href="#1_send_sync_PHP">PHP</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+\CloudI\API::send_sync($name, $request,
+                       $timeout = null, $request_info = null,
+                       $priority = null);
+</pre>
+  </div>
+  </div> <!-- PHP -->
   <div id="1_send_sync_Python">
   <a href="#1_send_sync_Python">Python</a>
   <div class="tab_contents">
@@ -938,6 +1118,20 @@ char const * CloudI::API::get_trans_id(unsigned int const i = 0) const;
 </pre>
   </div>
   </div> <!-- C++ -->
+  <div id="1_send_sync_return_Elixir">
+  <a href="#1_send_sync_return_Elixir">Elixir</a>
+  <div class="tab_contents">
+  <p>
+    response_info is only returned if it does not equal "".
+    response is only returned if it does not equal "".
+  </p>
+<pre onclick="element_select(this);">
+{:ok, response_info, response}
+{:ok, response}
+{:error, reason}
+</pre>
+  </div>
+  </div> <!-- Elixir -->
   <div id="1_send_sync_return_Erlang">
   <a href="#1_send_sync_return_Erlang">Erlang</a>
   <div class="tab_contents">
@@ -963,6 +1157,39 @@ org.cloudi.API.Response
 </pre>
   </div>
   </div> <!-- Java -->
+  <div id="1_send_sync_return_JavaScript">
+  <a href="#1_send_sync_return_JavaScript">JavaScript</a>
+  <div class="tab_contents">
+  <p>
+    The callback provides the function result.
+  </p>
+<pre onclick="element_select(this);">
+callback(response_info, response, trans_id);
+</pre>
+  </div>
+  </div> <!-- JavaScript -->
+  <div id="1_send_sync_return_Perl">
+  <a href="#1_send_sync_return_Perl">Perl</a>
+  <div class="tab_contents">
+  <p>
+    An array provides the function result.
+  </p>
+<pre onclick="element_select(this);">
+($response_info, $response, $trans_id)
+</pre>
+  </div>
+  </div> <!-- Perl -->
+  <div id="1_send_sync_return_PHP">
+  <a href="#1_send_sync_return_PHP">PHP</a>
+  <div class="tab_contents">
+  <p>
+    An array provides the function result.
+  </p>
+<pre onclick="element_select(this);">
+array($response_info, $response, $trans_id)
+</pre>
+  </div>
+  </div> <!-- PHP -->
   <div id="1_send_sync_return_Python">
   <a href="#1_send_sync_return_Python">Python</a>
   <div class="tab_contents">
@@ -1032,6 +1259,18 @@ int CloudI::API::send_async(STRING name,
 </pre>
   </div>
   </div> <!-- C++ -->
+  <div id="1_send_async_Elixir">
+  <a href="#1_send_async_Elixir">Elixir</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+:cloudi_service.send_async(dispatcher, name,
+                           request_info, request, timeout, priority)
+:cloudi_service.send_async(dispatcher, name,
+                           request_info, request, timeout, priority,
+                           pattern_pid)
+</pre>
+  </div>
+  </div> <!-- Elixir -->
   <div id="1_send_async_Erlang">
   <a href="#1_send_async_Erlang">Erlang</a>
   <div class="tab_contents">
@@ -1068,6 +1307,34 @@ TransId org.cloudi.API.send_async(String name, byte[] request_info,
 </pre>
   </div>
   </div> <!-- Java -->
+  <div id="1_send_async_JavaScript">
+  <a href="#1_send_async_JavaScript">JavaScript</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+CloudI.API.send_async(name, request, callback,
+                      timeout, request_info, priority);
+</pre>
+  </div>
+  </div> <!-- JavaScript -->
+  <div id="1_send_async_Perl">
+  <a href="#1_send_async_Perl">Perl</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+CloudI::API-&gt;send_async($name, $request,
+                        $timeout, $request_info, $priority);
+</pre>
+  </div>
+  </div> <!-- Perl -->
+  <div id="1_send_async_PHP">
+  <a href="#1_send_async_PHP">PHP</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+\CloudI\API::send_async($name, $request,
+                        $timeout = null, $request_info = null,
+                        $priority = null);
+</pre>
+  </div>
+  </div> <!-- PHP -->
   <div id="1_send_async_Python">
   <a href="#1_send_async_Python">Python</a>
   <div class="tab_contents">
@@ -1137,6 +1404,15 @@ char const * CloudI::API::get_trans_id(unsigned int const i = 0) const;
 </pre>
   </div>
   </div> <!-- C++ -->
+  <div id="1_send_async_return_Elixir">
+  <a href="#1_send_async_return_Elixir">Elixir</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+{:ok, trans_id}
+{:error, reason}
+</pre>
+  </div>
+  </div> <!-- Elixir -->
   <div id="1_send_async_return_Erlang">
   <a href="#1_send_async_return_Erlang">Erlang</a>
   <div class="tab_contents">
@@ -1157,6 +1433,40 @@ org.cloudi.API.TransId
 </pre>
   </div>
   </div> <!-- Java -->
+  <div id="1_send_async_return_JavaScript">
+  <a href="#1_send_async_return_JavaScript">JavaScript</a>
+  <div class="tab_contents">
+  <p>
+    The callback provides the function result,
+    the trans_id as a string of 16 bytes.
+  </p>
+<pre onclick="element_select(this);">
+callback(trans_id);
+</pre>
+  </div>
+  </div> <!-- JavaScript -->
+  <div id="1_send_async_return_Perl">
+  <a href="#1_send_async_return_Perl">Perl</a>
+  <div class="tab_contents">
+  <p>
+    The trans_id is a string of 16 bytes.
+  </p>
+<pre onclick="element_select(this);">
+$trans_id
+</pre>
+  </div>
+  </div> <!-- Perl -->
+  <div id="1_send_async_return_PHP">
+  <a href="#1_send_async_return_PHP">PHP</a>
+  <div class="tab_contents">
+  <p>
+    The trans_id is a string of 16 bytes.
+  </p>
+<pre onclick="element_select(this);">
+$trans_id
+</pre>
+  </div>
+  </div> <!-- PHP -->
   <div id="1_send_async_return_Python">
   <a href="#1_send_async_return_Python">Python</a>
   <div class="tab_contents">
@@ -1195,6 +1505,20 @@ trans_id
   <a name="1_send_async_active"></a>
   <h3>1.10 - send_async_active (internal services only)</h3>
   <div class="tabs" style="min-height: 24em;">
+  <div id="1_send_async_active_Elixir">
+  <a href="#1_send_async_active_Elixir">Elixir</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+:cloudi_service.send_async_active(dispatcher, name,
+                                  request_info, request,
+                                  timeout, priority)
+:cloudi_service.send_async_active(dispatcher, name,
+                                  request_info, request,
+                                  timeout, priority,
+                                  pattern_pid)
+</pre>
+  </div>
+  </div> <!-- Elixir -->
   <div id="1_send_async_active_Erlang">
   <a href="#1_send_async_active_Erlang">Erlang</a>
   <div class="tab_contents">
@@ -1244,6 +1568,16 @@ cloudi_service:send_async_active(Dispatcher :: pid(),
     native event handling.
   </p>
   <div class="tabs" style="min-height: 8em;">
+  <div id="1_send_async_active_return_Elixir">
+  <a href="#1_send_async_active_return_Elixir">Elixir</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+{:return_async_active, name, pattern,
+ response_info, response, timeout, trans_id}
+{:timeout_async_active, trans_id}
+</pre>
+  </div>
+  </div> <!-- Elixir -->
   <div id="1_send_async_active_return_Erlang">
   <a href="#1_send_async_active_return_Erlang">Erlang</a>
   <div class="tab_contents">
@@ -1306,6 +1640,15 @@ int CloudI::API::mcast_async(STRING name,
 </pre>
   </div>
   </div> <!-- C++ -->
+  <div id="1_mcast_async_Elixir">
+  <a href="#1_mcast_async_Elixir">Elixir</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+:cloudi_service.mcast_async(dispatcher, name,
+                            request_info, request, timeout, priority)
+</pre>
+  </div>
+  </div> <!-- Elixir -->
   <div id="1_mcast_async_Erlang">
   <a href="#1_mcast_async_Erlang">Erlang</a>
   <div class="tab_contents">
@@ -1334,6 +1677,34 @@ List&lt;TransId&gt; org.cloudi.API.mcast_async(String name,
 </pre>
   </div>
   </div> <!-- Java -->
+  <div id="1_mcast_async_JavaScript">
+  <a href="#1_mcast_async_JavaScript">JavaScript</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+CloudI.API.mcast_async(name, request, callback,
+                       timeout, request_info, priority);
+</pre>
+  </div>
+  </div> <!-- JavaScript -->
+  <div id="1_mcast_async_Perl">
+  <a href="#1_mcast_async_Perl">Perl</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+CloudI::API-&gt;mcast_async($name, $request,
+                         $timeout, $request_info, $priority);
+</pre>
+  </div>
+  </div> <!-- Perl -->
+  <div id="1_mcast_async_PHP">
+  <a href="#1_mcast_async_PHP">PHP</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+\CloudI\API::mcast_async($name, $request,
+                         $timeout = null, $request_info = null,
+                         $priority = null);
+</pre>
+  </div>
+  </div> <!-- PHP -->
   <div id="1_mcast_async_Python">
   <a href="#1_mcast_async_Python">Python</a>
   <div class="tab_contents">
@@ -1403,6 +1774,15 @@ char const * CloudI::API::get_trans_id(unsigned int const i = 0) const;
 </pre>
   </div>
   </div> <!-- C++ -->
+  <div id="1_mcast_async_return_Elixir">
+  <a href="#1_mcast_async_return_Elixir">Elixir</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+{:ok, trans_id_list}
+{:error, reason}
+</pre>
+  </div>
+  </div> <!-- Elixir -->
   <div id="1_mcast_async_return_Erlang">
   <a href="#1_mcast_async_return_Erlang">Erlang</a>
   <div class="tab_contents">
@@ -1423,11 +1803,45 @@ List&lt;org.cloudi.API.TransId&gt;
 </pre>
   </div>
   </div> <!-- Java -->
+  <div id="1_mcast_async_return_JavaScript">
+  <a href="#1_mcast_async_return_JavaScript">JavaScript</a>
+  <div class="tab_contents">
+  <p>
+    The callback provides the function result,
+    an array of trans_id strings (each trans_id is a string of 16 bytes).
+  </p>
+<pre onclick="element_select(this);">
+callback(trans_ids);
+</pre>
+  </div>
+  </div> <!-- JavaScript -->
+  <div id="1_mcast_async_return_Perl">
+  <a href="#1_mcast_async_return_Perl">Perl</a>
+  <div class="tab_contents">
+  <p>
+    An array of trans_id strings (each trans_id is a string of 16 bytes).
+  </p>
+<pre onclick="element_select(this);">
+@trans_ids
+</pre>
+  </div>
+  </div> <!-- Perl -->
+  <div id="1_mcast_async_return_PHP">
+  <a href="#1_mcast_async_return_PHP">PHP</a>
+  <div class="tab_contents">
+  <p>
+    An array of trans_id strings (each trans_id is a string of 16 bytes).
+  </p>
+<pre onclick="element_select(this);">
+$trans_ids
+</pre>
+  </div>
+  </div> <!-- PHP -->
   <div id="1_mcast_async_return_Python">
   <a href="#1_mcast_async_return_Python">Python</a>
   <div class="tab_contents">
   <p>
-    The trans_id is a string of 16 bytes.
+    An array of trans_id strings (each trans_id is a string of 16 bytes).
   </p>
 <pre onclick="element_select(this);">
 [trans_id]
@@ -1438,7 +1852,7 @@ List&lt;org.cloudi.API.TransId&gt;
   <a href="#1_mcast_async_return_Ruby">Ruby</a>
   <div class="tab_contents">
   <p>
-    The trans_id is a string of 16 bytes.
+    An array of trans_id strings (each trans_id is a string of 16 bytes).
   </p>
 <pre onclick="element_select(this);">
 [trans_id]
@@ -1461,6 +1875,16 @@ List&lt;org.cloudi.API.TransId&gt;
   <a name="1_mcast_async_active"></a>
   <h3>1.12 - mcast_async_active (internal services only)</h3>
   <div class="tabs" style="min-height: 14em;">
+  <div id="1_mcast_async_active_Elixir">
+  <a href="#1_mcast_async_active_Elixir">Elixir</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+:cloudi_service.mcast_async_active(dispatcher, name,
+                                   request_info, request,
+                                   timeout, priority)
+</pre>
+  </div>
+  </div> <!-- Elixir -->
   <div id="1_mcast_async_active_Erlang">
   <a href="#1_mcast_async_active_Erlang">Erlang</a>
   <div class="tab_contents">
@@ -1501,6 +1925,16 @@ cloudi_service:mcast_async_active(Dispatcher :: pid(),
     native event handling.
   </p>
   <div class="tabs" style="min-height: 8em;">
+  <div id="1_mcast_async_active_return_Elixir">
+  <a href="#1_mcast_async_active_return_Elixir">Elixir</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+{:return_async_active, name, pattern,
+ response_info, response, timeout, trans_id}
+{:timeout_async_active, trans_id}
+</pre>
+  </div>
+  </div> <!-- Elixir -->
   <div id="1_mcast_async_active_return_Erlang">
   <a href="#1_mcast_async_active_return_Erlang">Erlang</a>
   <div class="tab_contents">
@@ -1557,6 +1991,14 @@ int CloudI::API::recv_async(uint32_t timeout,
 </pre>
   </div>
   </div> <!-- C++ -->
+  <div id="1_recv_async_Elixir">
+  <a href="#1_recv_async_Elixir">Elixir</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+:cloudi_service.recv_async(dispatcher, timeout, trans_id, consume)
+</pre>
+  </div>
+  </div> <!-- Elixir -->
   <div id="1_recv_async_Erlang">
   <a href="#1_recv_async_Erlang">Erlang</a>
   <div class="tab_contents">
@@ -1581,6 +2023,32 @@ Response org.cloudi.API.recv_async(Integer timeout, byte[] transId,
 </pre>
   </div>
   </div> <!-- Java -->
+  <div id="1_recv_async_JavaScript">
+  <a href="#1_recv_async_JavaScript">JavaScript</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+CloudI.API.recv_async(callback,
+                      timeout, trans_id, consume);
+</pre>
+  </div>
+  </div> <!-- JavaScript -->
+  <div id="1_recv_async_Perl">
+  <a href="#1_recv_async_Perl">Perl</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+CloudI::API-&gt;recv_async($timeout, $trans_id, $consume);
+</pre>
+  </div>
+  </div> <!-- Perl -->
+  <div id="1_recv_async_PHP">
+  <a href="#1_recv_async_PHP">PHP</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+\CloudI\API::recv_async($timeout = null, $trans_id = null,
+                        $consume = true);
+</pre>
+  </div>
+  </div> <!-- PHP -->
   <div id="1_recv_async_Python">
   <a href="#1_recv_async_Python">Python</a>
   <div class="tab_contents">
@@ -1647,6 +2115,19 @@ char const * CloudI::API::get_trans_id(unsigned int const i = 0) const;
 </pre>
   </div>
   </div> <!-- C++ -->
+  <div id="1_recv_async_return_Elixir">
+  <a href="#1_recv_async_return_Elixir">Elixir</a>
+  <div class="tab_contents">
+  <p>
+    response_info and response are only returned if both
+    do not not equal "".
+  </p>
+<pre onclick="element_select(this);">
+{:ok, response_info, response, trans_id}
+{:error, reason}
+</pre>
+  </div>
+  </div> <!-- Elixir -->
   <div id="1_recv_async_return_Erlang">
   <a href="#1_recv_async_return_Erlang">Erlang</a>
   <div class="tab_contents">
@@ -1672,6 +2153,39 @@ org.cloudi.API.Response
 </pre>
   </div>
   </div> <!-- Java -->
+  <div id="1_recv_async_return_JavaScript">
+  <a href="#1_recv_async_return_JavaScript">JavaScript</a>
+  <div class="tab_contents">
+  <p>
+    The callback provides the function result.
+  </p>
+<pre onclick="element_select(this);">
+callback(response_info, response, trans_id);
+</pre>
+  </div>
+  </div> <!-- JavaScript -->
+  <div id="1_recv_async_return_Perl">
+  <a href="#1_recv_async_return_Perl">Perl</a>
+  <div class="tab_contents">
+  <p>
+    An array provides the function result.
+  </p>
+<pre onclick="element_select(this);">
+($response_info, $response, $trans_id)
+</pre>
+  </div>
+  </div> <!-- Perl -->
+  <div id="1_recv_async_return_PHP">
+  <a href="#1_recv_async_return_PHP">PHP</a>
+  <div class="tab_contents">
+  <p>
+    An array provides the function result.
+  </p>
+<pre onclick="element_select(this);">
+array($response_info, $response, $trans_id)
+</pre>
+  </div>
+  </div> <!-- PHP -->
   <div id="1_recv_async_return_Python">
   <a href="#1_recv_async_return_Python">Python</a>
   <div class="tab_contents">
@@ -1706,6 +2220,15 @@ org.cloudi.API.Response
   <a name="1_recv_asyncs"></a>
   <h3>1.14 - recv_asyncs (internal services only)</h3>
   <div class="tabs" style="min-height: 13em;">
+  <div id="1_recv_asyncs_Elixir">
+  <a href="#1_recv_asyncs_Elixir">Elixir</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+:cloudi_service.recv_asyncs(dispatcher,
+                            timeout, trans_id_list, consume)
+</pre>
+  </div>
+  </div> <!-- Elixir -->
   <div id="1_recv_asyncs_Erlang">
   <a href="#1_recv_asyncs_Erlang">Erlang</a>
   <div class="tab_contents">
@@ -1779,6 +2302,16 @@ int CloudI::API::return_(int const command,
 </pre>
   </div>
   </div> <!-- C++ -->
+  <div id="1_return_Elixir">
+  <a href="#1_return_Elixir">Elixir</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+:cloudi_service.return(dispatcher, type, name, pattern,
+                       response_info, response,
+                       timeout, trans_id, pid)
+</pre>
+  </div>
+  </div> <!-- Elixir -->
   <div id="1_return_Erlang">
   <a href="#1_return_Erlang">Erlang</a>
   <div class="tab_contents">
@@ -1808,6 +2341,35 @@ void org.cloudi.API.return_(Integer command,
 </pre>
   </div>
   </div> <!-- Java -->
+  <div id="1_return_JavaScript">
+  <a href="#1_return_JavaScript">JavaScript</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+CloudI.API.return_(command, name, pattern,
+                   response_info, response, timeout, trans_id, pid);
+</pre>
+  </div>
+  </div> <!-- JavaScript -->
+  <div id="1_return_Perl">
+  <a href="#1_return_Perl">Perl</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+CloudI::API-&gt;return_($command, $name, $pattern,
+                     $response_info, $response,
+                     $timeout, $trans_id, $pid);
+</pre>
+  </div>
+  </div> <!-- Perl -->
+  <div id="1_return_PHP">
+  <a href="#1_return_PHP">PHP</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+\CloudI\API::return_($command, $name, $pattern,
+                     $response_info, $response,
+                     $timeout, $trans_id, $pid);
+</pre>
+  </div>
+  </div> <!-- PHP -->
   <div id="1_return_Python">
   <a href="#1_return_Python">Python</a>
   <div class="tab_contents">
@@ -1895,6 +2457,16 @@ int CloudI::API::forward_(int const command,
 </pre>
   </div>
   </div> <!-- C++ -->
+  <div id="1_forward_Elixir">
+  <a href="#1_forward_Elixir">Elixir</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+:cloudi_service.forward(dispatcher, type, name,
+                        request_info, request,
+                        timeout, priority, trans_id, pid)
+</pre>
+  </div>
+  </div> <!-- Elixir -->
   <div id="1_forward_Erlang">
   <a href="#1_forward_Erlang">Erlang</a>
   <div class="tab_contents">
@@ -1923,6 +2495,33 @@ Response org.cloudi.API.forward_(Integer command, String name,
 </pre>
   </div>
   </div> <!-- Java -->
+  <div id="1_forward_JavaScript">
+  <a href="#1_forward_JavaScript">JavaScript</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+CloudI.API.forward_(command, name, request_info, request,
+                    timeout, priority, trans_id, pid);
+</pre>
+  </div>
+  </div> <!-- JavaScript -->
+  <div id="1_forward_Perl">
+  <a href="#1_forward_Perl">Perl</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+CloudI::API-&gt;forward_($command, $name, $request_info, $request,
+                      $timeout, $priority, $trans_id, $pid);
+</pre>
+  </div>
+  </div> <!-- Perl -->
+  <div id="1_forward_PHP">
+  <a href="#1_forward_PHP">PHP</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+\CloudI\API::forward_($command, $name, $request_info, $request,
+                      $timeout, $priority, $trans_id, $pid);
+</pre>
+  </div>
+  </div> <!-- PHP -->
   <div id="1_forward_Python">
   <a href="#1_forward_Python">Python</a>
   <div class="tab_contents">
@@ -1998,6 +2597,31 @@ Object org.cloudi.API.poll(int timeout);
 </pre>
   </div>
   </div> <!-- Java -->
+  <div id="1_poll_JavaScript">
+  <a href="#1_poll_JavaScript">JavaScript</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+var callback = function (timeout_) {};
+CloudI.API.poll(callback, timeout);
+</pre>
+  </div>
+  </div> <!-- JavaScript -->
+  <div id="1_poll_Perl">
+  <a href="#1_poll_Perl">Perl</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+CloudI::API-&gt;poll($timeout);
+</pre>
+  </div>
+  </div> <!-- Perl -->
+  <div id="1_poll_PHP">
+  <a href="#1_poll_PHP">PHP</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+\CloudI\API::poll($timeout = -1);
+</pre>
+  </div>
+  </div> <!-- PHP -->
   <div id="1_poll_Python">
   <a href="#1_poll_Python">Python</a>
   <div class="tab_contents">
