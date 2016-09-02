@@ -1,5 +1,24 @@
 // process with "asciidoctor tutorial_java.adoc"
 = CloudI Java Tutorial
+:description: Cloud Framework for fault-tolerant distributed processing with dynamic load balancing
+:keywords: tutorial, java, cloud, private cloud, framework, erlang, fault tolerant, distributed systems, embarrassingly parallel, divide and conquer, cloudi
+:stylesheet: asciidoctor_default.css
+:stylesdir: .
+:linkcss:
+:disable-javascript:
+:idprefix:
+:linkattrs:
+:revnumber: 1.5.2
+:revdate: 2016-09-01
+:lang: en
+:encoding: UTF-8
 :toc:
+:toc-title:
+:toc-placement: header
+:toclevels: 1
 
+[source,java]
+HEADER
+
+link:tutorial.html[Go Back]
 
