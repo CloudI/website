@@ -67,7 +67,7 @@ A single Java CloudI service is used to provide a REST API that handles book rec
 The table above shows how the HTTP method becomes a suffix on the URL path to create the CloudI service name pattern suffix.
 When the CloudI service is configured, a service name pattern prefix is provided to describe the scope of the service.
 For the book recommendation Java service, the prefix "/tutorial/java/service/" is used so the full service name pattern for the table's first entry becomes "/tutorial/java/service/item/refresh/post".
-A CloudI service name pattern is used with a subscribe CloudI API function call to declare a service process will accept service requests with a matching service name.
+A CloudI service name pattern suffix is used with a subscribe CloudI API function call to declare a service process will accept service requests with a matching service name.
 
 When multiple processes and multiple threads are specified in the configuration of a CloudI service (with a count greater than 1), the same service will naturally call the subscribe CloudI API function more than once to declare multiple subscriptions.
 A CloudI service that sends a service request with a matching service name will have the service request delivered to a service thread that is randomly selected from the available subscriptions.
@@ -79,7 +79,7 @@ To send a service request to all destinations that match a service name requires
 
 ==== What Is The Structure Of The Book Recommendation Service?
 
-All services are structured for a 3 part sequence: initialization, requests, and termination.
+All services are structured for a 3 part sequence: initialization, handling-requests, and termination.
 During CloudI service initialization, data structures are initialized to confirm that the service is ready for a runtime that may last indefinitely (making the  initialization stage the most critical stage for a service's reliability).
 Inside the service initialization the subscribe CloudI API function is typically called so that incoming service requests are handled after initialization is done.
 The book recommendation service initialization is shown below (from link:https://github.com/CloudI/cloudi_tutorial_java/blob/master/src/main/java/org/cloudi/examples/tutorial/Service.java#L90-L140[Service.java:90-140^]):
