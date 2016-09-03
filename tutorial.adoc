@@ -17,6 +17,7 @@
 :toc-title:
 :toc-placement: header
 :toclevels: 1
+:nofooter:
 
 == Why Use CloudI?
 
