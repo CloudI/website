@@ -1,0 +1,251 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>3. Starting Out &mdash; CloudI Tutorial</title>
+    
+    <link rel="stylesheet" href="_static/pyramid.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.5.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="CloudI Tutorial" href="index.html" />
+    <link rel="next" title="4. Database Adapter Service" href="Database_Adapter.html" />
+    <link rel="prev" title="2. Book Recommendation Application" href="Book_Recommendation_Application.html" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+  </head>
+  <body>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Database_Adapter.html" title="4. Database Adapter Service"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Book_Recommendation_Application.html" title="2. Book Recommendation Application"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">CloudI Tutorial</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="starting-out">
+<h1>3. Starting Out<a class="headerlink" href="#starting-out" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="working-with-cloudi">
+<h2>3.1. Working with CloudI<a class="headerlink" href="#working-with-cloudi" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="setting-up-the-cloudi-configuration">
+<span id="index-0"></span><h3>3.1.1. Setting up the CloudI Configuration<a class="headerlink" href="#setting-up-the-cloudi-configuration" title="Permalink to this headline">¶</a></h3>
+<p>When CloudI is installed, several default configuration files are created.
+These files are located in the
+<strong>/usr/local/etc/cloudi/</strong>
+directory.
+For initial development, use the following steps to modify the CloudI configuration file.</p>
+<ol class="arabic simple">
+<li>Make a copy of the default CloudI configuration file.</li>
+</ol>
+<div class="highlight-python"><pre>sudo cp /usr/local/etc/cloudi/cloudi.conf /usr/local/etc/cloudi/cloudi.conf.default</pre>
+</div>
+<ol class="arabic simple" start="2">
+<li>Modify the <strong>cloudi.conf</strong> configuration file to have the contents below:</li>
+</ol>
+<div class="highlight-python"><pre>{acl, [
+ ]}.
+{services, [
+  [{prefix, "/cloudi/api/"},
+   {module, cloudi_service_api_requests}],
+  [{prefix, "/book/"},
+   {module, cloudi_service_http_cowboy},
+   {args, [{port, 6464}, {output, external}, {use_websockets, true}]}]
+ ]}.
+{logging, [
+  {level, debug} % levels: off, fatal, error, warn, info, debug, trace
+ ]}.</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It is important to realize that all services listed in the <strong>cloudi.conf</strong> file must start successfully when CloudI is first started.  If any service listed in the configuration file fails to initialize successfully, CloudI will automatically shutdown.  Handling service initialization with fail-fast mechanics ensures the system has an error-free starting state.  Service configuration is the best time to find errors in a service since normally the execution lifetime of a service is undefined.</p>
+</div>
+</div>
+<div class="section" id="viewing-logs">
+<span id="index-1"></span><h3>3.1.2. Viewing Logs<a class="headerlink" href="#viewing-logs" title="Permalink to this headline">¶</a></h3>
+<p>The default location of CloudI log files is the
+<strong>/usr/local/var/log/cloudi/</strong>
+directory.  By default the <strong>cloudi.log</strong> file contains CloudI log output.
+The log file destination can be changed by modifying the <strong>cloudi.conf</strong> <strong>logging</strong> configuration value for <strong>file</strong>.</p>
+<div class="highlight-python"><pre>{logging, [
+  {file, "FILEPATH"},
+  ...
+ ]}.</pre>
+</div>
+</div>
+<div class="section" id="service-development-workflow">
+<h3>3.1.3. Service Development Workflow<a class="headerlink" href="#service-development-workflow" title="Permalink to this headline">¶</a></h3>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">To ensure all services initialize successfully we will modify the <strong>cloudi.conf</strong> CloudI configuration file to add new services.  All services in the <strong>cloudi.conf</strong> file are in a single list which defines the service startup order.  Service dependencies are listed before any of the services that depend on them.</p>
+</div>
+<p>Typical development and testing when working with CloudI consists of the following steps:</p>
+<ol class="arabic simple">
+<li>Specify any custom Erlang source code path locations</li>
+</ol>
+<blockquote>
+<div>Add <tt class="docutils literal"><span class="pre">-pz</span> <span class="pre">PATH</span></tt> lines to the <strong>/usr/local/etc/cloudi/vm.args</strong> file.</div></blockquote>
+<ol class="arabic simple" start="2">
+<li>Compile custom CloudI service source code</li>
+</ol>
+<div class="highlight-python"><pre>erlc -pz /usr/local/lib/cloudi-1.5.0/lib/cloudi_core-1.5.0 \
+     -pz /usr/local/lib/cloudi-1.5.0/lib/cloudi_core-1.5.0/ebin book.erl</pre>
+</div>
+<ol class="arabic simple" start="3">
+<li>Add custom CloudI services to the <strong>cloudi.conf</strong> CloudI configuration file</li>
+</ol>
+<div class="highlight-python"><pre>{services, [
+  ...
+  [{prefix, "/recommend/book/"},
+   {module, book}],
+  ...
+ ]}.</pre>
+</div>
+<ol class="arabic simple" start="4">
+<li>Start CloudI</li>
+</ol>
+<div class="highlight-python"><pre>sudo cloudi start</pre>
+</div>
+<ol class="arabic simple" start="5">
+<li>List the running services</li>
+</ol>
+<div class="highlight-python"><pre>curl http://localhost:6464/cloudi/api/erlang/services</pre>
+</div>
+<ol class="arabic simple" start="5">
+<li>Run service tests</li>
+</ol>
+<div class="highlight-python"><pre>...
+curl http://localhost:6464/recommendation/book?item=45388
+...</pre>
+</div>
+<ol class="arabic simple" start="6">
+<li>Stop CloudI</li>
+</ol>
+<div class="highlight-python"><pre>sudo cloudi stop</pre>
+</div>
+</div>
+</div>
+<div class="section" id="working-with-the-database">
+<h2>3.2. Working with the Database<a class="headerlink" href="#working-with-the-database" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="building-the-database">
+<span id="index-2"></span><h3>3.2.1. Building the Database<a class="headerlink" href="#building-the-database" title="Permalink to this headline">¶</a></h3>
+<p>The SQL script to create the <em>book</em> database schema is provided in the <strong>scripts/book.sql</strong> file. You can create this schema using the MySQL command line tool as shown in the example below.</p>
+<div class="highlight-python"><pre>mysql -u root -p &lt; book.sql</pre>
+</div>
+</div>
+<div class="section" id="creating-users">
+<h3>3.2.2. Creating Users<a class="headerlink" href="#creating-users" title="Permalink to this headline">¶</a></h3>
+<p>You also should create a special user that can connect to the <em>book</em> schema and can add, update, or delete records.  An example using the MySQL command line tool is shown below.</p>
+<div class="highlight-python"><pre>mysql -u root -p &lt;&lt; EOF
+GRANT ALL ON book.* to cloudi@'localhost' IDENTIFIED BY 'secret';
+EOF</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The GRANT statement also specifies the server which the user is allowed to connect from.  If CloudI is going to be running in a clustered configuration, you will need to add access for each node in the cluster.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">3. Starting Out</a><ul>
+<li><a class="reference internal" href="#working-with-cloudi">3.1. Working with CloudI</a><ul>
+<li><a class="reference internal" href="#setting-up-the-cloudi-configuration">3.1.1. Setting up the CloudI Configuration</a></li>
+<li><a class="reference internal" href="#viewing-logs">3.1.2. Viewing Logs</a></li>
+<li><a class="reference internal" href="#service-development-workflow">3.1.3. Service Development Workflow</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#working-with-the-database">3.2. Working with the Database</a><ul>
+<li><a class="reference internal" href="#building-the-database">3.2.1. Building the Database</a></li>
+<li><a class="reference internal" href="#creating-users">3.2.2. Creating Users</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Book_Recommendation_Application.html"
+                        title="previous chapter">2. Book Recommendation Application</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="Database_Adapter.html"
+                        title="next chapter">4. Database Adapter Service</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="Database_Adapter.html" title="4. Database Adapter Service"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="Book_Recommendation_Application.html" title="2. Book Recommendation Application"
+             >previous</a> |</li>
+        <li><a href="index.html">CloudI Tutorial</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      Last updated on May 02, 2015.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

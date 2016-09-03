@@ -1,0 +1,180 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>4. Database Adapter Service &mdash; CloudI Tutorial</title>
+    
+    <link rel="stylesheet" href="_static/pyramid.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.5.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="CloudI Tutorial" href="index.html" />
+    <link rel="next" title="5. Book Service" href="Book_Service.html" />
+    <link rel="prev" title="3. Starting Out" href="Starting_Out.html" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+  </head>
+  <body>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Book_Service.html" title="5. Book Service"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Starting_Out.html" title="3. Starting Out"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">CloudI Tutorial</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="database-adapter-service">
+<h1>4. Database Adapter Service<a class="headerlink" href="#database-adapter-service" title="Permalink to this headline">¶</a></h1>
+<p>As stated in the CloudI FAQ
+<a class="reference external" href="http://cloudi.org/faq.html#7_MySQL">http://cloudi.org/faq.html#7_MySQL</a>
+, a CloudI database service accepts requests from other CloudI services.  The service expects SQL input and provides the query result either as Erlang data or binary encoded data based on whether the input was Erlang data from an internal service or a binary SQL string.</p>
+<div class="section" id="creating-the-mysql-database-service">
+<span id="index-0"></span><h2>4.1. Creating the MySQL Database Service<a class="headerlink" href="#creating-the-mysql-database-service" title="Permalink to this headline">¶</a></h2>
+<p>CloudI provides out-of-the-box adapters for many types of databases.  The example shown below is for a MySQL database, but the same general steps would apply for other database types.</p>
+<ol class="arabic simple">
+<li>Stop CloudI</li>
+<li>Add the MySQL CloudI Service configuration to the <strong>cloudi.conf</strong> CloudI configuration file</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Note that the database hostname, port, username, and password need to be changed for your environment.</p>
+</div>
+<div class="highlight-python"><pre>{services, [
+  ...
+  [{prefix, "/db/mysql/"},
+   {module, cloudi_service_db_mysql},
+   {args,
+    [{database, "book"},
+     {timeout, 20000}, % ms
+     {encoding, utf8},
+     {hostname, "192.168.0.5"},
+     {username, "cloudi"},
+     {password, "secret"},
+     {port, 3306}]}],
+  ...
+ ]}.</pre>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Notice that the username and password must be stored in plain-text in the configuration file leading to a potential security vulnerability.  In addition, the username and password is reported when the list of services is requested.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The name of the database adapter service (the service name) is the concatenation of the service configuration prefix and the database name provided as a service configuration argument (in the <tt class="docutils literal"><span class="pre">database</span></tt> key/value tuple).  In this example, the service name used as the destination for any MySQL CloudI service requests is <tt class="docutils literal"><span class="pre">&quot;/db/mysql/book&quot;</span></tt>.</p>
+</div>
+<ol class="arabic simple" start="3">
+<li>Start CloudI</li>
+<li>Inspect the log files (<strong>/usr/local/var/log/cloudi/erlang.log.1</strong> and <strong>/usr/local/var/log/cloudi/cloudi.log</strong>) for any errors. A common error is to have an extra or missing comma at the end of the block that was added.</li>
+<li>List the CloudI services and verify that the database is included in the list.</li>
+</ol>
+<div class="highlight-python"><pre>curl http://localhost:6464/cloudi/api/erlang/services</pre>
+</div>
+</div>
+<div class="section" id="testing-the-service">
+<span id="index-1"></span><h2>4.2. Testing the Service<a class="headerlink" href="#testing-the-service" title="Permalink to this headline">¶</a></h2>
+<p>You can test the database service by using the <tt class="docutils literal"><span class="pre">cloudi</span></tt> module and the associated Erlang VM shell.  A simple example is shown below.  Note that Erlang syntax is case-sensitive and each command must be terminated with a period character:</p>
+<div class="highlight-python"><pre>sudo cloudi attach
+
+1&gt; Context = cloudi:new().
+2&gt; cloudi:send_sync(Context, "/db/mysql/book", "SELECT * FROM items WHERE id = 1").</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">To exit the Erlang shell, press the Control-D key combination.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">4. Database Adapter Service</a><ul>
+<li><a class="reference internal" href="#creating-the-mysql-database-service">4.1. Creating the MySQL Database Service</a></li>
+<li><a class="reference internal" href="#testing-the-service">4.2. Testing the Service</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Starting_Out.html"
+                        title="previous chapter">3. Starting Out</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="Book_Service.html"
+                        title="next chapter">5. Book Service</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="Book_Service.html" title="5. Book Service"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="Starting_Out.html" title="3. Starting Out"
+             >previous</a> |</li>
+        <li><a href="index.html">CloudI Tutorial</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      Last updated on May 02, 2015.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

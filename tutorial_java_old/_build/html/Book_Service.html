@@ -1,0 +1,333 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>5. Book Service &mdash; CloudI Tutorial</title>
+    
+    <link rel="stylesheet" href="_static/pyramid.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.5.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="CloudI Tutorial" href="index.html" />
+    <link rel="next" title="6. HTML Integration" href="HTML_Integration.html" />
+    <link rel="prev" title="4. Database Adapter Service" href="Database_Adapter.html" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+  </head>
+  <body>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="HTML_Integration.html" title="6. HTML Integration"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Database_Adapter.html" title="4. Database Adapter Service"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">CloudI Tutorial</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="book-service">
+<h1>5. Book Service<a class="headerlink" href="#book-service" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="configuration-file">
+<h2>5.1. Configuration File<a class="headerlink" href="#configuration-file" title="Permalink to this headline">¶</a></h2>
+<p>Every service running in CloudI needs certain configuration information to be defined.  It is possible to dynamically add or remove services while CloudI is running and doing so can facilitate transparent updates or transitions between service implementations.  However, during system development it is safest to fully utilize the <strong>cloudi.conf</strong> CloudI configuration file for all the critical services the system requires, to ensure the critical services initialize upon CloudI startup.</p>
+<p>Add the book service to the <strong>/usr/local/etc/cloudi/cloudi.conf</strong> file and restart CloudI:</p>
+<div class="highlight-python"><pre>{services, [
+  ...
+  [{prefix, "/recommend/book/"},
+   {module, book}],
+  ...
+ ]}.</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Many service configuration arguments are available with typical defaults.  More information about the available service configuration arguments is available <a class="reference external" href="http://cloudi.org/api.html#2_services_add">here</a></p>
+</div>
+</div>
+<div class="section" id="module-outline">
+<h2>5.2. Module Outline<a class="headerlink" href="#module-outline" title="Permalink to this headline">¶</a></h2>
+<p>The Book Service module is split into several sections.  In this tutorial, the Book Service is developed using the Erlang language, but other languages supported by CloudI could have been used.</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Service initialization logic - needs to be customized for each application</li>
+<li>Code for handling request messages - needs to be customized for each application</li>
+<li>Code for handling informational messages - can use standard pattern</li>
+<li>Logic for dealing with service termination - can use standard pattern</li>
+<li>Logic for handling application-specific processing</li>
+</ol>
+</div></blockquote>
+<p>Each of these sections is described in more detail below.</p>
+<div class="section" id="service-initialization-logic">
+<span id="index-0"></span><h3>5.2.1. Service Initialization Logic<a class="headerlink" href="#service-initialization-logic" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><pre>cloudi_service_init(_Args, _Prefix, _Timeout, Dispatcher) -&gt;
+
+   % subscribe to different request patterns
+   cloudi_service:subscribe(Dispatcher, "newbooks/get"),
+   cloudi_service:subscribe(Dispatcher, "popularbooks/get"),
+   cloudi_service:subscribe(Dispatcher, "recommendedbooks/get"),
+   cloudi_service:subscribe(Dispatcher, "allbooks/get"),
+   cloudi_service:subscribe(Dispatcher, "download/get"),
+   cloudi_service:subscribe(Dispatcher, "newuser/get"),
+   cloudi_service:subscribe(Dispatcher, "unrated/get"),
+   cloudi_service:subscribe(Dispatcher, "rate/get"),
+   cloudi_service:subscribe(Dispatcher, "/post"),
+
+   % return ok
+   {ok, #state{}}.</pre>
+</div>
+<p>In the code above, the Book Service defines which messages it subscribes to.  Note that the list of request patterns matches the Service API table shown earlier in the <a class="reference internal" href="Book_Recommendation_Application.html#service-api-reference"><em>Service API</em></a> section with the HTTP method type (<em>get</em> or <em>post</em>) appended.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">TODO: first pass continue from here:</p>
+</div>
+</div>
+<div class="section" id="handling-requests">
+<h3>5.2.2. Handling Requests<a class="headerlink" href="#handling-requests" title="Permalink to this headline">¶</a></h3>
+<p id="index-1">A simplified example for handling book service requests is shown below. Note that the underscore pattern is used to handle unexpected requests.</p>
+<div class="highlight-python"><pre>cloudi_service_handle_request(Type, Name, Pattern, _RequestInfo, Request,
+                             _Timeout, _Priority, _TransId, _Pid,
+                             #state{} = State, Dispatcher) -&gt;
+
+       ?LOG_INFO("Handle Request: Type=~p, Name=~p, Pattern=~p, Request=~p", [Type, Name, Pattern, Request]),
+
+       % based on the pattern and request, perform the appropriate action
+       case Pattern of
+               "/recommend/book/newbooks/get" -&gt;
+                       ReplyRecord = find_new(Dispatcher);
+
+               "/recommend/book/popularbooks/get" -&gt;
+                       ReplyRecord = find_popular(Dispatcher);
+
+               _ -&gt;
+                       ReplyRecord = cloudi_x_jsx:encode(["Invalid Request"])
+       end,
+
+       % send reply
+       ?LOG_DEBUG("Sending reply=~p", [ReplyRecord]),
+       {reply, ReplyRecord, State}.</pre>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">CloudI provides several pre-defined macros for logging. The LOG_INFO and LOG_DEBUG functions are shown in the example above.</p>
+</div>
+</div>
+<div class="section" id="calling-the-mysql-database-adapter">
+<span id="index-2"></span><h3>5.2.3. Calling the MySQL Database Adapter<a class="headerlink" href="#calling-the-mysql-database-adapter" title="Permalink to this headline">¶</a></h3>
+<p>Example Erlang source code for calling the MySQL Database Adapter is shown below:</p>
+<div class="highlight-python"><pre>Query = "SELECT id, title FROM items",
+case cloudi_service:send_sync(Dispatcher, "/db/mysql/book", Query) of
+    {ok, Result} -&gt;
+        parse_items(Result);
+    {error, _} -&gt;
+        cloudi_x_jsx:encode(&lt;&lt;"No data found"&gt;&gt;)
+end.</pre>
+</div>
+<p>First, a string containing the SQL query is constructed.  Next, the service named <tt class="docutils literal"><span class="pre">&quot;/db/mysql/book&quot;</span></tt> is used to create a synchronous service request with the query.  Then the result of the query is matched to determine if the service request received a response (meaning the transaction is complete).  If the <tt class="docutils literal"><span class="pre">ok</span></tt> tuple is matched, the service request received a valid service response which indicates the MySQL database handled the query successfully (even if the SQL in the query produced an SQL error).  If the <tt class="docutils literal"><span class="pre">error</span></tt> tuple is matched, the service request did not receive a service response which would be caused by the timeout value being exceeded for the response or the MySQL CloudI service not existing.</p>
+</div>
+<div class="section" id="parsing-the-results">
+<h3>5.2.4. Parsing the Results<a class="headerlink" href="#parsing-the-results" title="Permalink to this headline">¶</a></h3>
+<p>The Book Service uses several utility functions named <strong>parse_items</strong> and <strong>parse_item</strong> to handle the data returned from the database and encode it using the JSON format.</p>
+<div class="highlight-python"><pre>parse_items({result_packet, _, Columns, List, _Trailer}) -&gt;
+      Return_value = parse_item(List),
+      Return_value.
+
+parse_item(List)  -&gt;
+      parse_item(List, []).
+
+parse_item([H|T], Return_value)  -&gt;
+      % Note that the record can contain different numbers of colulmns
+      % and that the columns need to be in the correct positions
+      case H of
+              [Id, Title, Author, Language, Date, Web_page, Subject, Downloads] -&gt;
+                      Item = #item{id=Id, title=Title, creator=Author, language=Language, date_created = Date, web_page=Web_page, subject=Subject, downloads=Downloads},
+
+                      Encoded_item = cloudi_x_jsx:encode(
+                              [
+                                {&lt;&lt;"id"&gt;&gt;, Item#item.id},
+                                {&lt;&lt;"title"&gt;&gt;, Item#item.title},
+                                {&lt;&lt;"creator"&gt;&gt;, Item#item.creator},
+                                {&lt;&lt;"language"&gt;&gt;, Item#item.language},
+                                {&lt;&lt;"web_page"&gt;&gt;, Item#item.web_page},
+                                {&lt;&lt;"subject"&gt;&gt;, Item#item.subject},
+                                {&lt;&lt;"downloads"&gt;&gt;, Item#item.downloads}
+                              ]);
+
+             [Id, Title] -&gt;
+                      Item = #item{id=Id, title=Title},
+
+                      Encoded_item = cloudi_x_jsx:encode(
+                              [
+                                {&lt;&lt;"id"&gt;&gt;, Item#item.id},
+                                {&lt;&lt;"title"&gt;&gt;, Item#item.title}
+                              ])
+
+      end,
+
+      ?LOG_TRACE("Item=~p", [Item]),
+
+      Temp_return_value = [Return_value | Encoded_item],
+      New_return_value = [Temp_return_value | ","],
+
+      parse_item(T, New_return_value);
+
+parse_item([], Return_value) -&gt;
+      % strip the trailing comma from the return value
+      Temp = string:strip(Return_value, right, $,),
+
+      % add brackets around the return string
+      string:concat(string:concat("[", Temp), "]").</pre>
+</div>
+</div>
+<div class="section" id="handling-informational-messages">
+<span id="index-3"></span><h3>5.2.5. Handling Informational Messages<a class="headerlink" href="#handling-informational-messages" title="Permalink to this headline">¶</a></h3>
+<p>The <tt class="docutils literal"><span class="pre">cloudi_service_handle_info</span></tt> function is used for handling spontaneous messages to the service.  For example, if this service is linked to another process and that process unexpectedly halts, an exit trap message may be received.  Typically, the response to this message is to do nothing and the pattern shown below can be used with no modifications.</p>
+<div class="highlight-python"><pre>cloudi_service_handle_info(Request, State, _) -&gt;
+  {noreply, State}.</pre>
+</div>
+</div>
+<div class="section" id="service-termination">
+<span id="index-4"></span><h3>5.2.6. Service Termination<a class="headerlink" href="#service-termination" title="Permalink to this headline">¶</a></h3>
+<p>The <tt class="docutils literal"><span class="pre">cloudi_service_terminate</span></tt> function is called when the CloudI server is shutting down and about to terminate.  You can add any logic needed to cleanup any resources used by this service or do additional notifications.  If nothing special is needed, you can use the pattern shown below.</p>
+<dl class="docutils">
+<dt>::</dt>
+<dd><dl class="first last docutils">
+<dt>cloudi_service_terminate(_Reason, _Timeout, #state{}) -&gt;</dt>
+<dd>ok.</dd>
+</dl>
+</dd>
+</dl>
+</div>
+<div class="section" id="complete-source">
+<h3>5.2.7. Complete Source<a class="headerlink" href="#complete-source" title="Permalink to this headline">¶</a></h3>
+<p>The complete source is located on GitHub <a class="reference external" href="https://github.com/CloudI/tutorial_book_service_example">here</a>  in the <strong>service</strong> folder.</p>
+</div>
+</div>
+<div class="section" id="adding-the-service-to-cloudi">
+<h2>5.3. Adding the Service to CloudI<a class="headerlink" href="#adding-the-service-to-cloudi" title="Permalink to this headline">¶</a></h2>
+<p>Adding the Book Service to CloudI requires three steps.  First, the code is compiled.  Next, the location of the source code is added using the CloudI API.  Finally, the service is added using the CloudI API.</p>
+<div class="highlight-python"><pre># compile code
+erlc -pz /usr/local/lib/cloudi-1.5.0/lib/cloudi_core-1.5.0 -pz /usr/local/lib/cloudi-1.5.0/lib/cloudi_core-1.5.0/ebin book.erl
+
+# add the source code path
+curl -X POST -d /opt/cloudi/book/ebin http://localhost:6467/cloudi/api/erlang/code_path_add
+
+# add the service using the attached configuration file
+curl -X post -d @book.conf http://localhost:6467/cloudi/api/erlang/services_add</pre>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">During initial development, adding the source code path and the configuration using the API services as shown above can be useful for making and testing incremental changes.  Later when development is complete, this information can be added directly to the CloudI configuration files if desired.</p>
+</div>
+</div>
+<div class="section" id="testing-the-service">
+<h2>5.4. Testing the Service<a class="headerlink" href="#testing-the-service" title="Permalink to this headline">¶</a></h2>
+<p>The service can be tested using an HTML browser as shown below.</p>
+<div class="highlight-python"><pre>curl http://localhost:6467/recommend/book/newbooks
+curl http://localhost:6467/recommend/book/popularbooks
+curl http://localhost:6467/recommend/book/recommendedbooks?user=1
+curl http://localhost:6467/recommend/book/allbooks?id=1</pre>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">5. Book Service</a><ul>
+<li><a class="reference internal" href="#configuration-file">5.1. Configuration File</a></li>
+<li><a class="reference internal" href="#module-outline">5.2. Module Outline</a><ul>
+<li><a class="reference internal" href="#service-initialization-logic">5.2.1. Service Initialization Logic</a></li>
+<li><a class="reference internal" href="#handling-requests">5.2.2. Handling Requests</a></li>
+<li><a class="reference internal" href="#calling-the-mysql-database-adapter">5.2.3. Calling the MySQL Database Adapter</a></li>
+<li><a class="reference internal" href="#parsing-the-results">5.2.4. Parsing the Results</a></li>
+<li><a class="reference internal" href="#handling-informational-messages">5.2.5. Handling Informational Messages</a></li>
+<li><a class="reference internal" href="#service-termination">5.2.6. Service Termination</a></li>
+<li><a class="reference internal" href="#complete-source">5.2.7. Complete Source</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#adding-the-service-to-cloudi">5.3. Adding the Service to CloudI</a></li>
+<li><a class="reference internal" href="#testing-the-service">5.4. Testing the Service</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Database_Adapter.html"
+                        title="previous chapter">4. Database Adapter Service</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="HTML_Integration.html"
+                        title="next chapter">6. HTML Integration</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="HTML_Integration.html" title="6. HTML Integration"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="Database_Adapter.html" title="4. Database Adapter Service"
+             >previous</a> |</li>
+        <li><a href="index.html">CloudI Tutorial</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      Last updated on May 02, 2015.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

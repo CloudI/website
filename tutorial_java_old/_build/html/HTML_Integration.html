@@ -1,0 +1,321 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>6. HTML Integration &mdash; CloudI Tutorial</title>
+    
+    <link rel="stylesheet" href="_static/pyramid.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.5.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="CloudI Tutorial" href="index.html" />
+    <link rel="next" title="7. Java Integration" href="Java_Integration.html" />
+    <link rel="prev" title="5. Book Service" href="Book_Service.html" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+  </head>
+  <body>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Java_Integration.html" title="7. Java Integration"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Book_Service.html" title="5. Book Service"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">CloudI Tutorial</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="html-integration">
+<h1>6. HTML Integration<a class="headerlink" href="#html-integration" title="Permalink to this headline">¶</a></h1>
+<p id="index-0">Once the Book Service has been developed, integration with the HTML pages is straightfoward.  Note that the HTML pages use the JQuery Mobile framework which simplifies much of the Javascript coding.  If you use a different (or no) web framework the general principles would remain the same.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The HTML pages use the WebSocket integration method which is part of the HTML5 specification.  WebSockets may not work correctly on older browsers.</p>
+</div>
+<div class="section" id="enabling-websockets">
+<span id="enabling-websockets-reference"></span><span id="index-1"></span><h2>6.1. Enabling WebSockets<a class="headerlink" href="#enabling-websockets" title="Permalink to this headline">¶</a></h2>
+<p>Support for WebSockets is disabled in the default configuration of the Cowboy web server used with CloudI.  To enable WebSockets follow these steps.</p>
+<ol class="arabic simple">
+<li>Change the current directory to the installation files for CloudI. Note that your location may be different than what is shown below.</li>
+</ol>
+<div class="highlight-python"><pre>cd /opt/cloudi/cloudi-1.5.0/src</pre>
+</div>
+<ol class="arabic simple" start="2">
+<li>Change the current directory to the Cowboy HTTP source</li>
+</ol>
+<div class="highlight-python"><pre>cd lib/cloudi_service_http_cowboy/src</pre>
+</div>
+<ol class="arabic simple" start="3">
+<li>Edit the <strong>cloudi_service_http_cowboy.erl</strong> file and change the line that looks like:</li>
+</ol>
+<div class="highlight-python"><pre>-define(DEFAULT_USE_WEBSOCKETS,                   false).</pre>
+</div>
+<p>to</p>
+<div class="highlight-python"><pre>-define(DEFAULT_USE_WEBSOCKETS,                   true).</pre>
+</div>
+<ol class="arabic simple" start="4">
+<li>Remove the Cowboy runtime library so that it will get rebuilt by the installation process.</li>
+</ol>
+<div class="highlight-python"><pre>cd /usr/local/lib/cloudi-1.5.0/lib
+sudo rm cloudi_service_http_cowboy_1.5.0</pre>
+</div>
+<ol class="arabic simple" start="5">
+<li>Then run the <strong>make</strong> and <strong>make install</strong> command from the installation source directory and reinstall the software.</li>
+</ol>
+<div class="highlight-python"><pre>cd /opt/cloudi/cloudi-1.5.0/src
+make
+sudo make install</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Reinstalling CloudI will change the cloudi.conf, app.config, and vm.args files in the runtime library.  The previous versions are automatically saved as cloudi.conf.old, app.config.old, and vm.args.old and you may need to restore these files if you have made any changes.</p>
+</div>
+</div>
+<div class="section" id="calling-the-book-service">
+<h2>6.2. Calling the Book Service<a class="headerlink" href="#calling-the-book-service" title="Permalink to this headline">¶</a></h2>
+<p>Invocation of the Book Service is done using Javascript and consists of several different functions shown below.</p>
+<p>First, some global variables are defined:</p>
+<div class="highlight-python"><pre>// Customize for your environment
+var web_socket = undefined;
+var host_url = "ws://127.0.0.1:6464";
+var service_name = "/recommend/book/newbooks";
+var request_type = "get";</pre>
+</div>
+<p>Next, the WebSocket is opened using the following code:</p>
+<div class="highlight-python"><pre>web_socket = new WebSocket(host_url + service_name);</pre>
+</div>
+<p>WebSockets raise events and a function is defined that will handle the <strong>onopen</strong> event.  In this case, when the socket is opened then the <strong>send</strong> function will be called:</p>
+<div class="highlight-python"><pre>// define function that is called when the web socket is opened
+web_socket.onopen = function () {
+        send();
+};</pre>
+</div>
+<p>The <strong>send</strong> function is defined as follows:</p>
+<div class="highlight-python"><pre>function send() {
+    // if the web socket is in an open status then send the request
+    if (web_socket.readyState == web_socket.OPEN) {
+        web_socket.send(request_type);
+    }
+}</pre>
+</div>
+<p>When a message is received by the socket, the <strong>onmessage</strong> event is raised, and is handled by the following function:</p>
+<div class="highlight-python"><pre>web_socket.onmessage = function (evt) {
+    var data = evt.data;
+    if (is("Blob", data)) {
+        var reader = new FileReader();
+        reader.readAsText(data, "text/plain");
+        reader.onload = function (reader_evt) {
+            data = reader_evt.target.result;
+            handle_message(data);
+        };
+    }
+    else {
+        handle_message(data);
+    }
+};</pre>
+</div>
+<p>The detailed processing of the message is performed by the <strong>handle_message</strong> function described below.</p>
+</div>
+<div class="section" id="parsing-the-results">
+<span id="index-2"></span><h2>6.3. Parsing the Results<a class="headerlink" href="#parsing-the-results" title="Permalink to this headline">¶</a></h2>
+<p>A simplified version of the <strong>handle_message</strong> function is shown below:</p>
+<div class="highlight-python"><pre>handle_message = function (data) {
+
+    if (data.startsWith("notification:")) {
+        // client state check to determine this is an incoming
+        // service request, not an incoming response
+        var response = "ok";
+        web_socket.send(response);
+    }
+    else {
+        if (data != "got connect! yay!") {
+
+            // parse the JSON array
+            var obj = JSON.parse(data);
+
+            // add items to the list
+            $.each(obj, function (i, item) {
+                //alert("Item ID = " + item.id);
+                //alert("Title = " + item.title);
+                var tag = "&lt;li&gt;" + item.title + "&lt;/li&gt;";
+                $("#itemList").append(tag).listview('refresh');
+            });
+
+        }
+    }
+};</pre>
+</div>
+<p>Parsing the JSON string that contains an array of <strong>items</strong> returned by the Book Service is very simple and performed by the code:</p>
+<div class="highlight-python"><pre>// parse the JSON array
+var obj = JSON.parse(data);</pre>
+</div>
+<p>Referencing individual attributes of an item is done like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">item</span><span class="o">.</span><span class="n">id</span>
+<span class="n">item</span><span class="o">.</span><span class="n">title</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-ajax-instead-of-websockets">
+<span id="index-3"></span><h2>6.4. Using AJAX instead of WebSockets<a class="headerlink" href="#using-ajax-instead-of-websockets" title="Permalink to this headline">¶</a></h2>
+<p>The use of WebSockets for integration of HTML pages with CloudI as shown in the preceeding sections is simple and efficient.  However, there is one limitation when using the default CloudI / Cowboy configuration - namely that only GET operations are supported.  A simple work around is to use the XML HTTP Request mechanism.  Because your HTML pages might be hosted at a different port or location then the CloudI service, a Cross-Origin Resource Sharing (CORS) request will be demonstrated below using the same general outline used earlier in the WebSocket example.</p>
+<p>First, some global variables are defined:</p>
+<div class="highlight-python"><pre>// Customize for your environment
+var service_host = "http://localhost:6467";
+var rank_book_service = "/recommend/book/download";</pre>
+</div>
+<p>Next, a utility function is created:</p>
+<div class="highlight-python"><pre>function createCORSRequest(method, url) {
+  console.log("Creating CORS Request " + method + " " + url);
+
+  var xhr = new XMLHttpRequest();
+  if ("withCredentials" in xhr) {
+
+    // Check if the XMLHttpRequest object has a "withCredentials" property.
+    // "withCredentials" only exists on XMLHTTPRequest2 objects.
+    xhr.open(method, url, true);
+
+  } else if (typeof XDomainRequest != "undefined") {
+
+    // Otherwise, check if XDomainRequest.
+    // XDomainRequest only exists in IE, and is IE's way of making CORS requests.
+    xhr = new XDomainRequest();
+    xhr.open(method, url);
+
+  } else {
+
+    // Otherwise, CORS is not supported by the browser.
+    xhr = null;
+    console.log("XHR not supported by this browser");
+
+  }
+  return xhr;
+}</pre>
+</div>
+<p>Next, code for creating and sending the CORS request is defined:</p>
+<div class="highlight-python"><pre>function rank_book(user_ID, item_ID, rating) {
+  // create a CORS request
+  var service_url = service_host + rank_book_service;
+  var xhr = createCORSRequest('POST', service_url);
+  if (!xhr) {
+    throw new Error('CORS not supported');
+  }
+
+  // define a function to handle the response
+  xhr.onload = function() {
+    var responseText = xhr.responseText;
+    console.log(responseText);
+    // process the response.
+    return;
+  };
+
+  // define a function to handle errors
+  xhr.onerror = function() {
+    console.log('There was an error!');
+    return;
+  };
+
+  // send the request
+  xhr.send('?user_ID=\"' + user_ID + '\"' + '&amp;item_id=\"' + item_ID + '\"' + '&amp;rating=\"' + rating + '\"');
+}</pre>
+</div>
+</div>
+<div class="section" id="complete-source">
+<h2>6.5. Complete Source<a class="headerlink" href="#complete-source" title="Permalink to this headline">¶</a></h2>
+<p>The complete source is located on GitHub <a class="reference external" href="https://github.com/brucekissinger/book_recommendation">here</a>  in the <strong>html</strong> folder.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">6. HTML Integration</a><ul>
+<li><a class="reference internal" href="#enabling-websockets">6.1. Enabling WebSockets</a></li>
+<li><a class="reference internal" href="#calling-the-book-service">6.2. Calling the Book Service</a></li>
+<li><a class="reference internal" href="#parsing-the-results">6.3. Parsing the Results</a></li>
+<li><a class="reference internal" href="#using-ajax-instead-of-websockets">6.4. Using AJAX instead of WebSockets</a></li>
+<li><a class="reference internal" href="#complete-source">6.5. Complete Source</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Book_Service.html"
+                        title="previous chapter">5. Book Service</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="Java_Integration.html"
+                        title="next chapter">7. Java Integration</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="Java_Integration.html" title="7. Java Integration"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="Book_Service.html" title="5. Book Service"
+             >previous</a> |</li>
+        <li><a href="index.html">CloudI Tutorial</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      Last updated on May 02, 2015.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

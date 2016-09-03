@@ -1,0 +1,302 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>2. Book Recommendation Application &mdash; CloudI Tutorial</title>
+    
+    <link rel="stylesheet" href="_static/pyramid.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.5.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="CloudI Tutorial" href="index.html" />
+    <link rel="next" title="3. Starting Out" href="Starting_Out.html" />
+    <link rel="prev" title="1. Introduction" href="Introduction.html" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+  </head>
+  <body>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Starting_Out.html" title="3. Starting Out"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Introduction.html" title="1. Introduction"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">CloudI Tutorial</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="book-recommendation-application">
+<h1>2. Book Recommendation Application<a class="headerlink" href="#book-recommendation-application" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="background">
+<span id="index-0"></span><h2>2.1. Background<a class="headerlink" href="#background" title="Permalink to this headline">¶</a></h2>
+<p>The application used for this tutorial is a web-based book recommendation system that provides a list of books available on
+<a class="reference external" href="http://www.gutenberg.org/">Project Gutenberg</a>
+and provides recommendations of other books.
+You can run the application at
+<a class="reference external" href="http://cloudi.org/example/tutorial_book_service">http://cloudi.org/example/tutorial_book_service</a>
+and view the full source code <a class="reference external" href="https://github.com/CloudI/tutorial_book_service_example">here</a></p>
+<p>A use case diagram showing the major functions is listed below.</p>
+<img alt="_images/UseCaseOverview.jpg" src="_images/UseCaseOverview.jpg" />
+</div>
+<div class="section" id="current-state-implementation">
+<span id="index-1"></span><h2>2.2. Current-State Implementation<a class="headerlink" href="#current-state-implementation" title="Permalink to this headline">¶</a></h2>
+<p>A diagram of the current state implementation is shown below.</p>
+<img alt="_images/CurrentStateImplementation.jpg" src="_images/CurrentStateImplementation.jpg" />
+<p>The primary components are:</p>
+<ul class="simple">
+<li>PHP is used to dynamically generate Web pages that are served by an Apache Web Server.</li>
+<li>A MySQL database is used to store the book catalog, user ratings, and recommendations.</li>
+<li>An open-source recommendation engine named
+<a class="reference external" href="http://lenskit.org/">LensKit</a>
+is used to process each user&#8217;s book ratings and generate recommendations.</li>
+<li>Small Java programs are used to interact with the recommendation engine, and to download and process the book catalog.</li>
+</ul>
+<p>The book catalog contains approximately 50,000 books.</p>
+</div>
+<div class="section" id="future-state-implementation">
+<span id="index-2"></span><h2>2.3. Future-State Implementation<a class="headerlink" href="#future-state-implementation" title="Permalink to this headline">¶</a></h2>
+<p>The existing system will be re-engineered to use a
+<a class="reference external" href="http://www.wikipedia.org/wiki/Broker_Pattern">broker pattern</a>
+where the various components are decoupled and potentially distributed.
+A diagram of the future-state implementation is shown below.</p>
+<img alt="_images/FutureStateImplementation.jpg" src="_images/FutureStateImplementation.jpg" />
+<p>The primary changes are:</p>
+<ul class="simple">
+<li>Creation of a
+<em>Book Service</em>
+that will interact with the web pages using a RESTful API.
+This service will be executed by CloudI
+and will be created using the Erlang programming language.</li>
+<li>Use of a CloudI
+<em>MySQL Service Adapter</em>
+to provide flexibility for the MySQL database backend.</li>
+<li>HTML pages will call the
+<em>Book Service</em>
+directly using Websockets rather than being generated by PHP on the server side.</li>
+<li>Modify the various Java utility programs to run as CloudI services and use the <em>MySQL Service Adapter</em> rather than calling the MySQL database directly.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The Future-State Implementation could be further simplified by using the Cowboy Web Server rather than the Apache Web Server for serving the HTML pages.</p>
+</div>
+</div>
+<div class="section" id="architectural-decisions">
+<h2>2.4. Architectural Decisions<a class="headerlink" href="#architectural-decisions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="data-transmission">
+<span id="index-3"></span><h3>2.4.1. Data Transmission<a class="headerlink" href="#data-transmission" title="Permalink to this headline">¶</a></h3>
+<p>Because the components will be developed using different languages (Javascript, Java, and Erlang), an important decision is to select a language-independent method for transmitting data between each component.
+CloudI does not impose a specific data protocol, so you are free to select this.
+In this tutorial, the
+<a class="reference external" href="http://www.wikipedia.org/wiki/Json">JSON protocol</a>
+will be used with the following libraries:</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">TODO: Fix Java JSON dependency.</p>
+</div>
+<ul class="simple">
+<li>Java -
+TBD</li>
+<li>Erlang -
+<a class="reference external" href="https://github.com/talentdeficit/jsx">jsx</a>.  Note that jsx is built into the CloudI distribution and is located in the module named <strong>cloudi_x_jsx</strong></li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">CloudI Erlang dependencies have a <strong>cloudi_x_</strong> prefix added to their modules to avoid version conflicts with any of your Erlang dependencies.</p>
+</div>
+</div>
+<div class="section" id="service-api">
+<span id="service-api-reference"></span><span id="index-4"></span><h3>2.4.2. Service API<a class="headerlink" href="#service-api" title="Permalink to this headline">¶</a></h3>
+<p>Another important point is to design a consistent RESTful API for interacting with your services.
+The tutorial uses the CloudI Service integration with the Cowboy HTTP Server to handle requests.  The Cowboy HTTP Server supports the standard range of HTTP methods including:
+GET, HEAD, POST, PUT, PATCH, DELETE, and OPTIONS.
+.
+An excellent resource for designing RESTful API&#8217;s is located <a class="reference external" href="https://restful-api-design.readthedocs.org/en/latest/intro.html">here</a></p>
+<p>The table below lists the different use cases, HTTP methods, and URL examples implemented by the Book Service. Note that the top-level URL will be <strong>/book</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="19%" />
+<col width="5%" />
+<col width="33%" />
+<col width="44%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Use Case</th>
+<th class="head">Method</th>
+<th class="head">URL</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Browse New Books</td>
+<td>GET</td>
+<td>/recommend/book/newbooks</td>
+<td>Return list of new books</td>
+</tr>
+<tr class="row-odd"><td>Browse Popular Books</td>
+<td>GET</td>
+<td>/recommend/book/popularbooks</td>
+<td>Return list of most-popular books</td>
+</tr>
+<tr class="row-even"><td>Browse Recommended Books</td>
+<td>GET</td>
+<td>/recommend/book/recommendedbooks?user=X</td>
+<td>Return list of recommended books for the given User ID</td>
+</tr>
+<tr class="row-odd"><td>View Book Details</td>
+<td>GET</td>
+<td>/recommend/book/allbooks?id=X</td>
+<td>Return details about book given the Item ID</td>
+</tr>
+<tr class="row-even"><td>Download Book</td>
+<td>GET</td>
+<td>/recommend/book/download?id=X&amp;user=Y</td>
+<td>Download a book given the Item ID and User ID</td>
+</tr>
+<tr class="row-odd"><td>Create New User</td>
+<td>GET</td>
+<td>/recommend/book/newuser</td>
+<td>Create and return a new user ID</td>
+</tr>
+<tr class="row-even"><td>Get Unrated Books</td>
+<td>GET</td>
+<td>/recommend/book/unrated?user=X</td>
+<td>Get the unrated books for a user ID</td>
+</tr>
+<tr class="row-odd"><td>Rank Downloaded Book</td>
+<td>GET</td>
+<td>/recommend/book/rate?id=X&amp;user=Y&amp;rating=Z</td>
+<td>Update a book&#8217;s rating given the User ID, Item ID, Rating</td>
+</tr>
+<tr class="row-even"><td>Add Book to Collection</td>
+<td>POST</td>
+<td>/recommend/book/</td>
+<td>Add a book to the collection</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">As described later in this tutorial, Access Control Lists (ACLs) are can be used as URL patterns.  Consequently, give some thought to developing a hierarchical URL structure.</p>
+</div>
+</div>
+<div class="section" id="integration-method">
+<h3>2.4.3. Integration Method<a class="headerlink" href="#integration-method" title="Permalink to this headline">¶</a></h3>
+<p>To benefit from CloudI features it is necessary to utilize CloudI services.  To create a CloudI service it is necessary to use an implementation of the CloudI API.  There are two types of CloudI services used for CloudI integration.  An &#8220;external&#8221; CloudI service runs inside an operating system process external to the Erlang VM to keep memory isolated.  CloudI API integration with C, C++, Java, JavaScript, Perl, PHP, Python, or Ruby creates an &#8220;external&#8221; CloudI service.  An &#8220;internal&#8221; CloudI service runs inside the Erlang VM.  CloudI API integration with Erlang or Elixir creates an &#8220;internal&#8221; CloudI service.</p>
+<p>Additional information is available in the CloudI FAQ
+<a class="reference external" href="http://cloudi.org/faq.html#4_API">here</a>
+.</p>
+<p>For this service, HTTP REST calls will be used to integrate the HTML pages with the <em>Book Service</em>.  The HTTP request/response messages will be delivered using the WebSocket protocol.</p>
+</div>
+</div>
+<div class="section" id="data-model">
+<span id="index-5"></span><h2>2.5. Data Model<a class="headerlink" href="#data-model" title="Permalink to this headline">¶</a></h2>
+<p>A diagram showing the database tables and their interrelationships is shown below.</p>
+<img alt="_images/DatabaseDiagram.png" src="_images/DatabaseDiagram.png" />
+<p>The primary tables are the <strong>items</strong> and <strong>users</strong> table.  Several cross reference tables exist including:</p>
+<ul class="simple">
+<li><strong>user_items</strong> - tracks which items a user has downloaded and if they have submitted a rating</li>
+<li><strong>user_item_recommendations</strong> - contains recommendations for a particular user</li>
+<li><strong>user_item_ratings</strong> - holds the rating value that a user submits for an item</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">2. Book Recommendation Application</a><ul>
+<li><a class="reference internal" href="#background">2.1. Background</a></li>
+<li><a class="reference internal" href="#current-state-implementation">2.2. Current-State Implementation</a></li>
+<li><a class="reference internal" href="#future-state-implementation">2.3. Future-State Implementation</a></li>
+<li><a class="reference internal" href="#architectural-decisions">2.4. Architectural Decisions</a><ul>
+<li><a class="reference internal" href="#data-transmission">2.4.1. Data Transmission</a></li>
+<li><a class="reference internal" href="#service-api">2.4.2. Service API</a></li>
+<li><a class="reference internal" href="#integration-method">2.4.3. Integration Method</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#data-model">2.5. Data Model</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Introduction.html"
+                        title="previous chapter">1. Introduction</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="Starting_Out.html"
+                        title="next chapter">3. Starting Out</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="Starting_Out.html" title="3. Starting Out"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="Introduction.html" title="1. Introduction"
+             >previous</a> |</li>
+        <li><a href="index.html">CloudI Tutorial</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      Last updated on May 02, 2015.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
