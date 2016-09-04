@@ -64,7 +64,7 @@ A single Java CloudI service is used to provide a REST API that handles book rec
 | client                  |         GET | client/get
 |===
 
-The table above shows how the HTTP method becomes a suffix on the URL path to create the CloudI service name pattern suffix.
+The table above shows how the HTTP method becomes a suffix on the URL path to create the CloudI service name pattern suffix (cloudi_service_http_cowboy adds the HTTP method as a suffix in lowercase when sending the HTTP request data as a CloudI service request).
 When the CloudI service is configured, a service name pattern prefix is provided to describe the scope of the service.
 For the book recommendation Java service, the prefix "/tutorial/java/service/" is used so the full service name pattern for the table's first entry becomes "/tutorial/java/service/item/refresh/post".
 A CloudI service name pattern suffix is used with a subscribe CloudI API function call to declare a service process will accept service requests with a matching service name.
@@ -237,6 +237,120 @@ This approach keeps service development flexible so services can independently c
 
 === How Do Book Recommendations Occur?
 
+To understand how book recommendations occur within the example source code, lets first get the source code running.
+
+==== Creating Book Recommendations
+
+Make sure you have Git, curl, Maven with Java 7 (or higher) and PostgreSQL running (>= 9.3).
+
+Get a copy of the Java tutorial repository and open a shell in the repository directory:
+
+[source,shell]
+----
+git clone https://github.com/CloudI/cloudi_tutorial_java.git
+cd cloudi_tutorial_java
+----
+
+To create the CloudI service configuration for the services used in this tutorial use the following commands in your shell (with the repository directory as the current working directory):
+
+[source,shell]
+----
+export JAVA=`which java`
+export PWD=`pwd`
+export USER=`whoami`
+cat << EOF > website.conf
+[[{prefix, "/"},
+  {module, cloudi_service_filesystem},
+  {args,
+   [{directory, "$PWD/html/"}]},
+  {dest_refresh, none},
+  {count_process, 4}],
+ [{prefix, "/tutorial/java/"},
+  {module, cloudi_service_http_cowboy},
+  {args,
+   [{port, 8080}, {use_websockets, true}]},
+  {timeout_async, 600000},
+  {timeout_sync, 600000}]]
+EOF
+cat << EOF > tutorial.conf
+[[{prefix, "/tutorial/java/service/"},
+  {file_path, "$JAVA"},
+  {args, "-Dfile.encoding=UTF-8 "
+         "-Dorg.slf4j.simpleLogger.defaultLogLevel=warn "
+         "-server "
+         "-ea:org.cloudi... "
+         "-Xms3g -Xmx3g "
+         "-jar $PWD/target/cloudi_tutorial_java-1.5.1-SNAPSHOT-jar-with-dependencies.jar "
+         "-pgsql_hostname localhost "
+         "-pgsql_port 5432 "
+         "-pgsql_database cloudi_tutorial_java "
+         "-pgsql_username cloudi_tutorial_java "
+         "-pgsql_password cloudi_tutorial_java"},
+  {timeout_init, 600000},
+  {count_thread, 4},
+  {options,
+   [{owner, [{user, "$USER"}]},
+    {directory, "$PWD"}]}]]
+EOF
+----
+
+The configuration for the Java tutorial CloudI services now is split into two separate files: website.conf (to run initial CloudI services using services that are included in CloudI for hosting the interface and handling HTTP connections) and tutorial.conf (to run the Java tutorial source code for handling book recommendation REST API requests).
+The main reason to split the configuration is to make sure all HTTP requests have a 600000 milliseconds (10 minutes) timeout value.
+The 10 minute timeout value for a HTTP request allows the Java service for book recommendations to be started dynamically with a 10 minute initialization timeout value for the Lenskit model creation (a 1-2 minute startup time is normal with lots of recommendation data).
+
+Make sure you have PostgreSQL setup with a database that matches the Java service configuration arguments:
+
+[source,shell]
+----
+psql -U postgres << EOF
+CREATE DATABASE cloudi_tutorial_java;
+CREATE USER cloudi_tutorial_java WITH PASSWORD 'cloudi_tutorial_java';
+GRANT ALL PRIVILEGES ON DATABASE cloudi_tutorial_java to cloudi_tutorial_java;
+EOF
+----
+
+Create the PostgreSQL schema with some test data:
+
+[source,shell]
+----
+bunzip2 schema.sql.bz2
+psql -h localhost cloudi_tutorial_java cloudi_tutorial_java < schema.sql
+----
+
+Now the tutorial services can be started by relying on the default CloudI configuration having cloudi_service_http_cowboy running on port 6464 so that CloudI Service API requests can be made dynamically (using cloudi_service_api_requests) to start new service instances:
+
+[source,shell]
+----
+curl -X POST -d @website.conf http://localhost:6464/cloudi/api/rpc/services_add.erl
+----
+
+The result will be similar to `["ServiceId1","ServiceId2"]` where `ServiceId1` is a UUID (Universally Unique Identifier) for the new service instance of cloudi_service_filesystem and `ServiceId2` is a UUID for the new service instance of cloudi_service_http_cowboy.
+The HTTP request above starts the new HTTP server service on port 8080 with the 10 minute timeout value and the web interface files.
+Now we can use port 8080 for a CloudI Service API request so the 10 minute timeout value is used when initializing the book recommendation service:
+
+[source,shell]
+----
+curl -X POST -d @tutorial.conf http://localhost:8080/cloudi/api/rpc/services_add.erl
+----
+
+The result will provide a single service ID for the new Java book recommendation service instance.
+With all the tutorial services running successfully we can now look at the book recommendation interface at link:http://localhost:8080/tutorial/java/[http://localhost:8080/tutorial/java/].
+The interface should look like the screenshot below:
+
+image:images/tutorial_java_interface_01.png[Screenshot 1]
+
+The green box surrounds the "Items Available" which are Gutenberg Project books included as test data within the `schema.sql` file.
+Set a rating for an item and click the "Rate" button to store the rating.
+The button will change to an "Update" button to allow the rating to change in the future.
+Set two more ratings in the same way while keeping the user_id value set to `1`.
+Change the user_id value to be `2`.
+Set a rating for one of the items that was rated as user_id `1`.
+The Lenskit recommendation model has not yet been updated based on other user ratings to create suggestions so click the "Update Recommendation Model" button (this update action is typically done weekly or daily with online services that have many users, when Lenskit is used in production).
+The interface will update to show a red box that surrounds the "Recommendations Based On Previous Ratings" with expected ratings values that the recommendation model predicted, as shown in the screenshot below (your output will be based on the ratings you set, though it will look similar):
+
+image:images/tutorial_java_interface_02.png[Screenshot 2]
+
+==== How Is The Book Recommendation Data Processed?
 
 link:tutorial.html[Go Back]
 
