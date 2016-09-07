@@ -1,6 +1,6 @@
 // process with "asciidoctor -a stylesheet! tutorial.adoc"
 // "asciidoctor tutorial.adoc"
-= CloudI User Tutorial
+= CloudI User Tutorials
 :description: Cloud Framework for fault-tolerant distributed processing with dynamic load balancing
 :keywords: tutorial, cloud, private cloud, framework, erlang, fault tolerant, distributed systems, embarrassingly parallel, divide and conquer, cloudi
 :stylesheet: asciidoctor_default.css
