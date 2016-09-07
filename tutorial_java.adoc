@@ -41,7 +41,7 @@ The approach in CloudI simplifies development so the focus can remain on busines
 
 === What Do Book Recommendations Look Like In CloudI?
 
-The source code used in this tutorial is available at link:https://github.com/CloudI/cloudi_tutorial_java#readme[https://github.com/CloudI/cloudi_tutorial_java^].
+The source code used in this tutorial is available at link:https://github.com/CloudI/cloudi_tutorial_java#readme[https://github.com/CloudI/cloudi_tutorial_java^] but we should first consider how this source code works with an overview.
 A single Java CloudI service is used to provide a REST API that handles book recommendations with the following Uniform Resource Locator (URL) path suffixes:
 
 |===
@@ -67,21 +67,21 @@ A single Java CloudI service is used to provide a REST API that handles book rec
 The table above shows how the HTTP method becomes a suffix on the URL path to create the CloudI service name pattern suffix (cloudi_service_http_cowboy adds the HTTP method as a suffix in lowercase when sending the HTTP request data as a CloudI service request).
 When the CloudI service is configured, a service name pattern prefix is provided to describe the scope of the service.
 For the book recommendation Java service, the prefix "/tutorial/java/service/" is used so the full service name pattern for the table's first entry becomes "/tutorial/java/service/item/refresh/post".
-A CloudI service name pattern suffix is used with a subscribe CloudI API function call to declare a service process will accept service requests with a matching service name.
+A CloudI service name pattern suffix is used with a `subscribe` CloudI API function call to declare a service process will accept service requests with a matching service name.
 
-When multiple processes and multiple threads are specified in the configuration of a CloudI service (with a count greater than 1), the same service will naturally call the subscribe CloudI API function more than once to declare multiple subscriptions.
+When multiple processes and multiple threads are specified in the configuration of a CloudI service (with a count greater than 1), the same service will naturally call the `subscribe` CloudI API function more than once to declare multiple subscriptions.
 A CloudI service that sends a service request with a matching service name will have the service request delivered to a service thread that is randomly selected from the available subscriptions.
 Using random selection of a destination that matches the service name keeps the fault-tolerance of the receiving service constant (i.e., with the same probability of a failure for each receive).
 
-All CloudI service request receives depend on a previous call to the subscribe CloudI API function.
-However, both the send_sync and send_async CloudI API functions send a service request to a single destination.
-To send a service request to all destinations that match a service name requires using the function mcast_async in the CloudI API, which is similar to publish functionality in other messaging systems.
+All CloudI service request receives depend on a previous call to the `subscribe` CloudI API function.
+However, both the `send_sync` and `send_async` CloudI API functions send a service request to a single destination.
+To send a service request to all destinations that match a service name requires using the function `mcast_async` in the CloudI API, which is similar to publish functionality in other messaging systems.
 
 ==== What Is The Structure Of The Book Recommendation Service?
 
 All services are structured for a 3 part sequence: initialization, handling-requests, and termination.
 During CloudI service initialization, data structures are initialized to confirm that the service is ready for a runtime that may last indefinitely (making the  initialization stage the most critical stage for a service's reliability).
-Inside the service initialization the subscribe CloudI API function is typically called so that incoming service requests are handled after initialization is done.
+Inside the service initialization the `subscribe` CloudI API function is typically called so that incoming service requests are handled after initialization is done.
 The book recommendation service initialization is shown below (from link:https://github.com/CloudI/cloudi_tutorial_java/blob/master/src/main/java/org/cloudi/examples/tutorial/Service.java#L90-L140[Service.java:90-140^]):
 
 [source,java]
@@ -141,7 +141,7 @@ The book recommendation service initialization is shown below (from link:https:/
 ----
 
 The initialization sequence above shows that Lenskit is initialized first.
-Afterwards, all the subscribe CloudI API function calls occur with a few choosing specific threads for execution.
+Afterwards, all the `subscribe` CloudI API function calls occur with a few choosing specific threads for execution.
 You will notice that the Service object instant pointer `this` is provided with a string function name in the subscribe function call so that the service request will be handled in a specific function (Java 8 allows a single method reference to be used instead of these two separate parameters).
 The "itemRefresh" service request can take a few minutes and creates filesystem data, so this request is only handled by a single thread within a single process (to make sure the execution is never parallel with other service threads).
 The "recommendationRefresh" service request may take a minute or two with many recommendations but is updating global data in a single process, so it gets its own thread.
@@ -152,7 +152,7 @@ For the REST API to be used by HTTP requests, a HTTP server that creates CloudI 
 CloudI includes two CloudI services that are HTTP Servers: cloudi_service_http_cowboy and cloudi_service_http_elli.
 The book recommendation service will use cloudi_service_http_cowboy for handling both basic HTTP requests and WebSocket requests.
 
-The initialization sequence ends when the poll CloudI API function is called to begin handling requests.
+The initialization sequence ends when the `poll` CloudI API function is called to begin handling requests.
 
 ==== Handling Requests
 
@@ -162,7 +162,7 @@ To identify the transaction during its lifetime a globally unique Transaction Id
 
 All CloudI service requests are able to receive a response.
 The CloudI service that handles the request can make the request asynchronous by providing a "null response" (a response that has the response data and response_info data set to a binary of size 0) due to the control of the service request passing to the receiver when the service request is handled.
-That means that the send_async CloudI API function call is an asynchronous send due to not waiting for a response to occur, though a response may be sent in the future if the receiving service decides to send a response.
+That means that the `send_async` CloudI API function call is an asynchronous send due to not waiting for a response to occur, though a response may be sent in the future if the receiving service decides to send a response.
 
 An example of a service request handling function is below (using the "itemRefresh" function from link:https://github.com/CloudI/cloudi_tutorial_java/blob/master/src/main/java/org/cloudi/examples/tutorial/Service.java#L163-L209[Service.java:163-209^]):
 
@@ -334,23 +334,222 @@ curl -X POST -d @tutorial.conf http://localhost:8080/cloudi/api/rpc/services_add
 ----
 
 The result will provide a single service ID for the new Java book recommendation service instance.
-With all the tutorial services running successfully we can now look at the book recommendation interface at link:http://localhost:8080/tutorial/java/[http://localhost:8080/tutorial/java/].
+With all the tutorial services running successfully we can now look at the book recommendation interface at link:http://localhost:8080/tutorial/java/[http://localhost:8080/tutorial/java/^].
 The interface should look like the screenshot below:
 
 image:images/tutorial_java_interface_01.png[Screenshot 1]
 
 The green box surrounds the "Items Available" which are Gutenberg Project books included as test data within the `schema.sql` file.
-Set a rating for an item and click the "Rate" button to store the rating.
-The button will change to an "Update" button to allow the rating to change in the future.
-Set two more ratings in the same way while keeping the user_id value set to `1`.
-Change the user_id value to be `2`.
-Set a rating for one of the items that was rated as user_id `1`.
-The Lenskit recommendation model has not yet been updated based on other user ratings to create suggestions so click the "Update Recommendation Model" button (this update action is typically done weekly or daily with online services that have many users, when Lenskit is used in production).
+Add a few ratings to get recommendations:
+
+. Set a rating for an item by adjusting the slider and click the "Rate" button to store the rating.
+The "Rate" button will change to an "Update" button to allow the rating to change in the future.
+. Set two more ratings in the same way while keeping the user_id value set to `1`.
+. Change the user_id value to be `2`.
+. Set a rating for one of the items that was rated as user_id `1`.
+. The Lenskit recommendation model has not yet been updated based on other user ratings to create suggestions so click the "Update Recommendation Model" button (this update action is typically done weekly or daily with online services that have many users, when Lenskit is used in production).
+
 The interface will update to show a red box that surrounds the "Recommendations Based On Previous Ratings" with expected ratings values that the recommendation model predicted, as shown in the screenshot below (your output will be based on the ratings you set, though it will look similar):
 
 image:images/tutorial_java_interface_02.png[Screenshot 2]
 
 ==== How Is The Book Recommendation Data Processed?
+
+To understand how book recommendations are occurring in the interface, lets start by looking closer at the REST API in the Java book recommendation service:
+
+|===
+| Service Name Pattern Suffix | `Service.java` function | "message_name" | Processes and Threads
+
+| item/refresh/post           | itemRefresh             | item_refresh           | thread 0 in process 0 only
+
+| item/list/post              | itemList                | item_list              | Any
+
+| language/list/post          | languageList            | language_list          | Any
+
+| subject/list/post           | subjectList             | subject_list           | Any
+
+| recommendation/refresh/post | recommendationRefresh   | recommendation_refresh | thread 0 only
+
+| recommendation/update/post  | recommendationUpdate    | recommendation_update  | Any
+
+| recommendation/list/post    | recommendationList      | recommendation_list    | Any
+
+| client/get                  | client                  |                        | thread > 0
+|===
+
+The table above shows the service subscriptions that occur during service initialization (in link:https://github.com/CloudI/cloudi_tutorial_java/blob/master/src/main/java/org/cloudi/examples/tutorial/Service.java#L90-L140[Service.java:90-140^]).
+The service configuration used for running `Service.java` was stored in the `tutorial.conf` file and it specified a total of 4 threads with `count_thread` being set to `4`.
+The service configuration did not provide a `count_process` setting so the number of OS processes defaulted to `1` (the thread count is applied to each OS process separately, i.e., `count_process` == `2` would have 2 OS processes, each with `4` threads).
+The service configuration always specifies a service name pattern prefix and that was set to "/tutorial/java/service/" in the `tutorial.conf` file.
+
+When a HTTP request (on port 8080) is made to the REST API through cloudi_service_http_cowboy, a CloudI service request is sent based on the HTTP request URL path using the default timeout that was configured for cloudi_service_http_cowboy service requests (10 minutes).
+The Javascript interface relies on a WebSocket connection for any usage of the REST API as shown below (link:https://github.com/CloudI/cloudi_tutorial_java/blob/master/html/tutorial/java/index.html#L542-L550[index.html:542-550^]):
+
+[source,javascript]
+----
+    var host = "127.0.0.1";
+    var port = "8080";
+    var service_name = "/tutorial/java/service/client";
+    if (typeof WebSocket != "function") {
+        alert("WebSocket support is required!");
+        return;
+    }
+    var websocket_url = "ws://" + host + ":" + port + service_name;
+    websocket = new WebSocket(websocket_url);
+----
+
+This means that the URL path includes the Java book recommendation service prefix of "/tutorial/java/service/" with a suffix of "client/get" (all WebSocket connections are initialized with the GET HTTP method).
+All REST API requests are then sent as JSON data on the WebSocket connection with a "message_name" property to distinguish between the different endpoints.
+The endpoints can also be used as separate URL paths to receive the same response without a WebSocket connection (which is useful for testing):
+
+[source,shell]
+----
+curl -X POST -d '{"message_name": "item_list", "user_id": 1, "language": "en", "subject": "Philosophy"}' http://localhost:8080/tutorial/java/service/item/list
+----
+
+A WebSocket request is sent as a CloudI service request that is randomly load-balanced among the 3 threads that have subscribed with the function named "client" (in `Service.java`).
+If `Service.java` had `count_process` set to `2` in its service configuration, the service request would instead be randomly load-balanced among 6 total threads with each group of 3 in a separate OS process.
+The service request handler function "client" is shown below (from link:https://github.com/CloudI/cloudi_tutorial_java/blob/master/src/main/java/org/cloudi/examples/tutorial/Service.java#L429-L552[Service.java:429-552^]):
+
+[source,java]
+----
+    public Object client(Integer command, String name, String pattern,
+                         byte[] request_info, byte[] request,
+                         Integer timeout, Byte priority, byte[] trans_id,
+                         OtpErlangPid pid)
+        throws API.ForwardAsyncException,
+               API.ForwardSyncException,
+               API.InvalidInputException,
+               API.MessageDecodingException,
+               API.TerminateException
+    {
+        // handle any JSON request based on the "message_name" field
+        final JSONRequest request_json =
+            JSONRequest.fromString(new String(request));
+        if (request_json == null)
+        {
+            return JSONResponse
+                .failure("json")
+                .toString().getBytes();
+        }
+        switch (request_json.getMessageName())
+        {
+            case JSONItemRefreshRequest.message_name_valid:
+                // a single OS process will refresh the single database
+                final String name_item_refresh =
+                    this.api.prefix() + "item/refresh/post";
+                this.api.forward_(command, name_item_refresh,
+                                  request_info, request,
+                                  timeout, priority,
+                                  trans_id, pid);
+                return null;
+            case JSONItemListRequest.message_name_valid:
+                return this.itemList(command, name, pattern,
+                                     request_info, request,
+                                     timeout, priority,
+                                     trans_id, pid);
+            case JSONLanguageListRequest.message_name_valid:
+                return this.languageList(command, name, pattern,
+                                         request_info, request,
+                                         timeout, priority,
+                                         trans_id, pid);
+            case JSONSubjectListRequest.message_name_valid:
+                return this.subjectList(command, name, pattern,
+                                        request_info, request,
+                                        timeout, priority,
+                                        trans_id, pid);
+            case JSONRecommendationRefreshRequest.message_name_valid:
+                // all OS processes need to refresh their lenskit data
+                final String name_recommendation_refresh =
+                    this.api.prefix() + "recommendation/refresh/post";
+                final String name_websockets =
+                    this.api.prefix() + "client/websocket";
+                final int refresh_response_latency_max = 1000; // milliseconds
+                final int refresh_request_timeout = Math.max(0,
+                    timeout - refresh_response_latency_max);
+                final ArrayList<API.TransId> refresh_requests =
+                    this.api.mcast_async(name_recommendation_refresh,
+                                         request_info, request,
+                                         refresh_request_timeout, priority);
+                if (refresh_requests.isEmpty())
+                    return JSONRecommendationRefreshResponse
+                        .failure("timeout")
+                        .toString().getBytes();
+                final int timeout_decrement = 500; // milliseconds
+                final Iterator<API.TransId> refresh_requests_iterator =
+                    refresh_requests.iterator();
+                API.TransId refresh_request_id =
+                    refresh_requests_iterator.next();
+                while (timeout > 0)
+                {
+                    final API.Response refresh_response =
+                        this.api.recv_async(timeout_decrement,
+                                            refresh_request_id.id);
+                    if (refresh_response.isTimeout())
+                    {
+                        if (timeout_decrement >= timeout)
+                            timeout = 0;
+                        else
+                            timeout -= timeout_decrement;
+                    }
+                    else
+                    {
+                        final JSONRecommendationRefreshResponse
+                            refresh_response_json =
+                                JSONRecommendationRefreshResponse
+                                .fromString(new String(refresh_response
+                                                       .response));
+                        if (! refresh_response_json.getSuccess())
+                        {
+                            return refresh_response.response; // failure
+                        }
+                        else if (! refresh_requests_iterator.hasNext())
+                        {
+                            byte[] notification =
+                                JSONRecommendationRefreshOccurredNotification
+                                    .success().toString().getBytes();
+                            this.api.mcast_async(name_websockets,
+                                                 notification);
+                            return refresh_response.response; // last success
+                        }
+                        else
+                        {
+                            refresh_request_id =
+                                refresh_requests_iterator.next();
+                        }
+                    }
+                }
+                // timeout already occurred, null response
+                return ("").getBytes();
+            case JSONRecommendationListRequest.message_name_valid:
+                return this.recommendationList(command, name, pattern,
+                                               request_info, request,
+                                               timeout, priority,
+                                               trans_id, pid);
+            case JSONRecommendationUpdateRequest.message_name_valid:
+                return this.recommendationUpdate(command, name, pattern,
+                                                 request_info, request,
+                                                 timeout, priority,
+                                                 trans_id, pid);
+            default:
+                return JSONResponse
+                    .failure("message_name")
+                    .toString().getBytes();
+        }
+    }
+----
+
+The source code above shows that most of the REST API functionality is utilized by just a function call with the same function that was provided for the subscription based on the "message_name" JSON property.
+Any exceptions that are thrown in the service request handler functions get handled by CloudI and result in a null response to the service request.
+
+The "client" function source code that is more complex is focused on the "message_name" `JSONItemRefreshRequest.message_name_valid` (with the value "item_refresh") and `JSONRecommendationRefreshRequest.message_name_valid` (with the value "recommendation_refresh").
+To handle when "message_name" is "item_refresh" requires the `forward` CloudI API function to make sure that only a single thread in a single process is utilized for refreshing all the database items.
+The `forward` CloudI API function is simply changing the service name for the service request destination so that the service request is sent to a new destination.
+
+If "message_name" is "recommendation_refresh" then the `mcast_async` CloudI API function is used to make sure each process has a single thread refresh the Lenskit recommendation model that is kept in-memory.
+After the `mcast_async`, the `recv_async` CloudI API function is used to get the response from each asynchronous send (making `mcast_async` a little different from typical publish functionality since a response can be received).
+If all the responses indicate a success, a second `mcast_async` CloudI API function call is used to notify all connected WebSocket connections that the recommendations may have changed.
+Then the interface is able to get an updated list of recommendations with a separate request on the WebSocket connection.
 
 link:tutorial.html[Go Back]
 
