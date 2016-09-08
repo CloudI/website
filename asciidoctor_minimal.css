@@ -7,7 +7,6 @@ a:focus{outline:thin dotted}
 a:active,a:hover{outline:0}
 a:hover{cursor:pointer}
 h1{font-size:2em;margin:.67em 0}
-b,strong{font-weight:bold}
 hr{box-sizing:content-box;height:0}
 code,pre{font-family:monospace;font-size:1em}
 pre{white-space:pre-wrap}
@@ -15,14 +14,6 @@ img{border:0}
 table{border-collapse:collapse;border-spacing:0}
 *,*:before,*:after{box-sizing:border-box}
 img{max-width:100%;height:auto;display:inline-block;vertical-align:middle}
-.left{float:left!important}
-.right{float:right!important}
-.text-left{text-align:left!important}
-.text-right{text-align:right!important}
-.text-center{text-align:center!important}
-.text-justify{text-align:justify!important}
-.hide{display:none}
-.center{margin-left:auto;margin-right:auto}
 .spread{width:100%}
 .listingblock>.title,.paragraph>.title,table.tableblock>.title,.olist>.title,.ulist>.title,.qlist>.title,.hdlist>.title{line-height:1.45;color:#7a2518;font-weight:400;margin-top:0;margin-bottom:.25em}
 div,dl,dt,dd,ul,ol,li,h1,h2,h3,#toctitle,h4,h5,h6,pre,p,th,td{margin:0;padding:0;direction:ltr}
@@ -103,12 +94,13 @@ p a>code:hover{color:rgba(0,0,0,.9)}
 .listingblock{margin-bottom:1.25em}
 .listingblock>.title,.paragraph>.title,table.tableblock>.title,.dlist>.title,.olist>.title,.ulist>.title,.qlist>.title,.hdlist>.title{text-rendering:optimizeLegibility;text-align:left;font-family:serif;font-size:1rem;font-style:italic}
 table.tableblock>caption.title{white-space:nowrap;overflow:visible;max-width:0}
+.listingblock pre{padding:1.5em 1em 1.5em 1em}
 .listingblock pre:not(.highlight),.listingblock pre[class="highlight"],.listingblock pre[class^="highlight "],.listingblock pre.CodeRay,.listingblock pre.prettyprint{background:#f7f7f8}
 @media only screen and (min-width:768px){
-.literalblock pre,.literalblock pre[class],.listingblock pre,.listingblock pre[class]{font-size:.90625em}
+.listingblock pre,.listingblock pre[class]{font-size:.90625em}
 }
 @media only screen and (min-width:1280px){
-.literalblock pre,.literalblock pre[class],.listingblock pre,.listingblock pre[class]{font-size:1em}
+.listingblock pre,.listingblock pre[class]{font-size:1em}
 }
 .listingblock>.content{position:relative}
 .listingblock code[data-lang]:before{display:none;content:attr(data-lang);position:absolute;font-size:.75em;top:.425rem;right:.5rem;line-height:1;text-transform:uppercase;color:#999}
@@ -150,7 +142,6 @@ ol.arabic{list-style-type:decimal}
 a.image{text-decoration:none;display:inline-block}
 dt,th.tableblock,td.content{text-rendering:optimizeLegibility}
 h1,h2,p,td.content,span.alt{letter-spacing:-.01em}
-p strong,td.content strong{letter-spacing:-.005em}
 p,dt,td.content,span.alt{font-size:1.0625rem}
 p{margin-bottom:1.25rem}
 p.tableblock{font-size:1em}
