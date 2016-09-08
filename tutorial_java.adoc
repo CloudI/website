@@ -2,7 +2,7 @@
 = CloudI Java Tutorial
 :description: Cloud Framework for fault-tolerant distributed processing with dynamic load balancing
 :keywords: tutorial, java, cloud, private cloud, framework, erlang, fault tolerant, distributed systems, embarrassingly parallel, divide and conquer, cloudi
-:stylesheet: asciidoctor_default.css
+:stylesheet: asciidoctor_minimal.css
 :stylesdir: .
 :linkcss:
 :disable-javascript:
@@ -21,7 +21,7 @@
 == Reliable Book Recommendations
 
 For an example of how CloudI can provide fault-tolerance for CloudI services implemented in Java we will explore how books can receive reliable recommendations.
-We will use books data from link:http://www.gutenberg.org/[Project Gutenberg] and Java source code from the link:http://lenskit.org/[Lenskit recommendation toolkit] to provide reliable book recommendations.
+We will use books data from link:http://www.gutenberg.org/[Project Gutenberg^] and Java source code from the link:http://lenskit.org/[Lenskit recommendation toolkit^] to provide reliable book recommendations.
 
 === Why Does Java Source Code Need CloudI To Be Reliable?
 
