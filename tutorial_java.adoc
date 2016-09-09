@@ -241,8 +241,22 @@ To understand how book recommendations occur within the example source code, let
 ==== Creating Book Recommendations
 
 Make sure you have Git, curl, Maven with Java 7 (or higher) and PostgreSQL running (>= 9.3).
+Make sure CloudI is installed and running, using the installation and start sequence below, if necessary:
 
-Get a copy of the Java tutorial repository and open a shell in the repository directory:
+[source,shell]
+----
+wget --content-disposition \
+    http://sourceforge.net/projects/cloudi/files/latest/download
+tar zxvf cloudi-1.5.1.tar.gz
+cd cloudi-1.5.1/src
+./configure
+make
+sudo make install
+cd ../..
+sudo cloudi start
+----
+
+Get a copy of the Java tutorial repository and keep the shell in the repository directory:
 
 [source,shell]
 ----
