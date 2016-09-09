@@ -18,6 +18,12 @@
 :toclevels: 4
 :nofooter:
 
+[WARNING]
+.pre-Release!
+====
+This tutorial requires the develop branch of the CloudI repository (the Source link above, until after the 1.5.2 release).
+====
+
 == Reliable Book Recommendations
 
 For an example of how CloudI can provide fault-tolerance for CloudI services implemented in Java we will explore how books can receive reliable recommendations.
@@ -247,8 +253,8 @@ Make sure CloudI is installed and running, using the installation and start sequ
 ----
 wget --content-disposition \
     http://sourceforge.net/projects/cloudi/files/latest/download
-tar zxvf cloudi-1.5.1.tar.gz
-cd cloudi-1.5.1/src
+tar zxvf cloudi-1.5.2.tar.gz
+cd cloudi-1.5.2/src
 ./configure
 make
 sudo make install
