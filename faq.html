@@ -48,7 +48,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 <div id="content">
   <h1>Frequently Asked Questions</h1>
   <center><h3>version 1.5.1<br />
-              last updated on August 25<sup>th</sup> 2016</h3></center>
+              last updated on September 9<sup>th</sup> 2016</h3></center>
 
   <a name="1_contents"></a>
   <h2>1 - Introduction to CloudI</h2>
@@ -135,6 +135,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
     <li><a href="#6_HTTP"       >6.9 - HTTP Integration</a></li>
     <li><a href="#6_ZeroMQ"     >6.10 - ZeroMQ Integration</a></li>
     <li><a href="#6_FaultTolerance">6.11 - Service Fault Tolerance</a></li>
+    <li><a href="#6_Monitoring" >6.12 - Service Monitoring</a></li>
   </ul>
   <a name="7_contents"></a>
   <h2>7 - Troubleshooting</h2>
@@ -1044,11 +1045,11 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
   <h3>3.4 - Running CloudI</h3>
   <p>
     To start CloudI, execute:
-<pre>
+<pre onclick="element_select(this);">
 sudo cloudi start
 </pre>
     To stop the running CloudI node, execute:
-<pre>
+<pre onclick="element_select(this);">
 sudo cloudi stop
 </pre>
   </p>
@@ -2473,6 +2474,56 @@ sudo cloudi stop
     with higher-level processing to make sure the system remains robust
     during the internal failures (i.e., to prove system fault tolerance
     during higher-level system testing).
+  </p>
+  <div class="top"><a href="#6_contents">Top</a></div>
+
+  <a name="6_Monitoring" ></a>
+  <h3>6.12 - Service Monitoring</h3>
+  <p class="paragraph">
+    The <a href="https://github.com/CloudI/CloudI/blob/master/src/lib/cloudi_service_monitoring/src/cloudi_service_monitoring.erl" target="_blank">cloudi_service_monitoring</a>
+    provides the ability to monitor the internals of any CloudI service
+    with some small service configuration changes.
+    When modifying an internal service, the following service configuration
+    options are added:
+    <pre onclick="element_select(this);">
+{aspects_init_after,
+ [{{cloudi_service_monitoring, aspect_init_after_internal}}]},
+{aspects_request_before,
+ [{{cloudi_service_monitoring, aspect_request_before_internal}}]},
+{aspects_request_after,
+ [{{cloudi_service_monitoring, aspect_request_after_internal}}]},
+{aspects_info_before,
+ [{{cloudi_service_monitoring, aspect_info_before_internal}}]},
+{aspects_info_after,
+ [{{cloudi_service_monitoring, aspect_info_after_internal}}]},
+{aspects_terminate_before,
+ [{{cloudi_service_monitoring, aspect_terminate_before_internal}}]},
+    </pre>
+    When modifying an external service, the following service configuration
+    options are added:
+    <pre onclick="element_select(this);">
+{aspects_init_after,
+ [{{cloudi_service_monitoring, aspect_init_after_external}}]},
+{aspects_request_before,
+ [{{cloudi_service_monitoring, aspect_request_before_external}}]},
+{aspects_request_after,
+ [{{cloudi_service_monitoring, aspect_request_after_external}}]},
+{aspects_terminate_before,
+ [{{cloudi_service_monitoring, aspect_terminate_before_external}}]},
+    </pre>
+    If services are being started within Erlang source code, the configuration
+    modifications can occur with the function call
+    cloudi_service_monitoring:add/1.  To monitor all CloudI log output the
+    logging configuration can be modified with:
+    <pre onclick="element_select(this);">
+{aspects_log_after,
+ [{{cloudi_service_monitoring, aspect_log_after}}]},
+    </pre>
+  </p>
+  <p class="paragraph">
+    The cloudi_service_monitoring service arguments control where the monitoring
+    metrics are sent, the interval, and whether the Erlang VM metrics should be
+    included (see <a href="https://github.com/CloudI/CloudI/blob/master/src/lib/cloudi_service_monitoring/src/cloudi_service_monitoring.erl" target="_blank">cloudi_service_monitoring</a> for more details).
   </p>
   <div class="top"><a href="#6_contents">Top</a></div>
 
