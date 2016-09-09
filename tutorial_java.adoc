@@ -256,12 +256,13 @@ cd ../..
 sudo cloudi start
 ----
 
-Get a copy of the Java tutorial repository and keep the shell in the repository directory:
+Get a copy of the Java tutorial repository, build the tutorial with Maven and keep the shell in the repository directory:
 
 [source,shell]
 ----
 git clone https://github.com/CloudI/cloudi_tutorial_java.git
 cd cloudi_tutorial_java
+mvn clean package
 ----
 
 To create the CloudI service configuration for the services used in this tutorial use the following commands in your shell (with the repository directory as the current working directory):
