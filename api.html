@@ -7,11 +7,6 @@
   <meta content="global" name="distribution" />
   <script type="text/javascript" src="style.js"></script>
   <link rel="stylesheet" type="text/css" href="style.css" />
-  <link rel="stylesheet alt" type="text/css" title="print"
-        href="print.css" />
-  <link rel="stylesheet" type="text/css" title="noprint"
-        href="noprint.css" />
-  <meta http-equiv="Default-Style" content="noprint" />
   <link rel="shortcut icon" href="images/cloud.ico" type="image/x-icon" />
 </head>
 <body>
@@ -26,6 +21,8 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
   <ul>
     <li><a href="api.html" class="active">API</a></li>
     <li><a href="faq.html">FAQ</a></li>
+    <li><a href="tutorials.html">Tutorials</a>
+        (<a href="tutorial_java.html">Java</a>)</li>
     <li><a href="http://sourceforge.net/projects/cloudi/files/latest/download" target="_blank">Download</a></li>
     <li><a href="https://github.com/CloudI/CloudI/tree/develop#readme">Source</a></li>
     <li><a href="support.html">Support</a></li>
@@ -44,16 +41,6 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
       </script>
       <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=ra-4dae3b45563ec17d"></script>
       <!-- AddThis Button END -->
-    </li>
-    <li class="noprint">
-        <a href="#"
-           onclick="style_set_active_stylesheet('noprint'); return false;">
-        <img src="images/mode_noprint.png" /></a>
-    </li>
-    <li class="print">
-        <a href="#"
-           onclick="style_set_active_stylesheet('print'); return false;">
-        <img src="images/mode_print.png" /></a>
     </li>
   </ul>
 </div>
@@ -528,6 +515,9 @@ cloudi_service:subscribe(Dispatcher :: pid(), Pattern :: string()) -&gt;
 void org.cloudi.API.subscribe(final String pattern,
                               final Object instance,
                               final String methodName);
+// with Java &ge; 8 a method reference can be used
+void org.cloudi.API.subscribe(final String pattern,
+                              final FunctionInterface9 callback);
 </pre>
   </div>
   </div> <!-- Java -->
@@ -561,7 +551,7 @@ CloudI::API-&gt;subscribe($pattern, $object, $method);
   <a href="#1_subscribe_Python">Python</a>
   <div class="tab_contents">
 <pre onclick="element_select(this);">
-cloudi.API.subscribe(pattern, Function)
+cloudi.API.subscribe(pattern, function)
 </pre>
   </div>
   </div> <!-- Python -->
