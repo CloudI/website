@@ -317,6 +317,22 @@ By considering the latency requirements of the system early during development i
 External CloudI services require that the memory used for execution of the service is isolated within an OS process and it is possible to hide an extreme amount of risk to reliability within a single external service instance, making this approach coarser-grained fault tolerance.</p>
 </div>
 </div>
+<div class="sect2">
+<h3 id="what_data_format_should_be_used_for_service_development">What Data Format Should Be Used For Service Development?</h3>
+<div class="paragraph">
+<p>CloudI&#8217;s service request and response data (i.e., request_info, request, response_info, response) is protocol agnostic, so any data format can be used for CloudI service communication.
+External services can only receive data that is sent as a binary type in the programming language used for the service request send.
+However, internal services can receive data of any type, though it is common to use binary types to allow the processing of service requests sent from external services.</p>
+</div>
+<div class="paragraph">
+<p>If you require a "universal protocol" (i.e., a protocol that can encode types from any programming language and handle them transparently in other programming languages), you may be disappointed to find out that no complete solution exists.
+If you approach the concept of a "universal protocol" as only handling the most minimal and common types available in programming languages, msgpack is a popular choice.
+The data format should be based on the requirements and it may require a human readable format, with JSON as a popular choice.</p>
+</div>
+<div class="paragraph">
+<p>There is nothing that prevents the usage of multiple data formats by a single CloudI service and typically a file extension suffix is used in the service name pattern to distinguish between different data formats.</p>
+</div>
+</div>
 </div>
 </div>
 </div>
