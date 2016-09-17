@@ -48,7 +48,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 <div id="content">
   <h1>Frequently Asked Questions</h1>
   <center><h3>version 1.5.3<br />
-              last updated on September 15<sup>th</sup> 2016</h3></center>
+              last updated on September 17<sup>th</sup> 2016</h3></center>
 
   <a name="1_contents"></a>
   <h2>1 - Introduction to CloudI</h2>
@@ -1672,13 +1672,14 @@ sudo cloudi stop
     integration.  However, CloudI provides many additional features for
     services that are normally not present:
     <ul>
-      <li>A service container abstraction for simpler <a href="http://en.wikipedia.org/wiki/Service_oriented_architecture" target="_blank">Service Oriented Architecture (SOA)</a> development.</li>
+      <li>A Microservice abstraction for simpler <a href="http://en.wikipedia.org/wiki/Service_oriented_architecture" target="_blank">Service Oriented Architecture (SOA)</a> development (Erlang processes are considered "Nanoservices").</li>
+      <li>Any service can <a href="http://cloudi.org/api.html#2_services_update" target="_blank">easily be updated</a> without downtime (<a href="http://erlang.org/doc/design_principles/appup_cookbook.html" target="_blank">Erlang/OTP upgrades</a> require large amounts of ad-hoc development for upgrades).</li>
       <li>Protocol agnostic transactional communication with a small consistent API (i.e., the <a href="api.html#Service" target="_blank">CloudI API</a>).</li>
       <li>Each external service thread uses its own <a href="api.html#Service" target="_blank">CloudI API</a> object with a separate connection to the Erlang VM which avoids any contention that is normally seen with Erlang ports, Erlang cnodes and Erlang jinterface usage.</li>
-      <li>All external services are managed with fault tolerance constraints, in the same way as Erlang/OTP supervisors.</li>
+      <li>All services are managed with fault tolerance constraints, in the same way as Erlang/OTP supervisors.</li>
       <li>All services are both started and stopped with an explicit order but Erlang/OTP application order is provided by release creation which creates ambiguity due to the top-level application's dependencies.</li>
       <li>A service can use service configuration options to easily adjust efficiency and memory consumption (e.g., <a href="api.html#2_services_add_config_opts" target="_blank">queue_limit, hibernate, request_pid_options, etc.</a>).</li>
-      <li>Erlang source code within a service can automatically handle more throughput than Erlang/OTP behaviors with <a href="api.html#2_services_add_config_opts" target="_blank">duo_mode</a> set within the service configuration options.</li>
+      <li>Internal services can automatically handle more throughput than Erlang/OTP behaviors with <a href="api.html#2_services_add_config_opts" target="_blank">duo_mode</a> set within the service configuration options.</li>
       <li>Every service request receives a unique UUID (Universally Unique IDentifier).</li>
       <li>A service request timeout is decreased by any queuing or processing delays to provide better soft-realtime timeout enforcement than what Erlang/OTP provides.</li>
       <li>Service name grouping with <a href="#4_URLregex">pattern matching</a>.</li>
@@ -1686,8 +1687,8 @@ sudo cloudi stop
       <li>TCP sockets are used instead of pipes to maximize atomic send throughput (the localhost MTU is 16436 on Linux, but pipes are typically 4096 on Linux (PIPE_BUF)).</li>
       <li>stdout and stderr output is logged automatically to the single CloudI log.</li>
       <li>A service does not require a node connection (like a cnode does), so it doesn't have service-count scalability problems (due to a distributed Erlang node being a member of a fully connected network topology).</li>
-      <li>UNIX domain socket integration is provided for external CloudI services with the "local" protocol (the default) service configuration option despite the fact Core Erlang/OTP does not provide UNIX domain socket integration.</a>
-      <li>A long-running CloudI service can be contrary to the Erlang VM scheduling and garbage collection, when under heavy load, if implemented without CloudI.  This is especially true when attempting to integrate with C or C++ which can cause the schedulers to lock-up if a NIF or port driver is used for longer operations (&ge; 1 ms), causing poor Erlang VM performance.</li>
+      <li>A long-running CloudI internal service is much more dependable when compared to a single Erlang process due to CloudI providing specific hints to the Erlang VM's garbage collection that avoids excessive memory consumption.</li>
+      <li>Any transactions are more dependable in a CloudI external service when compared to NIFs or port drivers due to the potential for unexpected latency that can cause the Erlang VM scheduler to "lock-up" when NIF or port driver latency exceeds 1 millisecond (a failure that requires manual recovery efforts).</li>
       <li>Core Erlang/OTP source code does not handle node-splits (global name registration, global transactions and mnesia are common examples), but CloudI provides master-less fault tolerance for a cluster of any number of CloudI nodes on an unreliable network.</li>
     </ul>
   </p>
