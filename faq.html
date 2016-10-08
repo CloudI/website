@@ -47,8 +47,8 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 
 <div id="content">
   <h1>Frequently Asked Questions</h1>
-  <center><h3>version 1.5.3<br />
-              last updated on September 26<sup>th</sup> 2016</h3></center>
+  <center><h3>version 1.5.4<br />
+              last updated on October 7<sup>th</sup> 2016</h3></center>
 
   <a name="1_contents"></a>
   <h2>1 - Introduction to CloudI</h2>
@@ -705,6 +705,36 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
     requirement of <a href="http://en.wikipedia.org/wiki/Representational_state_transfer#Stateless" target="_blank">being stateless</a>
     for service requests to provide event-driven, scalable, resilient and
     responsive CloudI services.
+  </p>
+  <p class="paragraph">
+    To be specific, CloudI is an example of <a href="https://en.wikipedia.org/wiki/Functional_reactive_programming" target="_blank">Functional Reactive Programming (FRP)</a>,
+    with CloudI service requests referred to as "signals" and each
+    service request handling function execution referred to as "events".
+    CloudI service request sends occur with a FRP "push-based" system
+    implementation.
+  </p>
+  <p class="paragraph">
+    To keep functional semantics in any programming language
+    that utilizes the CloudI API, separate function arguments are used
+    for each datum within the data of a service request when the
+    service request handling function is called
+    (with the function arity as 9 in Java, Perl, PHP, Ruby, 10 in Python,
+     11 in Erlang/Elixir and 13 in C/C++, where arities higher than 9 are due
+     to data handling details specific to the programming languages).
+    Using a relatively high arity count does initially make developers
+    feel uncomfortable due to common Object-Oriented design considering it
+    a bad code-smell
+    (e.g., "Refactoring: Improving the Design of Existing Code"
+     by Martin Fowler et al. (Reading, MA: Addison-Wesley, 1999. Print)
+     mentions long parameter lists on page 78-79) though it does
+    help the developer naturally avoid side-effects as is commonly done
+    in functional programming with immutable data.
+    The use of a high arity count for CloudI service requests is
+    part of a consistent interface that the CloudI API provides in each
+    programming language (functions are common to all well-utilized
+    programming languages while objects are not).
+  </p>
+  <p class="paragraph">
     For more details please refer to <a href="#1_WhatIs">"1.5 - What is CloudI?"</a>.
   </p>
   <div class="top"><a href="#1_contents">Top</a></div>
@@ -1916,6 +1946,7 @@ sudo cloudi stop
     (to determine the maximum throughput for a service request during the
      service request timeout period without any errors or timeouts):
     <ul>
+      <li><a href="https://github.com/CloudI/CloudI/blob/master/src/tests/request_rate/results/results_v1_5_4#readme" target="_blank">1.5.4 results (including cloudi_service_queue)</a></li>
       <li><a href="https://github.com/CloudI/CloudI/blob/master/src/tests/request_rate/results/results_v1_5_1/results.txt" target="_blank">1.5.1 results</a></li>
       <li><a href="https://github.com/CloudI/CloudI/blob/master/src/tests/request_rate/results/results_v1_4_0/results.txt" target="_blank">1.4.0 results</a></li>
     </ul>

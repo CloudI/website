@@ -47,8 +47,8 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 
 <div id="content">
   <h1>CloudI API Documentation</h1>
-  <center><h3>version 1.5.3<br />
-              last updated on September 26<sup>th</sup> 2016</h3></center>
+  <center><h3>version 1.5.4<br />
+              last updated on October 7<sup>th</sup> 2016</h3></center>
 
   <a name="Service"></a>
   <h2>CloudI API - Making a Service</h2>
@@ -99,7 +99,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
     <li><a href="#2_nodes_alive"           >2.15 - nodes_alive</a></li>
     <li><a href="#2_nodes_dead"            >2.16 - nodes_dead</a></li>
     <li><a href="#2_nodes"                 >2.17 - nodes</a></li>
-    <li><a href="#2_logging_set"           >2.18 - logging_set (new in 1.5.4)</a></li>
+    <li><a href="#2_logging_set"           >2.18 - logging_set</a></li>
     <li><a href="#2_logging_file_set"      >2.19 - logging_file_set</a></li>
     <li><a href="#2_logging_level_set"     >2.20 - logging_level_set</a></li>
     <li><a href="#2_logging_syslog_set"    >2.21 - logging_syslog_set</a></li>
@@ -394,13 +394,13 @@ CloudI::API.thread_count()
     priority.  Both the Timeout parameter and the Priority parameter
     accept the 'undefined' atom to assign the default configured value.
     Please see the
-    <a href="api/cloudi_core-1.5.3/cloudi_service.html#index" target="_blank">cloudi_service module</a>
+    <a href="api/cloudi_core-1.5.4/cloudi_service.html#index" target="_blank">cloudi_service module</a>
     to see all the available functions and the behavior interface functions
     that are implemented within an Erlang service.  The cloudi_service module
     is used within CloudI services, however, it is also possible to use CloudI
     services from external Erlang processes with a subset of the CloudI API
     functions in the
-    <a href="api/cloudi_core-1.5.3/cloudi.html#index" target="_blank">cloudi module</a>.
+    <a href="api/cloudi_core-1.5.4/cloudi.html#index" target="_blank">cloudi module</a>.
   </p>
   <p class="paragraph">
     Both the C and the C++ CloudI API rely on the same underlying code, with
@@ -1591,7 +1591,7 @@ cloudi_service:send_async_active(Dispatcher :: pid(),
     The send_async_active message is sent to the Erlang process as an
     Erlang message, so it arrives in the cloudi_service_handle_info function
     of the Erlang service module (i.e., the module that implements the
-    <a href="api/cloudi_core-1.5.3/cloudi_service.html#description" target="_blank">cloudi_service behavior</a>).
+    <a href="api/cloudi_core-1.5.4/cloudi_service.html#description" target="_blank">cloudi_service behavior</a>).
     The message formats are also provided as records that are accessible with:
   </p>
 <pre onclick="element_select(this);">
@@ -1950,7 +1950,7 @@ cloudi_service:mcast_async_active(Dispatcher :: pid(),
     The mcast_async_active message is sent to the Erlang process as an
     Erlang message, so it arrives in the cloudi_service_handle_info function
     of the Erlang service module (i.e., the module that implements the
-    <a href="api/cloudi_core-1.5.3/cloudi_service.html#description" target="_blank">cloudi_service behavior</a>).
+    <a href="api/cloudi_core-1.5.4/cloudi_service.html#description" target="_blank">cloudi_service behavior</a>).
     The message formats are also provided as records that are accessible with:
   </p>
 <pre onclick="element_select(this);">
@@ -2392,7 +2392,7 @@ CloudI::API.return_(command, name, pattern, response_info, response,
     after returning the service request response.  The simplest
     and preferred way to return a response within an Erlang service is to
     utilize the cloudi_service_handle_request functon return values used by the
-    <a href="api/cloudi_core-1.5.3/cloudi_service.html#Module%3acloudi_service_handle_request-11" target="_blank">cloudi_service behavior</a>.  You can also
+    <a href="api/cloudi_core-1.5.4/cloudi_service.html#Module%3acloudi_service_handle_request-11" target="_blank">cloudi_service behavior</a>.  You can also
     utilize the request handler return value for the response in the
     programming languages Java, Python, and Ruby.  However, within the
     external services it is more explicit (i.e., easier to understand the
@@ -2547,7 +2547,7 @@ CloudI::API.forward_(command, name, request_info, request,
     execution is aborted after forwarding the service request.  The simplest
     and preferred way to forward a request within an Erlang service is to
     utilize the cloudi_service_handle_request functon return values used by the
-    <a href="api/cloudi_core-1.5.3/cloudi_service.html#Module%3acloudi_service_handle_request-11" target="_blank">cloudi_service behavior</a>.
+    <a href="api/cloudi_core-1.5.4/cloudi_service.html#Module%3acloudi_service_handle_request-11" target="_blank">cloudi_service behavior</a>.
     All external services must use a forward function when forwarding a request.
   </p>
   <p class="paragraph">
@@ -2671,7 +2671,7 @@ CloudI::API.poll(timeout=nil)
     cloudi_service_api_requests and cloudi_service_http_cowboy).
     The CloudI Service API can also be accessed directly within the
     Erlang VM by using the
-    <a href="api/cloudi_core-1.5.3/cloudi_service_api.html#index" target="_blank">cloudi_service_api module</a>.
+    <a href="api/cloudi_core-1.5.4/cloudi_service_api.html#index" target="_blank">cloudi_service_api module</a>.
   </p>
   <table><tr><th>
     Protocol
@@ -2997,7 +2997,6 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
     external service creates.
   </td></tr><tr><td>
     nice
-    <br />(new in 1.5.4)
   </td><td>
     0
   </td><td>
@@ -3006,7 +3005,6 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
   </td></tr><tr><td>
     <a href="#2_services_add_config_opts_cgroup">
     cgroup</a>
-    <br />(new in 1.5.4)
   </td><td>
     undefined
   </td><td>
@@ -3418,7 +3416,7 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
     Set the group as either a positive integer group id or a string group name.
   </td></tr></table>
   <a name="2_services_add_config_opts_cgroup"></a>
-  <h4>cgroup (new in 1.5.4):</h4>
+  <h4>cgroup:</h4>
   <p class="paragraph">
     Set the cgroup membership of an external service's OS processes.
   </p>
@@ -4229,7 +4227,7 @@ curl http://localhost:6464/cloudi/api/rpc/nodes.erl
   <div class="top"><a href="#CloudI">Top</a></div>
 
   <a name="2_logging_set"></a>
-  <h3>2.18 - logging_set (new in 1.5.4)</h3>
+  <h3>2.18 - logging_set</h3>
 <p class="code" onclick="element_select(this);">
 curl -X POST -d '[{file, undefined}, {syslog, []}]' http://localhost:6464/cloudi/api/rpc/logging_set.erl
 </p>
