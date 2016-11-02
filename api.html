@@ -48,7 +48,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 <div id="content">
   <h1>CloudI API Documentation</h1>
   <center><h3>version 1.5.4<br />
-              last updated on October 31<sup>st</sup> 2016</h3></center>
+              last updated on November 2<sup>nd</sup> 2016</h3></center>
 
   <a name="Service"></a>
   <h2>CloudI API - Making a Service</h2>
@@ -3455,7 +3455,6 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
     Will not be called if initialization does not occur successfully
     (<a href="#2_services_add_config_opts_aspects_terminate_before">aspects_terminate_before</a>
      will still be called with the State as 'undefined').
-  </p>
   <table><tr><th>
     Service Type
   </th><th>
@@ -3485,13 +3484,16 @@ fun((CommandLine :: list(string()),
     {stop, Reason :: any(), NewState :: any()}).
 </pre>
   </td></tr></table>
+    It is also possible to use the Erlang tuple
+    "{{module(),&nbsp;FunctionName&nbsp;::&nbsp;atom()}}" to specify an
+    arity 0 function that returns an anonymous function as described above.
+  </p>
   <a name="2_services_add_config_opts_aspects_request_before"></a>
   <h4>aspects_request_before:</h4>
   <p class="paragraph">
     Provide a list of functions with the type signature shown below,
     with each function as either an anonymous Erlang function or
     an Erlang tuple "{module(),&nbsp;FunctionName&nbsp;::&nbsp;atom()}".
-  </p>
   <table><tr><th>
     Service Type
   </th><th>
@@ -3532,13 +3534,16 @@ fun((Type :: cloudi_service:request_type(),
     {stop, Reason :: any(), NewState :: any()}).
 </pre>
   </td></tr></table>
+    It is also possible to use the Erlang tuple
+    "{{module(),&nbsp;FunctionName&nbsp;::&nbsp;atom()}}" to specify an
+    arity 0 function that returns an anonymous function as described above.
+  </p>
   <a name="2_services_add_config_opts_aspects_request_after"></a>
   <h4>aspects_request_after:</h4>
   <p class="paragraph">
     Provide a list of functions with the type signature shown below,
     with each function as either an anonymous Erlang function or
     an Erlang tuple "{module(),&nbsp;FunctionName&nbsp;::&nbsp;atom()}".
-  </p>
   <table><tr><th>
     Service Type
   </th><th>
@@ -3581,13 +3586,16 @@ fun((Type :: cloudi_service:request_type(),
     {stop, Reason :: any(), NewState :: any()}).
 </pre>
   </td></tr></table>
+    It is also possible to use the Erlang tuple
+    "{{module(),&nbsp;FunctionName&nbsp;::&nbsp;atom()}}" to specify an
+    arity 0 function that returns an anonymous function as described above.
+  </p>
   <a name="2_services_add_config_opts_aspects_info_before"></a>
   <h4>aspects_info_before:</h4>
   <p class="paragraph">
     Provide a list of functions with the type signature shown below,
     with each function as either an anonymous Erlang function or
     an Erlang tuple "{module(),&nbsp;FunctionName&nbsp;::&nbsp;atom()}".
-  </p>
   <table><tr><th>
     Service Type
   </th><th>
@@ -3603,13 +3611,16 @@ fun((Request :: any(),
     {stop, Reason :: any(), NewState :: any()}).
 </pre>
   </td></tr></table>
+    It is also possible to use the Erlang tuple
+    "{{module(),&nbsp;FunctionName&nbsp;::&nbsp;atom()}}" to specify an
+    arity 0 function that returns an anonymous function as described above.
+  </p>
   <a name="2_services_add_config_opts_aspects_info_after"></a>
   <h4>aspects_info_after:</h4>
   <p class="paragraph">
     Provide a list of functions with the type signature shown below,
     with each function as either an anonymous Erlang function or
     an Erlang tuple "{module(),&nbsp;FunctionName&nbsp;::&nbsp;atom()}".
-  </p>
   <table><tr><th>
     Service Type
   </th><th>
@@ -3625,6 +3636,10 @@ fun((Request :: any(),
     {stop, Reason :: any(), NewState :: any()}).
 </pre>
   </td></tr></table>
+    It is also possible to use the Erlang tuple
+    "{{module(),&nbsp;FunctionName&nbsp;::&nbsp;atom()}}" to specify an
+    arity 0 function that returns an anonymous function as described above.
+  </p>
   <a name="2_services_add_config_opts_aspects_terminate_before"></a>
   <h4>aspects_terminate_before:</h4>
   <p class="paragraph">
@@ -3633,7 +3648,6 @@ fun((Request :: any(),
     an Erlang tuple "{module(),&nbsp;FunctionName&nbsp;::&nbsp;atom()}".
     Will still be called if initialization does not occur successfully
     (with State as 'undefined').
-  </p>
   <table><tr><th>
     Service Type
   </th><th>
@@ -3648,6 +3662,10 @@ fun((Reason :: any(),
     {ok, State :: any()}).
 </pre>
   </td></tr></table>
+    It is also possible to use the Erlang tuple
+    "{{module(),&nbsp;FunctionName&nbsp;::&nbsp;atom()}}" to specify an
+    arity 0 function that returns an anonymous function as described above.
+  </p>
   <a name="2_services_add_config_opts_hibernate"></a>
   <h4>hibernate:</h4>
   <table><tr><th>
@@ -3778,6 +3796,28 @@ curl -X POST -d '[{"", [{module, cloudi_service_messaging_sequence1}, {modules_l
     If the service state needs to be modified during the update, a function
     can be provided in the module_state field.
   </p>
+  <p class="paragraph">
+    The module_state value for an internal service update can be provided as
+    an anonymous Erlang function or an Erlang tuple
+    "{module(),&nbsp;FunctionName&nbsp;::&nbsp;atom()}" with the types below:
+<pre onclick="element_select(this);">
+fun((OldModuleVersion :: list(any()),
+     NewModuleVersion :: list(any()),
+     OldState :: any()) -&gt;
+    {ok, NewState :: any()} |
+    {error, Reason :: any()}).
+</pre>
+    It is also possible to use the Erlang tuple
+    "{{module(),&nbsp;FunctionName&nbsp;::&nbsp;atom()}}" to specify an
+    arity 0 function that returns an anonymous function as described above.
+    Providing the module version before and after the module update can
+    help guide any upgrade logic to return the appropriate state data.
+  </p>
+  <p class="paragraph">
+    External service updates require either the type be set to external or
+    that the file_path, args, or env field be set (to cause the OS process
+    of the external service to restart during the update).
+  </p>
 <pre>
 % external service update options
 [{type, external},
@@ -3797,11 +3837,6 @@ curl -X POST -d '[{"", [{module, cloudi_service_messaging_sequence1}, {modules_l
  {dest_list_allow, dest_list()},              % update service configuration
  {options, <a href="#2_services_update_config_opts_external">service_update_plan_options_external()</a>}] % update service configuration options
 </pre>
-  <p class="paragraph">
-    External service updates require either the type be set to external or
-    that the file_path, args, or env field be set (to cause the OS process
-    of the external service to restart during the update).
-  </p>
   <p class="paragraph">
     The sync field is used to determine whether the update occurs while
     no service processes are processing a service request.  If global state
@@ -4269,7 +4304,6 @@ curl -X POST -d '[{file, undefined}, {syslog, []}]' http://localhost:6464/cloudi
     with each function as either an anonymous Erlang function or
     an Erlang tuple "{module(),&nbsp;FunctionName&nbsp;::&nbsp;atom()}".
     Each function will be called before the log data is stored to disk.
-  </p>
 <pre onclick="element_select(this);">
 fun((Level :: fatal | error | warn | info | debug | trace,
      Timestamp :: erlang:timestamp(),
@@ -4283,6 +4317,10 @@ fun((Level :: fatal | error | warn | info | debug | trace,
      LogMessage :: string()) -&gt;
     ok.
 </pre>
+    It is also possible to use the Erlang tuple
+    "{{module(),&nbsp;FunctionName&nbsp;::&nbsp;atom()}}" to specify an
+    arity 0 function that returns an anonymous function as described above.
+  </p>
   <a name="2_logging_set_config_opts_aspects_log_after"></a>
   <h4>aspects_log_after:</h4>
   <p class="paragraph">
@@ -4290,7 +4328,6 @@ fun((Level :: fatal | error | warn | info | debug | trace,
     with each function as either an anonymous Erlang function or
     an Erlang tuple "{module(),&nbsp;FunctionName&nbsp;::&nbsp;atom()}".
     Each function will be called after the log data is stored to disk.
-  </p>
 <pre onclick="element_select(this);">
 fun((Level :: fatal | error | warn | info | debug | trace,
      Timestamp :: erlang:timestamp(),
@@ -4304,6 +4341,10 @@ fun((Level :: fatal | error | warn | info | debug | trace,
      LogMessage :: string()) -&gt;
     ok.
 </pre>
+    It is also possible to use the Erlang tuple
+    "{{module(),&nbsp;FunctionName&nbsp;::&nbsp;atom()}}" to specify an
+    arity 0 function that returns an anonymous function as described above.
+  </p>
   <div class="top"><a href="#CloudI">Top</a></div>
 
   <a name="2_logging_file_set"></a>
