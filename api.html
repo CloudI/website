@@ -3813,8 +3813,8 @@ fun((OldModuleVersion :: list(any()),
     Providing the module version before and after the module update can
     help guide any upgrade logic to return the appropriate state data.  If the
     module_state function returns an error (or any other problem occurs during
-    the update), the update does not change any state, though the module and
-    code_path modifications take effect after during the update
+    the update), the update does not change any service state, though the
+    module and code_path modifications take effect after during the update
     (i.e., modules_load, modules_unload, code_paths_add, code_paths_remove).
   </p>
   <p class="paragraph">
