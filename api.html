@@ -3811,11 +3811,14 @@ fun((OldModuleVersion :: list(any()),
     "{{module(),&nbsp;FunctionName&nbsp;::&nbsp;atom()}}" to specify an
     arity 0 function that returns an anonymous function as described above.
     Providing the module version before and after the module update can
-    help guide any upgrade logic to return the appropriate state data.  If the
-    module_state function returns an error (or any other problem occurs during
-    the update), the update does not change any service state, though the
-    module and code_path modifications take effect after during the update
-    (i.e., modules_load, modules_unload, code_paths_add, code_paths_remove).
+    help guide any upgrade or downgrade logic to return the appropriate
+    state data.  If the module_state function returns an error (or any
+    other problem occurs during the update), the update does not change
+    any service state, though the module and code_path modifications
+    take effect after the update has been processed
+    (i.e., modules_load, modules_unload, code_paths_add, code_paths_remove,
+     all occur even when an update fails, which may cause the service
+     instance to fail when an update fails).
   </p>
   <p class="paragraph">
     External service updates require either the type be set to external or
