@@ -47,7 +47,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 <div id="content">
   <h1>CloudI API Documentation</h1>
   <center><h3>version 1.5.4<br />
-              last updated on November 2<sup>nd</sup> 2016</h3></center>
+              last updated on December 19<sup>th</sup> 2016</h3></center>
 
   <a name="Service"></a>
   <h2>CloudI API - Making a Service</h2>
@@ -2941,6 +2941,19 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
     (1000 * MaxT) - 100, if MaxT &gt; 0, or 2000, if MaxT = 0.
     All default termination timeout values are clamped to the range [10..60000].
   </td></tr><tr><td>
+    <a href="#2_services_add_config_opts_restart_delay">
+    restart_delay
+    </a><br />
+    (new in 1.5.5)
+  </td><td>
+    false
+  </td><td>
+    Delay the restart of the service after a failure, to avoid spurious
+    failures when global resources require extra time before they are used
+    with a new service instance.  When set to a list ([])
+    <a href="#2_services_add_config_opts_restart_delay">
+    options can be provided</a>.
+  </td></tr><tr><td>
     scope
   </td><td>
     default
@@ -3257,6 +3270,37 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
     The minimum process count value that can be used for this service.
     An integer provides an absolute number while a floating point number is
     used as a CPU multiplier (in the same way as ProcessCount).
+  </td></tr></table>
+  <a name="2_services_add_config_opts_restart_delay"></a>
+  <h4>restart_delay (new in 1.5.5):</h4>
+  <table><tr><th>
+    Option
+  </th><th>
+    Default
+  </th><th>
+    Details
+  </th></tr><tr><td>
+    time_exponential_min
+  </td><td>
+    1
+  </td><td>
+    The first delay (in milliseconds) used during a restart with other
+    delays increasing exponentially (using a base of 2 to provide
+    binary exponential backoff).
+  </td></tr><tr><td>
+    time_exponential_max
+  </td><td>
+    500
+  </td><td>
+    A maximum (in milliseconds) for the exponential growth of the delay
+    during a restart.
+  </td></tr><tr><td>
+    time_absolute
+  </td><td>
+    undefined
+  </td><td>
+    A single delay (in milliseconds) will be used for each restart and
+    the delay will not change based on the restart count.
   </td></tr></table>
   <a name="2_services_add_config_opts_monkey_latency"></a>
   <h4>monkey_latency:</h4>
