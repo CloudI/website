@@ -3295,6 +3295,28 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
     A maximum (in milliseconds) for the exponential growth of the delay
     during a restart.
   </td></tr><tr><td>
+    time_linear_min
+  </td><td>
+    undefined
+  </td><td>
+    A minimum delay (in milliseconds) used during a restart with other
+    delays increasing linearly (using the time_linear_slope setting).
+  </td></tr><tr><td>
+    time_linear_max
+  </td><td>
+    undefined
+  </td><td>
+    A maximum (in milliseconds) for the linear growth of the delay
+    during a restart.
+  </td></tr><tr><td>
+    time_linear_slope
+  </td><td>
+    undefined
+  </td><td>
+    The delay increase (in milliseconds) to be used for each restart with
+    the 0-based restart count (i.e., the first restart will limited to the
+    time_linear_min setting).
+  </td></tr><tr><td>
     time_absolute
   </td><td>
     undefined
