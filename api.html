@@ -4504,11 +4504,17 @@ curl -X POST -d '[{identity, "CloudI"}, {facility, local0}, {level, trace}]' htt
     The syslog loglevel specified with a CloudI loglevel
     (with the CloudI&nbsp;loglevel&nbsp;-&gt;&nbsp;syslog&nbsp;level
      equivalence below):
+    <br />
     fatal&nbsp;-&gt;&nbsp;critical&nbsp;(2),
+    <br />
     error&nbsp;-&gt;&nbsp;error&nbsp;(3),
+    <br />
     warn&nbsp;-&gt;&nbsp;warning&nbsp;(4),
+    <br />
     info&nbsp;-&gt;&nbsp;notice&nbsp;(5),
+    <br />
     debug&nbsp;-&gt;&nbsp;informational&nbsp;(6),
+    <br />
     trace&nbsp;-&gt;&nbsp;debug&nbsp;(7).
   </td></tr><tr><td>
     transport
@@ -4589,14 +4595,23 @@ curl -X POST -d '[{any, [{output, lager_file_backend}, {output_args, [{file, "lo
     The formatter loglevel specified with a CloudI loglevel or a lager loglevel
     (with the lager&nbsp;loglevel&nbsp;-&gt;&nbsp;CloudI&nbsp;loglevel
      equivalence below):
+    <br />
     emergency&nbsp;-&gt;&nbsp;fatal,
+    <br />
     alert&nbsp;(becomes&nbsp;emergency)&nbsp;-&gt;&nbsp;fatal,
+    <br />
     critical&nbsp;(becomes&nbsp;emergency)&nbsp;-&gt;&nbsp;fatal,
+    <br />
     error&nbsp;-&gt;&nbsp;error,
+    <br />
     warning&nbsp;-&gt;&nbsp;warn,
+    <br />
     notice&nbsp;(becomes&nbsp;warning)&nbsp;-&gt;&nbsp;warn,
+    <br />
     info&nbsp;-&gt;&nbsp;info,
+    <br />
     debug&nbsp;-&gt;&nbsp;debug,
+    <br />
     none&nbsp;-&gt;&nbsp;off.
   </td></tr><tr><td>
     output
