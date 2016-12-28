@@ -4471,6 +4471,7 @@ curl -X POST -d '[{identity, "CloudI"}, {facility, local0}, {level, trace}]' htt
   <p class="paragraph">
     Send all logging output to syslog.
   </p>
+<strong>(new in 1.5.5)</strong>
   <a name="2_logging_syslog_set_config"></a>
   <table><tr><th>
     Option
@@ -4483,16 +4484,18 @@ curl -X POST -d '[{identity, "CloudI"}, {facility, local0}, {level, trace}]' htt
   </td><td>
     "CloudI"
   </td><td>
-    String syslog identity.
+    String syslog identity (referred to as the APP-NAME in
+    <a href="https://tools.ietf.org/html/rfc5424#section-6.2.5" target="_blank">RFC5424</a>).
   </td></tr><tr><td>
     facility
   </td><td>
     local0
   </td><td>
-    A syslog facility provided as a name (kern | user | mail | daemon | auth |
-    syslog | lpr | news | uucp | cron | authpriv | ftp | netinfo | remoteauth |
-    install | ras | local0 | local1 | local2 | local3 | local4 | local5 |
-    local6 | local7) or as an integer (&ge; 0).
+    A syslog facility provided as a name
+    (kernel | user | mail | daemon | auth0 | syslog |
+     print | news | uucp | clock0 | auth1 | ftp | ntp |
+     auth2 | auth3 | clock1 | local0 | local1 | local2 |
+     local3 | local4 | local5 | local6 | local7) or as an integer (&ge; 0).
   </td></tr><tr><td>
     level
   </td><td>
@@ -4501,12 +4504,49 @@ curl -X POST -d '[{identity, "CloudI"}, {facility, local0}, {level, trace}]' htt
     The syslog loglevel specified with a CloudI loglevel
     (with the CloudI&nbsp;loglevel&nbsp;-&gt;&nbsp;syslog&nbsp;level
      equivalence below):
-    fatal&nbsp;-&gt;&nbsp;emerg&nbsp;(0),
-    error&nbsp;-&gt;&nbsp;err&nbsp;(3),
+    fatal&nbsp;-&gt;&nbsp;critical&nbsp;(2),
+    error&nbsp;-&gt;&nbsp;error&nbsp;(3),
     warn&nbsp;-&gt;&nbsp;warning&nbsp;(4),
-    info&nbsp;-&gt;&nbsp;info&nbsp;(6),
-    debug&nbsp;-&gt;&nbsp;debug&nbsp;(7),
-    trace&nbsp;-&gt;&nbsp;(8).
+    info&nbsp;-&gt;&nbsp;notice&nbsp;(5),
+    debug&nbsp;-&gt;&nbsp;informational&nbsp;(6),
+    trace&nbsp;-&gt;&nbsp;debug&nbsp;(7).
+  </td></tr><tr><td>
+    transport
+  </td><td>
+    local
+  </td><td>
+    The transport to use for syslog data (local | udp | tcp | tls).
+  </td></tr><tr><td>
+    transport_options
+  </td><td>
+    []
+  </td><td>
+    The transport options to use for the syslog socket.
+  </td></tr><tr><td>
+    protocol
+  </td><td>
+    rfc3164
+  </td><td>
+    The syslog protocol to use (rfc3164 | rfc5424).
+  </td></tr><tr><td>
+    path
+  </td><td>
+    "/dev/log"
+  </td><td>
+    The filesystem path to use for the local transport destination.
+  </td></tr><tr><td>
+    host
+  </td><td>
+    {127,0,0,1}
+  </td><td>
+    The host to use for the udp, tcp or tls transport destination.
+  </td></tr><tr><td>
+    port
+  </td><td>
+    undefined
+  </td><td>
+    The port to use for the transport destination
+    (undefined uses the default port for the transport).
   </td></tr></table>
   <div class="top"><a href="#CloudI">Top</a></div>
 
