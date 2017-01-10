@@ -358,15 +358,13 @@ defmodule HelloWorld.Mixfile do
 
     def project do
         [app: :'Elixir.HelloWorld',
-         version: "1.5.4",
-         elixirc_paths: ["lib/",
-                         "/usr/local/lib/cloudi-1.5.4/" &lt;&gt;
-                         "lib/cloudi_core-1.5.4/include/"],
+         version: "1.6.0",
+         elixirc_paths: ["lib/"],
          deps: []]
     end
 
     def application do
-        [applications: []]
+        [applications: [:cloudi_core]]
     end
 end
 EOF
