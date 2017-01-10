@@ -47,7 +47,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 <div id="content">
   <h1>CloudI API Documentation</h1>
   <center><h3>version 1.5.4<br />
-              last updated on December 27<sup>th</sup> 2016</h3></center>
+              last updated on January 10<sup>th</sup> 2017</h3></center>
 
   <a name="Service"></a>
   <h2>CloudI API - Making a Service</h2>
@@ -835,8 +835,8 @@ CloudI::API.unsubscribe(pattern)
 <pre onclick="element_select(this);">
 cloudi_service:get_pid(Dispatcher :: pid(),
                        Name :: string(),
-                       Timeout :: non_neg_integer() |
-                                  'undefined' | 'immediate') -&gt;
+                       Timeout :: non_neg_integer() | 'undefined' |
+                                  'limit_min' | 'limit_max') -&gt;
     {'ok', PatternPid :: {string(), pid()}} |
     {'error', Reason :: atom()}.
 </pre>
@@ -889,8 +889,8 @@ cloudi_service:get_pid(Dispatcher :: pid(),
 <pre onclick="element_select(this);">
 cloudi_service:get_pids(Dispatcher :: pid(),
                         Name :: string(),
-                        Timeout :: non_neg_integer() |
-                                   'undefined' | 'immediate') -&gt;
+                        Timeout :: non_neg_integer() | 'undefined' |
+                                   'limit_min' | 'limit_max') -&gt;
     {'ok', PatternPids :: list({string(), pid()})} |
     {'error', Reason :: atom()}.
 </pre>
@@ -981,8 +981,8 @@ cloudi_service:send_sync(Dispatcher :: pid(),
                          Name :: string(),
                          RequestInfo :: any(),
                          Request :: any(),
-                         Timeout :: non_neg_integer() |
-                                    'undefined' | 'immediate',
+                         Timeout :: non_neg_integer() | 'undefined' |
+                                    'limit_min' | 'limit_max',
                          Priority :: integer() | 'undefined') -&gt;
     {'ok', ResponseInfo :: any(), Response :: any()} |
     {'ok', Response :: any()} |
@@ -991,8 +991,8 @@ cloudi_service:send_sync(Dispatcher :: pid(),
                          Name :: string(),
                          RequestInfo :: any(),
                          Request :: any(),
-                         Timeout :: non_neg_integer() |
-                                    'undefined' | 'immediate',
+                         Timeout :: non_neg_integer() | 'undefined' |
+                                    'limit_min' | 'limit_max',
                          Priority :: integer() | 'undefined',
                          PatternPid :: {string(), pid()}) -&gt;
     {'ok', ResponseInfo :: any(), Response :: any()} |
@@ -1269,8 +1269,8 @@ cloudi_service:send_async(Dispatcher :: pid(),
                           Name :: string(),
                           RequestInfo :: any(),
                           Request :: any(),
-                          Timeout :: non_neg_integer() |
-                                     'undefined' | 'immediate',
+                          Timeout :: non_neg_integer() | 'undefined' |
+                                    'limit_min' | 'limit_max',
                           Priority :: integer() | 'undefined') -&gt;
     {'ok', TransId :: &lt;&lt;_:128&gt;&gt;} |
     {'error', Reason :: atom()}.
@@ -1278,8 +1278,8 @@ cloudi_service:send_async(Dispatcher :: pid(),
                           Name :: string(),
                           RequestInfo :: any(),
                           Request :: any(),
-                          Timeout :: non_neg_integer() |
-                                     'undefined' | 'immediate',
+                          Timeout :: non_neg_integer() | 'undefined' |
+                                    'limit_min' | 'limit_max',
                           Priority :: integer() | 'undefined',
                           PatternPid :: {string(), pid()}) -&gt;
     {'ok', TransId :: &lt;&lt;_:128&gt;&gt;} |
@@ -1517,8 +1517,8 @@ cloudi_service:send_async_active(Dispatcher :: pid(),
                                  Name :: string(),
                                  RequestInfo :: any(),
                                  Request :: any(),
-                                 Timeout :: non_neg_integer() |
-                                            'undefined' | 'immediate',
+                                 Timeout :: non_neg_integer() | 'undefined' |
+                                            'limit_min' | 'limit_max',
                                  Priority :: integer() | 'undefined') -&gt;
     {'ok', TransId :: &lt;&lt;_:128&gt;&gt;} |
     {'error', atom()}.
@@ -1526,8 +1526,8 @@ cloudi_service:send_async_active(Dispatcher :: pid(),
                                  Name :: string(),
                                  RequestInfo :: any(),
                                  Request :: any(),
-                                 Timeout :: non_neg_integer() |
-                                            'undefined' | 'immediate',
+                                 Timeout :: non_neg_integer() | 'undefined' |
+                                            'limit_min' | 'limit_max',
                                  Priority :: integer() | 'undefined',
                                  PatternPid :: {string(), pid()}) -&gt;
     {'ok', TransId :: &lt;&lt;_:128&gt;&gt;} |
@@ -1647,8 +1647,8 @@ cloudi_service:mcast_async(Dispatcher :: pid(),
                            Name :: string(),
                            RequestInfo :: any(),
                            Request :: any(),
-                           Timeout :: non_neg_integer() |
-                                      'undefined' | 'immediate',
+                           Timeout :: non_neg_integer() | 'undefined' |
+                                      'limit_min' | 'limit_max',
                            Priority :: integer() | 'undefined') -&gt;
     {'ok', TransIdList :: list(&lt;&lt;_:128&gt;&gt;)} |
     {'error', Reason :: atom()}.
@@ -1883,8 +1883,8 @@ cloudi_service:mcast_async_active(Dispatcher :: pid(),
                                   Name :: string(),
                                   RequestInfo :: any(),
                                   Request :: any(),
-                                  Timeout :: non_neg_integer() |
-                                             'undefined' | 'immediate',
+                                  Timeout :: non_neg_integer() | 'undefined' |
+                                             'limit_min' | 'limit_max',
                                   Priority :: integer() |
                                               'undefined') -&gt;
     {'ok', TransIdList :: list(&lt;&lt;_:128&gt;&gt;)} |
@@ -1994,8 +1994,8 @@ int CloudI::API::recv_async(uint32_t timeout,
   <div class="tab_contents">
 <pre onclick="element_select(this);">
 cloudi_service:recv_async(Dispatcher :: pid(),
-                          Timeout :: non_neg_integer() |
-                                     'undefined' | 'immediate',
+                          Timeout :: non_neg_integer() | 'undefined' |
+                                     'limit_min' | 'limit_max',
                           TransId :: &lt;&lt;_:128&gt;&gt;,
                           Consume :: boolean()) -&gt;
     {'ok', ResponseInfo :: any(), Response :: any(),
@@ -2224,8 +2224,8 @@ array($response_info, $response, $trans_id)
   <div class="tab_contents">
 <pre onclick="element_select(this);">
 cloudi_service:recv_asyncs(Dispatcher :: pid(),
-                           Timeout :: non_neg_integer() |
-                                      'undefined' | 'immediate',
+                           Timeout :: non_neg_integer() | 'undefined' |
+                                      'limit_min' | 'limit_max',
                            TransIdList :: list(&lt;&lt;_:128&gt;&gt;),
                            Consume :: boolean()) -&gt;
     {'ok', list({ResponseInfo :: any(), Response :: any(),
@@ -2768,9 +2768,9 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
  {dest_refresh, <a href="#1_Intro_dest">dest_refresh()</a>},            % default is immediate_closest
  {protocol, default | local | tcp | udp},   % default is local
  {buffer_size, default | pos_integer()},    % default is 16384 bytes
- {timeout_init, timeout_milliseconds()},    % default is 5000 milliseconds
- {timeout_async, timeout_milliseconds()},   % default is 5000 milliseconds
- {timeout_sync, timeout_milliseconds()},    % default is 5000 milliseconds
+ {timeout_init, 101..4294967195},           % default is 5000 milliseconds
+ {timeout_async, 499..4294967195},          % default is 5000 milliseconds
+ {timeout_sync, 499..4294967195},           % default is 5000 milliseconds
  {dest_list_deny, dest_list()},             % default is undefined
  {dest_list_allow, dest_list()},            % default is undefined
  {count_process, pos_integer() | float()},  % default is 1
@@ -2826,6 +2826,16 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
     restarts allowed within MaxT seconds (same parameters used by Erlang
     supervisors).  The ServiceOptionsPropList provides the configurable
     defaults:
+  </p>
+  <p class="paragraph">
+    (new in 1.6.0) Timeout configuration values in milliseconds may be
+    provided as 'limit_min' or 'limit_max' to use the extreme values
+    (be careful, since 'limit_max' is the equivalent of 49.7 days and
+     no one wants to wait 49.7 days to discover a failure).  This is possible
+    with the configuration values timeout_init, timeout_async, timeout_sync
+    and the service configuration options values
+    request_timeout_immediate_max, response_timeout_immediate_max,
+    timeout_terminate, restart_delay, monkey_latency .
   </p>
   <a name="2_services_add_config_opts"></a>
   <table><tr><th>
@@ -2895,11 +2905,14 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
     request timeout, after the request has been handled.
   </td></tr><tr><td>
     request_timeout_immediate_max
+    <br />
+    (changed in 1.6.0)
   </td><td>
-    20000
+    20001
   </td><td>
-    Maximum timeout (in milliseconds) considered "immediate".  Larger timeouts
-    monitor the service request destination to avoid timer memory consumption
+    Defines the maximum timeout (in milliseconds) considered "immediate".
+    A service request timeout that is greater than or equal to this value
+    causes the destination to be monitored to avoid timer memory consumption
     when a destination dies.
   </td></tr><tr><td>
     response_timeout_adjustment
@@ -2910,12 +2923,16 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
     based on the sender-side's timing (more accurate).
   </td></tr><tr><td>
     response_timeout_immediate_max
+    <br />
+    (changed in 1.6.0)
   </td><td>
-    20000
+    20001
   </td><td>
-    Maximum timeout (in milliseconds) considered "immediate".  Larger timeouts
-    will send a <a href="faq.html#4_Null">null response</a>
-    instead of discarding a <a href="faq.html#4_Null">null response</a>.
+    Defines the maximum timeout (in milliseconds) considered "immediate".
+    A service request response timeout that is greater than or equal to this
+    value will send a <a href="faq.html#4_Null">null response</a>
+    instead of discarding a <a href="faq.html#4_Null">null response</a> and
+    relying on the sending-side's timer expiring.
   </td></tr><tr><td>
     <a href="#2_services_add_config_opts_count_process_dynamic">
     count_process_dynamic
@@ -2944,7 +2961,7 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
     <a href="#2_services_add_config_opts_restart_delay">
     restart_delay
     </a><br />
-    (new in 1.5.5)
+    (new in 1.6.0)
   </td><td>
     false
   </td><td>
@@ -3272,7 +3289,7 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
     used as a CPU multiplier (in the same way as ProcessCount).
   </td></tr></table>
   <a name="2_services_add_config_opts_restart_delay"></a>
-  <h4>restart_delay (new in 1.5.5):</h4>
+  <h4>restart_delay (new in 1.6.0):</h4>
   <table><tr><th>
     Option
   </th><th>
@@ -4471,7 +4488,7 @@ curl -X POST -d '[{identity, "CloudI"}, {facility, local0}, {level, trace}]' htt
   <p class="paragraph">
     Send all logging output to syslog.
   </p>
-<strong>(new in 1.5.5)</strong>
+<strong>(new in 1.6.0)</strong>
   <a name="2_logging_syslog_set_config"></a>
   <table><tr><th>
     Option
