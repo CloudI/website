@@ -46,8 +46,8 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 
 <div id="content">
   <h1>CloudI API Documentation</h1>
-  <center><h3>version 1.5.4<br />
-              last updated on January 10<sup>th</sup> 2017</h3></center>
+  <center><h3>version 1.6.0<br />
+              last updated on January 11<sup>th</sup> 2017</h3></center>
 
   <a name="Service"></a>
   <h2>CloudI API - Making a Service</h2>
@@ -393,13 +393,13 @@ CloudI::API.thread_count()
     priority.  Both the Timeout parameter and the Priority parameter
     accept the 'undefined' atom to assign the default configured value.
     Please see the
-    <a href="api/cloudi_core-1.5.4/cloudi_service.html#index" target="_blank">cloudi_service module</a>
+    <a href="api/cloudi_core-1.6.0/cloudi_service.html#index" target="_blank">cloudi_service module</a>
     to see all the available functions and the behavior interface functions
     that are implemented within an Erlang service.  The cloudi_service module
     is used within CloudI services, however, it is also possible to use CloudI
     services from external Erlang processes with a subset of the CloudI API
     functions in the
-    <a href="api/cloudi_core-1.5.4/cloudi.html#index" target="_blank">cloudi module</a>.
+    <a href="api/cloudi_core-1.6.0/cloudi.html#index" target="_blank">cloudi module</a>.
   </p>
   <p class="paragraph">
     Both the C and the C++ CloudI API rely on the same underlying code, with
@@ -1590,7 +1590,7 @@ cloudi_service:send_async_active(Dispatcher :: pid(),
     The send_async_active message is sent to the Erlang process as an
     Erlang message, so it arrives in the cloudi_service_handle_info function
     of the Erlang service module (i.e., the module that implements the
-    <a href="api/cloudi_core-1.5.4/cloudi_service.html#description" target="_blank">cloudi_service behavior</a>).
+    <a href="api/cloudi_core-1.6.0/cloudi_service.html#description" target="_blank">cloudi_service behavior</a>).
     The message formats are also provided as records that are accessible with:
   </p>
 <pre onclick="element_select(this);">
@@ -1949,7 +1949,7 @@ cloudi_service:mcast_async_active(Dispatcher :: pid(),
     The mcast_async_active message is sent to the Erlang process as an
     Erlang message, so it arrives in the cloudi_service_handle_info function
     of the Erlang service module (i.e., the module that implements the
-    <a href="api/cloudi_core-1.5.4/cloudi_service.html#description" target="_blank">cloudi_service behavior</a>).
+    <a href="api/cloudi_core-1.6.0/cloudi_service.html#description" target="_blank">cloudi_service behavior</a>).
     The message formats are also provided as records that are accessible with:
   </p>
 <pre onclick="element_select(this);">
@@ -2391,7 +2391,7 @@ CloudI::API.return_(command, name, pattern, response_info, response,
     after returning the service request response.  The simplest
     and preferred way to return a response within an Erlang service is to
     utilize the cloudi_service_handle_request functon return values used by the
-    <a href="api/cloudi_core-1.5.4/cloudi_service.html#Module%3acloudi_service_handle_request-11" target="_blank">cloudi_service behavior</a>.  You can also
+    <a href="api/cloudi_core-1.6.0/cloudi_service.html#Module%3acloudi_service_handle_request-11" target="_blank">cloudi_service behavior</a>.  You can also
     utilize the request handler return value for the response in the
     programming languages Java, Python, and Ruby.  However, within the
     external services it is more explicit (i.e., easier to understand the
@@ -2546,7 +2546,7 @@ CloudI::API.forward_(command, name, request_info, request,
     execution is aborted after forwarding the service request.  The simplest
     and preferred way to forward a request within an Erlang service is to
     utilize the cloudi_service_handle_request functon return values used by the
-    <a href="api/cloudi_core-1.5.4/cloudi_service.html#Module%3acloudi_service_handle_request-11" target="_blank">cloudi_service behavior</a>.
+    <a href="api/cloudi_core-1.6.0/cloudi_service.html#Module%3acloudi_service_handle_request-11" target="_blank">cloudi_service behavior</a>.
     All external services must use a forward function when forwarding a request.
   </p>
   <p class="paragraph">
@@ -2670,7 +2670,7 @@ CloudI::API.poll(timeout=nil)
     cloudi_service_api_requests and cloudi_service_http_cowboy).
     The CloudI Service API can also be accessed directly within the
     Erlang VM by using the
-    <a href="api/cloudi_core-1.5.4/cloudi_service_api.html#index" target="_blank">cloudi_service_api module</a>.
+    <a href="api/cloudi_core-1.6.0/cloudi_service_api.html#index" target="_blank">cloudi_service_api module</a>.
   </p>
   <table><tr><th>
     Protocol
@@ -2828,7 +2828,7 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
     defaults:
   </p>
   <p class="paragraph">
-    (new in 1.6.0) Timeout configuration values in milliseconds may be
+    Timeout configuration values in milliseconds may be
     provided as 'limit_min' or 'limit_max' to use the extreme values
     (be careful, since 'limit_max' is the equivalent of 49.7 days and
      no one wants to wait 49.7 days to discover a failure).  This is possible
@@ -2905,8 +2905,6 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
     request timeout, after the request has been handled.
   </td></tr><tr><td>
     request_timeout_immediate_max
-    <br />
-    (changed in 1.6.0)
   </td><td>
     20001
   </td><td>
@@ -2923,8 +2921,6 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
     based on the sender-side's timing (more accurate).
   </td></tr><tr><td>
     response_timeout_immediate_max
-    <br />
-    (changed in 1.6.0)
   </td><td>
     20001
   </td><td>
@@ -2960,8 +2956,7 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
   </td></tr><tr><td>
     <a href="#2_services_add_config_opts_restart_delay">
     restart_delay
-    </a><br />
-    (new in 1.6.0)
+    </a>
   </td><td>
     false
   </td><td>
@@ -3289,7 +3284,7 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
     used as a CPU multiplier (in the same way as ProcessCount).
   </td></tr></table>
   <a name="2_services_add_config_opts_restart_delay"></a>
-  <h4>restart_delay (new in 1.6.0):</h4>
+  <h4>restart_delay:</h4>
   <table><tr><th>
     Option
   </th><th>
@@ -4488,7 +4483,6 @@ curl -X POST -d '[{identity, "CloudI"}, {facility, local0}, {level, trace}]' htt
   <p class="paragraph">
     Send all logging output to syslog.
   </p>
-<strong>(new in 1.6.0)</strong>
   <a name="2_logging_syslog_set_config"></a>
   <table><tr><th>
     Option
