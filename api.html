@@ -47,7 +47,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 <div id="content">
   <h1>CloudI API Documentation</h1>
   <center><h3>version 1.6.0<br />
-              last updated on January 11<sup>th</sup> 2017</h3></center>
+              last updated on February 9<sup>th</sup> 2017</h3></center>
 
   <a name="Service"></a>
   <h2>CloudI API - Making a Service</h2>
@@ -272,6 +272,14 @@ unsigned int CloudI::API::thread_count();
 </pre>
   </div>
   </div> <!-- C++ -->
+  <div id="1_initialization_Go">
+  <a href="#1_initialization_Go">Go</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+cloudi.ThreadCount() (uint32, error)
+</pre>
+  </div>
+  </div> <!-- Go -->
   <div id="1_initialization_Java">
   <a href="#1_initialization_Java">Java</a>
   <div class="tab_contents">
@@ -508,6 +516,15 @@ cloudi_service:subscribe(Dispatcher :: pid(), Pattern :: string()) -&gt;
 </pre>
   </div>
   </div> <!-- Erlang -->
+  <div id="1_subscribe_Go">
+  <a href="#1_subscribe_Go">Go</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+func (api *cloudi.Instance) Subscribe(pattern string,
+                                      function cloudi.Callback) error
+</pre>
+  </div>
+  </div> <!-- Go -->
   <div id="1_subscribe_Java">
   <a href="#1_subscribe_Java">Java</a>
   <div class="tab_contents">
@@ -637,6 +654,15 @@ cloudi_service:subscribe_count(Dispatcher :: pid(),
 </pre>
   </div>
   </div> <!-- Erlang -->
+  <div id="1_subscribe_count_Go">
+  <a href="#1_subscribe_count_Go">Go</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+func (api *cloudi.Instance) SubscribeCount(pattern string)
+                                          (uint32, error)
+</pre>
+  </div>
+  </div> <!-- Go -->
   <div id="1_subscribe_count_Java">
   <a href="#1_subscribe_count_Java">Java</a>
   <div class="tab_contents">
@@ -752,6 +778,14 @@ cloudi_service:unsubscribe(Dispatcher :: pid(), Pattern :: string()) -&gt;
 </pre>
   </div>
   </div> <!-- Erlang -->
+  <div id="1_unsubscribe_Go">
+  <a href="#1_unsubscribe_Go">Go</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+func (api *cloudi.Instance) Unsubscribe(pattern string) error
+</pre>
+  </div>
+  </div> <!-- Go -->
   <div id="1_unsubscribe_Java">
   <a href="#1_unsubscribe_Java">Java</a>
   <div class="tab_contents">
@@ -1001,6 +1035,17 @@ cloudi_service:send_sync(Dispatcher :: pid(),
 </pre>
   </div>
   </div> <!-- Erlang -->
+  <div id="1_send_sync_Go">
+  <a href="#1_send_sync_Go">Go</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+func (api *cloudi.Instance) SendSync(name string,
+                                     requestInfo, request []byte,
+                                     timeoutPriority ...interface{})
+                                    ([]byte, []byte, []byte, error)
+</pre>
+  </div>
+  </div> <!-- Go -->
   <div id="1_send_sync_Java">
   <a href="#1_send_sync_Java">Java</a>
   <div class="tab_contents">
@@ -1136,6 +1181,20 @@ char const * CloudI::API::get_trans_id(unsigned int const i = 0) const;
 </pre>
   </div>
   </div> <!-- Erlang -->
+  <div id="1_send_sync_return_Go">
+  <a href="#1_send_sync_return_Go">Go</a>
+  <div class="tab_contents">
+  <p>
+    responseInfo is []byte (nil if an error occurred).<br />
+    response is []byte (nil if an error occurred).<br />
+    transId is []byte (nil if an error occurred).<br />
+    err is error (nil if successful).
+  </p>
+<pre onclick="element_select(this);">
+(responseInfo, response, transId, err)
+</pre>
+  </div>
+  </div> <!-- Go -->
   <div id="1_send_sync_return_Java">
   <a href="#1_send_sync_return_Java">Java</a>
   <div class="tab_contents">
@@ -1287,6 +1346,17 @@ cloudi_service:send_async(Dispatcher :: pid(),
 </pre>
   </div>
   </div> <!-- Erlang -->
+  <div id="1_send_async_Go">
+  <a href="#1_send_async_Go">Go</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+func (api *cloudi.Instance) SendAsync(name string,
+                                      requestInfo, request []byte,
+                                      timeoutPriority ...interface{})
+                                     ([]byte, error)
+</pre>
+  </div>
+  </div> <!-- Go -->
   <div id="1_send_async_Java">
   <a href="#1_send_async_Java">Java</a>
   <div class="tab_contents">
@@ -1412,6 +1482,18 @@ char const * CloudI::API::get_trans_id(unsigned int const i = 0) const;
 </pre>
   </div>
   </div> <!-- Erlang -->
+  <div id="1_send_async_return_Go">
+  <a href="#1_send_async_return_Go">Go</a>
+  <div class="tab_contents">
+  <p>
+    transId is []byte (nil if an error occurred).<br />
+    err is error (nil if successful).
+  </p>
+<pre onclick="element_select(this);">
+(transId, err)
+</pre>
+  </div>
+  </div> <!-- Go -->
   <div id="1_send_async_return_Java">
   <a href="#1_send_async_return_Java">Java</a>
   <div class="tab_contents">
@@ -1655,6 +1737,17 @@ cloudi_service:mcast_async(Dispatcher :: pid(),
 </pre>
   </div>
   </div> <!-- Erlang -->
+  <div id="1_mcast_async_Go">
+  <a href="#1_mcast_async_Go">Go</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+func (api *cloudi.Instance) McastAsync(name string,
+                                       requestInfo, request []byte,
+                                       timeoutPriority ...interface{})
+                                      ([][]byte, error)
+</pre>
+  </div>
+  </div> <!-- Go -->
   <div id="1_mcast_async_Java">
   <a href="#1_mcast_async_Java">Java</a>
   <div class="tab_contents">
@@ -1782,6 +1875,18 @@ char const * CloudI::API::get_trans_id(unsigned int const i = 0) const;
 </pre>
   </div>
   </div> <!-- Erlang -->
+  <div id="1_mcast_async_return_Go">
+  <a href="#1_mcast_async_return_Go">Go</a>
+  <div class="tab_contents">
+  <p>
+    transIds is [][]byte (nil if an error occurred).<br />
+    err is error (nil if successful).
+  </p>
+<pre onclick="element_select(this);">
+(transIds, err)
+</pre>
+  </div>
+  </div> <!-- Go -->
   <div id="1_mcast_async_return_Java">
   <a href="#1_mcast_async_return_Java">Java</a>
   <div class="tab_contents">
@@ -2004,6 +2109,15 @@ cloudi_service:recv_async(Dispatcher :: pid(),
 </pre>
   </div>
   </div> <!-- Erlang -->
+  <div id="1_recv_async_Go">
+  <a href="#1_recv_async_Go">Go</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+func (api *cloudi.Instance) RecvAsync(extra ...interface{})
+                                     ([]byte, []byte, []byte, error)
+</pre>
+  </div>
+  </div> <!-- Go -->
   <div id="1_recv_async_Java">
   <a href="#1_recv_async_Java">Java</a>
   <div class="tab_contents">
@@ -2132,6 +2246,20 @@ char const * CloudI::API::get_trans_id(unsigned int const i = 0) const;
 </pre>
   </div>
   </div> <!-- Erlang -->
+  <div id="1_recv_async_return_Go">
+  <a href="#1_recv_async_return_Go">Go</a>
+  <div class="tab_contents">
+  <p>
+    responseInfo is []byte (nil if an error occurred).<br />
+    response is []byte (nil if an error occurred).<br />
+    transId is []byte (nil if an error occurred).<br />
+    err is error (nil if successful).
+  </p>
+<pre onclick="element_select(this);">
+(responseInfo, response, transId, err)
+</pre>
+  </div>
+  </div> <!-- Go -->
   <div id="1_recv_async_return_Java">
   <a href="#1_recv_async_return_Java">Java</a>
   <div class="tab_contents">
@@ -2319,6 +2447,19 @@ cloudi_service:return(Dispatcher :: pid(),
 </pre>
   </div>
   </div> <!-- Erlang -->
+  <div id="1_return_Go">
+  <a href="#1_return_Go">Go</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+func (api *cloudi.Instance) Return(requestType int,
+                                   name, pattern string,
+                                   responseInfo, response []byte,
+                                   timeout uint32,
+                                   transId [16]byte,
+                                   pid cloudi.Source)
+</pre>
+  </div>
+  </div> <!-- Go -->
   <div id="1_return_Java">
   <a href="#1_return_Java">Java</a>
   <div class="tab_contents">
@@ -2474,6 +2615,20 @@ cloudi_service:forward(Dispatcher :: pid(),
 </pre>
   </div>
   </div> <!-- Erlang -->
+  <div id="1_forward_Go">
+  <a href="#1_forward_Go">Go</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+func (api *cloudi.Instance) Forward(requestType int,
+                                    name string,
+                                    requestInfo, request []byte,
+                                    timeout uint32,
+                                    priority int8,
+                                    transId [16]byte,
+                                    pid cloudi.Source)
+</pre>
+  </div>
+  </div> <!-- Go -->
   <div id="1_forward_Java">
   <a href="#1_forward_Java">Java</a>
   <div class="tab_contents">
@@ -2579,6 +2734,14 @@ int CloudI::API::poll(int timeout = -1);
 </pre>
   </div>
   </div> <!-- C++ -->
+  <div id="1_poll_Go">
+  <a href="#1_poll_Go">Go</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+func (api *cloudi.Instance) Poll(timeout int32) (bool, error)
+</pre>
+  </div>
+  </div> <!-- Go -->
   <div id="1_poll_Java">
   <a href="#1_poll_Java">Java</a>
   <div class="tab_contents">

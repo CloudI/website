@@ -151,8 +151,7 @@ cat &lt;&lt; EOF &gt; hello_world.conf
   {env, [{"LD_LIBRARY_PATH",
           "/usr/local/lib/cloudi-1.6.0/api/c/"},
          {"DYLD_LIBRARY_PATH",
-          "/usr/local/lib/cloudi-1.6.0/api/c/"}]},
-  {protocol, tcp}]]
+          "/usr/local/lib/cloudi-1.6.0/api/c/"}]}]]
 EOF
 </pre>
       </li>
@@ -273,8 +272,7 @@ cat &lt;&lt; EOF &gt; hello_world.conf
   {env, [{"LD_LIBRARY_PATH",
           "/usr/local/lib/cloudi-1.6.0/api/c/"},
          {"DYLD_LIBRARY_PATH",
-          "/usr/local/lib/cloudi-1.6.0/api/c/"}]},
-  {protocol, tcp}]]
+          "/usr/local/lib/cloudi-1.6.0/api/c/"}]}]]
 EOF
 </pre>
       </li>
@@ -559,6 +557,117 @@ curl http://localhost:6464/quickstart/erlang/hello_world
   </div>
   </div> <!-- Erlang -->
 
+  <div id="Go">
+  <a href="#Go">Go</a>
+  <div class="tab_contents">
+  <p>
+    <strong>Go support (for Go &ge; 1.6) will be released in CloudI 1.6.1, to use it before the release use the <a href="https://github.com/CloudI/CloudI/tree/develop/src#readme" target="_blank">CloudI repository</a> with the configure argument "--enable-go-support"</strong>
+    <ol>
+      <li>
+        A CloudI service written in Go is called an "external" service
+        because the service is ran inside an Operating System process
+        (external to the Erlang VM).  The example Go service can be
+        created by executing the following inside your shell:
+<pre onclick="element_select(this);">
+mkdir -p src/hello_world_go/
+cat &lt;&lt; EOF &gt; src/hello_world_go/main.go
+package main
+
+import (
+	"github.com/CloudI/cloudi_api_go/src/cloudi"
+	"os"
+	"sync"
+)
+
+func helloWorld(api *cloudi.Instance, requestType int, name, pattern string, requestInfo, request []byte, timeout uint32, priority int8, transId [16]byte, pid cloudi.Source) ([]byte, []byte, error) {
+	return nil, []byte("Hello World!"), nil
+}
+
+func task(threadIndex uint32, execution *sync.WaitGroup) {
+	defer execution.Done()
+	api, err := cloudi.API(threadIndex)
+	if err != nil {
+		cloudi.ErrorWrite(os.Stderr, err)
+		return
+	}
+	err = api.Subscribe("hello_world/get", helloWorld)
+	if err != nil {
+		cloudi.ErrorWrite(os.Stderr, err)
+		return
+	}
+	_, err = api.Poll(-1)
+	if err != nil {
+		cloudi.ErrorWrite(os.Stderr, err)
+	}
+}
+
+func main() {
+	threadCount, err := cloudi.ThreadCount()
+	if err != nil {
+		cloudi.ErrorExit(os.Stderr, err)
+	}
+	var execution sync.WaitGroup
+	for threadIndex := uint32(0); threadIndex &lt; threadCount; threadIndex++ {
+		execution.Add(1)
+		go task(threadIndex, &amp;execution)
+	}
+	execution.Wait()
+}
+EOF
+</pre>
+      </li>
+      <li>
+        Compile the CloudI service executable:
+<pre onclick="element_select(this);">
+GOPATH=`pwd` GOBIN=$GOPATH/bin go get -x hello_world_go
+</pre>
+      </li>
+      <li>
+        Now it is necessary to create the CloudI service configuration that
+        specifies both the initialization and fault-tolerance constraints
+        the CloudI service should be executed with
+        (with the proplist format to rely on defaults):
+<pre onclick="element_select(this);">
+export PWD=`pwd`
+cat &lt;&lt; EOF &gt; hello_world.conf
+[[{prefix, "/quickstart/go/"},
+  {file_path, "$PWD/bin/hello_world_go"}]]
+EOF
+</pre>
+      </li>
+      <li>
+        To dynamically add the CloudI service configuration that
+        starts the service's execution use:
+<pre onclick="element_select(this);">
+curl -X POST -d @hello_world.conf \
+    http://localhost:6464/cloudi/api/rpc/services_add.erl
+</pre>
+      </li>
+      <li>
+        The curl requests have been using the cowboy HTTP server that is
+        running within the default CloudI configuration to allow the
+        CloudI Service API to be used over HTTP.  The same HTTP server can
+        be used to make a CloudI service request to the hello_world service
+        with:
+<pre onclick="element_select(this);">
+curl http://localhost:6464/quickstart/go/hello_world
+</pre>
+      </li>
+      <li>
+        If there was a problem during the service creation there would be an
+        ERROR entry within the /usr/local/var/log/cloudi/cloudi.log file.
+        If an error occurred with a curl command it would be displayed
+        in the shell.  The available service configuration parameters are
+        described in the
+        <a href="api.html#2_services_add">services_add documentation</a>.
+        More complex Go
+        <a href="faq.html#6_Go">examples are listed here</a>.
+      </li>
+    </ol>
+  </p>
+  </div>
+  </div> <!-- Go -->
+
   <div id="Java">
   <a href="#Java">Java</a>
   <div class="tab_contents">
@@ -684,8 +793,7 @@ cat &lt;&lt; EOF &gt; hello_world.conf
 [[{prefix, "/quickstart/java/"},
   {file_path, "$JAVA"},
   {args, "-cp /usr/local/lib/cloudi-1.6.0/api/java/ "
-         "-ea:org.cloudi... -jar $PWD/hello_world.jar"},
-  {protocol, tcp}]]
+         "-ea:org.cloudi... -jar $PWD/hello_world.jar"}]]
 EOF
 </pre>
       </li>
@@ -787,8 +895,7 @@ export PWD=`pwd`
 cat &lt;&lt; EOF &gt; hello_world.conf
 [[{prefix, "/quickstart/javascript/"},
   {file_path, "$NODE"},
-  {args, "$PWD/hello_world.js"},
-  {protocol, tcp}]]
+  {args, "$PWD/hello_world.js"}]]
 EOF
 </pre>
       </li>
@@ -890,8 +997,7 @@ cat &lt;&lt; EOF &gt; hello_world.conf
 [[{prefix, "/quickstart/perl/"},
   {file_path, "$PERL"},
   {args, "$PWD/hello_world.pl"},
-  {env, [{"PERL5LIB", "/usr/local/lib/cloudi-1.6.0/api/perl"}]},
-  {protocol, tcp}]]
+  {env, [{"PERL5LIB", "/usr/local/lib/cloudi-1.6.0/api/perl"}]}]]
 EOF
 </pre>
       </li>
@@ -999,8 +1105,7 @@ export PWD=`pwd`
 cat &lt;&lt; EOF &gt; hello_world.conf
 [[{prefix, "/quickstart/php/"},
   {file_path, "$PHP"},
-  {args, "$PWD/hello_world.php"},
-  {protocol, tcp}]]
+  {args, "$PWD/hello_world.php"}]]
 EOF
 </pre>
       </li>
@@ -1091,8 +1196,7 @@ export PWD=`pwd`
 cat &lt;&lt; EOF &gt; hello_world.conf
 [[{prefix, "/quickstart/python/"},
   {file_path, "$PYTHON"},
-  {args, "$PWD/hello_world.py"},
-  {protocol, tcp}]]
+  {args, "$PWD/hello_world.py"}]]
 EOF
 </pre>
       </li>
@@ -1200,8 +1304,7 @@ export PWD=`pwd`
 cat &lt;&lt; EOF &gt; hello_world.conf
 [[{prefix, "/quickstart/ruby/"},
   {file_path, "$RUBY"},
-  {args, "$PWD/hello_world.rb"},
-  {protocol, tcp}]]
+  {args, "$PWD/hello_world.rb"}]]
 EOF
 </pre>
       </li>

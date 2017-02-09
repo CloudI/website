@@ -47,7 +47,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 <div id="content">
   <h1>Frequently Asked Questions</h1>
   <center><h3>version 1.6.0<br />
-              last updated on January 11<sup>th</sup> 2017</h3></center>
+              last updated on February 9<sup>th</sup> 2017</h3></center>
 
   <a name="1_contents"></a>
   <h2>1 - Introduction to CloudI</h2>
@@ -125,16 +125,17 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
   <ul class="faq">
     <li><a href="#6_C"          >6.1 - C/C++ Service Implementation</a></li>
     <li><a href="#6_Erlang"     >6.2 - Erlang Service Implementation</a></li>
-    <li><a href="#6_Java"       >6.3 - Java Service Implementation</a></li>
-    <li><a href="#6_JavaScript" >6.4 - JavaScript/node.js Service Implementation</a></li>
-    <li><a href="#6_Perl"       >6.5 - Perl Service Implementation</a></li>
-    <li><a href="#6_PHP"        >6.6 - PHP Service Implementation</a></li>
-    <li><a href="#6_Python"     >6.7 - Python Service Implementation</a></li>
-    <li><a href="#6_Ruby"       >6.8 - Ruby Service Implementation</a></li>
-    <li><a href="#6_HTTP"       >6.9 - HTTP Integration</a></li>
-    <li><a href="#6_ZeroMQ"     >6.10 - ZeroMQ Integration</a></li>
-    <li><a href="#6_FaultTolerance">6.11 - Service Fault Tolerance</a></li>
-    <li><a href="#6_Monitoring" >6.12 - Service Monitoring</a></li>
+    <li><a href="#6_Go"         >6.3 - Go Service Implementation</a></li>
+    <li><a href="#6_Java"       >6.4 - Java Service Implementation</a></li>
+    <li><a href="#6_JavaScript" >6.5 - JavaScript/node.js Service Implementation</a></li>
+    <li><a href="#6_Perl"       >6.6 - Perl Service Implementation</a></li>
+    <li><a href="#6_PHP"        >6.7 - PHP Service Implementation</a></li>
+    <li><a href="#6_Python"     >6.8 - Python Service Implementation</a></li>
+    <li><a href="#6_Ruby"       >6.9 - Ruby Service Implementation</a></li>
+    <li><a href="#6_HTTP"       >6.10 - HTTP Integration</a></li>
+    <li><a href="#6_ZeroMQ"     >6.11 - ZeroMQ Integration</a></li>
+    <li><a href="#6_FaultTolerance">6.12 - Service Fault Tolerance</a></li>
+    <li><a href="#6_Monitoring" >6.13 - Service Monitoring</a></li>
   </ul>
   <a name="7_contents"></a>
   <h2>7 - Troubleshooting</h2>
@@ -2103,8 +2104,29 @@ sudo cloudi stop
   </p>
   <div class="top"><a href="#6_contents">Top</a></div>
 
+  <a name="6_Go"></a>
+  <h3>6.3 - Go Service Implementation (new in 1.6.1)</h3>
+  <p class="paragraph">
+    The integration tests that provide example usage of the Go
+    <a href="api.html#Service">CloudI API</a> are:
+    <ul>
+      <li><a href="https://github.com/CloudI/CloudI/blob/develop/src/tests/http_req/gopath/src/http_req_go/main.go" target="_blank">src/tests/http_req
+          Basic HTTP Request Test</a></li>
+      <li><a href="https://github.com/CloudI/CloudI/blob/develop/src/tests/msg_size/gopath/src/msg_size_go/main.go" target="_blank">src/tests/msg_size
+          Basic Message Size (Forwarding) Test</a></li>
+      <li><a href="https://github.com/CloudI/CloudI/blob/develop/src/tests/messaging/gopath/src/messaging_go/main.go" target="_blank">src/tests/messaging
+          Basic Messaging Test</a></li>
+      <li><a href="https://github.com/CloudI/CloudI/blob/develop/src/tests/null/gopath/src/null_go/main.go" target="_blank">src/tests/null
+          Basic Null Response Test</a></li>
+    </ul>
+  </p>
+  <p>
+    For more information, please refer to <a href="#4_API">"4.1 - How do I integrate external software with CloudI?"</a>.
+  </p>
+  <div class="top"><a href="#6_contents">Top</a></div>
+
   <a name="6_Java"></a>
-  <h3>6.3 - Java Service Implementation</h3>
+  <h3>6.4 - Java Service Implementation</h3>
   <p class="paragraph">
     The Java CloudI API uses synchronous IO on file descriptors for
     an efficient light-weight interface using only Java source code,
@@ -2132,7 +2154,7 @@ sudo cloudi stop
   <div class="top"><a href="#6_contents">Top</a></div>
 
   <a name="6_JavaScript"></a>
-  <h3>6.4 - JavaScript/node.js Service Implementation</h3>
+  <h3>6.5 - JavaScript/node.js Service Implementation</h3>
   <p class="paragraph">
     The JavaScript CloudI API provides a simple interface for making JavaScript
     CloudI services. The JavaScript CloudI API only uses JavaScript source code
@@ -2160,7 +2182,7 @@ sudo cloudi stop
   <div class="top"><a href="#6_contents">Top</a></div>
 
   <a name="6_Perl"></a>
-  <h3>6.5 - Perl Service Implementation</h3>
+  <h3>6.6 - Perl Service Implementation</h3>
   <p class="paragraph">
     The Perl CloudI API provides a simple interface for making Perl
     CloudI services. The Perl CloudI API only uses Perl source code
@@ -2182,7 +2204,7 @@ sudo cloudi stop
   <div class="top"><a href="#6_contents">Top</a></div>
 
   <a name="6_PHP"></a>
-  <h3>6.6 - PHP Service Implementation</h3>
+  <h3>6.7 - PHP Service Implementation</h3>
   <p class="paragraph">
     The PHP CloudI API provides a simple interface for making PHP
     CloudI services. The PHP CloudI API only uses PHP source code
@@ -2206,7 +2228,7 @@ sudo cloudi stop
   <div class="top"><a href="#6_contents">Top</a></div>
 
   <a name="6_Python"></a>
-  <h3>6.7 - Python Service Implementation</h3>
+  <h3>6.8 - Python Service Implementation</h3>
   <p class="paragraph">
     The Python CloudI API provides a simple interface for making Python
     CloudI services.  Some of the integration tests that provide example usage
@@ -2247,7 +2269,7 @@ sudo cloudi stop
   <div class="top"><a href="#6_contents">Top</a></div>
 
   <a name="6_Ruby"></a>
-  <h3>6.8 - Ruby Service Implementation</h3>
+  <h3>6.9 - Ruby Service Implementation</h3>
   <p class="paragraph">
     The Ruby CloudI API provides a simple interface for making Ruby
     CloudI services. The Ruby CloudI API only uses Ruby source code
@@ -2269,7 +2291,7 @@ sudo cloudi stop
   <div class="top"><a href="#6_contents">Top</a></div>
 
   <a name="6_HTTP"></a>
-  <h3>6.9 - HTTP Integration</h3>
+  <h3>6.10 - HTTP Integration</h3>
   <p class="paragraph">
     HTTP integration with CloudI services uses service names that have a prefix
     that matches the Uniform Resource Locator (URL) path.  A simple example
@@ -2374,7 +2396,7 @@ sudo cloudi stop
   <div class="top"><a href="#6_contents">Top</a></div>
 
   <a name="6_ZeroMQ"></a>
-  <h3>6.10 - ZeroMQ Integration</h3>
+  <h3>6.11 - ZeroMQ Integration</h3>
   <p class="paragraph">
     <a href="http://www.zeromq.org/" target="_blank">ZeroMQ</a>
     integration is provided by the cloudi_service_zeromq Erlang CloudI service.
@@ -2459,7 +2481,7 @@ sudo cloudi stop
   <div class="top"><a href="#6_contents">Top</a></div>
 
   <a name="6_FaultTolerance"></a>
-  <h3>6.11 - Service Fault Tolerance</h3>
+  <h3>6.12 - Service Fault Tolerance</h3>
   <p class="paragraph">
     General fault tolerance considerations within the CloudI framework are
     described in <a href="#5_Stability">"5.3 - Stability and Fault Tolerance Considerations"</a>.
@@ -2509,7 +2531,7 @@ sudo cloudi stop
   <div class="top"><a href="#6_contents">Top</a></div>
 
   <a name="6_Monitoring" ></a>
-  <h3>6.12 - Service Monitoring</h3>
+  <h3>6.13 - Service Monitoring</h3>
   <p class="paragraph">
     The <a href="https://github.com/CloudI/CloudI/blob/master/src/lib/cloudi_service_monitoring/src/cloudi_service_monitoring.erl" target="_blank">cloudi_service_monitoring</a>
     provides the ability to monitor the internals of any CloudI service
