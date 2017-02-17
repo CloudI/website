@@ -47,7 +47,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 <div id="content">
   <h1>Frequently Asked Questions</h1>
   <center><h3>version 1.6.0<br />
-              last updated on February 9<sup>th</sup> 2017</h3></center>
+              last updated on February 16<sup>th</sup> 2017</h3></center>
 
   <a name="1_contents"></a>
   <h2>1 - Introduction to CloudI</h2>
@@ -1714,7 +1714,7 @@ sudo cloudi stop
       <li>A service request timeout is decreased by any queuing or processing delays to provide better soft-realtime timeout enforcement than what Erlang/OTP provides.</li>
       <li>Service name grouping with <a href="#4_URLregex">pattern matching</a>.</li>
       <li>Every service request can utilize 255 possible request priorities</li>
-      <li>TCP sockets are used instead of pipes to maximize atomic send throughput (the localhost MTU is 16436 on Linux, but pipes are typically 4096 on Linux (PIPE_BUF)).</li>
+      <li>TCP sockets are used instead of pipes to maximize atomic send throughput (pipes are typically 4096 on Linux (PIPE_BUF) while the localhost MTU on Linux is much higher).</li>
       <li>stdout and stderr output is logged automatically to the single CloudI log.</li>
       <li>A service does not require a node connection (like a cnode does), so it doesn't have service-count scalability problems (due to a distributed Erlang node being a member of a fully connected network topology).</li>
       <li>A long-running CloudI internal service is much more dependable when compared to a single Erlang process due to CloudI providing specific hints to the Erlang VM's garbage collection that avoids excessive memory consumption.</li>
