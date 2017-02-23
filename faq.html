@@ -735,6 +735,24 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
     programming languages while objects are not).
   </p>
   <p class="paragraph">
+    When a <a href="http://cloudi.org/api.html#1_subscribe">subscribe</a>ed
+    callback function is called with the CloudI service request data,
+    the individual values are the most recent values.  For example, the
+    timeout parameter in the service request is automatically decremented
+    based on the time that has elapsed before getting to the function
+    call.  There are 3 constant parameters, the service name pattern,
+    the transaction id, and the source pid, though all other parameters
+    can be changed with a call to
+    <a href="http://cloudi.org/api.html#1_forward">forward</a> the service
+    request to a different function call.  The execution time spent
+    within the callback function is automatically decremented from the
+    timeout value used for the
+    <a href="http://cloudi.org/api.html#1_return">return</a>
+    or <a href="http://cloudi.org/api.html#1_forward">forward</a>
+    if the <a href="http://cloudi.org/api.html#2_services_add_config_opts">'request_timeout_adjustment' service configuration option</a>
+    is set to true (and the timeout value is not manually modified).
+  </p>
+  <p class="paragraph">
     For more details please refer to <a href="#1_WhatIs">"1.5 - What is CloudI?"</a>.
   </p>
   <div class="top"><a href="#1_contents">Top</a></div>
