@@ -91,8 +91,7 @@ cat &lt;&lt; EOF &gt; hello_world.c
 #include "cloudi.h"
 #include &lt;string.h&gt;
 #include &lt;assert.h&gt;
-static void hello_world(cloudi_instance_t * api,
-                        int const command,
+static void hello_world(int const command,
                         char const * const name,
                         char const * const pattern,
                         void const * const request_info,
@@ -103,7 +102,9 @@ static void hello_world(cloudi_instance_t * api,
                         int8_t priority,
                         char const * const trans_id,
                         char const * const pid,
-                        uint32_t const pid_size)
+                        uint32_t const pid_size,
+                        void * state,
+                        cloudi_instance_t * api)
 {
     char const * const message = "Hello World!";
     uint32_t const message_size = strlen(message);
@@ -118,7 +119,7 @@ int main(int argc, char ** argv)
     assert(result == cloudi_success);
     assert(thread_count == 1);
     cloudi_instance_t api;
-    result = cloudi_initialize(&amp;api, 0);
+    result = cloudi_initialize(&amp;api, 0, 0);
     assert(result == cloudi_success);
     result = cloudi_subscribe(&amp;api, "hello_world/get",
                               &amp;hello_world);
