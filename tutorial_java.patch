@@ -43,7 +43,7 @@
 +<div id="header_document">
  <h1>CloudI Java Tutorial</h1>
  <div class="details">
- <span id="revnumber">version 1.6.0,</span>
+ <span id="revnumber">version 1.7.0,</span>
 @@ -897,5 +929,8 @@
  </div>
  </div>
