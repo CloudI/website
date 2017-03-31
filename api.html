@@ -47,7 +47,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 <div id="content">
   <h1>CloudI API Documentation</h1>
   <center><h3>version 1.7.0<br />
-              last updated on March 29<sup>th</sup> 2017</h3></center>
+              last updated on March 31<sup>st</sup> 2017</h3></center>
 
   <a name="Service"></a>
   <h2>CloudI API - Making a Service</h2>
@@ -118,19 +118,18 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
   <h3>1.0 - Introduction</h3>
   <p class="paragraph">
     The CloudI API provides a simple messaging API which allows CloudI services
-    to send requests.  So, the CloudI API contains messaging primitives that
-    can be used to emulate other messaging APIs, but normally the CloudI API
-    is used directly.  The CloudI API supports both publish/subscribe and
+    to send requests.  The CloudI API supports both publish/subscribe and
     request/reply communication in an intuitive way.  It is not necessary to
     understand the Erlang programming language (or Elixir), to use the
     CloudI API since a full CloudI API implementation is provided for every
-    supported programming language (C/C++, Elixir, Erlang, Java, JavaScript,
-    Perl, PHP, Python, and Ruby, currently).
+    supported programming language (C/C++, Elixir, Erlang, Go, Haskell,
+    Java, JavaScript, OCaml, Perl, PHP, Python, and Ruby, currently).
   </p>
   <p class="paragraph">
     The CloudI API messaging is different from other messaging APIs and
     provides simpler integration for a few reasons: 
     <ul>
+      <li>CloudI API usage requires CloudI usage as an application server to enforce fault-tolerance and scalability constraints on source code execution</li>
       <li>The CloudI service that receives a request determines whether a reply occurs (returning no response data is the same as not providing a reply)</li>
       <li>All required callbacks are minimal (only a single request callback is necessary for a CloudI service to handle requests) to keep CloudI services simpler, so they are less error-prone than other solutions</li>
       <li>Requests are not persisted to database storage to avoid persisting errors since errors are often transient and only relate to a specific context</li>
