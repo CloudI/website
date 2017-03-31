@@ -204,13 +204,14 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
   <p class="paragraph">
     When separate service processes subscribe with the same service name
     pattern, each subscription is used based on random selection
-    (if both service processes are available based on the destination refresh
-     method), when a service request is sent to the service name.
-    If the same service subscribes with the same service name pattern more
-    than once within a single external service thread, each subscription
-    is used in round-robin order (first subscription is called first,
-    so order is preserved), when the service thread receives a request
-    for the specific service name pattern.
+    (if more than one service processes are available based on the
+     destination refresh method), when a service request is sent to the
+    service name.  If the same service subscribes with the same
+    service name pattern more than once within a single external service
+    thread, each subscription is used in round-robin order
+    (first subscription is called first, so order is preserved),
+    when the service thread receives a request for the specific
+    service name pattern.
   </p>
   <p class="paragraph">
     The <a href="#1_mcast_async">mcast_async</a> function provides
