@@ -47,7 +47,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 <div id="content">
   <h1>CloudI API Documentation</h1>
   <center><h3>version 1.7.0<br />
-              last updated on April 8<sup>th</sup> 2017</h3></center>
+              last updated on April 9<sup>th</sup> 2017</h3></center>
 
   <a name="Service"></a>
   <h2>CloudI API - Making a Service</h2>
@@ -3205,8 +3205,7 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
     use the settings within the cloudi_core Erlang application configuration.
     The resource limits are based on what the OS supports
     (the supported resource limits can be found in the <a href="http://manpages.ubuntu.com/manpages/natty/man2/setrlimit.2.html" target="_blank">setrlimit</a>
-    manpage). If the 'owner' service configuration option is set,
-    it will influence the limits that may be set.
+    manpage).
   </td></tr><tr><td>
     <a href="#2_services_add_config_opts_owner">
     owner</a>
@@ -3611,9 +3610,8 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
   <p class="paragraph">
     The value for any option can be an integer or 'infinity' to set the
     current limit or a list to set both the current and the maximum
-    (setting the maximum requires that the
-     <a href="api.html#2_services_add_config_opts_owner">owner</a>
-     of the external service has permission to set the maximum limit)
+    (setting the maximum requires that the user executing CloudI
+     has permission to set the maximum limit)
     (e.g., {limit, [{stack, [{current, 8388608}, {maximum, infinity}]}]}).
   </p>
   <table><tr><th>
