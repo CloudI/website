@@ -4423,6 +4423,12 @@ curl -X POST -d "[{reconnect_delay, 300}]" http://localhost:6464/cloudi/api/rpc/
     The multicast TTL
     (<a href="http://tools.ietf.org/rfc/rfc2730.txt" target="_blank">RFC</a>, <a href="http://www.tldp.org/HOWTO/Multicast-HOWTO-2.html#ss2.3" target="_blank">Linux</a>).
   </td></tr></table>
+  <p class="paragraph">
+    LAN multicast auto-discovery requires that ntpd is running to keep
+    the time of all LAN nodes as close as possible.  However, all CloudI nodes
+    should have ntpd running to keep all transaction ids similar
+    (even if LAN multicast auto-discovery is not used).
+  </p>
   <a name="2_nodes_set_config_discovery_ec2"></a>
   <h4>ec2:</h4>
   <table><tr><th>
