@@ -4352,9 +4352,9 @@ curl -X POST -d "[{reconnect_delay, 300}]" http://localhost:6464/cloudi/api/rpc/
   </td><td>
     What timestamp to use for generating unique service request
     transaction ids:
-    'erlang' (strictly monotonically increasing time) or
+    'erlang' (strictly monotonically increasing time),
     'os' (OS time, weakest ordering possible)
-    (or 'warp' if you are using Erlang &ge; 18 (time adjusted gradually))
+    or 'warp' (time adjusted gradually)
   </td></tr><tr><td>
     <a href="#2_nodes_set_config_discovery">
     discovery</a>
