@@ -47,7 +47,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 <div id="content">
   <h1>CloudI API Documentation</h1>
   <center><h3>version 1.7.1<br />
-              last updated on August 3<sup>rd</sup> 2017</h3></center>
+              last updated on August 8<sup>th</sup> 2017</h3></center>
 
   <a name="Service"></a>
   <h2>CloudI API - Making a Service</h2>
@@ -4595,7 +4595,7 @@ curl -X POST -d '[{file, undefined}, {syslog, []}]' http://localhost:6464/cloudi
   </p>
 <pre>
 % logging configuration options
-[<a href="#2_logging_file_set">{file, undefined | string()}</a>,                % defaults to "logs/cloudi.log"
+[<a href="#2_logging_file_set">{file, undefined | string()}</a>,                % defaults to "cloudi.log"
  <a href="#2_logging_level_set">{level, off | fatal | error |
          warn | info | debug | trace}</a>,        % defaults to trace
  <a href="#2_logging_redirect_set">{redirect, undefined | node()}</a>,              % defaults to undefined
@@ -4670,7 +4670,7 @@ fun((Level :: fatal | error | warn | info | debug | trace,
   <a name="2_logging_file_set"></a>
   <h3>2.19 - logging_file_set</h3>
 <p class="code" onclick="element_select(this);">
-curl -X POST -d '"logs/cloudi_rotated.log"' http://localhost:6464/cloudi/api/rpc/logging_file_set.erl
+curl -X POST -d '"different_filename.log"' http://localhost:6464/cloudi/api/rpc/logging_file_set.erl
 </p>
   <p class="paragraph">
     Set the file path for logging output.  If set to 'undefined', logging
@@ -4798,7 +4798,7 @@ curl -X POST -d '[{identity, "CloudI"}, {facility, local0}, {level, trace}]' htt
   <a name="2_logging_formatters_set"></a>
   <h3>2.23 - logging_formatters_set</h3>
 <p class="code" onclick="element_select(this);">
-curl -X POST -d '[{any, [{output, lager_file_backend}, {output_args, [{file, "logs/lager.log"}]}, {formatter, lager_default_formatter}, {level, trace}]}]' http://localhost:6464/cloudi/api/rpc/logging_formatters_set.erl
+curl -X POST -d '[{any, [{output, lager_file_backend}, {output_args, [{file, "lager.log"}]}, {formatter, lager_default_formatter}, {level, trace}]}]' http://localhost:6464/cloudi/api/rpc/logging_formatters_set.erl
 </p>
   <p class="paragraph">
     Provide integration with lager-compatible formatters and
