@@ -49,7 +49,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 
   <p>http://cloudi.org (and <a href="http://ndforge.com" target="_blank">http://ndforge.com</a>) Configuration
   <pre>
-% last updated on Thu Jun  8 18:17:24 PDT 2017 with CloudI 1.7.1 / Erlang 19.3
+% last updated on Sun Sep  3 03:51:01 UTC 2017 with CloudI 1.7.2-rc3/Erlang 19.3
 
 %-*-Mode:erlang;coding:utf-8;tab-width:4;c-basic-offset:4;indent-tabs-mode:()-*-
 % ex: set ft=erlang fenc=utf-8 sts=4 ts=4 sw=4 et nomod:
@@ -148,7 +148,9 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
         ]}],
      lazy_closest,
      5000, 5000, 5000, [api], [files], 8, 5, 300,
-     [{duo_mode, true},
+     [{request_name_lookup, async},
+      {response_timeout_immediate_max, limit_min},
+      {duo_mode, true},
       {dest_refresh_start, 3000}]},
     {internal,
      "/",
@@ -169,7 +171,8 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
         {groups, ["www-vpc"]}]}]}
 ]}.
 {logging, [
-    {level, debug} % levels: off, fatal, error, warn, info, debug, trace
+    {level, debug}, % levels: off, fatal, error, warn, info, debug, trace
+    {log_time_offset, info}
 ]}.
 
   </pre>
