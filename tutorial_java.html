@@ -367,10 +367,9 @@ Make sure CloudI is installed and running, using the installation and start sequ
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell">wget --content-disposition \
-    http://sourceforge.net/projects/cloudi/files/latest/download
-tar zxvf cloudi-1.7.1.tar.gz
-cd cloudi-1.7.1/src
+<pre class="highlight"><code class="language-shell" data-lang="shell">wget https://downloads.sourceforge.net/project/cloudi/1.7.2/cloudi-1.7.2.tar.gz
+tar zxvf cloudi-1.7.2.tar.gz
+cd cloudi-1.7.2/src
 ./configure
 make
 sudo make install
@@ -418,7 +417,7 @@ cat &lt;&lt; EOF &gt; tutorial.conf
          "-server "
          "-ea:org.cloudi... "
          "-Xms3g -Xmx3g "
-         "-jar $PWD/target/cloudi_tutorial_java-1.7.1-jar-with-dependencies.jar "
+         "-jar $PWD/target/cloudi_tutorial_java-1.7.2-jar-with-dependencies.jar "
          "-pgsql_hostname localhost "
          "-pgsql_port 5432 "
          "-pgsql_database cloudi_tutorial_java "
