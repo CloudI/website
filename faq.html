@@ -46,8 +46,8 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 
 <div id="content">
   <h1>Frequently Asked Questions</h1>
-  <center><h3>version 1.7.1<br />
-              last updated on August 10<sup>th</sup> 2017</h3></center>
+  <center><h3>version 1.7.2<br />
+              last updated on September 13<sup>th</sup> 2017</h3></center>
 
   <a name="1_contents"></a>
   <h2>1 - Introduction to CloudI</h2>
@@ -2206,25 +2206,25 @@ sudo cloudi stop
   <p class="paragraph">
     Many examples of Erlang CloudI services exist within the CloudI source code
     because the Erlang CloudI services provide integration with external
-    systems like the supported databases (CouchDB, PostgreSQL, etc.),
+    systems like the supported databases (PostgreSQL, MySQL, etc.),
     the supported messaging (HTTP, ZeroMQ, etc.), and the CloudI Service API
     functionality.  Some of the integration tests and services that
     provide example usage of the Erlang
     <a href="api.html#Service">CloudI API</a> are:
     <ul>
-      <li><a href="https://github.com/CloudI/CloudI/blob/master/src/tests/count/erlang/src/cloudi_service_count.erl" target="_blank">src/tests/count
+      <li><a href="https://github.com/CloudI/CloudI/blob/master/src/tests/count/erlang/src/cloudi_service_test_count.erl" target="_blank">src/tests/count
           Basic Count Test</a></li>
-      <li><a href="https://github.com/CloudI/CloudI/blob/master/src/tests/http_req/erlang/src/cloudi_service_http_req.erl" target="_blank">src/tests/http_req
+      <li><a href="https://github.com/CloudI/CloudI/blob/master/src/tests/http_req/erlang/src/cloudi_service_test_http_req.erl" target="_blank">src/tests/http_req
           Basic HTTP Request Test</a></li>
-      <li><a href="https://github.com/CloudI/CloudI/blob/master/src/tests/msg_size/erlang/src/cloudi_service_msg_size.erl" target="_blank">src/tests/msg_size
+      <li><a href="https://github.com/CloudI/CloudI/blob/master/src/tests/msg_size/erlang/src/cloudi_service_test_msg_size.erl" target="_blank">src/tests/msg_size
           Basic Message Size (Forwarding) Test</a></li>
       <li>src/tests/messaging 
-          Basic Messaging Test (<a href="https://github.com/CloudI/CloudI/blob/master/src/tests/messaging/erlang/src/cloudi_service_messaging_sequence1.erl" target="_blank">Sequence 1</a>,
-          <a href="https://github.com/CloudI/CloudI/blob/master/src/tests/messaging/erlang/src/cloudi_service_messaging_sequence2.erl" target="_blank">Sequence 2</a>,
-          <a href="https://github.com/CloudI/CloudI/blob/master/src/tests/messaging/erlang/src/cloudi_service_messaging_sequence3.erl" target="_blank">Sequence 3</a>,
-          <a href="https://github.com/CloudI/CloudI/blob/master/src/tests/messaging/erlang/src/cloudi_service_messaging_sequence4.erl" target="_blank">Sequence 4</a>)
+          Basic Messaging Test (<a href="https://github.com/CloudI/CloudI/blob/master/src/tests/messaging/erlang/src/cloudi_service_test_messaging_sequence1.erl" target="_blank">Sequence 1</a>,
+          <a href="https://github.com/CloudI/CloudI/blob/master/src/tests/messaging/erlang/src/cloudi_service_test_messaging_sequence2.erl" target="_blank">Sequence 2</a>,
+          <a href="https://github.com/CloudI/CloudI/blob/master/src/tests/messaging/erlang/src/cloudi_service_test_messaging_sequence3.erl" target="_blank">Sequence 3</a>,
+          <a href="https://github.com/CloudI/CloudI/blob/master/src/tests/messaging/erlang/src/cloudi_service_test_messaging_sequence4.erl" target="_blank">Sequence 4</a>)
           </li>
-      <li><a href="https://github.com/CloudI/CloudI/blob/master/src/tests/hexpi/erlang/src/cloudi_service_hexpi.erl" target="_blank">Hexadecimal PI Fault-Tolerant Map/Reduce Test</a></li>
+      <li><a href="https://github.com/CloudI/CloudI/blob/master/src/tests/hexpi/erlang/src/cloudi_service_test_hexpi.erl" target="_blank">Hexadecimal PI Fault-Tolerant Map/Reduce Test</a></li>
       <li><a href="https://github.com/CloudI/CloudI/blob/master/src/lib/cloudi_service_queue/src/cloudi_service_queue.erl" target="_blank">cloudi_service_queue Service for Durable Service Requests</a></li>
       <li><a href="https://github.com/CloudI/CloudI/blob/master/src/lib/cloudi_service_quorum/src/cloudi_service_quorum.erl" target="_blank">cloudi_service_quorum Service for Service Redundancy</a></li>
       <li><a href="https://github.com/CloudI/CloudI/blob/master/src/lib/cloudi_service_filesystem/src/cloudi_service_filesystem.erl" target="_blank">cloudi_service_filesystem Service for Caching Static File Data</a></li>
@@ -2548,11 +2548,11 @@ sudo cloudi stop
     tests:
     <ul>
       <li><a href="https://github.com/CloudI/CloudI/blob/master/src/tests/http_req/" target="_blank">src/tests/http_req Basic HTTP Request Test</a>
-          (with <a href="https://github.com/CloudI/CloudI/blob/master/src/tests/http_req/c_src/main.c" target="_blank">C</a>/<a href="https://github.com/CloudI/CloudI/blob/master/src/tests/http_req/src/cloudi_service_http_req.erl" target="_blank">Erlang</a>/<a href="https://github.com/CloudI/CloudI/blob/master/src/tests/http_req/org/cloudi/tests/http_req/Task.java" target="_blank">Java</a>/<a href="https://github.com/CloudI/CloudI/blob/master/src/tests/http_req/http_req.js" target="_blank">JavaScript-node.js</a>/<a href="https://github.com/CloudI/CloudI/blob/master/src/tests/http_req/http_req.pl" target="_blank">Perl</a>/<a href="https://github.com/CloudI/CloudI/blob/master/src/tests/http_req/http_req.php" target="_blank">PHP</a>/<a href="https://github.com/CloudI/CloudI/blob/master/src/tests/http_req/http_req.py" target="_blank">Python</a>/<a href="https://github.com/CloudI/CloudI/blob/master/src/tests/http_req/http_req.rb" target="_blank">Ruby</a> services)</li>
+          (with <a href="https://github.com/CloudI/CloudI/blob/master/src/tests/http_req/c_src/main.c" target="_blank">C</a>/<a href="https://github.com/CloudI/CloudI/blob/master/src/tests/http_req/erlang/src/cloudi_service_test_http_req.erl" target="_blank">Erlang</a>/<a href="https://github.com/CloudI/CloudI/blob/master/src/tests/http_req/java/org/cloudi/tests/http_req/Task.java" target="_blank">Java</a>/<a href="https://github.com/CloudI/CloudI/blob/master/src/tests/http_req/http_req.js" target="_blank">JavaScript-node.js</a>/<a href="https://github.com/CloudI/CloudI/blob/master/src/tests/http_req/http_req.pl" target="_blank">Perl</a>/<a href="https://github.com/CloudI/CloudI/blob/master/src/tests/http_req/http_req.php" target="_blank">PHP</a>/<a href="https://github.com/CloudI/CloudI/blob/master/src/tests/http_req/http_req.py" target="_blank">Python</a>/<a href="https://github.com/CloudI/CloudI/blob/master/src/tests/http_req/http_req.rb" target="_blank">Ruby</a> services)</li>
       <li><a href="https://github.com/CloudI/CloudI/blob/master/src/tests/http/" target="_blank">src/tests/http HTTP Test</a>
           (with <a href="https://github.com/CloudI/CloudI/blob/master/src/tests/http/run.sh" target="_blank">curl file-based test requests</a> using
            <a href="https://github.com/CloudI/CloudI/blob/master/src/lib/cloudi_service_quorum/src/cloudi_service_quorum.erl" target="_blank">cloudi_service_quorum</a>
-           and <a href="https://github.com/CloudI/CloudI/blob/master/src/tests/http/service/service.py" target="_blank">Python</a>/<a href="https://github.com/CloudI/CloudI/blob/master/src/tests/http/service/service.rb" target="_blank">Ruby</a>/<a href="https://github.com/CloudI/CloudI/blob/master/src/tests/http/service/org/cloudi/tests/http/Task.java" target="_blank">Java</a> services)</li>
+           and <a href="https://github.com/CloudI/CloudI/blob/master/src/tests/http/http.py" target="_blank">Python</a>/<a href="https://github.com/CloudI/CloudI/blob/master/src/tests/http/http.rb" target="_blank">Ruby</a>/<a href="https://github.com/CloudI/CloudI/blob/master/src/tests/http/java/org/cloudi/tests/http/Task.java" target="_blank">Java</a> services)</li>
       <li><a href="#4_WebSockets" target="_blank">WebSocket Integration</a></li>
     </ul>
   </p>
