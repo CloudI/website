@@ -958,7 +958,7 @@ cloudi_service:get_pids(Dispatcher :: pid(),
                         Name :: string(),
                         Timeout :: non_neg_integer() | 'undefined' |
                                    'limit_min' | 'limit_max') -&gt;
-    {'ok', PatternPids :: list({string(), pid()})} |
+    {'ok', PatternPids :: nonempty_list({string(), pid()})} |
     {'error', Reason :: atom()}.
 </pre>
   </div>
