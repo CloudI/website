@@ -9,7 +9,7 @@
 :idprefix:
 :linkattrs:
 :revnumber: 1.7.3
-:revdate: 2018-02-27
+:revdate: 2018-03-03
 :lang: en
 :encoding: UTF-8
 :toc:
@@ -245,7 +245,7 @@ Make sure CloudI is installed and running, using the installation and start sequ
 
 [source,shell]
 ----
-wget https://downloads.sourceforge.net/project/cloudi/1.7.3/cloudi-1.7.3.tar.gz
+wget https://osdn.net/dl/cloudi/cloudi-1.7.3.tar.gz
 tar zxvf cloudi-1.7.3.tar.gz
 cd cloudi-1.7.3/src
 ./configure

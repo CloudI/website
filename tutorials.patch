@@ -20,7 +20,7 @@
 +    <li><a href="faq.html">FAQ</a></li>
 +    <li><a href="tutorials.html" class="active">Tutorials</a>
 +        (<a href="tutorial_java.html">Java</a>)</li>
-+    <li><a href="http://sourceforge.net/projects/cloudi/files/latest/download" target="_blank">Download</a></li>
++    <li><a href="https://osdn.net/dl/cloudi/cloudi-1.7.3.tar.gz" target="_blank">Download</a></li>
 +    <li><a href="https://github.com/CloudI/CloudI/tree/develop#readme">Source</a></li>
 +    <li><a href="support.html">Support</a></li>
 +    <li>
