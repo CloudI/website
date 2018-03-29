@@ -1,6 +1,6 @@
---- tutorial_java.html	2016-11-18 13:06:41.730915342 -0800
-+++ tutorial_java.html 	2016-11-18 13:06:33.706790360 -0800
-@@ -8,10 +8,42 @@
+--- tutorial_java.html	2018-03-28 22:14:26.959381614 -0700
++++ tutorial_java.html	2018-03-28 22:13:51.094854486 -0700
+@@ -8,10 +8,27 @@
  <meta name="description" content="Cloud Framework for fault-tolerant distributed processing with dynamic load balancing">
  <meta name="keywords" content="tutorial, java, cloud, private cloud, framework, erlang, fault tolerant, distributed systems, embarrassingly parallel, divide and conquer, cloudi">
  <title>CloudI Java Tutorial</title>
@@ -23,35 +23,9 @@
 +    <li><a href="https://osdn.net/dl/cloudi/cloudi-1.7.3.tar.gz" target="_blank">Download</a></li>
 +    <li><a href="https://github.com/CloudI/CloudI/tree/develop#readme">Source</a></li>
 +    <li><a href="support.html">Support</a></li>
-+    <li>
-+      <!-- AddThis Button BEGIN -->
-+      <div class="addthis_toolbox addthis_default_style ">
-+        <a class="addthis_button_preferred_1"></a>
-+        <a class="addthis_button_preferred_2"></a>
-+        <a class="addthis_button_preferred_3"></a>
-+        <a class="addthis_button_preferred_4"></a>
-+        <a class="addthis_button_compact"></a>
-+        <a class="addthis_counter addthis_bubble_style"></a>
-+      </div>
-+      <script type="text/javascript">
-+      var addthis_config = {"data_track_clickback":true};
-+      </script>
-+      <!-- AddThis Button END -->
-+    </li>
 +  </ul>
 +</div>
 +<div id="header_document">
  <h1>CloudI Java Tutorial</h1>
  <div class="details">
  <span id="revnumber">version 1.7.3,</span>
-@@ -897,5 +929,8 @@
- </div>
- </div>
- </div>
-+
-+<script type="text/javascript" src="https://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-4dae3b45563ec17d"></script>
-+
- </body>
--</html>
-\ No newline at end of file
-+</html>
