@@ -40,7 +40,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 <div id="content">
   <h1>CloudI API Documentation</h1>
   <center><h3>version 1.7.3<br />
-              last updated on March 29<sup>th</sup> 2018</h3></center>
+              last updated on May 22<sup>nd</sup> 2018</h3></center>
 
   <a name="Service"></a>
   <h2>CloudI API - Making a Service</h2>
@@ -4038,7 +4038,7 @@ curl -X POST -d '["6a675470-7a1f-11e2-d40e-a5dd00000058"]' http://localhost:6464
 curl -X POST -d '"/tests/http/text/post"' http://localhost:6464/cloudi/api/rpc/services_search.erl
 </p>
 <p class="code" onclick="element_select(this);">
-curl -X POST -d '{cloudi_service_msg_size, "/tests/msg_size/erlang"}' http://localhost:6464/cloudi/api/rpc/services_search.erl
+curl -X POST -d '{cloudi_service_test_msg_size, "/tests/msg_size/erlang"}' http://localhost:6464/cloudi/api/rpc/services_search.erl
 </p>
   <p class="paragraph">
     List the service configuration parameters with each service's UUID that
