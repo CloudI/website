@@ -4106,17 +4106,28 @@ curl -X POST -d '["65762d3262a511e882359563d34a433e"]' http://localhost:6464/clo
     underestimates the amount of downtime (it is unable to account for
     garbage collection delays when an Erlang process dies and the latency
     of the monitor message delivery).  The downtime values are used to
-    determine the total availability values.
+    determine the total availability values (e.g.,&nbsp;availability_day_total,
+    availability_week_total, availability_month_total and
+    availability_year_total).
   </p>
   <p class="paragraph">
     The service interrupt spent updating service processes is provided
     for the past day, week, month and year.  The interrupt elapsed will
     always overestimate the amount of time spent updating, by including
     extra coordination delay and should be considered the total time
-    spent updating all service processes.  The interrupt values are used to
-    determine the updated availability values.
+    spent updating all service processes.  Only the time spent updating
+    the most recent service processes gets tracked as the interrupt
+    (i.e., a fraction of the <strong>running</strong> time period which
+    is after any restarts occurred).  The interrupt values are used to
+    determine the updated availability values
+    (e.g.,&nbsp;availability_day_updated, availability_week_updated,
+     availability_month_updated and availability_year_updated).
   </p>
   <p class="paragraph">
+    The amount of time the service has been running since any restarts
+    occurred is used to determine the running availability values
+    (e.g.,&nbsp;availability_day_running, availability_week_running,
+     availability_month_running and availability_year_running).
     All the availability values are percentages to describe the <a href="https://en.wikipedia.org/wiki/High_availability#Percentage_calculation" target="_blank">fraction of estimated uptime during each time period</a>.
     All status data is determined using the same point in time, so the values
     may be compared among separate services.
