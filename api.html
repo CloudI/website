@@ -40,7 +40,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 <div id="content">
   <h1>CloudI API Documentation</h1>
   <center><h3>version 1.7.3<br />
-              last updated on May 30<sup>th</sup> 2018</h3></center>
+              last updated on June 6<sup>th</sup> 2018</h3></center>
 
   <a name="Service"></a>
   <h2>CloudI API - Making a Service</h2>
@@ -4101,12 +4101,11 @@ curl -X POST -d '["65762d3262a511e882359563d34a433e"]' http://localhost:6464/clo
   </p>
   <p class="paragraph">
     The service downtime spent restarting service processes is provided
-    for the past day, week, month and year.  The downtime elapsed is as
-    accurate as possible within the Erlang VM, though it slightly
-    underestimates the amount of downtime (it is unable to account for
-    garbage collection delays when an Erlang process dies and the latency
-    of the monitor message delivery).  The downtime values are used to
-    determine the total availability values (e.g.,&nbsp;availability_day_total,
+    for the past day, week, month and year.  The downtime elapsed due to
+    restarting is measured as the time period from immediately before
+    termination starts until the end of the initialization within the
+    new service instance.  The downtime values are used to determine the
+    total availability values (e.g.,&nbsp;availability_day_total,
     availability_week_total, availability_month_total and
     availability_year_total).
   </p>
