@@ -40,7 +40,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 <div id="content">
   <h1>CloudI API Documentation</h1>
   <center><h3>version 1.7.3<br />
-              last updated on June 6<sup>th</sup> 2018</h3></center>
+              last updated on June 17<sup>th</sup> 2018</h3></center>
 
   <a name="Service"></a>
   <h2>CloudI API - Making a Service</h2>
@@ -4091,6 +4091,7 @@ curl -X POST -d '["65762d3262a511e882359563d34a433e"]' http://localhost:6464/clo
   <p class="paragraph">
     The amount of time elapsed is provided in the string format
     "0&nbsp;days&nbsp;0&nbsp;hours&nbsp;0&nbsp;seconds&nbsp;0&nbsp;nanoseconds"
+    (with the largest 0 durations omitted and a singular unit if 1)
     for the uptime, downtime and interrupt values in the status.
     The <strong>total</strong> time shows how long the
     service has been running, including all restarts (in uptime_total).
