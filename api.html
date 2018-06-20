@@ -40,7 +40,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 <div id="content">
   <h1>CloudI API Documentation</h1>
   <center><h3>version 1.7.3<br />
-              last updated on June 17<sup>th</sup> 2018</h3></center>
+              last updated on June 19<sup>th</sup> 2018</h3></center>
 
   <a name="Service"></a>
   <h2>CloudI API - Making a Service</h2>
@@ -3312,7 +3312,10 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
   </td><td>
     (internal services only) Use two Erlang processes instead of one Erlang
     process, so that more incoming service throughput can be handled with
-    low latency.
+    low latency.  If duo_mode is true, cloudi_service_handle_info/3
+    should contain no cloudi_service:send_sync or cloudi_service:recv_async
+    function calls (cloudi_service:send_async_active or a separate Erlang
+    process can be used instead).
   </td></tr><tr><td>
     <a href="#2_services_add_config_opts_hibernate">
     hibernate
