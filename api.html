@@ -40,7 +40,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 <div id="content">
   <h1>CloudI API Documentation</h1>
   <center><h3>version 1.7.3<br />
-              last updated on June 26<sup>th</sup> 2018</h3></center>
+              last updated on June 27<sup>th</sup> 2018</h3></center>
 
   <a name="Service"></a>
   <h2>CloudI API - Making a Service</h2>
@@ -4231,6 +4231,16 @@ fun((OldModuleVersion :: list(any()),
     set to true, which is the default.  If a service sends synchronous
     service requests to itself, the update can timeout when sync is set to
     true but can succeed with sync set to false.
+  </p>
+  <p class="paragraph">
+    Do not set the sync field to false unless the service update requires it
+    (due to the service having a cyclic dependency on itself,
+     as described above).  If an internal service update has the sync field
+    set to false and the service's module is present in the modules_load
+    list, the service's request process may use the new module prematurely
+    if the request process is spawned slower than the module load
+    (or if it calls any exported functions within the module) and
+    that would occur before the module_state function gets called.
   </p>
   <p class="paragraph">
     A subset of the service configuration options can be updated:
