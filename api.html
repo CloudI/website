@@ -40,7 +40,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 <div id="content">
   <h1>CloudI API Documentation</h1>
   <center><h3>version 1.7.3<br />
-              last updated on June 27<sup>th</sup> 2018</h3></center>
+              last updated on August 11<sup>th</sup> 2018</h3></center>
 
   <a name="Service"></a>
   <h2>CloudI API - Making a Service</h2>
@@ -5060,6 +5060,16 @@ curl http://localhost:6464/cloudi/api/rpc/code_status.erl
  {build_kernel_version, nonempty_string()},
  {build_operating_system, nonempty_string()},
  {build_erlang_otp_release, nonempty_string()},
+ {build_cloudi_time, nonempty_string()},
+ {build_cloudi_cxx_compiler_version, nonempty_string()},
+ {build_cloudi_cxx_dependencies_versions, nonempty_string()},
+ {build_erlang_erts_c_compiler_version, nonempty_string()},
+ {install_erlang_erts_time, nonempty_string()},        % ISO8601 timestamp
+ {install_erlang_kernel_time, nonempty_string()},      % ISO8601 timestamp
+ {install_erlang_stdlib_time, nonempty_string()},      % ISO8601 timestamp
+ {install_erlang_sasl_time, nonempty_string()},        % ISO8601 timestamp
+ {install_erlang_compiler_time, nonempty_string()},    % ISO8601 timestamp
+ {install_cloudi_time, nonempty_string()},             % ISO8601 timestamp
  {runtime_erlang_erts_version, nonempty_string()},
  {runtime_erlang_kernel_version, nonempty_string()},
  {runtime_erlang_stdlib_version, nonempty_string()},
@@ -5068,7 +5078,7 @@ curl http://localhost:6464/cloudi/api/rpc/code_status.erl
  {runtime_cloudi_version, nonempty_string()},
  {runtime_machine_processors, pos_integer()},          % logical processors
  {runtime_total, nonempty_string()},
- {runtime_changes,
+ {runtime_changes,                                     % service file changes
   list([{type, internal | external},
         {file_age, nonempty_string()},
         {file_path, nonempty_string()},
