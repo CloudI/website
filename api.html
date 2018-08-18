@@ -5079,7 +5079,7 @@ curl http://localhost:6464/cloudi/api/rpc/code_status.erl
  {runtime_machine_processors, pos_integer()},          % logical processors
  {runtime_start, nonempty_string()},                   % ISO8601 timestamp
  {runtime_clock, nonempty_string()},                   % ISO8601 timestamp
- {runtime_clock_offset, nonempty_string()},
+ {runtime_clock_offset, nonempty_string()},            % offset to HW clock
  {runtime_total, nonempty_string()},
  {runtime_changes,                                     % service file changes
   list([{type, internal | external},
