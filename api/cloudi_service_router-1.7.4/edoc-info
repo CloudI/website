@@ -1,0 +1,4 @@
+%% encoding: UTF-8
+{application,cloudi_service_router}.
+{modules,[cloudi_service_router,cloudi_service_router_client,
+          cloudi_service_router_ssh_client,cloudi_service_router_ssh_server]}.
