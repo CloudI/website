@@ -40,7 +40,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 <div id="content">
   <h1>CloudI API Documentation</h1>
   <center><h3>version 1.7.4<br />
-              last updated on September 16<sup>th</sup> 2018</h3></center>
+              last updated on November 13<sup>th</sup> 2018</h3></center>
 
   <a name="Service"></a>
   <h2>CloudI API - Making a Service</h2>
@@ -82,7 +82,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
     <li><a href="#2_services_remove"       >2.6 - services_remove</a></li>
     <li><a href="#2_services_restart"      >2.7 - services_restart</a></li>
     <li><a href="#2_services_search"       >2.8 - services_search</a></li>
-    <li><a href="#2_services_status"       >2.9 - services_status (new in 1.7.4)</a></li>
+    <li><a href="#2_services_status"       >2.9 - services_status</a></li>
     <li><a href="#2_services_update"       >2.10 - services_update</a></li>
     <li><a href="#2_services"              >2.11 - services</a></li>
     <li><a href="#2_nodes_set"             >2.12 - nodes_set</a></li>
@@ -91,19 +91,20 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
     <li><a href="#2_nodes_remove"          >2.15 - nodes_remove</a></li>
     <li><a href="#2_nodes_alive"           >2.16 - nodes_alive</a></li>
     <li><a href="#2_nodes_dead"            >2.17 - nodes_dead</a></li>
-    <li><a href="#2_nodes"                 >2.18 - nodes</a></li>
-    <li><a href="#2_logging_set"           >2.19 - logging_set</a></li>
-    <li><a href="#2_logging_file_set"      >2.20 - logging_file_set</a></li>
-    <li><a href="#2_logging_level_set"     >2.21 - logging_level_set</a></li>
-    <li><a href="#2_logging_stdout_set"    >2.22 - logging_stdout_set</a></li>
-    <li><a href="#2_logging_syslog_set"    >2.23 - logging_syslog_set</a></li>
-    <li><a href="#2_logging_formatters_set">2.24 - logging_formatters_set</a></li>
-    <li><a href="#2_logging_redirect_set"  >2.25 - logging_redirect_set</a></li>
-    <li><a href="#2_logging"               >2.26 - logging</a></li>
-    <li><a href="#2_code_path_add"         >2.27 - code_path_add</a></li>
-    <li><a href="#2_code_path_remove"      >2.28 - code_path_remove</a></li>
-    <li><a href="#2_code_path"             >2.29 - code_path</a></li>
-    <li><a href="#2_code_status"           >2.30 - code_status (new in 1.7.4)</a></li>
+    <li><a href="#2_nodes_status"          >2.18 - nodes_status (new in 1.7.5)</a></li>
+    <li><a href="#2_nodes"                 >2.19 - nodes</a></li>
+    <li><a href="#2_logging_set"           >2.20 - logging_set</a></li>
+    <li><a href="#2_logging_file_set"      >2.21 - logging_file_set</a></li>
+    <li><a href="#2_logging_level_set"     >2.22 - logging_level_set</a></li>
+    <li><a href="#2_logging_stdout_set"    >2.23 - logging_stdout_set</a></li>
+    <li><a href="#2_logging_syslog_set"    >2.24 - logging_syslog_set</a></li>
+    <li><a href="#2_logging_formatters_set">2.25 - logging_formatters_set</a></li>
+    <li><a href="#2_logging_redirect_set"  >2.26 - logging_redirect_set</a></li>
+    <li><a href="#2_logging"               >2.27 - logging</a></li>
+    <li><a href="#2_code_path_add"         >2.28 - code_path_add</a></li>
+    <li><a href="#2_code_path_remove"      >2.29 - code_path_remove</a></li>
+    <li><a href="#2_code_path"             >2.30 - code_path</a></li>
+    <li><a href="#2_code_status"           >2.31 - code_status</a></li>
   </ul>
 
   <hr \>
@@ -4053,7 +4054,7 @@ curl -X POST -d '{cloudi_service_test_msg_size, "/tests/msg_size/erlang"}' http:
   <div class="top"><a href="#CloudI">Top</a></div>
 
   <a name="2_services_status"></a>
-  <h3>2.9 - services_status (new in 1.7.4)</h3>
+  <h3>2.9 - services_status</h3>
 <p class="code" onclick="element_select(this);">
 curl -X POST -d '[]' http://localhost:6464/cloudi/api/rpc/services_status.erl
 </p>
@@ -4456,6 +4457,21 @@ curl -X POST -d "[{reconnect_delay, 300}]" http://localhost:6464/cloudi/api/rpc/
     undefined
   </td><td>
     Distributed Erlang node auto-discovery mechanism configuration.
+  </td></tr><tr><td>
+    cost
+  </td><td>
+    []
+  </td><td>
+    A list of node-cost pairs.  A default cost may be provided by using
+    'default' as the node name (e.g., [{default, 0.02225}]).  The node cost
+    is the amount of currency per hour (for tracking electricity costs
+    it is: average kilowatts * currency per kilowatt-hour (kWh)).
+  </td></tr><tr><td>
+    cost_precision
+  </td><td>
+    2
+  </td><td>
+    Cost currency decimal places.
   </td></tr></table>
   <a name="2_nodes_set_config_discovery"></a>
   <h4>discovery:</h4>
@@ -4669,8 +4685,51 @@ curl http://localhost:6464/cloudi/api/rpc/nodes_dead.erl
   </p>
   <div class="top"><a href="#CloudI">Top</a></div>
 
+  <a name="2_nodes_status"></a>
+  <h3>2.18 - nodes_status (new in 1.7.5)</h3>
+<p class="code" onclick="element_select(this);">
+curl -X POST -d '[]' http://localhost:6464/cloudi/api/rpc/nodes_status.erl
+</p>
+  <p class="paragraph">
+    Provide information about all the CloudI nodes (including the local node):
+  </p>
+<pre>
+[{uptime, nonempty_string()},
+ {uptime_cost_total, nonempty_string()},
+ {uptime_cost_day, nonempty_string()},
+ {uptime_cost_week, nonempty_string()},
+ {uptime_cost_month, nonempty_string()},
+ {uptime_cost_year, nonempty_string()},
+ {tracked, nonempty_string()},
+ {tracked_cost_total, nonempty_string()},
+ {tracked_cost_day, nonempty_string()},
+ {tracked_cost_week, nonempty_string()},
+ {tracked_cost_month, nonempty_string()},
+ {tracked_cost_year, nonempty_string()},
+ {tracked_disconnects, nonempty_string()},
+ {disconnected, boolean()},
+ {downtime_day_disconnected, nonempty_string()},
+ {downtime_week_disconnected, nonempty_string()},
+ {downtime_month_disconnected, nonempty_string()},
+ {downtime_year_disconnected, nonempty_string()},
+ {availability_day, nonempty_string()},
+ {availability_week, nonempty_string()},
+ {availability_month, nonempty_string()},
+ {availability_year, nonempty_string()}]
+</pre>
+  <p class="paragraph">
+    The local node will provide <b>uptime</b> results while remote nodes
+    will provide <b>tracked</b> results and information related to being
+    disconnected.  If cost was provided with
+    <a href="#2_nodes_set">nodes_set</a>
+    the cumulative cost of the node will also be present.
+    All the status information is provided from information stored on the
+    local node.
+  </p>
+  <div class="top"><a href="#CloudI">Top</a></div>
+
   <a name="2_nodes"></a>
-  <h3>2.18 - nodes</h3>
+  <h3>2.19 - nodes</h3>
 <p class="code" onclick="element_select(this);">
 curl http://localhost:6464/cloudi/api/rpc/nodes.erl
 </p>
@@ -4680,7 +4739,7 @@ curl http://localhost:6464/cloudi/api/rpc/nodes.erl
   <div class="top"><a href="#CloudI">Top</a></div>
 
   <a name="2_logging_set"></a>
-  <h3>2.19 - logging_set</h3>
+  <h3>2.20 - logging_set</h3>
 <p class="code" onclick="element_select(this);">
 curl -X POST -d '[{file, undefined}, {syslog, []}]' http://localhost:6464/cloudi/api/rpc/logging_set.erl
 </p>
@@ -4762,7 +4821,7 @@ fun((Level :: fatal | error | warn | info | debug | trace,
   <div class="top"><a href="#CloudI">Top</a></div>
 
   <a name="2_logging_file_set"></a>
-  <h3>2.20 - logging_file_set</h3>
+  <h3>2.21 - logging_file_set</h3>
 <p class="code" onclick="element_select(this);">
 curl -X POST -d '"different_filename.log"' http://localhost:6464/cloudi/api/rpc/logging_file_set.erl
 </p>
@@ -4773,7 +4832,7 @@ curl -X POST -d '"different_filename.log"' http://localhost:6464/cloudi/api/rpc/
   <div class="top"><a href="#CloudI">Top</a></div>
 
   <a name="2_logging_level_set"></a>
-  <h3>2.21 - logging_level_set</h3>
+  <h3>2.22 - logging_level_set</h3>
 <p class="code" onclick="element_select(this);">
 curl -X POST -d 'warn' http://localhost:6464/cloudi/api/rpc/logging_level_set.erl
 </p>
@@ -4788,7 +4847,7 @@ curl -X POST -d 'warn' http://localhost:6464/cloudi/api/rpc/logging_level_set.er
   <div class="top"><a href="#CloudI">Top</a></div>
 
   <a name="2_logging_stdout_set"></a>
-  <h3>2.22 - logging_stdout_set</h3>
+  <h3>2.23 - logging_stdout_set</h3>
 <p class="code" onclick="element_select(this);">
 curl -X POST -d 'true' http://localhost:6464/cloudi/api/rpc/logging_stdout_set.erl
 </p>
@@ -4798,7 +4857,7 @@ curl -X POST -d 'true' http://localhost:6464/cloudi/api/rpc/logging_stdout_set.e
   <div class="top"><a href="#CloudI">Top</a></div>
 
   <a name="2_logging_syslog_set"></a>
-  <h3>2.23 - logging_syslog_set</h3>
+  <h3>2.24 - logging_syslog_set</h3>
 <p class="code" onclick="element_select(this);">
 curl -X POST -d '[{identity, "CloudI"}, {facility, local0}, {level, trace}]' http://localhost:6464/cloudi/api/rpc/logging_syslog_set.erl
 </p>
@@ -4890,7 +4949,7 @@ curl -X POST -d '[{identity, "CloudI"}, {facility, local0}, {level, trace}]' htt
   <div class="top"><a href="#CloudI">Top</a></div>
 
   <a name="2_logging_formatters_set"></a>
-  <h3>2.24 - logging_formatters_set</h3>
+  <h3>2.25 - logging_formatters_set</h3>
 <p class="code" onclick="element_select(this);">
 curl -X POST -d '[{any, [{output, lager_file_backend}, {output_args, [{file, "lager.log"}]}, {formatter, lager_default_formatter}, {level, trace}]}]' http://localhost:6464/cloudi/api/rpc/logging_formatters_set.erl
 </p>
@@ -4990,7 +5049,7 @@ curl -X POST -d '[{any, [{output, lager_file_backend}, {output_args, [{file, "la
   <div class="top"><a href="#CloudI">Top</a></div>
 
   <a name="2_logging_redirect_set"></a>
-  <h3>2.25 - logging_redirect_set</h3>
+  <h3>2.26 - logging_redirect_set</h3>
 <p class="code" onclick="element_select(this);">
 curl -X POST -d 'cloudi@host' http://localhost:6464/cloudi/api/rpc/logging_redirect_set.erl
 </p>
@@ -5001,7 +5060,7 @@ curl -X POST -d 'cloudi@host' http://localhost:6464/cloudi/api/rpc/logging_redir
   <div class="top"><a href="#CloudI">Top</a></div>
 
   <a name="2_logging"></a>
-  <h3>2.26 - logging</h3>
+  <h3>2.27 - logging</h3>
 <p class="code" onclick="element_select(this);">
 curl http://localhost:6464/cloudi/api/rpc/logging.erl
 </p>
@@ -5013,7 +5072,7 @@ curl http://localhost:6464/cloudi/api/rpc/logging.erl
   <div class="top"><a href="#CloudI">Top</a></div>
 
   <a name="2_code_path_add"></a>
-  <h3>2.27 - code_path_add</h3>
+  <h3>2.28 - code_path_add</h3>
 <p class="code" onclick="element_select(this);">
 curl -X POST -d '"/home/user/code/services"' http://localhost:6464/cloudi/api/rpc/code_path_add.erl
 </p>
@@ -5025,7 +5084,7 @@ curl -X POST -d '"/home/user/code/services"' http://localhost:6464/cloudi/api/rp
   <div class="top"><a href="#CloudI">Top</a></div>
 
   <a name="2_code_path_remove"></a>
-  <h3>2.28 - code_path_remove</h3>
+  <h3>2.29 - code_path_remove</h3>
 <p class="code" onclick="element_select(this);">
 curl -X POST -d '"/home/user/code/services"' http://localhost:6464/cloudi/api/rpc/code_path_remove.erl
 </p>
@@ -5037,7 +5096,7 @@ curl -X POST -d '"/home/user/code/services"' http://localhost:6464/cloudi/api/rp
   <div class="top"><a href="#CloudI">Top</a></div>
 
   <a name="2_code_path"></a>
-  <h3>2.29 - code_path</h3>
+  <h3>2.30 - code_path</h3>
 <p class="code" onclick="element_select(this);">
 curl http://localhost:6464/cloudi/api/rpc/code_path.erl
 </p>
@@ -5048,7 +5107,7 @@ curl http://localhost:6464/cloudi/api/rpc/code_path.erl
   <div class="top"><a href="#CloudI">Top</a></div>
 
   <a name="2_code_status"></a>
-  <h3>2.30 - code_status (new in 1.7.4)</h3>
+  <h3>2.31 - code_status</h3>
 <p class="code" onclick="element_select(this);">
 curl http://localhost:6464/cloudi/api/rpc/code_status.erl
 </p>
