@@ -1847,7 +1847,9 @@ sudo cloudi stop
     Using a "?" wildcard character instead of the "*" wildcard character
     ensures the match will not contain a "/" character
     (due to "/" being the character after "?").  The "?" wildcard character
-    takes precedence when the "*" wildcard character is also present.
+    takes precedence when the "*" wildcard character is also present
+    (e.g., if "/permissions/*/accounts/*" and "/permissions/?/accounts/*"
+     are both valid matches, "/permissions/?/accounts/*" will be picked).
     The service name pattern subscriptions may be checked by using the
     <a href="api.html#2_services_search">services_search</a>
     CloudI Service API function to determine what services would
