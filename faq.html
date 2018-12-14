@@ -1831,10 +1831,10 @@ sudo cloudi stop
     the left-most characters provide a more exact match.
     Service name prefixes within the service configuration provide a scope
     for the service name subscriptions and the prefix shows the significance
-    of the left-most characters being used (the example above would
-    utilize a service that has its prefix configured as "/permissions/"
-    with <a href="api.html#1_subscribe">subscribe</a> using arguments
-    like "*/accounts/*").
+    of the left-most characters being used (the example above would likely
+    utilize services with prefixes configured as "/permissions"
+    with <a href="api.html#1_subscribe">subscribe</a> using the
+    service name pattern argument "/*/accounts/*" in Service A).
   </p>
   <p class="paragraph">
     To avoid potential ambiguity, the service name patterns above are best as:
@@ -1846,7 +1846,8 @@ sudo cloudi stop
     </ul>
     Using a "?" wildcard character instead of the "*" wildcard character
     ensures the match will not contain a "/" character
-    (due to "/" being the character after "?").
+    (due to "/" being the character after "?").  The "?" wildcard character
+    takes precedence when the "*" wildcard character is also present.
     The service name pattern subscriptions may be checked by using the
     <a href="api.html#2_services_search">services_search</a>
     CloudI Service API function to determine what services would
