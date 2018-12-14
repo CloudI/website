@@ -40,7 +40,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 <div id="content">
   <h1>CloudI API Documentation</h1>
   <center><h3>version 1.7.4<br />
-              last updated on November 13<sup>th</sup> 2018</h3></center>
+              last updated on December 13<sup>th</sup> 2018</h3></center>
 
   <a name="Service"></a>
   <h2>CloudI API - Making a Service</h2>
@@ -137,9 +137,12 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
   </p>
   <p class="paragraph">
     The <a href="#1_subscribe">subscribe</a> function subscribes to a
-    service name pattern which can contain "*" wildcard characters, to
-    accept any matching service requests.  "*" within a service name pattern
-    matches 1 or more characters, but "**" is forbidden.
+    service name pattern string which may contain "*" and "?" wildcard
+    characters, to accept any matching service requests.  Either
+    "*" or "?" in a service name pattern will match one or more characters
+    with "?" never matching the character that follows it
+    ("?" is unable to be the last character, i.e.,
+     "/?/" matches "/a/" but never "/a/b/" while "/*/" will match either).
     The <a href="#1_send_sync">send_sync</a> function and the
     <a href="#1_send_async">send_async</a> function provide point-to-point
     communication based on the service name provided.  When multiple services
@@ -621,14 +624,19 @@ CloudI::API.subscribe(pattern, function)
     other services to send to.  The subscribing service will receive a
     service request, if a different service sends a service request with a
     service name that matches the service name pattern.  The service name
-    pattern is a string that may contain a "*" wildcard character to match
-    1 or more characters, while "**" is forbidden.  The service names and
-    service name patterns are expected to be in a filepath format
-    (e.g., "/root/directory/file.extension") by some provided CloudI services,
-    though nothing enforces this convention.  Good design dictates that
-    service names operate within a given scope.  Both the service names and
-    the service name patterns should represent an appropriate scope, which
-    the service manages (i.e., the same concept as a
+    pattern is a string that may contain "*" and "?" wildcard characters,
+    to accept any matching service requests.  Either "*" or "?" in a
+    service name pattern will match one or more characters
+    with "?" never matching the character that follows it
+    ("?" is unable to be the last character, i.e.,
+     "/?/" matches "/a/" but never "/a/b/" while "/*/" will match either).
+    The service names and service name patterns are expected to be in a
+    filepath format (e.g., "/root/directory/file.extension") by some
+    provided CloudI services, though nothing enforces this convention.
+    Good design dictates that service names operate within a given scope.
+    Both the service names and the service name patterns should represent
+    an appropriate scope, which the service manages
+    (i.e., the same concept as a
     <a href="http://en.wikipedia.org/wiki/Uniform_resource_identifier" target="_blank">Uniform Resource Identifier (URI)</a>).
   </p>
   <p class="paragraph">
@@ -4690,8 +4698,12 @@ curl http://localhost:6464/cloudi/api/rpc/nodes_dead.erl
 <p class="code" onclick="element_select(this);">
 curl -X POST -d '[]' http://localhost:6464/cloudi/api/rpc/nodes_status.erl
 </p>
+<p class="code" onclick="element_select(this);">
+curl -X POST -d "['cloudi@hostname']" http://localhost:6464/cloudi/api/rpc/nodes_status.erl
+</p>
   <p class="paragraph">
-    Provide information about all the CloudI nodes (including the local node):
+    Provide information about all the CloudI nodes (including the local node).
+    Each node has a {Node, Status} pair with the Status described below:
   </p>
 <pre>
 [{uptime, nonempty_string()},

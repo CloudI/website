@@ -40,7 +40,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 <div id="content">
   <h1>Frequently Asked Questions</h1>
   <center><h3>version 1.7.4<br />
-              last updated on November 13<sup>th</sup> 2018</h3></center>
+              last updated on December 13<sup>th</sup> 2018</h3></center>
 
   <a name="1_contents"></a>
   <h2>1 - Introduction to CloudI</h2>
@@ -1492,8 +1492,8 @@ sudo cloudi stop
     The Access Control List (ACL) is simply a list of strings that define
     patterns that must be explicitly allowed or denied when determining if a
     service can send to the service name.
-    A pattern uses "*" to represent a ".+" regex (one or more characters) while
-    "**" is forbidden, which is the same format used for service subscriptions.
+    An ACL string uses the wildcard characters "*" and "?" to match one or more
+    characters (in the same way service name patterns are matched).
     Previous ACL usage in CloudI used prefixes, which is still valid, but a "*"
     is appended to create a pattern.  This means that only patterns are accepted
     and no exact service names will be valid ACL strings.
@@ -1636,8 +1636,8 @@ sudo cloudi stop
   <p class="paragraph">
     Access Control Lists (ACLs) are used to explicitly allow or deny requests
     from being sent to service name patterns.
-    A pattern uses "*" to represent a ".+" regex (one or more characters) while
-    "**" is forbidden, which is the same format used for service subscriptions.
+    An ACL string uses the wildcard characters "*" and "?" to match one or more
+    characters (in the same way service name patterns are matched).
     Two separate ACL parameters are
     specified for each service configuration to allow or deny destinations.
     If an ACL is not provided, the atom 'undefined' is used instead.  An ACL is
@@ -1744,17 +1744,24 @@ sudo cloudi stop
   <a name="4_URLregex"></a>
   <h3>4.9 - Can I use Regular Expressions with Service Names (URLs)?</h3>
   <p class="paragraph">
-    A simpler substitute for regular expressions is provided for matching
-    CloudI service names.  The "*" character (a wildcard character) is
-    used to match 1 or more character within a service name
-    (i.e., a regex of '.+').  However, the sequence "**" is invalid and
-    will cause the operation to fail.  Any number of wildcard characters can
-    be used with the <a href="api.html#1_subscribe">subscribe</a>
-    and <a href="api.html#1_unsubscribe">unsubscribe</a> CloudI API functions
-    to create service names that match many patterns.  While this approach
-    may seem unusual, it helps keep service name lookups both efficient
-    and parallel (i.e., within the Erlang code, without any need to call an
-    external regex integration library).  For more details refer to
+    A string matching syntax simpler than regular expressions is provided
+    for matching CloudI service names.  Both "*" and "?" are used as
+    wildcard characters in service name patterns to match one or more
+    characters of a service name.
+    "?" never matches the character that follows it and is unable to be
+    the last service name pattern character
+    (i.e., "/?/" matches "/a/" but never "/a/b/" while "/*/" will match either).
+    Attempting to use wildcard characters together (e.g., "?*" or any other
+    combination) is invalid and will cause the operation to fail.
+    Any number of wildcard characters may be used with the service name
+    pattern string argument of the CloudI API functions
+    <a href="api.html#1_subscribe">subscribe</a>
+    and <a href="api.html#1_unsubscribe">unsubscribe</a>
+    to match any service names the service wants to receive.
+    While this approach may seem unusual, it helps keep service name
+    lookups both efficient and parallel (i.e., within the Erlang code,
+    without any need to call an external regex integration library).
+    For more details refer to
     <a href="#4_NamePattern">"4.10 - How do Service Name Patterns work?"</a>.
   </p>
   <p class="paragraph">
@@ -1770,7 +1777,7 @@ sudo cloudi stop
     structure, so that will increase the node's memory consumption.
     So, depending on your needs and your memory limitations, you may want to
     use explicit service names or service names with wildcard characters.
-    Using the wildcard character is normally a more efficient choice due
+    Using wildcard characters is normally a more efficient choice due
     to the memory consumption and its impact on caching but it puts the burden
     of validation on the source code handling the service request.
   </p>
@@ -1779,16 +1786,24 @@ sudo cloudi stop
   <a name="4_NamePattern"></a>
   <h3>4.10 - How do Service Name Patterns work?</h3>
   <p class="paragraph">
-    Service name patterns are service names that contain any number of "*"
-    character (while "**" is invalid).  The "*" character (a wildcard character)
-    matches 1 or more character within a service name used within a service
-    request.  A CloudI API
+    Service name patterns are strings that may contain any number of
+    the wildcard characters "*" and "?".  Both "*" and "?" match
+    one or more characters of a service name.
+    "?" never matches the character that follows it and is unable to be
+    the last service name pattern character
+    (i.e., "/?/" matches "/a/" but never "/a/b/" while "/*/" will match either).
+    Attempting to use wildcard characters together (e.g., "?*" or any other
+    combination) is invalid and will cause the operation to fail.
+    The CloudI API
     <a href="api.html#1_subscribe">subscribe</a>
-    function call can take a service name
-    pattern which then matches an exact (non-pattern) service name provided
-    to a CloudI API <a href="api.html#1_send_async">send_async</a>,
+    function call takes a service name pattern parameter
+    that is used to represent the service requests the service wants
+    to receive.  The service name patterns are matched with
+    (non-pattern) service names provided to a CloudI API
+    <a href="api.html#1_send_async">send_async</a>,
     <a href="api.html#1_send_sync">send_sync</a>, or
-    <a href="api.html#1_mcast_async">mcast_async</a> function.
+    <a href="api.html#1_mcast_async">mcast_async</a> function when
+    sending a service request.
   </p>
   <p class="paragraph">
     When a service name pattern exists that overlaps an exact service name,
@@ -1813,12 +1828,29 @@ sudo cloudi stop
     </ul>
     Service B will receive a service request sent to
     "/permissions/fred/accounts/add", instead of Service C, because
-    the left-most characters provide a more exact match.  Service name
-    prefixes within the service configuration provide a scope for the service
-    name subscriptions and the prefix shows the significance of the left-most
-    characters being used.  The service name subscriptions can be checked by
-    using the <a href="api.html#2_services_search">services_search</a>
-    CloudI Service API function.
+    the left-most characters provide a more exact match.
+    Service name prefixes within the service configuration provide a scope
+    for the service name subscriptions and the prefix shows the significance
+    of the left-most characters being used (the example above would
+    utilize a service that has its prefix configured as "/permissions/"
+    with <a href="api.html#1_subscribe">subscribe</a> using arguments
+    like "*/accounts/*").
+  </p>
+  <p class="paragraph">
+    To avoid potential ambiguity, the service name patterns above are best as:
+    <ul>
+      <li>Service A subscribes to "/permissions/?/accounts/*"</li>
+      <li>Service B subscribes to "/permissions/fred/accounts/*"</li>
+      <li>Service C subscribes to "/permissions/?/accounts/add"</li>
+      <li>Service D subscribes to "/permissions/fred/accounts/remove"</li>
+    </ul>
+    Using a "?" wildcard character instead of the "*" wildcard character
+    ensures the match will not contain a "/" character
+    (due to "/" being the character after "?").
+    The service name pattern subscriptions may be checked by using the
+    <a href="api.html#2_services_search">services_search</a>
+    CloudI Service API function to determine what services would
+    receive a service request that uses the provided service name.
   </p>
   <div class="top"><a href="#4_contents">Top</a></div>
 
@@ -2687,7 +2719,7 @@ sudo cloudi stop
     </pre>
     then all service requests that match the "/byzantine*" service name pattern
     will be sent with mcast_async_active to the suffix matched by "*".
-    When the quorum configuration is set to 'byzantine', it makes sure that
+    When the quorum configuration is set to 'byzantine', it ensure that
     less than 1/3rd of the responses are erroneous (or timeouts) before
     responding to the original cloudi_service_quorum service request.
     However, the 'byzantine' setting (the default) requires that at least
