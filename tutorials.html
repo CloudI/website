@@ -31,7 +31,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
     <li><a href="faq.html">FAQ</a></li>
     <li><a href="tutorials.html" class="active">Tutorials</a>
         (<a href="tutorial_java.html">Java</a>)</li>
-    <li><a href="https://osdn.net/dl/cloudi/cloudi-1.7.4.tar.gz" target="_blank">Download</a></li>
+    <li><a href="https://osdn.net/dl/cloudi/cloudi-1.7.5.tar.gz" target="_blank">Download</a></li>
     <li><a href="https://github.com/CloudI/CloudI/tree/develop#readme">Source</a></li>
     <li><a href="support.html">Support</a></li>
   </ul>
@@ -39,8 +39,8 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 <div id="header_document">
 <h1>CloudI User Tutorials</h1>
 <div class="details">
-<span id="revnumber">version 1.7.4,</span>
-<span id="revdate">2018-09-16</span>
+<span id="revnumber">version 1.7.5,</span>
+<span id="revdate">2018-12-18</span>
 </div>
 <div id="toc" class="toc">
 <div id="toctitle"></div>
@@ -380,7 +380,7 @@ With this approach, the business logic will always have fault tolerance guarante
 </div>
 <div class="paragraph">
 <p>The main data throughput to the business logic should utilize CloudI service requests for reliable timeouts and service redundancy.
-Often the main data throughput is HTTP protocol usage coming from any of the provided HTTP servers (both cloudi_service_http_cowboy and cloudi_service_http_elli are Erlang CloudI services for HTTP servers).
+Often the main data throughput is HTTP protocol usage coming from any of the provided HTTP servers (both cloudi_service_http_cowboy1 and cloudi_service_http_elli are Erlang CloudI services for HTTP servers).
 The incoming HTTP requests are automatically load-balanced among the available services, based on the incoming URL path matching a service name pattern for a pool of service processes.</p>
 </div>
 <div class="paragraph">
