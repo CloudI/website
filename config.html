@@ -42,7 +42,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 
   <p>https://cloudi.org (and <a href="https://ndforge.com" target="_blank">https://ndforge.com</a>) Configuration
   <pre>
-% last updated on Sat Sep 22 23:31:01 PDT 2018 with CloudI 1.7.4/Erlang 20.3.8.9
+% last updated on Wed Dec 19 07:23:00 UTC 2018 with CloudI 1.7.5/Erlang 21.2
 
 %-*-Mode:erlang;coding:utf-8;tab-width:4;c-basic-offset:4;indent-tabs-mode:()-*-
 % ex: set ft=erlang fenc=utf-8 sts=4 ts=4 sw=4 et nomod:
@@ -106,7 +106,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
      5000, 5000, 5000, undefined, undefined, 1, 5, 300,
      [{response_timeout_immediate_max, limit_min}]},
     {internal,
-     "*/",
+     "?/",
      cloudi_service_router,
      [{add_prefix, false},
       {destinations,
@@ -134,7 +134,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
           {parameters_selected, [2]},
           {service_names,
            ["/cloudi.org/*"]}]},
-        {"*/loadbalancer_health_check/index.html/get",
+        {"?/loadbalancer_health_check/index.html/get",
          [{parameters_allowed, true},
           {parameters_strict_matching, false},
           {service_names,
@@ -146,7 +146,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
       {dest_refresh_start, 3000}]},
     {internal,
      "/",
-     cloudi_service_http_cowboy,
+     cloudi_service_http_cowboy1,
      [{use_client_ip_prefix, true},
       {use_host_prefix, true},
       {ip, {0, 0, 0, 0}}, {port, 8000}, {output, binary}],
