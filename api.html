@@ -40,7 +40,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 <div id="content">
   <h1>CloudI API Documentation</h1>
   <center><h3>version 1.7.5<br />
-              last updated on December 18<sup>th</sup> 2018</h3></center>
+              last updated on January 26<sup>th</sup> 2019</h3></center>
 
   <a name="Service"></a>
   <h2>CloudI API - Making a Service</h2>
@@ -69,6 +69,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
     <li><a href="#1_forward"           >1.16 - forward</a></li>
     <li><a href="#1_poll"              >1.17 - poll
                                         (external services only)</a></li>
+    <li><a href="#1_shutdown"          >1.18 - shutdown (new in 1.8.0)</a></li>
   </ul>
   <a name="CloudI"></a>
   <h2>CloudI Service API - Controlling CloudI</h2>
@@ -91,7 +92,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
     <li><a href="#2_nodes_remove"          >2.15 - nodes_remove</a></li>
     <li><a href="#2_nodes_alive"           >2.16 - nodes_alive</a></li>
     <li><a href="#2_nodes_dead"            >2.17 - nodes_dead</a></li>
-    <li><a href="#2_nodes_status"          >2.18 - nodes_status (new in 1.7.5)</a></li>
+    <li><a href="#2_nodes_status"          >2.18 - nodes_status</a></li>
     <li><a href="#2_nodes"                 >2.19 - nodes</a></li>
     <li><a href="#2_logging_set"           >2.20 - logging_set</a></li>
     <li><a href="#2_logging_file_set"      >2.21 - logging_file_set</a></li>
@@ -2784,6 +2785,7 @@ func (api *cloudi.Instance) Poll(timeout int32) (bool, error)
   <div class="tab_contents">
 <pre onclick="element_select(this);">
 Object org.cloudi.API.poll(int timeout);
+boolean org.cloudi.API.poll(int timeout); // (new in 1.8.0)
 </pre>
   </div>
   </div> <!-- Java -->
@@ -2849,6 +2851,124 @@ CloudI::API.poll(timeout=nil)
     (a non zero return value if the return value is an integer).  A boolean
     false value is used as the poll function return value if service
     <a href="#1_termination">termination</a> is in-progress.
+  </p>
+  <div class="top"><a href="#Service">Top</a></div>
+
+  <a name="1_shutdown"></a>
+  <h3>1.18 - shutdown (new in 1.8.0)</h3>
+  <div class="tabs" style="min-height: 17em;">
+  <div id="1_shutdown_C">
+  <a href="#1_shutdown_C">C</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+int cloudi_shutdown(cloudi_instance_t * p,
+                    char const * const reason);
+</pre>
+  </div>
+  </div> <!-- C -->
+  <div id="1_shutdown_CXX">
+  <a href="#1_shutdown_CXX">C++</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+int CloudI::API::shutdown() const;
+int CloudI::API::shutdown(STRING reason) const;
+</pre>
+  </div>
+  </div> <!-- C++ -->
+  <div id="1_shutdown_Elixir">
+  <a href="#1_shutdown_Elixir">Elixir</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+% cloudi_service behaviour return values:
+{:stop, :shutdown}
+{:stop, {:shutdown, 'reason'}}
+{:stop, :shutdown, state}
+{:stop, {:shutdown, 'reason'}, state}
+</pre>
+  </div>
+  </div> <!-- Elixir -->
+  <div id="1_shutdown_Erlang">
+  <a href="#1_shutdown_Erlang">Erlang</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+% cloudi_service behaviour return values:
+{stop, shutdown}
+{stop, {shutdown, "reason"}}
+{stop, shutdown, State}
+{stop, {shutdown, "reason"}, State}
+</pre>
+  </div>
+  </div> <!-- Erlang -->
+  <div id="1_shutdown_Go">
+  <a href="#1_shutdown_Go">Go</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+func (api *cloudi.Instance) Shutdown(extra ...interface{}) error
+</pre>
+  </div>
+  </div> <!-- Go -->
+  <div id="1_shutdown_Java">
+  <a href="#1_shutdown_Java">Java</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+void org.cloudi.API.shutdown();
+void org.cloudi.API.shutdown(String reason);
+</pre>
+  </div>
+  </div> <!-- Java -->
+  <div id="1_shutdown_JavaScript">
+  <a href="#1_shutdown_JavaScript">JavaScript</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+CloudI.API.shutdown(callback, reason);
+</pre>
+  </div>
+  </div> <!-- JavaScript -->
+  <div id="1_shutdown_Perl">
+  <a href="#1_shutdown_Perl">Perl</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+CloudI::API-&gt;shutdown($reason);
+</pre>
+  </div>
+  </div> <!-- Perl -->
+  <div id="1_shutdown_PHP">
+  <a href="#1_shutdown_PHP">PHP</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+\CloudI\API::shutdown($reason = null);
+</pre>
+  </div>
+  </div> <!-- PHP -->
+  <div id="1_shutdown_Python">
+  <a href="#1_shutdown_Python">Python</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+cloudi.API.shutdown(reason=None)
+</pre>
+  </div>
+  </div> <!-- Python -->
+  <div id="1_shutdown_Ruby">
+  <a href="#1_shutdown_Ruby">Ruby</a>
+  <div class="tab_contents">
+<pre onclick="element_select(this);">
+CloudI::API.shutdown(reason=nil)
+</pre>
+  </div>
+  </div> <!-- Ruby -->
+  <div id="1_shutdown_code">
+  <a href="#1_shutdown_code">&nbsp;</a>
+  <div class="tab_contents">
+    Cause the service instance to have a successful shutdown
+  </div>
+  </div> <!-- Description -->
+  </div>
+  <p class="paragraph">
+    The shutdown functionality provides a way of successfully stopping the
+    service instance when no error has occurred.  All service processes are
+    stopped and the service is removed without causing any service process
+    restarts.  An optional reason string may be provided to log the reason
+    for the service shutdown.
   </p>
   <div class="top"><a href="#Service">Top</a></div>
 
@@ -4480,6 +4600,13 @@ curl -X POST -d "[{reconnect_delay, 300}]" http://localhost:6464/cloudi/api/rpc/
     2
   </td><td>
     Cost currency decimal places.
+  </td></tr><tr><td>
+    log_reconnect (new in 1.8.0)
+  </td><td>
+    info
+  </td><td>
+    The loglevel used to log the currently disconnected nodes before a
+    reconnect attempt occurs.
   </td></tr></table>
   <a name="2_nodes_set_config_discovery"></a>
   <h4>discovery:</h4>
@@ -4694,7 +4821,7 @@ curl http://localhost:6464/cloudi/api/rpc/nodes_dead.erl
   <div class="top"><a href="#CloudI">Top</a></div>
 
   <a name="2_nodes_status"></a>
-  <h3>2.18 - nodes_status (new in 1.7.5)</h3>
+  <h3>2.18 - nodes_status</h3>
 <p class="code" onclick="element_select(this);">
 curl -X POST -d '[]' http://localhost:6464/cloudi/api/rpc/nodes_status.erl
 </p>
