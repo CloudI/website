@@ -17,7 +17,7 @@ The bare essentials for efficient fault-tolerant processing on a cloud!" />
   <meta property="og:url" content="https://cloudi.org/config.html" />
   <meta property="og:type" content="website" />
 </head>
-<body>
+<body onload="loadCurrent()">
 
 <div id="header">
 <a href="index.html">
@@ -40,6 +40,20 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 <div id="content">
   <h1>Current Configuration</h1>
 
+  <h4><a href="api.html#2_code_status">code_status</a></h4>
+  <pre id="code_status">
+  </pre>
+
+  <h4><a href="api.html#2_services_status">services_status</a></h4>
+  <pre id="services_status">
+  </pre>
+
+  <h4><a href="api.html#2_nodes_status">nodes_status</a></h4>
+  <pre id="nodes_status">
+  </pre>
+
+  <h4>cloudi.conf file</h4>
+
   <p>https://cloudi.org (and <a href="https://ndforge.com" target="_blank">https://ndforge.com</a>) Configuration
   <pre>
 % last updated on Wed Dec 19 07:23:00 UTC 2018 with CloudI 1.7.5/Erlang 21.2
@@ -49,6 +63,10 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 {acl, [
     {api,
      ["/cloudi/api/*"]},
+    {api_read_only,
+     ["/cloudi/api/rpc/services_status.json/*",
+      "/cloudi/api/rpc/nodes_status.json/*",
+      "/cloudi/api/rpc/code_status.json/*"]},
     {files,
      ["/ndforge.com/*",
       "/cloudi.org/*",
@@ -63,7 +81,8 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
      cloudi_service_api_requests,
      [],
      none,
-     5000, 5000, 5000, undefined, undefined, 1, 5, 300, []},
+     5000, 5000, 5000, undefined, undefined, 1, 5, 300,
+     [{response_timeout_immediate_max, limit_min}]},
 
     % ndforge.com files
 
@@ -128,6 +147,21 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
           {parameters_selected, [2]},
           {service_names,
            ["/cloudi.org/*"]}]},
+        {"cloudi.org/services_status.json/post",
+         [{parameters_allowed, true},
+          {parameters_strict_matching, false},
+          {service_names,
+           ["/cloudi/api/rpc/services_status.json/post"]}]},
+        {"cloudi.org/nodes_status.json/post",
+         [{parameters_allowed, true},
+          {parameters_strict_matching, false},
+          {service_names,
+           ["/cloudi/api/rpc/nodes_status.json/post"]}]},
+        {"cloudi.org/code_status.json/get",
+         [{parameters_allowed, true},
+          {parameters_strict_matching, false},
+          {service_names,
+           ["/cloudi/api/rpc/code_status.json/get"]}]},
         {"cloudi.org/*",
          [{parameters_allowed, true},
           {parameters_strict_matching, false},
@@ -141,7 +175,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
            ["/loadbalancer_health_check/index.html/get"]}]}
         ]}],
      lazy_closest,
-     5000, 5000, 5000, [api], [files], 8, 5, 300,
+     5000, 5000, 5000, undefined, [files, api_read_only], 8, 5, 300,
      [{duo_mode, true},
       {dest_refresh_start, 3000}]},
     {internal,
@@ -179,6 +213,54 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 <div id="footer">
 <img style="position: absolute; right: 10; bottom: 0;" src="images/powered_by_cloudi.png" />
 </div>
+
+<script type="text/javascript">
+// common javascript example http request function
+function httpRequest(method, url) {
+    // function createCORSRequest(method, url) source code
+    // commonly used in javascript examples
+    var xhr = new XMLHttpRequest();
+    if ('withCredentials' in xhr) {
+        // Check if the XMLHttpRequest object
+        // has a "withCredentials" property.
+        // "withCredentials" only exists on XMLHTTPRequest2 objects.
+        xhr.open(method, url, true);
+    } else if (typeof XDomainRequest !== 'undefined') {
+        // Otherwise, check if XDomainRequest.
+        // XDomainRequest only exists in IE, and is IE's way of
+        // making CORS requests.
+        xhr = new XDomainRequest();
+        xhr.open(method, url);
+    } else {
+        // Otherwise, CORS is not supported by the browser.
+        xhr = null;
+        // throw an error if the browser is not supported
+        throw new Error('createCORSRequest failed!');
+    }
+    return xhr;
+}
+
+function loadCurrent() {
+    var code_status_request = httpRequest('GET','code_status.json');
+    code_status_request.onload = function () {
+        document.getElementById('code_status').innerHTML =
+            code_status_request.responseText;
+    };
+    code_status_request.send('');
+    var services_status_request = httpRequest('POST','services_status.json');
+    services_status_request.onload = function () {
+        document.getElementById('services_status').innerHTML =
+            services_status_request.responseText;
+    };
+    services_status_request.send('[]');
+    var nodes_status_request = httpRequest('POST','nodes_status.json');
+    nodes_status_request.onload = function () {
+        document.getElementById('nodes_status').innerHTML =
+            nodes_status_request.responseText;
+    };
+    nodes_status_request.send('[]');
+}
+</script>
 
 </body>
 </html>
