@@ -40,7 +40,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 <div id="content">
   <h1>CloudI API Documentation</h1>
   <center><h3>version 1.7.5<br />
-              last updated on January 26<sup>th</sup> 2019</h3></center>
+              last updated on March 3<sup>rd</sup> 2019</h3></center>
 
   <a name="Service"></a>
   <h2>CloudI API - Making a Service</h2>
@@ -4265,6 +4265,10 @@ curl -X POST -d '["65762d3262a511e882359563d34a433e"]' http://localhost:6464/clo
     All status data is determined using the same point in time, so the values
     may be compared among separate services.
   </p>
+  <p class="paragraph">
+    Example output is available at<br />
+    <a href="https://cloudi.org/config.html#services_status">https://cloudi.org/config.html#services_status</a>.
+  </p>
   <div class="top"><a href="#CloudI">Top</a></div>
 
   <a name="2_services_update"></a>
@@ -4865,6 +4869,10 @@ curl -X POST -d "['cloudi@hostname']" http://localhost:6464/cloudi/api/rpc/nodes
     All the status information is provided from information stored on the
     local node.
   </p>
+  <p class="paragraph">
+    Example output is available at<br />
+    <a href="https://cloudi.org/config.html#nodes_status">https://cloudi.org/config.html#nodes_status</a>.
+  </p>
   <div class="top"><a href="#CloudI">Top</a></div>
 
   <a name="2_nodes"></a>
@@ -5291,6 +5299,10 @@ curl http://localhost:6464/cloudi/api/rpc/code_status.erl
     The runtime_cloudi_changes list shows CloudI service files that have changed
     on the filesystem after CloudI started.  The files may have changed due to
     <a href="#2_services_update">services_update</a> use.
+  </p>
+  <p class="paragraph">
+    Example output is available at<br />
+    <a href="https://cloudi.org/config.html#code_status">https://cloudi.org/config.html#code_status</a>.
   </p>
   <div class="top"><a href="#CloudI">Top</a></div>
 
