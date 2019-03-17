@@ -40,7 +40,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 <div id="content">
   <h1>Frequently Asked Questions</h1>
   <center><h3>version 1.7.5<br />
-              last updated on December 18<sup>th</sup> 2018</h3></center>
+              last updated on March 16<sup>th</sup> 2019</h3></center>
 
   <a name="1_contents"></a>
   <h2>1 - Introduction to CloudI</h2>
@@ -730,7 +730,8 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
     the individual values are the most recent values.  For example, the
     timeout parameter in the service request is automatically decremented
     based on the time that has elapsed before getting to the function
-    call.  There are 2 constant parameters, the transaction id used to
+    call.  There are 3 constant parameters: the request type
+    (asynchronous or synchronous), the transaction id used to
     identify the service request, and the source process identifier that
     may receive the service request response, though all other parameters
     can be changed with a call to
@@ -1197,12 +1198,12 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
     --disable-java-support
     </td><td>
     Disable the Java CloudI API,<br />
-    requires Java&nbsp;&ge;&nbsp;1.5 JDK<br />(default="yes")
+    requires Java&nbsp;&ge;&nbsp;1.5 JDK<br />(default="no")
     </td></tr><tr><td nowrap>
     --disable-javascript-support
     </td><td>
     Disable the Javascript CloudI API,<br />
-    requires node.js&nbsp;&ge;&nbsp;0.8.0<br />(default="yes")
+    requires node.js&nbsp;&ge;&nbsp;0.8.0<br />(default="no")
     </td></tr><tr><td nowrap>
     --enable-ocaml-support
     </td><td>
@@ -1212,22 +1213,22 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
     --disable-perl-support
     </td><td>
     Disable the Perl CloudI API,<br />
-    requires Perl&nbsp;&ge;&nbsp;5.10 and Compress::Zlib<br />(default="yes")
+    requires Perl&nbsp;&ge;&nbsp;5.10 and Compress::Zlib<br />(default="no")
     </td></tr><tr><td nowrap>
     --disable-php-support
     </td><td>
     Disable the PHP CloudI API,<br />
-    requires PHP&nbsp;&ge;&nbsp;5.3.6<br />(default="yes")
+    requires PHP&nbsp;&ge;&nbsp;5.3.6<br />(default="no")
     </td></tr><tr><td nowrap>
     --disable-python-support
     </td><td>
     Disable the Python CloudI API,<br />
-    requires Python&nbsp;&ge;&nbsp;2.7.0<br />(default="yes")
+    requires Python&nbsp;&ge;&nbsp;2.7.0<br />(default="no")
     </td></tr><tr><td nowrap>
     --disable-ruby-support
     </td><td>
     Disable the Ruby CloudI API,<br />
-    requires Ruby&nbsp;&ge;&nbsp;1.9.0<br />(default="yes")
+    requires Ruby&nbsp;&ge;&nbsp;1.9.0<br />(default="no")
     </td></tr></table>
   </p>
   <p class="paragraph">
