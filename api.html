@@ -2473,7 +2473,7 @@ int CloudI::API::return_(int const command,
   <div class="tab_contents">
 <pre onclick="element_select(this);">
 cloudi_service:return(Dispatcher :: pid(),
-                      Type :: 'send_async' | 'send_sync',
+                      RequestType :: 'send_async' | 'send_sync',
                       Name :: string(),
                       Pattern :: string(),
                       ResponseInfo :: any(),
@@ -2641,7 +2641,7 @@ int CloudI::API::forward_(int const command,
   <div class="tab_contents">
 <pre onclick="element_select(this);">
 cloudi_service:forward(Dispatcher :: pid(),
-                       Type :: 'send_async' | 'send_sync',
+                       RequestType :: 'send_async' | 'send_sync',
                        Name :: string(),
                        RequestInfo :: any(),
                        Request :: any(),
@@ -3925,7 +3925,7 @@ fun((CommandLine :: list(string()),
     Internal
   </td><td>
 <pre onclick="element_select(this);">
-fun((Type :: cloudi_service:request_type(),
+fun((RequestType :: cloudi_service:request_type(),
      Name :: cloudi_service:service_name(),
      Pattern :: cloudi_service:service_name_pattern(),
      RequestInfo :: cloudi_service:request_info(),
@@ -3943,7 +3943,7 @@ fun((Type :: cloudi_service:request_type(),
     External
   </td><td>
 <pre onclick="element_select(this);">
-fun((Type :: cloudi_service:request_type(),
+fun((RequestType :: cloudi_service:request_type(),
      Name :: cloudi_service:service_name(),
      Pattern :: cloudi_service:service_name_pattern(),
      RequestInfo :: cloudi_service:request_info(),
@@ -3975,7 +3975,7 @@ fun((Type :: cloudi_service:request_type(),
     Internal
   </td><td>
 <pre onclick="element_select(this);">
-fun((Type :: cloudi_service:request_type(),
+fun((RequestType :: cloudi_service:request_type(),
      Name :: cloudi_service:service_name(),
      Pattern :: cloudi_service:service_name_pattern(),
      RequestInfo :: cloudi_service:request_info(),
@@ -3994,7 +3994,7 @@ fun((Type :: cloudi_service:request_type(),
     External
   </td><td>
 <pre onclick="element_select(this);">
-fun((Type :: cloudi_service:request_type(),
+fun((RequestType :: cloudi_service:request_type(),
      Name :: cloudi_service:service_name(),
      Pattern :: cloudi_service:service_name_pattern(),
      RequestInfo :: cloudi_service:request_info(),
