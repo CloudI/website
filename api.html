@@ -2462,7 +2462,7 @@ int CloudI::API::return_(int const command,
   <a href="#1_return_Elixir">Elixir</a>
   <div class="tab_contents">
 <pre onclick="element_select(this);">
-:cloudi_service.return(dispatcher, type, name, pattern,
+:cloudi_service.return(dispatcher, request_type, name, pattern,
                        response_info, response,
                        timeout, trans_id, pid)
 </pre>
@@ -2630,7 +2630,7 @@ int CloudI::API::forward_(int const command,
   <a href="#1_forward_Elixir">Elixir</a>
   <div class="tab_contents">
 <pre onclick="element_select(this);">
-:cloudi_service.forward(dispatcher, type, name,
+:cloudi_service.forward(dispatcher, request_type, name,
                         request_info, request,
                         timeout, priority, trans_id, pid)
 </pre>
