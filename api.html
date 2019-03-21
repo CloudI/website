@@ -40,7 +40,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 <div id="content">
   <h1>CloudI API Documentation</h1>
   <center><h3>version 1.7.5<br />
-              last updated on March 18<sup>th</sup> 2019</h3></center>
+              last updated on March 20<sup>th</sup> 2019</h3></center>
 
   <a name="Service"></a>
   <h2>CloudI API - Making a Service</h2>
@@ -2426,7 +2426,7 @@ cloudi_service:recv_asyncs(Dispatcher :: pid(),
   <div class="tab_contents">
 <pre onclick="element_select(this);">
 int cloudi_return(cloudi_instance_t * p,
-                  int const command,
+                  int const request_type,
                   char const * const name,
                   char const * const pattern,
                   void const * const response_info,
@@ -2444,7 +2444,7 @@ int cloudi_return(cloudi_instance_t * p,
   <a href="#1_return_CXX">C++</a>
   <div class="tab_contents">
 <pre onclick="element_select(this);">
-int CloudI::API::return_(int const command,
+int CloudI::API::return_(int const request_type,
                          STRING name,
                          STRING pattern,
                          void const * const response_info,
@@ -2502,7 +2502,7 @@ func (api *cloudi.Instance) Return(requestType int,
   <a href="#1_return_Java">Java</a>
   <div class="tab_contents">
 <pre onclick="element_select(this);">
-void org.cloudi.API.return_(Integer command,
+void org.cloudi.API.return_(Integer request_type,
                             String name, String pattern,
                             byte[] response_info, byte[] response,
                             Integer timeout, byte[] transId,
@@ -2514,7 +2514,7 @@ void org.cloudi.API.return_(Integer command,
   <a href="#1_return_JavaScript">JavaScript</a>
   <div class="tab_contents">
 <pre onclick="element_select(this);">
-CloudI.API.return_(command, name, pattern,
+CloudI.API.return_(request_type, name, pattern,
                    response_info, response, timeout, trans_id, pid);
 </pre>
   </div>
@@ -2523,7 +2523,7 @@ CloudI.API.return_(command, name, pattern,
   <a href="#1_return_Perl">Perl</a>
   <div class="tab_contents">
 <pre onclick="element_select(this);">
-CloudI::API-&gt;return_($command, $name, $pattern,
+CloudI::API-&gt;return_($request_type, $name, $pattern,
                      $response_info, $response,
                      $timeout, $trans_id, $pid);
 </pre>
@@ -2533,7 +2533,7 @@ CloudI::API-&gt;return_($command, $name, $pattern,
   <a href="#1_return_PHP">PHP</a>
   <div class="tab_contents">
 <pre onclick="element_select(this);">
-\CloudI\API::return_($command, $name, $pattern,
+\CloudI\API::return_($request_type, $name, $pattern,
                      $response_info, $response,
                      $timeout, $trans_id, $pid);
 </pre>
@@ -2543,7 +2543,7 @@ CloudI::API-&gt;return_($command, $name, $pattern,
   <a href="#1_return_Python">Python</a>
   <div class="tab_contents">
 <pre onclick="element_select(this);">
-cloudi.API.return_(command, name, pattern, response_info, response,
+cloudi.API.return_(request_type, name, pattern, response_info, response,
                    timeout, trans_id, pid)
 </pre>
   </div>
@@ -2552,7 +2552,7 @@ cloudi.API.return_(command, name, pattern, response_info, response,
   <a href="#1_return_Ruby">Ruby</a>
   <div class="tab_contents">
 <pre onclick="element_select(this);">
-CloudI::API.return_(command, name, pattern, response_info, response,
+CloudI::API.return_(request_type, name, pattern, response_info, response,
                     timeout, trans_id, pid)
 </pre>
   </div>
@@ -2594,7 +2594,7 @@ CloudI::API.return_(command, name, pattern, response_info, response,
   <div class="tab_contents">
 <pre onclick="element_select(this);">
 int cloudi_forward(cloudi_instance_t * p,
-                   int const command,
+                   int const request_type,
                    char const * const name,
                    void const * const request_info,
                    uint32_t const request_info_size,
@@ -2612,7 +2612,7 @@ int cloudi_forward(cloudi_instance_t * p,
   <a href="#1_forward_CXX">C++</a>
   <div class="tab_contents">
 <pre onclick="element_select(this);">
-int CloudI::API::forward_(int const command,
+int CloudI::API::forward_(int const request_type,
                           STRING name,
                           void const * const request_info,
                           uint32_t const request_info_size,
@@ -2671,7 +2671,7 @@ func (api *cloudi.Instance) Forward(requestType int,
   <a href="#1_forward_Java">Java</a>
   <div class="tab_contents">
 <pre onclick="element_select(this);">
-Response org.cloudi.API.forward_(Integer command, String name,
+Response org.cloudi.API.forward_(Integer request_type, String name,
                                  byte[] request_info, byte[] request,
                                  Integer timeout, Byte priority,
                                  byte[] transId, OtpErlangPid pid);
@@ -2682,7 +2682,7 @@ Response org.cloudi.API.forward_(Integer command, String name,
   <a href="#1_forward_JavaScript">JavaScript</a>
   <div class="tab_contents">
 <pre onclick="element_select(this);">
-CloudI.API.forward_(command, name, request_info, request,
+CloudI.API.forward_(request_type, name, request_info, request,
                     timeout, priority, trans_id, pid);
 </pre>
   </div>
@@ -2691,7 +2691,7 @@ CloudI.API.forward_(command, name, request_info, request,
   <a href="#1_forward_Perl">Perl</a>
   <div class="tab_contents">
 <pre onclick="element_select(this);">
-CloudI::API-&gt;forward_($command, $name, $request_info, $request,
+CloudI::API-&gt;forward_($request_type, $name, $request_info, $request,
                       $timeout, $priority, $trans_id, $pid);
 </pre>
   </div>
@@ -2700,7 +2700,7 @@ CloudI::API-&gt;forward_($command, $name, $request_info, $request,
   <a href="#1_forward_PHP">PHP</a>
   <div class="tab_contents">
 <pre onclick="element_select(this);">
-\CloudI\API::forward_($command, $name, $request_info, $request,
+\CloudI\API::forward_($request_type, $name, $request_info, $request,
                       $timeout, $priority, $trans_id, $pid);
 </pre>
   </div>
@@ -2709,7 +2709,7 @@ CloudI::API-&gt;forward_($command, $name, $request_info, $request,
   <a href="#1_forward_Python">Python</a>
   <div class="tab_contents">
 <pre onclick="element_select(this);">
-cloudi.API.forward_(command, name, request_info, request,
+cloudi.API.forward_(request_type, name, request_info, request,
                     timeout, priority, trans_id, pid)
 </pre>
   </div>
@@ -2718,7 +2718,7 @@ cloudi.API.forward_(command, name, request_info, request,
   <a href="#1_forward_Ruby">Ruby</a>
   <div class="tab_contents">
 <pre onclick="element_select(this);">
-CloudI::API.forward_(command, name, request_info, request,
+CloudI::API.forward_(request_type, name, request_info, request,
                      timeout, priority, trans_id, pid)
 </pre>
   </div>
