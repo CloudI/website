@@ -40,7 +40,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 <div id="content">
   <h1>CloudI API Documentation</h1>
   <center><h3>version 1.7.5<br />
-              last updated on March 20<sup>th</sup> 2019</h3></center>
+              last updated on March 23<sup>th</sup> 2019</h3></center>
 
   <a name="Service"></a>
   <h2>CloudI API - Making a Service</h2>
@@ -3018,15 +3018,19 @@ curl -X POST -d '{"method": "services", "params":[], "id": 1}' http://localhost:
   <a name="2_acl_add"></a>
   <h3>2.1 - acl_add</h3>
 <p class="code" onclick="element_select(this);">
-curl -X POST -d '[{sensitive, ["/accouting/", "/finance/"]}]' http://localhost:6464/cloudi/api/rpc/acl_add.erl
+curl -X POST -d '[{sensitive, ["/accouting/*", "/finance/*"]}]' http://localhost:6464/cloudi/api/rpc/acl_add.erl
 </p>
   <p class="paragraph">
     Add more ACL entries to be later used when starting services.  An ACL
     entry is an Erlang atom() -&gt; list(atom() | string()) relationship which
     provides a logical grouping of service name patterns
-    (e.g., {api, ["/cloudi/api/"]}).  When providing a service name pattern
-    for an ACL entry, a non-pattern will be assumed to be a prefix
-    (i.e., "/cloudi/api/" == "/cloudi/api/*").
+    (e.g., {api, ["/cloudi/api/*"]}).
+  </p>
+  <p class="paragraph">
+    <b>N.B., with the release of 1.8.0 and the current develop branch,
+    non-patterns no longer get a "*" suffix.  If you have ACL strings in CloudI
+    configurations from past releases, ensure the ACL string contains a
+    pattern character ("*" or "?") and manually add a "*" suffix if not.</b>
   </p>
   <div class="top"><a href="#CloudI">Top</a></div>
 
