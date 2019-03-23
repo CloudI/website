@@ -3142,8 +3142,7 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
 </pre>
   <p class="paragraph">
     The ACL lists contain either atoms that reference the current ACL
-    configuration or strings.  If an ACL string is not a pattern, it
-    is assumed to be a prefix (i.e., "*" is appended to make it a pattern).
+    configuration or pattern strings.  
     The ProcessCount and ThreadCount can be specified as integers for an
     exact count or as a floating point number to provide a CPU multiplier
     (X &lt; 1.0 is round, X &gt; 1.0 is floor).  MaxR is the maximum

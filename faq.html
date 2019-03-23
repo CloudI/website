@@ -40,7 +40,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 <div id="content">
   <h1>Frequently Asked Questions</h1>
   <center><h3>version 1.7.5<br />
-              last updated on March 16<sup>th</sup> 2019</h3></center>
+              last updated on March 23<sup>rd</sup> 2019</h3></center>
 
   <a name="1_contents"></a>
   <h2>1 - Introduction to CloudI</h2>
@@ -1278,7 +1278,7 @@ sudo cloudi stop
     The configuration is organized into sections for the ACLs, Services, Nodes,
     and Logging.  The ACLs provide a name which can be referenced by a Service
     to either explicitly allow or deny communication between services
-    (based on service name prefixes, see 
+    (based on service name patterns, see 
     <a href="#4_ACLs">"4.7 - How do I use Access Control Lists (ACLs)?"</a>
     for more information).
   </p>
@@ -1495,9 +1495,6 @@ sudo cloudi stop
     service can send to the service name.
     An ACL string uses the wildcard characters "*" and "?" to match one or more
     characters (in the same way service name patterns are matched).
-    Previous ACL usage in CloudI used prefixes, which is still valid, but a "*"
-    is appended to create a pattern.  This means that only patterns are accepted
-    and no exact service names will be valid ACL strings.
   </p>
   <p class="paragraph">
     If an ACL pattern is both allowed and
@@ -2651,7 +2648,7 @@ sudo cloudi stop
     would be service name patterns that include the internal services in a
     list that is referenced directly (i.e., literally as a list of string) or
     indirectly by an atom that represents the list of strings.  The ACL
-    entries would be specified for the cloudi_service_http service
+    entries would be specified for the cloudi_service_http_cowboy1 service
     configuration's deny list.  If service names are named consistently so that
     the service name represents a path which is a destination in a tree or
     hierarchy, then there should be no problems when adding or removing
