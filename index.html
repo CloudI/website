@@ -84,7 +84,7 @@ cat &lt;&lt; EOF &gt; hello_world.c
 #include "cloudi.h"
 #include &lt;string.h&gt;
 #include &lt;assert.h&gt;
-static void hello_world(int const command,
+static void hello_world(int const request_type,
                         char const * const name,
                         char const * const pattern,
                         void const * const request_info,
@@ -101,7 +101,7 @@ static void hello_world(int const command,
 {
     char const * const message = "Hello World!";
     uint32_t const message_size = strlen(message);
-    cloudi_return(api, command, name, pattern, "", 0,
+    cloudi_return(api, request_type, name, pattern, "", 0,
                   message, message_size,
                   timeout, trans_id, pid, pid_size);
 }
@@ -215,7 +215,7 @@ class Task
         }
     private:
         void hello_world(CloudI::API const &amp; api,
-                         int const command,
+                         int const request_type,
                          std::string const &amp; name,
                          std::string const &amp; pattern,
                          void const * const /*request_info*/,
@@ -229,7 +229,7 @@ class Task
                          uint32_t const pid_size)
         {
             std::string message("Hello World!");
-            api.return_(command, name, pattern, "", 0,
+            api.return_(request_type, name, pattern, "", 0,
                         message.c_str(), message.size(),
                         timeout, trans_id, pid, pid_size);
         }
@@ -737,7 +737,7 @@ public class Task
         }
     }
 
-    public Object hello_world(Integer command,
+    public Object hello_world(Integer request_type,
                               String name, String pattern,
                               byte[] request_info,
                               byte[] request,
@@ -873,7 +873,7 @@ Task.prototype.run = function () {
         }
     }
 };
-Task.prototype.hello_world = function (command, name, pattern,
+Task.prototype.hello_world = function (request_type, name, pattern,
                                        request_info, request,
                                        timeout, priority,
                                        trans_id, pid) {
@@ -959,7 +959,7 @@ sub task
     {
         my \$task_hello_world = sub
         {
-            my (\$command, \$name, \$pattern,
+            my (\$request_type, \$name, \$pattern,
                 \$request_info, \$request,
                 \$timeout, \$priority, \$trans_id, \$pid) = @_;
             return 'Hello World!';
@@ -1078,7 +1078,7 @@ class Task
         }
     }
 
-    public function hello_world(\$command, \$name, \$pattern,
+    public function hello_world(\$request_type, \$name, \$pattern,
                                 \$request_info, \$request,
                                 \$timeout, \$priority,
                                 \$trans_id, \$pid)
@@ -1175,7 +1175,7 @@ class Task(object):
         except:
             traceback.print_exc(file=sys.stderr)
 
-    def __hello_world(self, command, name, pattern,
+    def __hello_world(self, request_type, name, pattern,
                       request_info, request,
                       timeout, priority, trans_id, pid):
         return b'Hello World!'
@@ -1279,7 +1279,7 @@ if __FILE__ == \$PROGRAM_NAME
 
         private
 
-        def hello_world(command, name, pattern,
+        def hello_world(request_type, name, pattern,
                         request_info, request,
                         timeout, priority, trans_id, pid)
             return 'Hello World!';
