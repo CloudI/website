@@ -9,7 +9,7 @@
 :idprefix:
 :linkattrs:
 :revnumber: 1.7.5
-:revdate: 2018-12-18
+:revdate: 2019-08-24
 :lang: en
 :encoding: UTF-8
 :toc:
@@ -240,7 +240,8 @@ To understand how book recommendations occur within the example source code, let
 
 ==== Creating Book Recommendations
 
-Make sure you have Git, curl, Maven with Java 7 (or higher) and PostgreSQL running (>= 9.3).
+Make sure you have Git, curl, Maven with Java 7 (or 8) and PostgreSQL running (>= 9.3).
+Later Java versions are not supported by the Lenskit dependency but are supported by the Java CloudI API.
 Make sure CloudI is installed and running, using the installation and start sequence below, if necessary:
 
 [source,shell]
@@ -360,7 +361,7 @@ The "Rate" button will change to an "Update" button to allow the rating to chang
 . Set two more ratings in the same way while keeping the user_id value set to `1`.
 . Change the user_id value to be `2`.
 . Set a rating for one of the items that was rated as user_id `1`.
-. The Lenskit recommendation model has not yet been updated based on other user ratings to create suggestions so click the "Update Recommendation Model" button (this update action is typically done weekly or daily with online services that have many users, when Lenskit is used in production).
+. The Lenskit recommendation model has not yet been updated based on other user ratings to create suggestions so click the "Refresh Recommendation Model" button (this update action is typically done weekly or daily with online services that have many users, when Lenskit is used in production).
 
 The interface will update to show a red box that surrounds the "Recommendations Based On Previous Ratings" with expected ratings values that the recommendation model predicted, as shown in the screenshot below (your output will be based on the ratings you set, though it will look similar):
 

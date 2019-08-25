@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 1.5.6.1">
+<meta name="generator" content="Asciidoctor 1.5.8">
 <meta name="description" content="Cloud Framework for fault-tolerant distributed processing with dynamic load balancing">
 <meta name="keywords" content="tutorial, java, cloud, private cloud, framework, erlang, fault tolerant, distributed systems, embarrassingly parallel, divide and conquer, cloudi">
 <title>CloudI Java Tutorial</title>
@@ -40,7 +40,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 <h1>CloudI Java Tutorial</h1>
 <div class="details">
 <span id="revnumber">version 1.7.5,</span>
-<span id="revdate">2018-12-18</span>
+<span id="revdate">2019-08-24</span>
 </div>
 <div id="toc" class="toc">
 <div id="toctitle"></div>
@@ -105,7 +105,7 @@ The approach in CloudI simplifies development so the focus can remain on busines
 <p>The source code used in this tutorial is available at <a href="https://github.com/CloudI/cloudi_tutorial_java#readme" target="_blank" rel="noopener">https://github.com/CloudI/cloudi_tutorial_java</a> but we should first consider how this source code works with an overview.
 A single Java CloudI service is used to provide a REST API that handles book recommendations with the following Uniform Resource Locator (URL) path suffixes:</p>
 </div>
-<table class="tableblock frame-all grid-all spread">
+<table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -355,7 +355,8 @@ This approach keeps service development flexible so services can independently c
 <div class="sect3">
 <h4 id="creating_book_recommendations">Creating Book Recommendations</h4>
 <div class="paragraph">
-<p>Make sure you have Git, curl, Maven with Java 7 (or higher) and PostgreSQL running (&gt;= 9.3).
+<p>Make sure you have Git, curl, Maven with Java 7 (or 8) and PostgreSQL running (&gt;= 9.3).
+Later Java versions are not supported by the Lenskit dependency but are supported by the Java CloudI API.
 Make sure CloudI is installed and running, using the installation and start sequence below, if necessary:</p>
 </div>
 <div class="listingblock">
@@ -496,7 +497,7 @@ The "Rate" button will change to an "Update" button to allow the rating to chang
 <p>Set a rating for one of the items that was rated as user_id <code>1</code>.</p>
 </li>
 <li>
-<p>The Lenskit recommendation model has not yet been updated based on other user ratings to create suggestions so click the "Update Recommendation Model" button (this update action is typically done weekly or daily with online services that have many users, when Lenskit is used in production).</p>
+<p>The Lenskit recommendation model has not yet been updated based on other user ratings to create suggestions so click the "Refresh Recommendation Model" button (this update action is typically done weekly or daily with online services that have many users, when Lenskit is used in production).</p>
 </li>
 </ol>
 </div>
@@ -512,7 +513,7 @@ The "Rate" button will change to an "Update" button to allow the rating to chang
 <div class="paragraph">
 <p>To understand how book recommendations are occurring in the interface, lets start by looking closer at the REST API in the Java book recommendation service:</p>
 </div>
-<table class="tableblock frame-all grid-all spread">
+<table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
 <col style="width: 25%;">
@@ -914,7 +915,7 @@ For scheduling an interrupt of the <code>poll</code> function the timeout parame
 <h3 id="what_if_i_want_to_create_my_own_service">What If I Want To Create My Own Service?</h3>
 <div class="paragraph">
 <p>The Java source code for this tutorial (at <a href="https://github.com/CloudI/cloudi_tutorial_java#readme" target="_blank" rel="noopener">https://github.com/CloudI/cloudi_tutorial_java</a>) can help provide a start for your CloudI Java Service development in the future.
-There is a separate documentation section for service development guidelines which contains information applicable to any programming language (<a href="tutorials.html#guidelines_for_creating_a_cloudi_service">Guidelines For Creating A CloudI Service</a>).
+There is a separate documentation section for service development guidelines which contains information applicable to any programming language (<a href="tutorials.html#guidelines_for_creating_a_cloudi_service">"Guidelines For Creating A CloudI Service"</a>).
 If you need other examples of Java services there are programming examples <a href="tutorials.html#cloudi_examples">below the tutorials list</a>.</p>
 </div>
 </div>
