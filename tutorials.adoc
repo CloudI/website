@@ -108,6 +108,7 @@ Erlang::
   * link:https://github.com/CloudI/CloudI#integration[Services Included With CloudI]
 Java::
   * link:https://github.com/CloudI/cloudi_tutorial_java[Java Tutorial]
+  * link:https://github.com/CloudI/cloudi_service_htmlunit[HtmlUnit Service]
 Python::
   * link:https://github.com/okeuday/odroid_fish[UTF8 Fish Swimming]
 
