@@ -40,7 +40,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 <div id="content">
   <h1>CloudI API Documentation</h1>
   <center><h3>version 1.7.5<br />
-              last updated on March 23<sup>rd</sup> 2019</h3></center>
+              last updated on November 27<sup>th</sup> 2019</h3></center>
 
   <a name="Service"></a>
   <h2>CloudI API - Making a Service</h2>
@@ -4198,8 +4198,12 @@ curl -X POST -d '["65762d3262a511e882359563d34a433e"]' http://localhost:6464/clo
     Each service has a {UUID,&nbsp;Status} pair with the Status described below:
   </p>
 <pre>
-[{count_process, pos_integer()},                 % count_process_dynamic may vary
- {count_thread, pos_integer()},                  % external service threads
+[{type, internal | external},
+ {prefix, service_name_pattern()},
+ {module, atom()},                               % internal service only
+ {file_path, file:filename()},                   % external service only
+ {count_process, pos_integer()},                 % count_process_dynamic may vary
+ {count_thread, pos_integer()},                  % external service only
  {uptime_total, nonempty_string()},
  {uptime_running, nonempty_string()},
  {uptime_restarts, nonempty_string()},
@@ -4520,8 +4524,47 @@ curl http://localhost:6464/cloudi/api/rpc/services.erl
 </p>
   <p class="paragraph">
     List the service configuration parameters with each service's UUID.
-    Any default settings are ignored to keep the output concise.
+    Any default service configuration options are omitted to keep the
+    output concise.  The service tuple format is provided in the output
+    after any defaults have been assigned, as described in
+    <a href="#2_services_add">services_add</a>.
   </p>
+<pre>
+% service tuple format list
+[{UUID,
+  {internal,
+   service_name_pattern(),
+   atom(),
+   list(),
+   <a href="#1_Intro_dest">dest_refresh()</a>,
+   timeout_initialize_milliseconds(),
+   timeout_send_async_milliseconds(),
+   timeout_send_sync_milliseconds(),
+   dest_list(),
+   dest_list(),
+   pos_integer(),
+   non_neg_integer(),
+   seconds(),
+   <a href="#2_services_add_config_opts">service_options_internal()</a>} |
+  {external,
+   service_name_pattern(),
+   file:filename(),
+   string(),
+   list({string(), string()}),
+   <a href="#1_Intro_dest">dest_refresh()</a>,
+   local | tcp | udp,
+   pos_integer(),
+   timeout_initialize_milliseconds(),
+   timeout_send_async_milliseconds(),
+   timeout_send_sync_milliseconds(),
+   dest_list(),
+   dest_list(),
+   pos_integer(),
+   pos_integer(),
+   non_neg_integer(),
+   seconds(),
+   <a href="#2_services_add_config_opts">service_options_external()</a>}}]
+</pre>
   <div class="top"><a href="#CloudI">Top</a></div>
 
   <a name="2_nodes_set"></a>
