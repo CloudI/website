@@ -31,7 +31,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
     <li><a href="faq.html">FAQ</a></li>
     <li><a href="tutorials.html">Tutorials</a>
         (<a href="tutorial_java.html">Java</a>)</li>
-    <li><a href="https://osdn.net/dl/cloudi/cloudi-1.7.5.tar.gz" target="_blank">Download</a></li>
+    <li><a href="https://osdn.net/dl/cloudi/cloudi-1.8.0.tar.gz" target="_blank">Download</a></li>
     <li><a href="https://github.com/CloudI/CloudI/tree/develop#readme">Source</a></li>
     <li><a href="support.html">Support</a></li>
   </ul>
@@ -39,8 +39,8 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 
 <div id="content">
   <h1>CloudI API Documentation</h1>
-  <center><h3>version 1.7.5<br />
-              last updated on November 27<sup>th</sup> 2019</h3></center>
+  <center><h3>version 1.8.0<br />
+              last updated on November 28<sup>th</sup> 2019</h3></center>
 
   <a name="Service"></a>
   <h2>CloudI API - Making a Service</h2>
@@ -69,7 +69,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
     <li><a href="#1_forward"           >1.16 - forward</a></li>
     <li><a href="#1_poll"              >1.17 - poll
                                         (external services only)</a></li>
-    <li><a href="#1_shutdown"          >1.18 - shutdown (new in 1.8.0)</a></li>
+    <li><a href="#1_shutdown"          >1.18 - shutdown</a></li>
   </ul>
   <a name="CloudI"></a>
   <h2>CloudI Service API - Controlling CloudI</h2>
@@ -434,13 +434,13 @@ CloudI::API.new(thread_index)
     priority.  Both the Timeout parameter and the Priority parameter
     accept the 'undefined' atom to assign the default configured value.
     Please see the
-    <a href="api/cloudi_core-1.7.5/cloudi_service.html#index" target="_blank">cloudi_service module</a>
+    <a href="api/cloudi_core-1.8.0/cloudi_service.html#index" target="_blank">cloudi_service module</a>
     to see all the available functions and the behavior interface functions
     that are implemented within an Erlang service.  The cloudi_service module
     is used within CloudI services, however, it is also possible to use CloudI
     services from external Erlang processes with a subset of the CloudI API
     functions in the
-    <a href="api/cloudi_core-1.7.5/cloudi.html#index" target="_blank">cloudi module</a>.
+    <a href="api/cloudi_core-1.8.0/cloudi.html#index" target="_blank">cloudi module</a>.
   </p>
   <p class="paragraph">
     Both the C and the C++ CloudI API rely on the same underlying code, with
@@ -1710,7 +1710,7 @@ cloudi_service:send_async_active(Dispatcher :: pid(),
     The send_async_active message is sent to the Erlang process as an
     Erlang message, so it arrives in the cloudi_service_handle_info function
     of the Erlang service module (i.e., the module that implements the
-    <a href="api/cloudi_core-1.7.5/cloudi_service.html#description" target="_blank">cloudi_service behavior</a>).
+    <a href="api/cloudi_core-1.8.0/cloudi_service.html#description" target="_blank">cloudi_service behavior</a>).
     The message formats are also provided as records that are accessible with:
   </p>
 <pre onclick="element_select(this);">
@@ -2092,7 +2092,7 @@ cloudi_service:mcast_async_active(Dispatcher :: pid(),
     The mcast_async_active message is sent to the Erlang process as an
     Erlang message, so it arrives in the cloudi_service_handle_info function
     of the Erlang service module (i.e., the module that implements the
-    <a href="api/cloudi_core-1.7.5/cloudi_service.html#description" target="_blank">cloudi_service behavior</a>).
+    <a href="api/cloudi_core-1.8.0/cloudi_service.html#description" target="_blank">cloudi_service behavior</a>).
     The message formats are also provided as records that are accessible with:
   </p>
 <pre onclick="element_select(this);">
@@ -2570,7 +2570,7 @@ CloudI::API.return_(request_type, name, pattern, response_info, response,
     after returning the service request response.  The simplest
     and preferred way to return a response within an Erlang service is to
     utilize the cloudi_service_handle_request functon return values used by the
-    <a href="api/cloudi_core-1.7.5/cloudi_service.html#Module%3acloudi_service_handle_request-11" target="_blank">cloudi_service behavior</a>.  You can also
+    <a href="api/cloudi_core-1.8.0/cloudi_service.html#Module%3acloudi_service_handle_request-11" target="_blank">cloudi_service behavior</a>.  You can also
     utilize the request handler return value for the response in the
     programming languages Java, Python, and Ruby.  However, within the
     external services it is more explicit (i.e., easier to understand the
@@ -2739,7 +2739,7 @@ CloudI::API.forward_(request_type, name, request_info, request,
     execution is aborted after forwarding the service request.  The simplest
     and preferred way to forward a request within an Erlang service is to
     utilize the cloudi_service_handle_request functon return values used by the
-    <a href="api/cloudi_core-1.7.5/cloudi_service.html#Module%3acloudi_service_handle_request-11" target="_blank">cloudi_service behavior</a>.
+    <a href="api/cloudi_core-1.8.0/cloudi_service.html#Module%3acloudi_service_handle_request-11" target="_blank">cloudi_service behavior</a>.
     All external services must use a forward function when forwarding a request.
   </p>
   <p class="paragraph">
@@ -2784,8 +2784,7 @@ func (api *cloudi.Instance) Poll(timeout int32) (bool, error)
   <a href="#1_poll_Java">Java</a>
   <div class="tab_contents">
 <pre onclick="element_select(this);">
-Object org.cloudi.API.poll(int timeout);
-boolean org.cloudi.API.poll(int timeout); // (new in 1.8.0)
+boolean org.cloudi.API.poll(int timeout);
 </pre>
   </div>
   </div> <!-- Java -->
@@ -2855,7 +2854,7 @@ CloudI::API.poll(timeout=nil)
   <div class="top"><a href="#Service">Top</a></div>
 
   <a name="1_shutdown"></a>
-  <h3>1.18 - shutdown (new in 1.8.0)</h3>
+  <h3>1.18 - shutdown</h3>
   <div class="tabs" style="min-height: 17em;">
   <div id="1_shutdown_C">
   <a href="#1_shutdown_C">C</a>
@@ -2990,7 +2989,7 @@ CloudI::API.shutdown(reason=nil)
     cloudi_service_api_requests and cloudi_service_http_cowboy).
     The CloudI Service API can also be accessed directly within the
     Erlang VM by using the
-    <a href="api/cloudi_core-1.7.5/cloudi_service_api.html#index" target="_blank">cloudi_service_api module</a>.
+    <a href="api/cloudi_core-1.8.0/cloudi_service_api.html#index" target="_blank">cloudi_service_api module</a>.
   </p>
   <table><tr><th>
     Protocol
@@ -4651,7 +4650,7 @@ curl -X POST -d "[{reconnect_delay, 300}]" http://localhost:6464/cloudi/api/rpc/
   </td><td>
     Cost currency decimal places.
   </td></tr><tr><td>
-    log_reconnect (new in 1.8.0)
+    log_reconnect
   </td><td>
     info
   </td><td>
