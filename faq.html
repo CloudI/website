@@ -40,7 +40,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 <div id="content">
   <h1>Frequently Asked Questions</h1>
   <center><h3>version 1.8.0<br />
-              last updated on November 28<sup>th</sup> 2019</h3></center>
+              last updated on December 25<sup>th</sup> 2019</h3></center>
 
   <a name="1_contents"></a>
   <h2>1 - Introduction to CloudI</h2>
@@ -1060,6 +1060,12 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
   <a name="3_Overview"></a>
   <h3>3.1 - Overview</h3>
   <p>
+    For CloudI in a container (e.g., Docker) use the
+    <a href="https://github.com/CloudI/containers#readme" target="_blank">https://github.com/CloudI/containers</a> repository.
+    For CloudI on a Live CD ISO image use the
+    <a href="https://github.com/CloudI/live_cd#readme" target="_blank">https://github.com/CloudI/live_cd</a> repository.
+  </p>
+  <p class="paragraph">
     Installation of CloudI from source (within the archive's "src" directory)
     uses the typical open source command sequence of:
     <ol style="font-family: monospace">
@@ -1172,17 +1178,14 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
     Use the debug python executable instead of the normal python
     executable<br />(default="no")
     </td></tr><tr><td nowrap>
-    --without-integration-tests
+    --with-integration-tests
     </td><td>
-    Do not build and install the integration tests or utilize the
-    integration tests configuration that causes them to run at startup<br />
-    (default="yes")
+    Build and install the integration tests<br />(default="yes")
     </td></tr><tr><td nowrap>
-    --without-integration-tests-ran
+    --with-integration-tests-ran
     </td><td>
-    Do not install the integration tests configuration that
-    causes them to run at startup<br />
-    (default="no")
+    Install the integration tests configuration
+    to run the tests at startup<br />(default="no")
     </td></tr><tr><td nowrap>
     --enable-go-support
     </td><td>
@@ -1233,7 +1236,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
   </p>
   <p class="paragraph">
     For more installation configuration option details, please execute
-    "./configure --help" (otherwise, you can refer to
+    "./configure&nbsp;--help" (otherwise, you can refer to
     <a href="https://github.com/CloudI/CloudI/blob/master/src/INSTALL" target="_blank">src/INSTALL</a>
     for basic configuration information).
   </p>
