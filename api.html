@@ -4891,7 +4891,7 @@ curl -X POST -d "['cloud001@cluster1']" http://localhost:6464/cloudi/api/rpc/nod
   <p class="paragraph">
     Explicitly add a CloudI node name, so that services between all other
     CloudI nodes and the added nodes can send each other service requests.
-    A nodes_add call is equivalent to nodes_set with
+    A nodes_add call is similar to nodes_set with
     [{set, all}, {nodes, Nodes}] where Nodes is the final list of all nodes
     (all connected nodes are modified).
   </p>
@@ -4906,7 +4906,7 @@ curl -X POST -d "['cloud001@cluster1']" http://localhost:6464/cloudi/api/rpc/nod
     Explicitly remove a CloudI node name.  The CloudI node must have
     been added explicitly to be removed explicitly
     (not added by an auto-discovery method).
-    A nodes_remove call is equivalent to nodes_set with
+    A nodes_remove call is similar to nodes_set with
     [{set, all}, {nodes, Nodes}] where Nodes is the final list of all nodes
     (all connected nodes are modified).
   </p>
