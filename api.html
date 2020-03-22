@@ -40,7 +40,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 <div id="content">
   <h1>CloudI API Documentation</h1>
   <center><h3>version 1.8.0<br />
-              last updated on March 8<sup>th</sup> 2020</h3></center>
+              last updated on March 14<sup>th</sup> 2020</h3></center>
 
   <a name="Service"></a>
   <h2>CloudI API - Making a Service</h2>
@@ -4667,6 +4667,7 @@ curl -X POST -d "[{reconnect_delay, 300}]" http://localhost:6464/cloudi/api/rpc/
   </td><td>
     What distributed Erlang node connections should be monitored:
     'visible' or 'all' (to include hidden nodes).
+    <strong>Deprecated in 1.8.1, only 'connect' needs to be set.</strong>
   </td></tr><tr><td>
     connect
   </td><td>
