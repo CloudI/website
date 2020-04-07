@@ -334,7 +334,7 @@ HTTP requests do provide HTTP headers which is request meta-data and all request
 <p>An important fault-tolerance constraint is the timeout on a service request (i.e., the <code>timeout</code> parameter) since it determines how long the service request is valid.
 Every CloudI service request contains a specific timeout value in milliseconds which is decremented when the service request encounters any delay (e.g., due to queuing, handling execution, or forwarding).
 The <code>priority</code> parameter controls the priority when a service request is queued and a service request is only queued while the service thread is busy with a separate service request.
-The <code>command</code>, <code>name</code>, and <code>pattern</code> parameters show how the service request got here by containing whether the send is asynchronous or synchronous, the service name, and the service name pattern, respectively.
+The <code>request_type</code>, <code>name</code>, and <code>pattern</code> parameters show how the service request got here by containing whether the send is asynchronous or synchronous, the service name, and the service name pattern, respectively.
 The <code>pid</code> contains the source of the service request as it is represented within the CloudI source code (it is the response destination).</p>
 </div>
 <div class="paragraph">
