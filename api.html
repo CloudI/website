@@ -3278,6 +3278,13 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
     (1000 * MaxT) - 100, if MaxT &gt; 0, or 2000, if MaxT = 0.
     All default termination timeout values are clamped to the range [10..60000].
   </td></tr><tr><td>
+    restart_all<br \>
+    (new in 1.8.1)
+  </td><td>
+    false
+  </td><td>
+    Restart all processes when one process fails.
+  </td></tr><tr><td>
     <a href="#2_services_add_config_opts_restart_delay">
     restart_delay
     </a>
