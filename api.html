@@ -40,7 +40,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 <div id="content">
   <h1>CloudI API Documentation</h1>
   <center><h3>version 1.8.0<br />
-              last updated on May 2<sup>nd</sup> 2020</h3></center>
+              last updated on May 10<sup>th</sup> 2020</h3></center>
 
   <a name="Service"></a>
   <h2>CloudI API - Making a Service</h2>
@@ -3469,8 +3469,12 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
     true.  When set to a list ([])
     <a href="#2_services_add_config_opts_hibernate">
     options can be provided</a>.
-    Enabling hibernate may decrease service performance
-    (the service may be less responsive with service requests taking longer).
+    Enabling hibernate may decrease overall service performance
+    (the service may be less responsive with service requests taking longer
+     when examining the average response time),
+    though it can improve worst-case service response time
+    (i.e., the maximum response time) by avoiding less frequent
+    garbage collections that create larger amounts of latency.
   </td></tr><tr><td>
     reload
   </td><td>
