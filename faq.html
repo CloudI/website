@@ -40,7 +40,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 <div id="content">
   <h1>Frequently Asked Questions</h1>
   <center><h3>version 1.8.0<br />
-              last updated on December 26<sup>th</sup> 2019</h3></center>
+              last updated on June 1<sup>st</sup> 2020</h3></center>
 
   <a name="1_contents"></a>
   <h2>1 - Introduction to CloudI</h2>
@@ -137,6 +137,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
   <ul class="faq">
     <li><a href="#7_start"      >7.1 - Why does CloudI stop shortly after being started?</a></li>
     <li><a href="#7_slow"       >7.2 - Why is CloudI making my Linux machine slow?</a></li>
+    <li><a href="#7_install"    >7.3 - Why does my container or guest VM installation of CloudI have problems?</a></li>
   </ul>
 
   <hr \>
@@ -2862,6 +2863,42 @@ sudo cloudi stop
      for service configuration details or
      <a href="faq.html#5_Performance">"5.1 - Performance Considerations"</a>
      for general information about scheduler limitations).
+  </p>
+  <div class="top"><a href="#7_contents">Top</a></div>
+
+  <a name="7_install"></a>
+  <h3>7.3 - Why does my container or guest VM installation of CloudI have problems?</h3>
+  <p class="paragraph">
+    CloudI source code executes within the Erlang/OTP VM
+    (BEAM, i.e., "Bogdan/Björn's Erlang Abstract Machine") and requires
+    accurate time-keeping during its execution.  Typically time information
+    is obtained using clock_gettime with CLOCK_MONOTONIC and CLOCK_REALTIME
+    (e.g., on Linux).  The time source can be checked in the Erlang shell with
+    "erlang:system_info(os_monotonic_time_source)." and
+    "erlang:system_info(os_system_time_source).".
+  </p>
+  <h4>Container Execution</h4>
+  <p>
+    Container execution of CloudI can occur on an overloaded machine to
+    cause timeouts to occur prematurely after not giving CloudI CPU time.
+    If Erlang/OTP was configured with
+    &#8209;&#8209;enable&#8209;prefer&#8209;elapsed&#8209;monotonic&#8209;time&#8209;during&#8209;suspend
+    (not enabled by default) and the container system freezes/unfreezes
+    processes automatically using SIGSTOP/SIGCONT
+    (on Linux it would likely use the <a href="https://www.kernel.org/doc/Documentation/cgroup-v1/freezer-subsystem.txt" target="_blank">cgroup freezer subsystem</a>)
+    based on the machine load, it may be possible to have reliable Erlang/OTP
+    execution in a container.  If execution was reliable, it would be
+    inefficient, so container execution is best to avoid if both
+    fault-tolerance and efficiency are requirements.
+  </p>
+  <h4>Guest VM Execution</h4>
+  <p>
+    Guest VM execution can have relatively accurate time-keeping on Linux when
+    the clocksource is set to kvm&#8209;clock and the scheduler is set to
+    <a href="https://en.wikipedia.org/wiki/Completely_Fair_Scheduler" target="_blank">Completely Fair Queuing (CFQ)</a>
+    (Linux kernel arguments "elevator=cfq&nbsp;clocksource=kvm&#8209;clock").
+    Various CloudI testing occurs in guest VM execution without problems,
+    though execution is slower than bare-metal execution.
   </p>
   <div class="top"><a href="#7_contents">Top</a></div>
 </div>
