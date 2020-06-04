@@ -31,7 +31,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
     <li><a href="faq.html">FAQ</a></li>
     <li><a href="tutorials.html">Tutorials</a>
         (<a href="tutorial_java.html">Java</a>)</li>
-    <li><a href="https://osdn.net/dl/cloudi/cloudi-1.8.0.tar.gz" target="_blank">Download</a></li>
+    <li><a href="https://osdn.net/dl/cloudi/cloudi-2.0.0.tar.gz" target="_blank">Download</a></li>
     <li><a href="https://github.com/CloudI/CloudI/tree/develop#readme">Source</a></li>
     <li><a href="support.html">Support</a></li>
   </ul>
@@ -39,8 +39,8 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 
 <div id="content">
   <h1>CloudI API Documentation</h1>
-  <center><h3>version 1.8.0<br />
-              last updated on May 10<sup>th</sup> 2020</h3></center>
+  <center><h3>version 2.0.0<br />
+              last updated on June 4<sup>th</sup> 2020</h3></center>
 
   <a name="Service"></a>
   <h2>CloudI API - Making a Service</h2>
@@ -82,8 +82,8 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
     <li><a href="#2_services_add"          >2.5 - services_add</a></li>
     <li><a href="#2_services_remove"       >2.6 - services_remove</a></li>
     <li><a href="#2_services_restart"      >2.7 - services_restart</a></li>
-    <li><a href="#2_services_suspend"      >2.8 - services_suspend (new in 1.8.1)</a></li>
-    <li><a href="#2_services_resume"       >2.9 - services_resume (new in 1.8.1)</a></li>
+    <li><a href="#2_services_suspend"      >2.8 - services_suspend</a></li>
+    <li><a href="#2_services_resume"       >2.9 - services_resume</a></li>
     <li><a href="#2_services_search"       >2.10 - services_search</a></li>
     <li><a href="#2_services_status"       >2.11 - services_status</a></li>
     <li><a href="#2_services_update"       >2.12 - services_update</a></li>
@@ -436,13 +436,13 @@ CloudI::API.new(thread_index)
     priority.  Both the Timeout parameter and the Priority parameter
     accept the 'undefined' atom to assign the default configured value.
     Please see the
-    <a href="api/cloudi_core-1.8.0/cloudi_service.html#index" target="_blank">cloudi_service module</a>
+    <a href="api/cloudi_core-2.0.0/cloudi_service.html#index" target="_blank">cloudi_service module</a>
     to see all the available functions and the behavior interface functions
     that are implemented within an Erlang service.  The cloudi_service module
     is used within CloudI services, however, it is also possible to use CloudI
     services from external Erlang processes with a subset of the CloudI API
     functions in the
-    <a href="api/cloudi_core-1.8.0/cloudi.html#index" target="_blank">cloudi module</a>.
+    <a href="api/cloudi_core-2.0.0/cloudi.html#index" target="_blank">cloudi module</a>.
   </p>
   <p class="paragraph">
     Both the C and the C++ CloudI API rely on the same underlying code, with
@@ -1712,7 +1712,7 @@ cloudi_service:send_async_active(Dispatcher :: pid(),
     The send_async_active message is sent to the Erlang process as an
     Erlang message, so it arrives in the cloudi_service_handle_info function
     of the Erlang service module (i.e., the module that implements the
-    <a href="api/cloudi_core-1.8.0/cloudi_service.html#description" target="_blank">cloudi_service behavior</a>).
+    <a href="api/cloudi_core-2.0.0/cloudi_service.html#description" target="_blank">cloudi_service behavior</a>).
     The message formats are also provided as records that are accessible with:
   </p>
 <pre onclick="element_select(this);">
@@ -2094,7 +2094,7 @@ cloudi_service:mcast_async_active(Dispatcher :: pid(),
     The mcast_async_active message is sent to the Erlang process as an
     Erlang message, so it arrives in the cloudi_service_handle_info function
     of the Erlang service module (i.e., the module that implements the
-    <a href="api/cloudi_core-1.8.0/cloudi_service.html#description" target="_blank">cloudi_service behavior</a>).
+    <a href="api/cloudi_core-2.0.0/cloudi_service.html#description" target="_blank">cloudi_service behavior</a>).
     The message formats are also provided as records that are accessible with:
   </p>
 <pre onclick="element_select(this);">
@@ -2572,7 +2572,7 @@ CloudI::API.return_(request_type, name, pattern, response_info, response,
     after returning the service request response.  The simplest
     and preferred way to return a response within an Erlang service is to
     utilize the cloudi_service_handle_request functon return values used by the
-    <a href="api/cloudi_core-1.8.0/cloudi_service.html#Module%3acloudi_service_handle_request-11" target="_blank">cloudi_service behavior</a>.  You can also
+    <a href="api/cloudi_core-2.0.0/cloudi_service.html#Module%3acloudi_service_handle_request-11" target="_blank">cloudi_service behavior</a>.  You can also
     utilize the request handler return value for the response in the
     programming languages Java, Python, and Ruby.  However, within the
     external services it is more explicit (i.e., easier to understand the
@@ -2741,7 +2741,7 @@ CloudI::API.forward_(request_type, name, request_info, request,
     execution is aborted after forwarding the service request.  The simplest
     and preferred way to forward a request within an Erlang service is to
     utilize the cloudi_service_handle_request functon return values used by the
-    <a href="api/cloudi_core-1.8.0/cloudi_service.html#Module%3acloudi_service_handle_request-11" target="_blank">cloudi_service behavior</a>.
+    <a href="api/cloudi_core-2.0.0/cloudi_service.html#Module%3acloudi_service_handle_request-11" target="_blank">cloudi_service behavior</a>.
     All external services must use a forward function when forwarding a request.
   </p>
   <p class="paragraph">
@@ -2991,7 +2991,7 @@ CloudI::API.shutdown(reason=nil)
     cloudi_service_api_requests and cloudi_service_http_cowboy).
     The CloudI Service API can also be accessed directly within the
     Erlang VM by using the
-    <a href="api/cloudi_core-1.8.0/cloudi_service_api.html#index" target="_blank">cloudi_service_api module</a>.
+    <a href="api/cloudi_core-2.0.0/cloudi_service_api.html#index" target="_blank">cloudi_service_api module</a>.
   </p>
   <table><tr><th>
     Protocol
@@ -3026,12 +3026,6 @@ curl -X POST -d '[{sensitive, ["/accouting/*", "/finance/*"]}]' http://localhost
     entry is an Erlang atom() -&gt; list(atom() | string()) relationship which
     provides a logical grouping of service name patterns
     (e.g., {api, ["/cloudi/api/*"]}).
-  </p>
-  <p class="paragraph">
-    <b>N.B., with the release of 1.8.0 and the current develop branch,
-    non-patterns no longer get a "*" suffix.  If you have ACL strings in CloudI
-    configurations from past releases, ensure the ACL string contains a
-    pattern character ("*" or "?") and manually add a "*" suffix if not.</b>
   </p>
   <div class="top"><a href="#CloudI">Top</a></div>
 
@@ -3278,8 +3272,7 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
     (1000 * MaxT) - 100, if MaxT &gt; 0, or 2000, if MaxT = 0.
     All default termination timeout values are clamped to the range [10..60000].
   </td></tr><tr><td>
-    restart_all<br \>
-    (new in 1.8.1)
+    restart_all
   </td><td>
     false
   </td><td>
@@ -4184,7 +4177,7 @@ curl -X POST -d '["6a675470-7a1f-11e2-d40e-a5dd00000058"]' http://localhost:6464
   <div class="top"><a href="#CloudI">Top</a></div>
 
   <a name="2_services_suspend"></a>
-  <h3>2.8 - services_suspend (new in 1.8.1)</h3>
+  <h3>2.8 - services_suspend</h3>
 <p class="code" onclick="element_select(this);">
 curl -X POST -d '["6a675470-7a1f-11e2-d40e-a5dd00000058"]' http://localhost:6464/cloudi/api/rpc/services_suspend.erl
 </p>
@@ -4200,7 +4193,7 @@ curl -X POST -d '["6a675470-7a1f-11e2-d40e-a5dd00000058"]' http://localhost:6464
   <div class="top"><a href="#CloudI">Top</a></div>
 
   <a name="2_services_resume"></a>
-  <h3>2.9 - services_resume (new in 1.8.1)</h3>
+  <h3>2.9 - services_resume</h3>
 <p class="code" onclick="element_select(this);">
 curl -X POST -d '["6a675470-7a1f-11e2-d40e-a5dd00000058"]' http://localhost:6464/cloudi/api/rpc/services_resume.erl
 </p>
@@ -4247,7 +4240,7 @@ curl -X POST -d '["65762d3262a511e882359563d34a433e"]' http://localhost:6464/clo
  {file_path, file:filename()},                   % external service only
  {count_process, pos_integer()},                 % count_process_dynamic may vary
  {count_thread, pos_integer()},                  % external service only
- {suspended, boolean()},                         % (new in 1.8.1)
+ {suspended, boolean()},
  {uptime_total, nonempty_string()},
  {uptime_running, nonempty_string()},
  {uptime_processing, nonempty_string()},
@@ -4290,7 +4283,7 @@ curl -X POST -d '["65762d3262a511e882359563d34a433e"]' http://localhost:6464/clo
     service has been running, including all restarts (in uptime_total).
     The <strong>running</strong> time shows how long the last restart
     of the service has been running (in uptime_running).
-    The <strong>processing (new in 1.8.1)</strong> time
+    The <strong>processing</strong> time
     shows how long the service has been processing service requests
     in the currently running service processes.  The total
     number of restarts during the lifetime of the service is provided in
@@ -4320,7 +4313,6 @@ curl -X POST -d '["65762d3262a511e882359563d34a433e"]' http://localhost:6464/clo
      availability_month_updated and availability_year_updated).
   </p>
   <p class="paragraph">
-    <strong>(new in 1.8.1)</strong>
     The service interrupt spent with service processes suspended is provided
     for the past day, week, month and year.  The <strong>processing</strong>
     time is the <strong>running</strong> time minus the
@@ -4647,8 +4639,7 @@ curl -X POST -d "[{reconnect_delay, 300}]" http://localhost:6464/cloudi/api/rpc/
   </th><th>
     Details
   </th></tr><tr><td>
-    set<br \>
-    (new in 1.8.1)
+    set
   </td><td>
     all
   </td><td>
@@ -4680,7 +4671,7 @@ curl -X POST -d "[{reconnect_delay, 300}]" http://localhost:6464/cloudi/api/rpc/
   </td><td>
     What distributed Erlang node connections should be monitored:
     'visible' or 'all' (to include hidden nodes).
-    (new in 1.8.1) If it is not set, it is inferred from connect.
+    If it is not set, it is inferred from connect.
   </td></tr><tr><td>
     connect
   </td><td>
