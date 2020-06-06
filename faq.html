@@ -40,7 +40,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 <div id="content">
   <h1>Frequently Asked Questions</h1>
   <center><h3>version 2.0.0<br />
-              last updated on June 4<sup>th</sup> 2020</h3></center>
+              last updated on June 6<sup>th</sup> 2020</h3></center>
 
   <a name="1_contents"></a>
   <h2>1 - Introduction to CloudI</h2>
@@ -1212,7 +1212,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
     --disable-javascript-support
     </td><td>
     Disable the Javascript CloudI API,<br />
-    requires node.js&nbsp;&ge;&nbsp;0.8.0<br />(default="no")
+    requires node.js&nbsp;&ge;&nbsp;0.12.18<br />(default="no")
     </td></tr><tr><td nowrap>
     --enable-ocaml-support
     </td><td>
@@ -1727,13 +1727,9 @@ sudo cloudi stop
     and improve scalability, services are replicated on all nodes.  Proper
     service implementation dictates that services will only cache data.
     All dynamic state a service uses should be accessed and/or stored by a
-    database.  To communicate with a database, a service should use the
-    <a href="api.html#Service">CloudI API</a>
-    to send requests to a configured CloudI database integration
-    service.  The implementation of services that avoids state-keeping within
+    database.  The implementation of services that avoids state-keeping within
     the service's data structures is required to ensure a service is
-    scalable, fault-tolerant and can recover from a failure without losing
-    a significant amount of data.
+    scalable, fault-tolerant and reliable (i.e., no data-loss).
   </p>
   <p class="paragraph">
     So, a service should not need to be migrated from a node.  If a node has
