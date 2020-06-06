@@ -40,7 +40,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
 <div id="content">
   <h1>CloudI API Documentation</h1>
   <center><h3>version 2.0.0<br />
-              last updated on June 4<sup>th</sup> 2020</h3></center>
+              last updated on June 5<sup>th</sup> 2020</h3></center>
 
   <a name="Service"></a>
   <h2>CloudI API - Making a Service</h2>
@@ -264,7 +264,7 @@ Cloud<font style="font-family: serif">I</font><img width=156 height=106 src="ima
   <div class="tab_contents">
 <pre onclick="element_select(this);">
 int cloudi_initialize_thread_count(unsigned int * const thread_count);
-int cloudi_initialize(cloudi_instance_t * p,
+int cloudi_initialize(cloudi_instance_t * api,
                       unsigned int const thread_index,
                       void * state);
 </pre>
@@ -275,7 +275,8 @@ int cloudi_initialize(cloudi_instance_t * p,
   <div class="tab_contents">
 <pre onclick="element_select(this);">
 unsigned int CloudI::API::thread_count();
-CloudI::API(unsigned int const thread_index);
+CloudI::API(unsigned int const thread_index,
+            bool const terminate_return_value = true);
 </pre>
   </div>
   </div> <!-- C++ -->
@@ -491,7 +492,21 @@ CloudI::API.new(thread_index)
   <a href="#1_subscribe_C">C</a>
   <div class="tab_contents">
 <pre onclick="element_select(this);">
-int cloudi_subscribe(cloudi_instance_t * p,
+typedef void (*cloudi_callback_t)(int const request_type,
+                                  char const * const name,
+                                  char const * const pattern,
+                                  void const * const request_info,
+                                  uint32_t const request_info_size,
+                                  void const * const request,
+                                  uint32_t const request_size,
+                                  uint32_t timeout,
+                                  int8_t priority,
+                                  char const * const trans_id,
+                                  char const * const pid,
+                                  uint32_t const pid_size,
+                                  void * state,
+                                  cloudi_instance_t * api);
+int cloudi_subscribe(cloudi_instance_t * api,
                      char const * const pattern,
                      cloudi_callback_t f);
 </pre>
@@ -661,7 +676,7 @@ CloudI::API.subscribe(pattern, function)
   <a href="#1_subscribe_count_C">C</a>
   <div class="tab_contents">
 <pre onclick="element_select(this);">
-int cloudi_subscribe_count(cloudi_instance_t * p,
+int cloudi_subscribe_count(cloudi_instance_t * api,
                            char const * const pattern);
 // cloudi_get_subscribe_count(p) to get the result
 </pre>
@@ -788,7 +803,7 @@ CloudI::API.subscribe_count(pattern)
   <a href="#1_unsubscribe_C">C</a>
   <div class="tab_contents">
 <pre onclick="element_select(this);">
-int cloudi_unsubscribe(cloudi_instance_t * p,
+int cloudi_unsubscribe(cloudi_instance_t * api,
                        char const * const pattern);
 </pre>
   </div>
@@ -1010,7 +1025,7 @@ cloudi_service:get_pids(Dispatcher :: pid(),
   <a href="#1_send_sync_C">C</a>
   <div class="tab_contents">
 <pre onclick="element_select(this);">
-int cloudi_send_sync_(cloudi_instance_t * p,
+int cloudi_send_sync_(cloudi_instance_t * api,
                       char const * const name,
                       void const * const request_info,
                       uint32_t const request_info_size,
@@ -1323,7 +1338,7 @@ array($response_info, $response, $trans_id)
   <a href="#1_send_async_C">C</a>
   <div class="tab_contents">
 <pre onclick="element_select(this);">
-int cloudi_send_async_(cloudi_instance_t * p,
+int cloudi_send_async_(cloudi_instance_t * api,
                        char const * const name,
                        void const * const request_info,
                        uint32_t const request_info_size,
@@ -1727,7 +1742,7 @@ cloudi_service:send_async_active(Dispatcher :: pid(),
   <a href="#1_mcast_async_C">C</a>
   <div class="tab_contents">
 <pre onclick="element_select(this);">
-int cloudi_mcast_async_(cloudi_instance_t * p,
+int cloudi_mcast_async_(cloudi_instance_t * api,
                         char const * const name,
                         void const * const request_info,
                         uint32_t const request_info_size,
@@ -2109,7 +2124,7 @@ cloudi_service:mcast_async_active(Dispatcher :: pid(),
   <a href="#1_recv_async_C">C</a>
   <div class="tab_contents">
 <pre onclick="element_select(this);">
-int cloudi_recv_async(cloudi_instance_t * p,
+int cloudi_recv_async(cloudi_instance_t * api,
                       uint32_t timeout,
                       char const * const trans_id,
                       int consume);
@@ -2427,7 +2442,7 @@ cloudi_service:recv_asyncs(Dispatcher :: pid(),
   <a href="#1_return_C">C</a>
   <div class="tab_contents">
 <pre onclick="element_select(this);">
-int cloudi_return(cloudi_instance_t * p,
+int cloudi_return(cloudi_instance_t * api,
                   int const request_type,
                   char const * const name,
                   char const * const pattern,
@@ -2595,7 +2610,7 @@ CloudI::API.return_(request_type, name, pattern, response_info, response,
   <a href="#1_forward_C">C</a>
   <div class="tab_contents">
 <pre onclick="element_select(this);">
-int cloudi_forward(cloudi_instance_t * p,
+int cloudi_forward(cloudi_instance_t * api,
                    int const request_type,
                    char const * const name,
                    void const * const request_info,
@@ -2761,7 +2776,7 @@ CloudI::API.forward_(request_type, name, request_info, request,
   <a href="#1_poll_C">C</a>
   <div class="tab_contents">
 <pre onclick="element_select(this);">
-int cloudi_poll(cloudi_instance_t * p,
+int cloudi_poll(cloudi_instance_t * api,
                 int timeout);
 </pre>
   </div>
@@ -2862,7 +2877,7 @@ CloudI::API.poll(timeout=nil)
   <a href="#1_shutdown_C">C</a>
   <div class="tab_contents">
 <pre onclick="element_select(this);">
-int cloudi_shutdown(cloudi_instance_t * p,
+int cloudi_shutdown(cloudi_instance_t * api,
                     char const * const reason);
 </pre>
   </div>
