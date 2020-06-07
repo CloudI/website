@@ -2877,9 +2877,8 @@ sudo cloudi stop
   <p>
     Container execution of CloudI can occur on an overloaded machine to
     cause timeouts to occur prematurely after not giving CloudI CPU time.
-    Docker containers should be using --cpus with an integer and the same
-    integer needs to be provided to +S in the /usr/local/etc/cloudi/vm.args
-    file.  If the container system does not provide a way to allocate CPUs,
+    Docker containers should be using --cpus.  LXC containers should be using
+    limits.cpu config.  If the container system does not support CPU quotas,
     timeouts will be inaccurate.
   </p>
   <h4>Guest VM Execution</h4>
