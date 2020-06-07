@@ -2877,15 +2877,10 @@ sudo cloudi stop
   <p>
     Container execution of CloudI can occur on an overloaded machine to
     cause timeouts to occur prematurely after not giving CloudI CPU time.
-    If Erlang/OTP was configured with
-    &#8209;&#8209;enable&#8209;prefer&#8209;elapsed&#8209;monotonic&#8209;time&#8209;during&#8209;suspend
-    (not enabled by default) and the container system freezes/unfreezes
-    processes automatically using SIGSTOP/SIGCONT
-    (on Linux it would likely use the <a href="https://www.kernel.org/doc/Documentation/cgroup-v1/freezer-subsystem.txt" target="_blank">cgroup freezer subsystem</a>)
-    based on the machine load, it may be possible to have reliable Erlang/OTP
-    execution in a container.  If execution was reliable, it would be
-    inefficient, so container execution is best to avoid if both
-    fault-tolerance and efficiency are requirements.
+    Docker containers should be using --cpus with an integer and the same
+    integer needs to be provided to +S in the /usr/local/etc/cloudi/vm.args
+    file.  If the container system does not provide a way to allocate CPUs,
+    timeouts will be inaccurate.
   </p>
   <h4>Guest VM Execution</h4>
   <p>
