@@ -40,7 +40,7 @@ Cloud<font style="font-family: serif">I</font><img width="156" height="106" src=
 <div id="content">
   <h1>Frequently Asked Questions</h1>
   <center><h3>version 2.0.0<br />
-              last updated on June 6<sup>th</sup> 2020</h3></center>
+              last updated on October 3<sup>rd</sup> 2020</h3></center>
 
   <a name="1_contents"></a>
   <h2>1 - Introduction to CloudI</h2>
@@ -2844,11 +2844,13 @@ sudo cloudi stop
     configured concurrency.  However, the Linux scheduler that is selected
     may make the overloaded machine slower by focusing on CPU intensive
     execution.  If you are concerned about CloudI services overloading
-    the machine, it is best to select the
+    a machine with Linux &lt; 5.0, it is best to select the
     <a href="https://en.wikipedia.org/wiki/Completely_Fair_Scheduler" target="_blank">Completely Fair Queuing (CFQ)</a>
     scheduler if it has not already been selected
     (it is a common default for Linux distributions).  To select CFQ,
     add elevator=cfq to the Linux kernel parameters.
+    For Linux &ge; 5.0, the <a href="https://www.kernel.org/doc/html/latest/block/bfq-iosched.html" target="_blank">Budget Fair Queueing (BFQ)</a>
+    scheduler may be beneficial.
   </p>
   <p class="paragraph">
     Having CloudI services overload a machine is uncommon when the
@@ -2884,9 +2886,8 @@ sudo cloudi stop
   <h4>Guest VM Execution</h4>
   <p>
     Guest VM execution can have relatively accurate time-keeping on Linux when
-    the clocksource is set to kvm&#8209;clock and the scheduler is set to
-    <a href="https://en.wikipedia.org/wiki/Completely_Fair_Scheduler" target="_blank">Completely Fair Queuing (CFQ)</a>
-    (Linux kernel arguments "elevator=cfq&nbsp;clocksource=kvm&#8209;clock").
+    the clocksource is set to kvm&#8209;clock
+    (Linux kernel argument "clocksource=kvm&#8209;clock").
     Various CloudI testing occurs in guest VM execution without problems,
     though execution is slower than bare-metal execution.
   </p>
