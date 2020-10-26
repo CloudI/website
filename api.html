@@ -3346,10 +3346,7 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
     []
   </td><td>
     (external services only) A list of <a href="#2_services_add_config_opts_limit">resource limits to set</a>
-    for the OS processes created for an external service.
-    The resource limits are based on what the OS supports
-    (the supported resource limits can be found in the <a href="http://manpages.ubuntu.com/manpages/natty/man2/setrlimit.2.html" target="_blank">setrlimit</a>
-    manpage).
+    for the OS processes an external service creates.
   </td></tr><tr><td>
     <a href="#2_services_add_config_opts_owner">
     owner</a>
@@ -3767,7 +3764,7 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
     point during the day.
   </td></tr></table>
   <a name="2_services_add_config_opts_limit"></a>
-  <h4>limit: (see your OS manpage for setrlimit to check availability)</h4>
+  <h4>limit:</h4>
   <p class="paragraph">
     The value for any option can be an integer or 'infinity' to set the
     current limit or a list to set both the current and the maximum
@@ -3853,6 +3850,9 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
   </td><td>
     The maximum size of an OS process' mapped address space in bytes.
   </td></tr></table>
+  <p class="paragraph">
+    (see your OS manpage for setrlimit to check availability)
+  </p>
   <a name="2_services_add_config_opts_owner"></a>
   <h4>owner:</h4>
   <p class="paragraph">
