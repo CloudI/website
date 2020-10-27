@@ -3943,21 +3943,35 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
       <li>a kernel version change</li>
       <li>a libc version change</li>
     </ul>
-    An example of syscall_lock names used for only C/C++ CloudI API use
-    on Ubuntu 20.04 Linux (5.4.0 kernel, glibc 2.31) with comments is below:
+    Examples of syscall_lock names used for only C/C++ CloudI API use
+    (http_req test) with comments is below:
   </p>
 <pre>
-[
- % C/C++ CloudI API use
- "execve","clock_gettime","poll","read","write","close","exit",
- "brk","mmap","munmap", % (malloc/free)
- % Linux-specific
- "exit_group",
- % dynamically linked library loading
- "arch_prctl","mprotect","access","openat","stat","fstat","pread64"
- % static linking requires
- %"arch_prctl","mprotect","uname","readlink"
-]
+% Example 1: OpenBSD 6.8
+{syscall_lock,
+ [{type, pledge},
+  {names,
+   [
+    % C/C++ CloudI API use
+    "stdio",
+    % dynamically linked library loading
+    "rpath"
+   ]}]}
+% Example 2: Ubuntu 20.04 Linux (5.4.0 kernel, glibc 2.31)
+{syscall_lock,
+ [{type, function},
+  {names,
+   [
+    % C/C++ CloudI API use
+    "execve","clock_gettime","poll","read","write","close","exit",
+    "brk","mmap","munmap", % (malloc/free)
+    % Linux-specific
+    "exit_group",
+    % dynamically linked library loading
+    "arch_prctl","mprotect","access","openat","stat","fstat","pread64"
+    % static linking requires
+    %"arch_prctl","mprotect","uname","readlink"
+   ]}]}
 </pre>
   <p class="paragraph">
     Adding the syscall_lock configuration requires knowing all the
