@@ -31,7 +31,7 @@ Cloud<font style="font-family: serif">I</font><img width="156" height="106" src=
     <li><a href="faq.html">FAQ</a></li>
     <li><a href="tutorials.html">Tutorials</a>
         (<a href="tutorial_java.html">Java</a>)</li>
-    <li><a href="https://osdn.net/dl/cloudi/cloudi-2.0.0.tar.gz" target="_blank">Download</a></li>
+    <li><a href="https://osdn.net/dl/cloudi/cloudi-2.0.0.tar.gz" rel="noopener" target="_blank">Download</a></li>
     <li><a href="https://github.com/CloudI/CloudI/tree/develop#readme">Source</a></li>
     <li><a href="support.html">Support</a></li>
   </ul>
@@ -398,7 +398,7 @@ CloudI::API.new(thread_index)
     occurred and a restart will occur (if possible) based on the configured
     MaxR (maximum restarts) and MaxT (maximum time period in seconds) service
     configuration values.  If the service was configured in the
-    CloudI configuration file (i.e., <a href="https://github.com/CloudI/CloudI/blob/master/src/cloudi_minimal.conf.in" target="_blank">/usr/local/etc/cloudi/cloudi.conf</a>,
+    CloudI configuration file (i.e., <a href="https://github.com/CloudI/CloudI/blob/master/src/cloudi_minimal.conf.in" rel="noopener" target="_blank">/usr/local/etc/cloudi/cloudi.conf</a>,
     used when CloudI is first started) and one of
     the configured services fails initialization MaxR times, CloudI will
     shutdown to prevent erroneous operation.  To avoid the fail-fast
@@ -657,7 +657,7 @@ CloudI::API.subscribe(pattern, function)
     Both the service names and the service name patterns should represent
     an appropriate scope, which the service manages
     (i.e., the same concept as a
-    <a href="http://en.wikipedia.org/wiki/Uniform_resource_identifier" target="_blank">Uniform Resource Identifier (URI)</a>).
+    <a href="http://en.wikipedia.org/wiki/Uniform_resource_identifier" rel="noreferrer" target="_blank">Uniform Resource Identifier (URI)</a>).
   </p>
   <p class="paragraph">
     When a service subscribes to a service name pattern, the supplied pattern
@@ -2997,7 +2997,7 @@ CloudI::API.shutdown(reason=nil)
   <h3>2.0 - Introduction</h3>
   <p class="paragraph">
     When CloudI is first started, the configuration file at
-    <a href="https://github.com/CloudI/CloudI/blob/master/src/cloudi_minimal.conf.in" target="_blank">/usr/local/etc/cloudi/cloudi.conf</a>
+    <a href="https://github.com/CloudI/CloudI/blob/master/src/cloudi_minimal.conf.in" rel="noopener" target="_blank">/usr/local/etc/cloudi/cloudi.conf</a>
     is used to determine what
     Access Control Lists (ACLs) should be used for services,
     what services should be started, what nodes should be connected,
@@ -3086,7 +3086,7 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
   <p class="paragraph">
     Start services and return their Service UUIDs.  Provide service
     configuration using the same syntax
-    found in the configuration file (i.e., <a href="https://github.com/CloudI/CloudI/blob/master/src/cloudi_minimal.conf.in" target="_blank">/usr/local/etc/cloudi/cloudi.conf</a>).
+    found in the configuration file (i.e., <a href="https://github.com/CloudI/CloudI/blob/master/src/cloudi_minimal.conf.in" rel="noopener" target="_blank">/usr/local/etc/cloudi/cloudi.conf</a>).
     Internal services will need to be located in a code path that the
     running Erlang VM is aware of (see
     <a href="#2_code_path_add">code_path_add</a>).  The syntax of the
@@ -3520,7 +3520,7 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
   </td><td>
     []
   </td><td>
-    <a href="http://www.erlang.org/doc/man/erlang.html#spawn_opt-2" target="_blank">erlang:spawn_opt/2</a>
+    <a href="http://www.erlang.org/doc/man/erlang.html#spawn_opt-2" rel="noreferrer" target="_blank">erlang:spawn_opt/2</a>
     options to control memory usage of the service dispatcher
     process (priority, fullsweep_after, min_heap_size, min_bin_vheap_size,
     max_heap_size, sensitive, message_queue_data).  The dispatcher process
@@ -3532,7 +3532,7 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
   </td><td>
     []
   </td><td>
-    (internal services only) <a href="http://www.erlang.org/doc/man/erlang.html#spawn_opt-2" target="_blank">erlang:spawn_opt/2</a>
+    (internal services only) <a href="http://www.erlang.org/doc/man/erlang.html#spawn_opt-2" rel="noreferrer" target="_blank">erlang:spawn_opt/2</a>
     options to control memory usage of the service dispatcher
     process used during service initialization
     (priority, fullsweep_after, min_heap_size, min_bin_vheap_size,
@@ -3549,7 +3549,7 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
   </td><td>
     []
   </td><td>
-    (internal services only) <a href="http://www.erlang.org/doc/man/erlang.html#spawn_opt-2" target="_blank">erlang:spawn_opt/2</a>
+    (internal services only) <a href="http://www.erlang.org/doc/man/erlang.html#spawn_opt-2" rel="noreferrer" target="_blank">erlang:spawn_opt/2</a>
     options to control memory usage of the service request handling Erlang
     process (priority, fullsweep_after, min_heap_size, min_bin_vheap_size,
     max_heap_size, sensitive, message_queue_data).
@@ -3567,7 +3567,7 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
   </td><td>
     []
   </td><td>
-    (internal services only) <a href="http://www.erlang.org/doc/man/erlang.html#spawn_opt-2" target="_blank">erlang:spawn_opt/2</a>
+    (internal services only) <a href="http://www.erlang.org/doc/man/erlang.html#spawn_opt-2" rel="noreferrer" target="_blank">erlang:spawn_opt/2</a>
     options to control memory usage of the info message handling Erlang
     process (priority, fullsweep_after, min_heap_size, min_bin_vheap_size,
     max_heap_size, sensitive, message_queue_data).
@@ -4232,7 +4232,7 @@ fun((Reason :: any(),
     is lower than this limit the service will hibernate.
   </td></tr></table>
   <p class="paragraph">
-    Please see the configuration file <a href="https://github.com/CloudI/CloudI/blob/master/src/cloudi_tests.conf.in" target="_blank">/usr/local/etc/cloudi/cloudi.conf</a>
+    Please see the configuration file <a href="https://github.com/CloudI/CloudI/blob/master/src/cloudi_tests.conf.in" rel="noopener" target="_blank">/usr/local/etc/cloudi/cloudi.conf</a>
     for more specific examples.
   </p>
   <div class="top"><a href="#CloudI">Top</a></div>
@@ -4432,7 +4432,7 @@ curl -X POST -d '["65762d3262a511e882359563d34a433e"]' http://localhost:6464/clo
     occurred is used to determine the running availability values
     (e.g.,&nbsp;availability_day_running, availability_week_running,
      availability_month_running and availability_year_running).
-    All the availability values are percentages to describe the <a href="https://en.wikipedia.org/wiki/High_availability#Percentage_calculation" target="_blank">fraction of estimated uptime during each time period</a>.
+    All the availability values are percentages to describe the <a href="https://en.wikipedia.org/wiki/High_availability#Percentage_calculation" rel="noreferrer" target="_blank">fraction of estimated uptime during each time period</a>.
     All status data is determined using the same point in time, so the values
     may be compared among separate services.
   </p>
@@ -4886,7 +4886,7 @@ curl -X POST -d "[{reconnect_delay, 300}]" http://localhost:6464/cloudi/api/rpc/
     1
   </td><td>
     The multicast TTL
-    (<a href="http://tools.ietf.org/rfc/rfc2730.txt" target="_blank">RFC</a>, <a href="http://www.tldp.org/HOWTO/Multicast-HOWTO-2.html#ss2.3" target="_blank">Linux</a>).
+    (<a href="http://tools.ietf.org/rfc/rfc2730.txt" rel="noreferrer" target="_blank">RFC</a>, <a href="http://www.tldp.org/HOWTO/Multicast-HOWTO-2.html#ss2.3" rel="noreferrer" target="_blank">Linux</a>).
   </td></tr></table>
   <p class="paragraph">
     LAN multicast auto-discovery requires that ntpd is running to keep
@@ -4919,7 +4919,7 @@ curl -X POST -d "[{reconnect_delay, 300}]" http://localhost:6464/cloudi/api/rpc/
   </td><td>
     "ec2.amazonaws.com"
   </td><td>
-    AWS EC2 API <a href="http://docs.aws.amazon.com/general/latest/gr/rande.html#ec2_region" target="_blank">endpoint</a>
+    AWS EC2 API <a href="http://docs.aws.amazon.com/general/latest/gr/rande.html#ec2_region" rel="noreferrer" target="_blank">endpoint</a>
     (the default DNS string picks the closest endpoint for USA AWS regions).
   </td></tr><tr><td>
     groups
@@ -4972,8 +4972,8 @@ curl -X POST -d "[{reconnect_delay, 300}]" http://localhost:6464/cloudi/api/rpc/
     The EC2 auto-discovery requires that the security group(s) used
     by the instances expose distributed Erlang ports (with TCP rules):
     <ul>
-      <li>port 4369 (epmd) <a href="http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Subnets.html" target="_blank">10.0.0.0/8</a></li>
-      <li>ports 4374-4474 (inet_dist_listen) <a href="http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Subnets.html" target="_blank">10.0.0.0/8</a></li>
+      <li>port 4369 (epmd) <a href="http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Subnets.html" rel="noreferrer" target="_blank">10.0.0.0/8</a></li>
+      <li>ports 4374-4474 (inet_dist_listen) <a href="http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Subnets.html" rel="noreferrer" target="_blank">10.0.0.0/8</a></li>
     </ul>
     The EC2 auto-discovery needs distributed Erlang longnames usage
     so -name should be used instead of -sname within the vm.args
@@ -5136,7 +5136,7 @@ curl -X POST -d '[{file, undefined}, {syslog, []}]' http://localhost:6464/cloudi
   <h4>log_time_offset:</h4>
   <p class="paragraph">
     Log when the Erlang VM adjusts its
-    <a href="http://erlang.org/doc/apps/erts/time_correction.html#Erlang_System_Time" target="_blank">internal view of the system time</a>
+    <a href="http://erlang.org/doc/apps/erts/time_correction.html#Erlang_System_Time" rel="noreferrer" target="_blank">internal view of the system time</a>
     with the size of the change in nanoseconds using the provided loglevel.
   </p>
   <a name="2_logging_set_config_opts_aspects_log_before"></a>
@@ -5246,7 +5246,7 @@ curl -X POST -d '[{identity, "CloudI"}, {facility, local0}, {level, trace}]' htt
     "CloudI"
   </td><td>
     String syslog identity (referred to as the APP-NAME in
-    <a href="https://tools.ietf.org/html/rfc5424#section-6.2.5" target="_blank">RFC5424</a>).
+    <a href="https://tools.ietf.org/html/rfc5424#section-6.2.5" rel="noreferrer" target="_blank">RFC5424</a>).
   </td></tr><tr><td>
     facility
   </td><td>
@@ -5407,13 +5407,13 @@ curl -X POST -d '[{any, [{output, lager_file_backend}, {output_args, [{file, "la
   </td><td>
     The lager-compatible formatter module which provides formatting for either
     the other logging methods (CloudI file and/or syslog) or the output module.
-    A formatter module must export a <a href="https://github.com/basho/lager/#custom-formatting" target="_blank">format/2 function</a>.
+    A formatter module must export a <a href="https://github.com/basho/lager/#custom-formatting" rel="noopener" target="_blank">format/2 function</a>.
   </td></tr><tr><td>
     formatter_config
   </td><td>
     []
   </td><td>
-    Configuration provided to the formatter module's <a href="https://github.com/basho/lager/#custom-formatting" target="_blank">format/2 function</a>'s second parameter.
+    Configuration provided to the formatter module's <a href="https://github.com/basho/lager/#custom-formatting" rel="noopener" target="_blank">format/2 function</a>'s second parameter.
   </td></tr></table>
   <div class="top"><a href="#CloudI">Top</a></div>
 
