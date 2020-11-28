@@ -55,11 +55,16 @@ Cloud<font style="font-family: serif">I</font><img width="156" height="106" src=
   <pre id="nodes_status" style="height: 40em;">
   </pre>
 
+  <a name="logging_status"></a>
+  <h4><a href="api.html#2_logging_status">logging_status</a></h4>
+  <pre id="logging_status" style="height: 12em;">
+  </pre>
+
   <h4>cloudi.conf file</h4>
 
   <p>https://cloudi.org (and <a href="https://ndforge.com" target="_blank">https://ndforge.com</a>) Configuration
   <pre>
-% last updated on Sat Jun  6 05:38:57 UTC 2020 with CloudI 2.0.0/Erlang 22.3.4.1
+% installed on Sat Nov 28 08:06:39 UTC 2020 with CloudI 2.0.1/Erlang 22.3.4.12
 
 %-*-Mode:erlang;coding:utf-8;tab-width:4;c-basic-offset:4;indent-tabs-mode:()-*-
 % ex: set ft=erlang fenc=utf-8 sts=4 ts=4 sw=4 et nomod:
@@ -69,6 +74,7 @@ Cloud<font style="font-family: serif">I</font><img width="156" height="106" src=
     {api_read_only,
      ["/cloudi/api/rpc/services_status.json/post",
       "/cloudi/api/rpc/nodes_status.json/post",
+      "/cloudi/api/rpc/logging_status.json/get",
       "/cloudi/api/rpc/code_status.json/get"]},
     {files,
      ["/ndforge.com/*",
@@ -93,6 +99,7 @@ Cloud<font style="font-family: serif">I</font><img width="156" height="106" src=
      "/ndforge.com/",
      cloudi_service_filesystem,
      [{directory, "${HOME}/www/ndforge.com/"},
+      {files_size, 16384},% KiB per process
       {refresh, 900},     % 15 minutes
       {cache, refresh}],  % 7.5 minutes
      none,
@@ -104,6 +111,7 @@ Cloud<font style="font-family: serif">I</font><img width="156" height="106" src=
      "/cloudi.org/",
      cloudi_service_filesystem,
      [{directory, "${HOME}/www/cloudi.org/"},
+      {files_size, 16384},% KiB per process
       {refresh, 900},     % 15 minutes
       {cache, refresh}],  % 7.5 minutes
      none,
@@ -160,6 +168,11 @@ Cloud<font style="font-family: serif">I</font><img width="156" height="106" src=
           {parameters_strict_matching, false},
           {service_names,
            ["/cloudi/api/rpc/nodes_status.json/post"]}]},
+        {"cloudi.org/logging_status.json/get",
+         [{parameters_allowed, true},
+          {parameters_strict_matching, false},
+          {service_names,
+           ["/cloudi/api/rpc/logging_status.json/get"]}]},
         {"cloudi.org/code_status.json/get",
          [{parameters_allowed, true},
           {parameters_strict_matching, false},
@@ -186,6 +199,14 @@ Cloud<font style="font-family: serif">I</font><img width="156" height="106" src=
      cloudi_service_http_cowboy1,
      [{use_client_ip_prefix, true},
       {use_host_prefix, true},
+      {content_security_policy,
+       "default-src 'self'; "
+       "script-src 'unsafe-inline' 'self'; "
+       "style-src 'unsafe-inline' 'self'; "
+       "object-src 'none'; "
+       "worker-src 'none'"},
+      {set_x_content_type_options, true},
+      {set_x_xss_protection, true},
       {ip, {0, 0, 0, 0}}, {port, 8000}, {output, binary}],
      lazy_closest,
      5000, 5000, 5000, [api], undefined, 1, 5, 300,
@@ -262,6 +283,12 @@ function loadCurrent() {
             nodes_status_request.responseText;
     };
     nodes_status_request.send('[]');
+    var logging_status_request = httpRequest('GET','logging_status.json');
+    logging_status_request.onload = function () {
+        document.getElementById('logging_status').innerHTML =
+            logging_status_request.responseText;
+    };
+    logging_status_request.send('');
 }
 </script>
 
