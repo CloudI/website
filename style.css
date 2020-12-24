@@ -147,6 +147,9 @@ pre {
     border-left-width: 1px;
     position: relative;
 }
+#content pre.code {
+    position: relative;
+}
 #content ul.faq li {
     list-style-type: none;
 }
