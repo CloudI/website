@@ -40,7 +40,7 @@ Cloud<font style="font-family: serif">I</font><img width="156" height="106" src=
 <div id="content">
   <h1>Frequently Asked Questions</h1>
   <center><h3>version 2.0.1<br />
-              last updated on November 27<sup>th</sup> 2020</h3></center>
+              last updated on December 23<sup>rd</sup> 2020</h3></center>
 
   <a name="1_contents"></a>
   <h2>1 - Introduction to CloudI</h2>
@@ -1262,11 +1262,11 @@ Cloud<font style="font-family: serif">I</font><img width="156" height="106" src=
   <h3>3.4 - Running CloudI</h3>
   <p>
     To start CloudI, execute:
-<pre onclick="element_select(this);">
+<pre class="code">
 sudo cloudi start
 </pre>
     To stop the running CloudI node, execute:
-<pre onclick="element_select(this);">
+<pre class="code">
 sudo cloudi stop
 </pre>
   </p>
@@ -2769,7 +2769,7 @@ sudo cloudi stop
     with some small service configuration changes.
     When modifying an internal service, the following service configuration
     options are added:
-    <pre onclick="element_select(this);">
+    <pre class="code">
 {aspects_init_after,
  [{{cloudi_service_monitoring, aspect_init_after_internal}}]},
 {aspects_request_before,
@@ -2785,7 +2785,7 @@ sudo cloudi stop
     </pre>
     When modifying an external service, the following service configuration
     options are added:
-    <pre onclick="element_select(this);">
+    <pre class="code">
 {aspects_init_after,
  [{{cloudi_service_monitoring, aspect_init_after_external}}]},
 {aspects_request_before,
@@ -2799,7 +2799,7 @@ sudo cloudi stop
     modifications can occur with the function call
     cloudi_service_monitoring:add/1.  To monitor all CloudI log output the
     logging configuration can be modified with:
-    <pre onclick="element_select(this);">
+    <pre class="code">
 {aspects_log_after,
  [{{cloudi_service_monitoring, aspect_log_after}}]},
     </pre>
@@ -2903,6 +2903,7 @@ sudo cloudi stop
 <div id="footer">
 <a href="config.html"><img style="position: absolute; right: 10; bottom: 0;" src="images/powered_by_cloudi.png" width="156" height="105" /></a>
 </div>
+<script type="text/javascript">clipboard_copy_init();</script>
 
 </body>
 </html>

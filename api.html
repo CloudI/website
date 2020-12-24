@@ -40,7 +40,7 @@ Cloud<font style="font-family: serif">I</font><img width="156" height="106" src=
 <div id="content">
   <h1>CloudI API Documentation</h1>
   <center><h3>version 2.0.1<br />
-              last updated on November 27<sup>th</sup> 2020</h3></center>
+              last updated on December 23<sup>rd</sup> 2020</h3></center>
 
   <a name="Service"></a>
   <h2>CloudI API - Making a Service</h2>
@@ -260,11 +260,11 @@ Cloud<font style="font-family: serif">I</font><img width="156" height="106" src=
     the CloudI API (to avoid lock contention):
   </p>
 
-  <div class="tabs" style="min-height: 8em;">
+  <div class="tabs" style="min-height: 13em;">
   <div id="1_initialization_C">
   <a href="#1_initialization_C">C</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 int cloudi_initialize_thread_count(unsigned int * const thread_count);
 int cloudi_initialize(cloudi_instance_t * api,
                       unsigned int const thread_index,
@@ -275,7 +275,7 @@ int cloudi_initialize(cloudi_instance_t * api,
   <div id="1_initialization_CXX">
   <a href="#1_initialization_CXX">C++</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 unsigned int CloudI::API::thread_count();
 CloudI::API(unsigned int const thread_index,
             bool const terminate_return_value = true);
@@ -285,7 +285,7 @@ CloudI::API(unsigned int const thread_index,
   <div id="1_initialization_Elixir">
   <a href="#1_initialization_Elixir">Elixir</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
   def cloudi_service_init(_args, _prefix, _timeout, dispatcher) do
     # ...
     {:ok, :undefined}
@@ -296,7 +296,7 @@ CloudI::API(unsigned int const thread_index,
   <div id="1_initialization_Erlang">
   <a href="#1_initialization_Erlang">Erlang</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 cloudi_service_init(_Args, _Prefix, _Timeout, Dispatcher) -&gt;
     % ...
     {ok, #state{}}.
@@ -306,7 +306,7 @@ cloudi_service_init(_Args, _Prefix, _Timeout, Dispatcher) -&gt;
   <div id="1_initialization_Go">
   <a href="#1_initialization_Go">Go</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 cloudi.ThreadCount() (uint32, error)
 cloudi.API(threadIndex uint32, state interface{}) (*Instance, error)
 </pre>
@@ -315,7 +315,7 @@ cloudi.API(threadIndex uint32, state interface{}) (*Instance, error)
   <div id="1_initialization_Java">
   <a href="#1_initialization_Java">Java</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 int org.cloudi.API.thread_count();
 org.cloudi.API(final int thread_index);
 </pre>
@@ -324,7 +324,7 @@ org.cloudi.API(final int thread_index);
   <div id="1_initialization_JavaScript">
   <a href="#1_initialization_JavaScript">JavaScript</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 CloudI.API.thread_count();
 CloudI.API(thread_index, callback);
 </pre>
@@ -333,7 +333,7 @@ CloudI.API(thread_index, callback);
   <div id="1_initialization_Perl">
   <a href="#1_initialization_Perl">Perl</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 CloudI::API-&gt;thread_count();
 CloudI::API-&gt;new($thread_index);
 </pre>
@@ -342,7 +342,7 @@ CloudI::API-&gt;new($thread_index);
   <div id="1_initialization_PHP">
   <a href="#1_initialization_PHP">PHP</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 \CloudI\API::thread_count();
 \CloudI\API($thread_index);
 </pre>
@@ -351,7 +351,7 @@ CloudI::API-&gt;new($thread_index);
   <div id="1_initialization_Python">
   <a href="#1_initialization_Python">Python</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 cloudi.API.thread_count()
 cloudi.API(thread_index)
 </pre>
@@ -360,7 +360,7 @@ cloudi.API(thread_index)
   <div id="1_initialization_Ruby">
   <a href="#1_initialization_Ruby">Ruby</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 CloudI::API.thread_count()
 CloudI::API.new(thread_index)
 </pre>
@@ -489,11 +489,11 @@ CloudI::API.new(thread_index)
 
   <a name="1_subscribe"></a>
   <h3>1.3 - subscribe</h3>
-  <div class="tabs" style="min-height: 35em;">
+  <div class="tabs" style="min-height: 43em;">
   <div id="1_subscribe_C">
   <a href="#1_subscribe_C">C</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 typedef void (*cloudi_callback_t)(int const request_type,
                                   char const * const name,
                                   char const * const pattern,
@@ -517,7 +517,7 @@ int cloudi_subscribe(cloudi_instance_t * api,
   <div id="1_subscribe_CXX">
   <a href="#1_subscribe_CXX">C++</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 template &lt;typename T&gt;
 int CloudI::API::subscribe(STRING pattern,
                            T &amp; object,
@@ -554,7 +554,7 @@ int CloudI::API::subscribe(STRING pattern,
   <div id="1_subscribe_Elixir">
   <a href="#1_subscribe_Elixir">Elixir</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 :cloudi_service.subscribe(dispatcher, pattern)
 </pre>
   </div>
@@ -562,7 +562,7 @@ int CloudI::API::subscribe(STRING pattern,
   <div id="1_subscribe_Erlang">
   <a href="#1_subscribe_Erlang">Erlang</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 cloudi_service:subscribe(Dispatcher :: pid(), Pattern :: string()) -&gt;
     ok.
 </pre>
@@ -571,7 +571,7 @@ cloudi_service:subscribe(Dispatcher :: pid(), Pattern :: string()) -&gt;
   <div id="1_subscribe_Go">
   <a href="#1_subscribe_Go">Go</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 func (api *cloudi.Instance) Subscribe(pattern string,
                                       function cloudi.Callback) error
 </pre>
@@ -580,7 +580,7 @@ func (api *cloudi.Instance) Subscribe(pattern string,
   <div id="1_subscribe_Java">
   <a href="#1_subscribe_Java">Java</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 void org.cloudi.API.subscribe(final String pattern,
                               final Object instance,
                               final String methodName);
@@ -593,7 +593,7 @@ void org.cloudi.API.subscribe(final String pattern,
   <div id="1_subscribe_JavaScript">
   <a href="#1_subscribe_JavaScript">JavaScript</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 var callback = function () {};
 CloudI.API.subscribe(pattern, object, object_function, callback);
 </pre>
@@ -602,7 +602,7 @@ CloudI.API.subscribe(pattern, object, object_function, callback);
   <div id="1_subscribe_Perl">
   <a href="#1_subscribe_Perl">Perl</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 CloudI::API-&gt;subscribe($pattern, $function);
 CloudI::API-&gt;subscribe($pattern, $object, $method);
 </pre>
@@ -611,7 +611,7 @@ CloudI::API-&gt;subscribe($pattern, $object, $method);
   <div id="1_subscribe_PHP">
   <a href="#1_subscribe_PHP">PHP</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 \CloudI\API::subscribe($pattern, $object, $method);
 </pre>
   </div>
@@ -619,7 +619,7 @@ CloudI::API-&gt;subscribe($pattern, $object, $method);
   <div id="1_subscribe_Python">
   <a href="#1_subscribe_Python">Python</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 cloudi.API.subscribe(pattern, function)
 </pre>
   </div>
@@ -627,7 +627,7 @@ cloudi.API.subscribe(pattern, function)
   <div id="1_subscribe_Ruby">
   <a href="#1_subscribe_Ruby">Ruby</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 CloudI::API.subscribe(pattern, function)
 </pre>
   </div>
@@ -673,11 +673,11 @@ CloudI::API.subscribe(pattern, function)
 
   <a name="1_subscribe_count"></a>
   <h3>1.4 - subscribe_count</h3>
-  <div class="tabs" style="min-height: 7em;">
+  <div class="tabs" style="min-height: 12em;">
   <div id="1_subscribe_count_C">
   <a href="#1_subscribe_count_C">C</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 int cloudi_subscribe_count(cloudi_instance_t * api,
                            char const * const pattern);
 // cloudi_get_subscribe_count(p) to get the result
@@ -687,7 +687,7 @@ int cloudi_subscribe_count(cloudi_instance_t * api,
   <div id="1_subscribe_count_CXX">
   <a href="#1_subscribe_count_CXX">C++</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 int CloudI::API::subscribe_count(STRING pattern) const;
 // CloudI::API::get_subscribe_count() to get the result
 </pre>
@@ -696,7 +696,7 @@ int CloudI::API::subscribe_count(STRING pattern) const;
   <div id="1_subscribe_count_Elixir">
   <a href="#1_subscribe_count_Elixir">Elixir</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 :cloudi_service.subscribe_count(dispatcher, pattern)
 </pre>
   </div>
@@ -704,7 +704,7 @@ int CloudI::API::subscribe_count(STRING pattern) const;
   <div id="1_subscribe_count_Erlang">
   <a href="#1_subscribe_count_Erlang">Erlang</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 cloudi_service:subscribe_count(Dispatcher :: pid(),
                                Pattern :: string()) -&gt;
     non_neg_integer().
@@ -714,7 +714,7 @@ cloudi_service:subscribe_count(Dispatcher :: pid(),
   <div id="1_subscribe_count_Go">
   <a href="#1_subscribe_count_Go">Go</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 func (api *cloudi.Instance) SubscribeCount(pattern string)
                                           (uint32, error)
 </pre>
@@ -723,7 +723,7 @@ func (api *cloudi.Instance) SubscribeCount(pattern string)
   <div id="1_subscribe_count_Java">
   <a href="#1_subscribe_count_Java">Java</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 int org.cloudi.API.subscribe_count(final String pattern);
 // return value is result
 </pre>
@@ -732,7 +732,7 @@ int org.cloudi.API.subscribe_count(final String pattern);
   <div id="1_subscribe_count_JavaScript">
   <a href="#1_subscribe_count_JavaScript">JavaScript</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 var callback = function (count) {};
 CloudI.API.subscribe_count(pattern, callback);
 </pre>
@@ -741,7 +741,7 @@ CloudI.API.subscribe_count(pattern, callback);
   <div id="1_subscribe_count_Perl">
   <a href="#1_subscribe_count_Perl">Perl</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 CloudI::API-&gt;subscribe_count($pattern);
 </pre>
   </div>
@@ -749,7 +749,7 @@ CloudI::API-&gt;subscribe_count($pattern);
   <div id="1_subscribe_count_PHP">
   <a href="#1_subscribe_count_PHP">PHP</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 \CloudI\API::subscribe_count($pattern);
 </pre>
   </div>
@@ -757,7 +757,7 @@ CloudI::API-&gt;subscribe_count($pattern);
   <div id="1_subscribe_count_Python">
   <a href="#1_subscribe_count_Python">Python</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 cloudi.API.subscribe_count(pattern)
 # return value is result
 </pre>
@@ -766,7 +766,7 @@ cloudi.API.subscribe_count(pattern)
   <div id="1_subscribe_count_Ruby">
   <a href="#1_subscribe_count_Ruby">Ruby</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 CloudI::API.subscribe_count(pattern)
 # return value is result
 </pre>
@@ -800,11 +800,11 @@ CloudI::API.subscribe_count(pattern)
 
   <a name="1_unsubscribe"></a>
   <h3>1.5 - unsubscribe</h3>
-  <div class="tabs" style="min-height: 6em;">
+  <div class="tabs" style="min-height: 11em;">
   <div id="1_unsubscribe_C">
   <a href="#1_unsubscribe_C">C</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 int cloudi_unsubscribe(cloudi_instance_t * api,
                        char const * const pattern);
 </pre>
@@ -813,7 +813,7 @@ int cloudi_unsubscribe(cloudi_instance_t * api,
   <div id="1_unsubscribe_CXX">
   <a href="#1_unsubscribe_CXX">C++</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 int CloudI::API::unsubscribe(STRING pattern) const;
 </pre>
   </div>
@@ -821,7 +821,7 @@ int CloudI::API::unsubscribe(STRING pattern) const;
   <div id="1_unsubscribe_Elixir">
   <a href="#1_unsubscribe_Elixir">Elixir</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 :cloudi_service.unsubscribe(dispatcher, pattern)
 </pre>
   </div>
@@ -829,7 +829,7 @@ int CloudI::API::unsubscribe(STRING pattern) const;
   <div id="1_unsubscribe_Erlang">
   <a href="#1_unsubscribe_Erlang">Erlang</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 cloudi_service:unsubscribe(Dispatcher :: pid(), Pattern :: string()) -&gt;
     ok.
 </pre>
@@ -838,7 +838,7 @@ cloudi_service:unsubscribe(Dispatcher :: pid(), Pattern :: string()) -&gt;
   <div id="1_unsubscribe_Go">
   <a href="#1_unsubscribe_Go">Go</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 func (api *cloudi.Instance) Unsubscribe(pattern string) error
 </pre>
   </div>
@@ -846,7 +846,7 @@ func (api *cloudi.Instance) Unsubscribe(pattern string) error
   <div id="1_unsubscribe_Java">
   <a href="#1_unsubscribe_Java">Java</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 void org.cloudi.API.unsubscribe(final String pattern);
 </pre>
   </div>
@@ -854,7 +854,7 @@ void org.cloudi.API.unsubscribe(final String pattern);
   <div id="1_unsubscribe_JavaScript">
   <a href="#1_unsubscribe_JavaScript">JavaScript</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 var callback = function () {};
 CloudI.API.unsubscribe(pattern, callback);
 </pre>
@@ -863,7 +863,7 @@ CloudI.API.unsubscribe(pattern, callback);
   <div id="1_unsubscribe_Perl">
   <a href="#1_unsubscribe_Perl">Perl</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 CloudI::API-&gt;unsubscribe($pattern);
 </pre>
   </div>
@@ -871,7 +871,7 @@ CloudI::API-&gt;unsubscribe($pattern);
   <div id="1_unsubscribe_PHP">
   <a href="#1_unsubscribe_PHP">PHP</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 \CloudI\API::unsubscribe($pattern);
 </pre>
   </div>
@@ -879,7 +879,7 @@ CloudI::API-&gt;unsubscribe($pattern);
   <div id="1_unsubscribe_Python">
   <a href="#1_unsubscribe_Python">Python</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 cloudi.API.unsubscribe(pattern)
 </pre>
   </div>
@@ -887,7 +887,7 @@ cloudi.API.unsubscribe(pattern)
   <div id="1_unsubscribe_Ruby">
   <a href="#1_unsubscribe_Ruby">Ruby</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 CloudI::API.unsubscribe(pattern)
 </pre>
   </div>
@@ -911,11 +911,11 @@ CloudI::API.unsubscribe(pattern)
 
   <a name="1_get_pid"></a>
   <h3>1.6 - get_pid (internal services only)</h3>
-  <div class="tabs" style="min-height: 10em;">
+  <div class="tabs" style="min-height: 15em;">
   <div id="1_get_pid_Elixir">
   <a href="#1_get_pid_Elixir">Elixir</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 :cloudi_service.get_pid(dispatcher, name, timeout)
 </pre>
   </div>
@@ -923,7 +923,7 @@ CloudI::API.unsubscribe(pattern)
   <div id="1_get_pid_Erlang">
   <a href="#1_get_pid_Erlang">Erlang</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 cloudi_service:get_pid(Dispatcher :: pid(),
                        Name :: string(),
                        Timeout :: non_neg_integer() | 'undefined' |
@@ -965,11 +965,11 @@ cloudi_service:get_pid(Dispatcher :: pid(),
 
   <a name="1_get_pids"></a>
   <h3>1.7 - get_pids (internal services only)</h3>
-  <div class="tabs" style="min-height: 10em;">
+  <div class="tabs" style="min-height: 15em;">
   <div id="1_get_pids_Elixir">
   <a href="#1_get_pids_Elixir">Elixir</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 :cloudi_service.get_pids(dispatcher, name, timeout)
 </pre>
   </div>
@@ -977,7 +977,7 @@ cloudi_service:get_pid(Dispatcher :: pid(),
   <div id="1_get_pids_Erlang">
   <a href="#1_get_pids_Erlang">Erlang</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 cloudi_service:get_pids(Dispatcher :: pid(),
                         Name :: string(),
                         Timeout :: non_neg_integer() | 'undefined' |
@@ -1022,11 +1022,11 @@ cloudi_service:get_pids(Dispatcher :: pid(),
 
   <a name="1_send_sync"></a>
   <h3>1.8 - send_sync</h3>
-  <div class="tabs" style="min-height: 26em;">
+  <div class="tabs" style="min-height: 31em;">
   <div id="1_send_sync_C">
   <a href="#1_send_sync_C">C</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 int cloudi_send_sync_(cloudi_instance_t * api,
                       char const * const name,
                       void const * const request_info,
@@ -1041,7 +1041,7 @@ int cloudi_send_sync_(cloudi_instance_t * api,
   <div id="1_send_sync_CXX">
   <a href="#1_send_sync_CXX">C++</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 int CloudI::API::send_sync(STRING name,
                            void const * const request_info,
                            uint32_t const request_info_size,
@@ -1055,7 +1055,7 @@ int CloudI::API::send_sync(STRING name,
   <div id="1_send_sync_Elixir">
   <a href="#1_send_sync_Elixir">Elixir</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 :cloudi_service.send_sync(dispatcher, name,
                           request_info, request, timeout, priority)
 :cloudi_service.send_sync(dispatcher, name,
@@ -1067,7 +1067,7 @@ int CloudI::API::send_sync(STRING name,
   <div id="1_send_sync_Erlang">
   <a href="#1_send_sync_Erlang">Erlang</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 cloudi_service:send_sync(Dispatcher :: pid(),
                          Name :: string(),
                          RequestInfo :: any(),
@@ -1095,7 +1095,7 @@ cloudi_service:send_sync(Dispatcher :: pid(),
   <div id="1_send_sync_Go">
   <a href="#1_send_sync_Go">Go</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 func (api *cloudi.Instance) SendSync(name string,
                                      requestInfo, request []byte,
                                      timeoutPriority ...interface{})
@@ -1106,7 +1106,7 @@ func (api *cloudi.Instance) SendSync(name string,
   <div id="1_send_sync_Java">
   <a href="#1_send_sync_Java">Java</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 Response org.cloudi.API.send_sync(String name, byte[] request_info,
                                   byte[] request, Integer timeout,
                                   Byte priority);
@@ -1116,7 +1116,7 @@ Response org.cloudi.API.send_sync(String name, byte[] request_info,
   <div id="1_send_sync_JavaScript">
   <a href="#1_send_sync_JavaScript">JavaScript</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 CloudI.API.send_sync(name, request, callback,
                      timeout, request_info, priority);
 </pre>
@@ -1125,7 +1125,7 @@ CloudI.API.send_sync(name, request, callback,
   <div id="1_send_sync_Perl">
   <a href="#1_send_sync_Perl">Perl</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 CloudI::API-&gt;send_sync($name, $request,
                        $timeout, $request_info, $priority);
 </pre>
@@ -1134,7 +1134,7 @@ CloudI::API-&gt;send_sync($name, $request,
   <div id="1_send_sync_PHP">
   <a href="#1_send_sync_PHP">PHP</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 \CloudI\API::send_sync($name, $request,
                        $timeout = null, $request_info = null,
                        $priority = null);
@@ -1144,7 +1144,7 @@ CloudI::API-&gt;send_sync($name, $request,
   <div id="1_send_sync_Python">
   <a href="#1_send_sync_Python">Python</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 cloudi.API.send_sync(name, request,
                      timeout=None, request_info=None, priority=None)
 </pre>
@@ -1153,7 +1153,7 @@ cloudi.API.send_sync(name, request,
   <div id="1_send_sync_Ruby">
   <a href="#1_send_sync_Ruby">Ruby</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 CloudI::API.send_sync(name, request,
                       timeout=nil, request_info=nil, priority=nil)
 </pre>
@@ -1175,7 +1175,7 @@ CloudI::API.send_sync(name, request,
     priority is not provided, the default priority from the service
     configuration options is used (normally the default priority is 0).
   </p>
-  <div class="tabs" style="min-height: 14em;">
+  <div class="tabs" style="min-height: 19em;">
   <div id="1_send_sync_return_C">
   <a href="#1_send_sync_return_C">C</a>
   <div class="tab_contents">
@@ -1183,7 +1183,7 @@ CloudI::API.send_sync(name, request,
     Separate functions are provided to get the function result after
     a successful send_sync function call (an integer 0 return value).
   </p>
-<pre onclick="element_select(this);">
+<pre class="code">
 cloudi_get_response(p)
 cloudi_get_response_size(p)
 cloudi_get_response_info(p)
@@ -1200,7 +1200,7 @@ cloudi_get_trans_id(p, i)
     Separate functions are provided to get the function result after
     a successful send_sync function call (an integer 0 return value).
   </p>
-<pre onclick="element_select(this);">
+<pre class="code">
 char const * CloudI::API::get_response() const;
 uint32_t CloudI::API::get_response_size() const;
 char const * CloudI::API::get_response_info() const;
@@ -1217,7 +1217,7 @@ char const * CloudI::API::get_trans_id(unsigned int const i = 0) const;
     response_info is only returned if it does not equal "".
     response is only returned if it does not equal "".
   </p>
-<pre onclick="element_select(this);">
+<pre class="code">
 {:ok, response_info, response}
 {:ok, response}
 {:error, reason}
@@ -1231,7 +1231,7 @@ char const * CloudI::API::get_trans_id(unsigned int const i = 0) const;
     ResponseInfo is only returned if it does not equal &lt;&lt;&gt;&gt;.
     Response is only returned if it does not equal &lt;&lt;&gt;&gt;.
   </p>
-<pre onclick="element_select(this);">
+<pre class="code">
 {'ok', ResponseInfo :: any(), Response :: any()}
 {'ok', Response :: any()}
 {'error', Reason :: atom()}
@@ -1247,7 +1247,7 @@ char const * CloudI::API::get_trans_id(unsigned int const i = 0) const;
     transId is []byte (nil if an error occurred).<br />
     err is error (nil if successful).
   </p>
-<pre onclick="element_select(this);">
+<pre class="code">
 (responseInfo, response, transId, err)
 </pre>
   </div>
@@ -1258,7 +1258,7 @@ char const * CloudI::API::get_trans_id(unsigned int const i = 0) const;
   <p>
     A class encapsulates the function result.
   </p>
-<pre onclick="element_select(this);">
+<pre class="code">
 org.cloudi.API.Response
 </pre>
   </div>
@@ -1269,7 +1269,7 @@ org.cloudi.API.Response
   <p>
     The callback provides the function result.
   </p>
-<pre onclick="element_select(this);">
+<pre class="code">
 callback(response_info, response, trans_id);
 </pre>
   </div>
@@ -1280,7 +1280,7 @@ callback(response_info, response, trans_id);
   <p>
     An array provides the function result.
   </p>
-<pre onclick="element_select(this);">
+<pre class="code">
 ($response_info, $response, $trans_id)
 </pre>
   </div>
@@ -1291,7 +1291,7 @@ callback(response_info, response, trans_id);
   <p>
     An array provides the function result.
   </p>
-<pre onclick="element_select(this);">
+<pre class="code">
 array($response_info, $response, $trans_id)
 </pre>
   </div>
@@ -1302,7 +1302,7 @@ array($response_info, $response, $trans_id)
   <p>
     A tuple provides the function result.
   </p>
-<pre onclick="element_select(this);">
+<pre class="code">
 (response_info, response, trans_id)
 </pre>
   </div>
@@ -1313,7 +1313,7 @@ array($response_info, $response, $trans_id)
   <p>
     An array provides the function result.
   </p>
-<pre onclick="element_select(this);">
+<pre class="code">
 [response_info, response, trans_id]
 </pre>
   </div>
@@ -1335,11 +1335,11 @@ array($response_info, $response, $trans_id)
 
   <a name="1_send_async"></a>
   <h3>1.9 - send_async</h3>
-  <div class="tabs" style="min-height: 24em;">
+  <div class="tabs" style="min-height: 29em;">
   <div id="1_send_async_C">
   <a href="#1_send_async_C">C</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 int cloudi_send_async_(cloudi_instance_t * api,
                        char const * const name,
                        void const * const request_info,
@@ -1354,7 +1354,7 @@ int cloudi_send_async_(cloudi_instance_t * api,
   <div id="1_send_async_CXX">
   <a href="#1_send_async_CXX">C++</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 int CloudI::API::send_async(STRING name,
                             void const * const request_info,
                             uint32_t const request_info_size,
@@ -1368,7 +1368,7 @@ int CloudI::API::send_async(STRING name,
   <div id="1_send_async_Elixir">
   <a href="#1_send_async_Elixir">Elixir</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 :cloudi_service.send_async(dispatcher, name,
                            request_info, request, timeout, priority)
 :cloudi_service.send_async(dispatcher, name,
@@ -1380,7 +1380,7 @@ int CloudI::API::send_async(STRING name,
   <div id="1_send_async_Erlang">
   <a href="#1_send_async_Erlang">Erlang</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 cloudi_service:send_async(Dispatcher :: pid(),
                           Name :: string(),
                           RequestInfo :: any(),
@@ -1406,7 +1406,7 @@ cloudi_service:send_async(Dispatcher :: pid(),
   <div id="1_send_async_Go">
   <a href="#1_send_async_Go">Go</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 func (api *cloudi.Instance) SendAsync(name string,
                                       requestInfo, request []byte,
                                       timeoutPriority ...interface{})
@@ -1417,7 +1417,7 @@ func (api *cloudi.Instance) SendAsync(name string,
   <div id="1_send_async_Java">
   <a href="#1_send_async_Java">Java</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 TransId org.cloudi.API.send_async(String name, byte[] request_info,
                                   byte[] request, Integer timeout,
                                   Byte priority);
@@ -1427,7 +1427,7 @@ TransId org.cloudi.API.send_async(String name, byte[] request_info,
   <div id="1_send_async_JavaScript">
   <a href="#1_send_async_JavaScript">JavaScript</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 CloudI.API.send_async(name, request, callback,
                       timeout, request_info, priority);
 </pre>
@@ -1436,7 +1436,7 @@ CloudI.API.send_async(name, request, callback,
   <div id="1_send_async_Perl">
   <a href="#1_send_async_Perl">Perl</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 CloudI::API-&gt;send_async($name, $request,
                         $timeout, $request_info, $priority);
 </pre>
@@ -1445,7 +1445,7 @@ CloudI::API-&gt;send_async($name, $request,
   <div id="1_send_async_PHP">
   <a href="#1_send_async_PHP">PHP</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 \CloudI\API::send_async($name, $request,
                         $timeout = null, $request_info = null,
                         $priority = null);
@@ -1455,7 +1455,7 @@ CloudI::API-&gt;send_async($name, $request,
   <div id="1_send_async_Python">
   <a href="#1_send_async_Python">Python</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 cloudi.API.send_async(name, request,
                       timeout=None, request_info=None, priority=None)
 </pre>
@@ -1464,7 +1464,7 @@ cloudi.API.send_async(name, request,
   <div id="1_send_async_Ruby">
   <a href="#1_send_async_Ruby">Ruby</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 CloudI::API.send_async(name, request,
                        timeout=nil, request_info=nil, priority=nil)
 </pre>
@@ -1494,7 +1494,7 @@ CloudI::API.send_async(name, request,
     set request_name_lookup to 'async').  Once the asynchronous request is
     sent the TransId which identifies the request is returned.
   </p>
-  <div class="tabs" style="min-height: 10em;">
+  <div class="tabs" style="min-height: 15em;">
   <div id="1_send_async_return_C">
   <a href="#1_send_async_return_C">C</a>
   <div class="tab_contents">
@@ -1502,7 +1502,7 @@ CloudI::API.send_async(name, request,
     Separate functions are provided to get the function result after
     a successful send_async function call (an integer 0 return value).
   </p>
-<pre onclick="element_select(this);">
+<pre class="code">
 cloudi_get_trans_id_count(p)
 cloudi_get_trans_id(p, i)
 </pre>
@@ -1515,7 +1515,7 @@ cloudi_get_trans_id(p, i)
     Separate functions are provided to get the function result after
     a successful send_async function call (an integer 0 return value).
   </p>
-<pre onclick="element_select(this);">
+<pre class="code">
 uint32_t CloudI::API::get_trans_id_count() const;
 char const * CloudI::API::get_trans_id(unsigned int const i = 0) const;
 </pre>
@@ -1524,7 +1524,7 @@ char const * CloudI::API::get_trans_id(unsigned int const i = 0) const;
   <div id="1_send_async_return_Elixir">
   <a href="#1_send_async_return_Elixir">Elixir</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 {:ok, trans_id}
 {:error, reason}
 </pre>
@@ -1533,7 +1533,7 @@ char const * CloudI::API::get_trans_id(unsigned int const i = 0) const;
   <div id="1_send_async_return_Erlang">
   <a href="#1_send_async_return_Erlang">Erlang</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 {'ok', TransId :: &lt;&lt;_:128&gt;&gt;}
 {'error', Reason :: atom()}
 </pre>
@@ -1546,7 +1546,7 @@ char const * CloudI::API::get_trans_id(unsigned int const i = 0) const;
     transId is []byte (nil if an error occurred).<br />
     err is error (nil if successful).
   </p>
-<pre onclick="element_select(this);">
+<pre class="code">
 (transId, err)
 </pre>
   </div>
@@ -1557,7 +1557,7 @@ char const * CloudI::API::get_trans_id(unsigned int const i = 0) const;
   <p>
     A class encapsulates the function result.
   </p>
-<pre onclick="element_select(this);">
+<pre class="code">
 org.cloudi.API.TransId
 </pre>
   </div>
@@ -1569,7 +1569,7 @@ org.cloudi.API.TransId
     The callback provides the function result,
     the trans_id as a string of 16 bytes.
   </p>
-<pre onclick="element_select(this);">
+<pre class="code">
 callback(trans_id);
 </pre>
   </div>
@@ -1580,7 +1580,7 @@ callback(trans_id);
   <p>
     The trans_id is a string of 16 bytes.
   </p>
-<pre onclick="element_select(this);">
+<pre class="code">
 $trans_id
 </pre>
   </div>
@@ -1591,7 +1591,7 @@ $trans_id
   <p>
     The trans_id is a string of 16 bytes.
   </p>
-<pre onclick="element_select(this);">
+<pre class="code">
 $trans_id
 </pre>
   </div>
@@ -1602,7 +1602,7 @@ $trans_id
   <p>
     The trans_id is a string of 16 bytes.
   </p>
-<pre onclick="element_select(this);">
+<pre class="code">
 trans_id
 </pre>
   </div>
@@ -1613,7 +1613,7 @@ trans_id
   <p>
     The trans_id is a string of 16 bytes.
   </p>
-<pre onclick="element_select(this);">
+<pre class="code">
 trans_id
 </pre>
   </div>
@@ -1633,11 +1633,11 @@ trans_id
 
   <a name="1_send_async_active"></a>
   <h3>1.10 - send_async_active (internal services only)</h3>
-  <div class="tabs" style="min-height: 24em;">
+  <div class="tabs" style="min-height: 29em;">
   <div id="1_send_async_active_Elixir">
   <a href="#1_send_async_active_Elixir">Elixir</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 :cloudi_service.send_async_active(dispatcher, name,
                                   request_info, request,
                                   timeout, priority)
@@ -1651,7 +1651,7 @@ trans_id
   <div id="1_send_async_active_Erlang">
   <a href="#1_send_async_active_Erlang">Erlang</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 cloudi_service:send_async_active(Dispatcher :: pid(),
                                  Name :: string(),
                                  RequestInfo :: any(),
@@ -1696,11 +1696,11 @@ cloudi_service:send_async_active(Dispatcher :: pid(),
     is not implemented in other languages because of their lack of
     native event handling.
   </p>
-  <div class="tabs" style="min-height: 8em;">
+  <div class="tabs" style="min-height: 13em;">
   <div id="1_send_async_active_return_Elixir">
   <a href="#1_send_async_active_return_Elixir">Elixir</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 {:return_async_active, name, pattern,
  response_info, response, timeout, trans_id}
 {:timeout_async_active, trans_id}
@@ -1710,7 +1710,7 @@ cloudi_service:send_async_active(Dispatcher :: pid(),
   <div id="1_send_async_active_return_Erlang">
   <a href="#1_send_async_active_return_Erlang">Erlang</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 {'return_async_active', Name :: string(), Pattern :: string(),
  ResponseInfo :: any(), Response :: any(),
  Timeout :: non_neg_integer(), TransId :: &lt;&lt;_:128&gt;&gt;}
@@ -1732,18 +1732,18 @@ cloudi_service:send_async_active(Dispatcher :: pid(),
     <a href="api/cloudi_core-2.0.1/cloudi_service.html#description" target="_blank">cloudi_service behavior</a>).
     The message formats are also provided as records that are accessible with:
   </p>
-<pre onclick="element_select(this);">
+<pre class="code">
 -include_lib("cloudi_core/include/cloudi_service.hrl").
 </pre>
   <div class="top"><a href="#Service">Top</a></div>
 
   <a name="1_mcast_async"></a>
   <h3>1.11 - mcast_async</h3>
-  <div class="tabs" style="min-height: 13em;">
+  <div class="tabs" style="min-height: 18em;">
   <div id="1_mcast_async_C">
   <a href="#1_mcast_async_C">C</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 int cloudi_mcast_async_(cloudi_instance_t * api,
                         char const * const name,
                         void const * const request_info,
@@ -1758,7 +1758,7 @@ int cloudi_mcast_async_(cloudi_instance_t * api,
   <div id="1_mcast_async_CXX">
   <a href="#1_mcast_async_CXX">C++</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 int CloudI::API::mcast_async(STRING name,
                              void const * const request_info,
                              uint32_t const request_info_size,
@@ -1772,7 +1772,7 @@ int CloudI::API::mcast_async(STRING name,
   <div id="1_mcast_async_Elixir">
   <a href="#1_mcast_async_Elixir">Elixir</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 :cloudi_service.mcast_async(dispatcher, name,
                             request_info, request, timeout, priority)
 </pre>
@@ -1781,7 +1781,7 @@ int CloudI::API::mcast_async(STRING name,
   <div id="1_mcast_async_Erlang">
   <a href="#1_mcast_async_Erlang">Erlang</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 cloudi_service:mcast_async(Dispatcher :: pid(),
                            Name :: string(),
                            RequestInfo :: any(),
@@ -1797,7 +1797,7 @@ cloudi_service:mcast_async(Dispatcher :: pid(),
   <div id="1_mcast_async_Go">
   <a href="#1_mcast_async_Go">Go</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 func (api *cloudi.Instance) McastAsync(name string,
                                        requestInfo, request []byte,
                                        timeoutPriority ...interface{})
@@ -1808,7 +1808,7 @@ func (api *cloudi.Instance) McastAsync(name string,
   <div id="1_mcast_async_Java">
   <a href="#1_mcast_async_Java">Java</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 List&lt;TransId&gt; org.cloudi.API.mcast_async(String name,
                                          byte[] request_info,
                                          byte[] request,
@@ -1820,7 +1820,7 @@ List&lt;TransId&gt; org.cloudi.API.mcast_async(String name,
   <div id="1_mcast_async_JavaScript">
   <a href="#1_mcast_async_JavaScript">JavaScript</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 CloudI.API.mcast_async(name, request, callback,
                        timeout, request_info, priority);
 </pre>
@@ -1829,7 +1829,7 @@ CloudI.API.mcast_async(name, request, callback,
   <div id="1_mcast_async_Perl">
   <a href="#1_mcast_async_Perl">Perl</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 CloudI::API-&gt;mcast_async($name, $request,
                          $timeout, $request_info, $priority);
 </pre>
@@ -1838,7 +1838,7 @@ CloudI::API-&gt;mcast_async($name, $request,
   <div id="1_mcast_async_PHP">
   <a href="#1_mcast_async_PHP">PHP</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 \CloudI\API::mcast_async($name, $request,
                          $timeout = null, $request_info = null,
                          $priority = null);
@@ -1848,7 +1848,7 @@ CloudI::API-&gt;mcast_async($name, $request,
   <div id="1_mcast_async_Python">
   <a href="#1_mcast_async_Python">Python</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 cloudi.API.mcast_async(name, request,
                        timeout=None, request_info=None, priority=None)
 </pre>
@@ -1857,7 +1857,7 @@ cloudi.API.mcast_async(name, request,
   <div id="1_mcast_async_Ruby">
   <a href="#1_mcast_async_Ruby">Ruby</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 CloudI::API.mcast_async(name, request,
                         timeout=nil, request_info=nil, priority=nil)
 </pre>
@@ -1887,7 +1887,7 @@ CloudI::API.mcast_async(name, request,
     have a <a href="faq.html#4_Null">null response</a>,
     so that the service request response is ignored.
   </p>
-  <div class="tabs" style="min-height: 10em;">
+  <div class="tabs" style="min-height: 15em;">
   <div id="1_mcast_async_return_C">
   <a href="#1_mcast_async_return_C">C</a>
   <div class="tab_contents">
@@ -1895,7 +1895,7 @@ CloudI::API.mcast_async(name, request,
     Separate functions are provided to get the function result after
     a successful send_async function call (an integer 0 return value).
   </p>
-<pre onclick="element_select(this);">
+<pre class="code">
 cloudi_get_trans_id_count(p)
 cloudi_get_trans_id(p, i)
 </pre>
@@ -1908,7 +1908,7 @@ cloudi_get_trans_id(p, i)
     Separate functions are provided to get the function result after
     a successful send_async function call (an integer 0 return value).
   </p>
-<pre onclick="element_select(this);">
+<pre class="code">
 uint32_t CloudI::API::get_trans_id_count() const;
 char const * CloudI::API::get_trans_id(unsigned int const i = 0) const;
 </pre>
@@ -1917,7 +1917,7 @@ char const * CloudI::API::get_trans_id(unsigned int const i = 0) const;
   <div id="1_mcast_async_return_Elixir">
   <a href="#1_mcast_async_return_Elixir">Elixir</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 {:ok, trans_id_list}
 {:error, reason}
 </pre>
@@ -1926,7 +1926,7 @@ char const * CloudI::API::get_trans_id(unsigned int const i = 0) const;
   <div id="1_mcast_async_return_Erlang">
   <a href="#1_mcast_async_return_Erlang">Erlang</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 {'ok', TransIdList :: list(&lt;&lt;_:128&gt;&gt;)}
 {'error', Reason :: atom()}
 </pre>
@@ -1939,7 +1939,7 @@ char const * CloudI::API::get_trans_id(unsigned int const i = 0) const;
     transIds is [][]byte (nil if an error occurred).<br />
     err is error (nil if successful).
   </p>
-<pre onclick="element_select(this);">
+<pre class="code">
 (transIds, err)
 </pre>
   </div>
@@ -1950,7 +1950,7 @@ char const * CloudI::API::get_trans_id(unsigned int const i = 0) const;
   <p>
     A class encapsulates the function result.
   </p>
-<pre onclick="element_select(this);">
+<pre class="code">
 List&lt;org.cloudi.API.TransId&gt;
 </pre>
   </div>
@@ -1962,7 +1962,7 @@ List&lt;org.cloudi.API.TransId&gt;
     The callback provides the function result,
     an array of trans_id strings (each trans_id is a string of 16 bytes).
   </p>
-<pre onclick="element_select(this);">
+<pre class="code">
 callback(trans_ids);
 </pre>
   </div>
@@ -1973,7 +1973,7 @@ callback(trans_ids);
   <p>
     An array of trans_id strings (each trans_id is a string of 16 bytes).
   </p>
-<pre onclick="element_select(this);">
+<pre class="code">
 @trans_ids
 </pre>
   </div>
@@ -1984,7 +1984,7 @@ callback(trans_ids);
   <p>
     An array of trans_id strings (each trans_id is a string of 16 bytes).
   </p>
-<pre onclick="element_select(this);">
+<pre class="code">
 $trans_ids
 </pre>
   </div>
@@ -1995,7 +1995,7 @@ $trans_ids
   <p>
     An array of trans_id strings (each trans_id is a string of 16 bytes).
   </p>
-<pre onclick="element_select(this);">
+<pre class="code">
 [trans_id]
 </pre>
   </div>
@@ -2006,7 +2006,7 @@ $trans_ids
   <p>
     An array of trans_id strings (each trans_id is a string of 16 bytes).
   </p>
-<pre onclick="element_select(this);">
+<pre class="code">
 [trans_id]
 </pre>
   </div>
@@ -2026,11 +2026,11 @@ $trans_ids
 
   <a name="1_mcast_async_active"></a>
   <h3>1.12 - mcast_async_active (internal services only)</h3>
-  <div class="tabs" style="min-height: 14em;">
+  <div class="tabs" style="min-height: 19em;">
   <div id="1_mcast_async_active_Elixir">
   <a href="#1_mcast_async_active_Elixir">Elixir</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 :cloudi_service.mcast_async_active(dispatcher, name,
                                    request_info, request,
                                    timeout, priority)
@@ -2040,7 +2040,7 @@ $trans_ids
   <div id="1_mcast_async_active_Erlang">
   <a href="#1_mcast_async_active_Erlang">Erlang</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 cloudi_service:mcast_async_active(Dispatcher :: pid(),
                                   Name :: string(),
                                   RequestInfo :: any(),
@@ -2076,11 +2076,11 @@ cloudi_service:mcast_async_active(Dispatcher :: pid(),
     is not implemented in other languages because of their lack of
     native event handling.
   </p>
-  <div class="tabs" style="min-height: 8em;">
+  <div class="tabs" style="min-height: 13em;">
   <div id="1_mcast_async_active_return_Elixir">
   <a href="#1_mcast_async_active_return_Elixir">Elixir</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 {:return_async_active, name, pattern,
  response_info, response, timeout, trans_id}
 {:timeout_async_active, trans_id}
@@ -2090,7 +2090,7 @@ cloudi_service:mcast_async_active(Dispatcher :: pid(),
   <div id="1_mcast_async_active_return_Erlang">
   <a href="#1_mcast_async_active_return_Erlang">Erlang</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 {'return_async_active', Name :: string(), Pattern :: string(),
  ResponseInfo :: any(), Response :: any(),
  Timeout :: non_neg_integer(), TransId :: &lt;&lt;_:128&gt;&gt;}
@@ -2114,18 +2114,18 @@ cloudi_service:mcast_async_active(Dispatcher :: pid(),
     <a href="api/cloudi_core-2.0.1/cloudi_service.html#description" target="_blank">cloudi_service behavior</a>).
     The message formats are also provided as records that are accessible with:
   </p>
-<pre onclick="element_select(this);">
+<pre class="code">
 -include_lib("cloudi_core/include/cloudi_service.hrl").
 </pre>
   <div class="top"><a href="#Service">Top</a></div>
 
   <a name="1_recv_async"></a>
   <h3>1.13 - recv_async</h3>
-  <div class="tabs" style="min-height: 13em;">
+  <div class="tabs" style="min-height: 18em;">
   <div id="1_recv_async_C">
   <a href="#1_recv_async_C">C</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 int cloudi_recv_async(cloudi_instance_t * api,
                       uint32_t timeout,
                       char const * const trans_id,
@@ -2136,7 +2136,7 @@ int cloudi_recv_async(cloudi_instance_t * api,
   <div id="1_recv_async_CXX">
   <a href="#1_recv_async_CXX">C++</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 int CloudI::API::recv_async(uint32_t timeout,
                             STRING trans_id,
                             bool consume) const;
@@ -2146,7 +2146,7 @@ int CloudI::API::recv_async(uint32_t timeout,
   <div id="1_recv_async_Elixir">
   <a href="#1_recv_async_Elixir">Elixir</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 :cloudi_service.recv_async(dispatcher, timeout, trans_id, consume)
 </pre>
   </div>
@@ -2154,7 +2154,7 @@ int CloudI::API::recv_async(uint32_t timeout,
   <div id="1_recv_async_Erlang">
   <a href="#1_recv_async_Erlang">Erlang</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 cloudi_service:recv_async(Dispatcher :: pid(),
                           Timeout :: non_neg_integer() | 'undefined' |
                                      'limit_min' | 'limit_max',
@@ -2169,7 +2169,7 @@ cloudi_service:recv_async(Dispatcher :: pid(),
   <div id="1_recv_async_Go">
   <a href="#1_recv_async_Go">Go</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 func (api *cloudi.Instance) RecvAsync(extra ...interface{})
                                      ([]byte, []byte, []byte, error)
 </pre>
@@ -2178,7 +2178,7 @@ func (api *cloudi.Instance) RecvAsync(extra ...interface{})
   <div id="1_recv_async_Java">
   <a href="#1_recv_async_Java">Java</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 Response org.cloudi.API.recv_async(Integer timeout, byte[] transId,
                                    boolean consume);
 </pre>
@@ -2187,7 +2187,7 @@ Response org.cloudi.API.recv_async(Integer timeout, byte[] transId,
   <div id="1_recv_async_JavaScript">
   <a href="#1_recv_async_JavaScript">JavaScript</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 CloudI.API.recv_async(callback,
                       timeout, trans_id, consume);
 </pre>
@@ -2196,7 +2196,7 @@ CloudI.API.recv_async(callback,
   <div id="1_recv_async_Perl">
   <a href="#1_recv_async_Perl">Perl</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 CloudI::API-&gt;recv_async($timeout, $trans_id, $consume);
 </pre>
   </div>
@@ -2204,7 +2204,7 @@ CloudI::API-&gt;recv_async($timeout, $trans_id, $consume);
   <div id="1_recv_async_PHP">
   <a href="#1_recv_async_PHP">PHP</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 \CloudI\API::recv_async($timeout = null, $trans_id = null,
                         $consume = true);
 </pre>
@@ -2213,7 +2213,7 @@ CloudI::API-&gt;recv_async($timeout, $trans_id, $consume);
   <div id="1_recv_async_Python">
   <a href="#1_recv_async_Python">Python</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 cloudi.API.recv_async(timeout=None, trans_id=None, consume=True)
 </pre>
   </div>
@@ -2221,7 +2221,7 @@ cloudi.API.recv_async(timeout=None, trans_id=None, consume=True)
   <div id="1_recv_async_Ruby">
   <a href="#1_recv_async_Ruby">Ruby</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 CloudI::API.recv_async(timeout=nil, trans_id=nil, consume=true)
 </pre>
   </div>
@@ -2241,7 +2241,7 @@ CloudI::API.recv_async(timeout=nil, trans_id=nil, consume=true)
     in the future.  The TransId of the service request is always returned
     for any external use or tracking of the request or response.
   </p>
-  <div class="tabs" style="min-height: 14em;">
+  <div class="tabs" style="min-height: 19em;">
   <div id="1_recv_async_return_C">
   <a href="#1_recv_async_return_C">C</a>
   <div class="tab_contents">
@@ -2249,7 +2249,7 @@ CloudI::API.recv_async(timeout=nil, trans_id=nil, consume=true)
     Separate functions are provided to get the function result after
     a successful recv_async function call (an integer 0 return value).
   </p>
-<pre onclick="element_select(this);">
+<pre class="code">
 cloudi_get_response(p)
 cloudi_get_response_size(p)
 cloudi_get_response_info(p)
@@ -2266,7 +2266,7 @@ cloudi_get_trans_id(p, i)
     Separate functions are provided to get the function result after
     a successful recv_async function call (an integer 0 return value).
   </p>
-<pre onclick="element_select(this);">
+<pre class="code">
 char const * CloudI::API::get_response() const;
 uint32_t CloudI::API::get_response_size() const;
 char const * CloudI::API::get_response_info() const;
@@ -2283,7 +2283,7 @@ char const * CloudI::API::get_trans_id(unsigned int const i = 0) const;
     response_info and response are only returned if both
     do not not equal "".
   </p>
-<pre onclick="element_select(this);">
+<pre class="code">
 {:ok, response_info, response, trans_id}
 {:error, reason}
 </pre>
@@ -2296,7 +2296,7 @@ char const * CloudI::API::get_trans_id(unsigned int const i = 0) const;
     ResponseInfo and Response are only returned if both
     do not not equal &lt;&lt;&gt;&gt;.
   </p>
-<pre onclick="element_select(this);">
+<pre class="code">
 {'ok', ResponseInfo :: any(), Response :: any(),
        TransId :: &lt;&lt;_:128&gt;&gt;}
 {'error', Reason :: atom()}
@@ -2312,7 +2312,7 @@ char const * CloudI::API::get_trans_id(unsigned int const i = 0) const;
     transId is []byte (nil if an error occurred).<br />
     err is error (nil if successful).
   </p>
-<pre onclick="element_select(this);">
+<pre class="code">
 (responseInfo, response, transId, err)
 </pre>
   </div>
@@ -2323,7 +2323,7 @@ char const * CloudI::API::get_trans_id(unsigned int const i = 0) const;
   <p>
     A class encapsulates the function result.
   </p>
-<pre onclick="element_select(this);">
+<pre class="code">
 org.cloudi.API.Response
 </pre>
   </div>
@@ -2334,7 +2334,7 @@ org.cloudi.API.Response
   <p>
     The callback provides the function result.
   </p>
-<pre onclick="element_select(this);">
+<pre class="code">
 callback(response_info, response, trans_id);
 </pre>
   </div>
@@ -2345,7 +2345,7 @@ callback(response_info, response, trans_id);
   <p>
     An array provides the function result.
   </p>
-<pre onclick="element_select(this);">
+<pre class="code">
 ($response_info, $response, $trans_id)
 </pre>
   </div>
@@ -2356,7 +2356,7 @@ callback(response_info, response, trans_id);
   <p>
     An array provides the function result.
   </p>
-<pre onclick="element_select(this);">
+<pre class="code">
 array($response_info, $response, $trans_id)
 </pre>
   </div>
@@ -2367,7 +2367,7 @@ array($response_info, $response, $trans_id)
   <p>
     A tuple provides the function result.
   </p>
-<pre onclick="element_select(this);">
+<pre class="code">
 (response_info, response, trans_id)
 </pre>
   </div>
@@ -2378,7 +2378,7 @@ array($response_info, $response, $trans_id)
   <p>
     An array provides the function result.
   </p>
-<pre onclick="element_select(this);">
+<pre class="code">
 [response_info, response, trans_id]
 </pre>
   </div>
@@ -2394,11 +2394,11 @@ array($response_info, $response, $trans_id)
 
   <a name="1_recv_asyncs"></a>
   <h3>1.14 - recv_asyncs (internal services only)</h3>
-  <div class="tabs" style="min-height: 13em;">
+  <div class="tabs" style="min-height: 18em;">
   <div id="1_recv_asyncs_Elixir">
   <a href="#1_recv_asyncs_Elixir">Elixir</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 :cloudi_service.recv_asyncs(dispatcher,
                             timeout, trans_id_list, consume)
 </pre>
@@ -2407,7 +2407,7 @@ array($response_info, $response, $trans_id)
   <div id="1_recv_asyncs_Erlang">
   <a href="#1_recv_asyncs_Erlang">Erlang</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 cloudi_service:recv_asyncs(Dispatcher :: pid(),
                            Timeout :: non_neg_integer() | 'undefined' |
                                       'limit_min' | 'limit_max',
@@ -2439,11 +2439,11 @@ cloudi_service:recv_asyncs(Dispatcher :: pid(),
 
   <a name="1_return"></a>
   <h3>1.15 - return</h3>
-  <div class="tabs" style="min-height: 17em;">
+  <div class="tabs" style="min-height: 22em;">
   <div id="1_return_C">
   <a href="#1_return_C">C</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 int cloudi_return(cloudi_instance_t * api,
                   int const request_type,
                   char const * const name,
@@ -2462,7 +2462,7 @@ int cloudi_return(cloudi_instance_t * api,
   <div id="1_return_CXX">
   <a href="#1_return_CXX">C++</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 int CloudI::API::return_(int const request_type,
                          STRING name,
                          STRING pattern,
@@ -2480,7 +2480,7 @@ int CloudI::API::return_(int const request_type,
   <div id="1_return_Elixir">
   <a href="#1_return_Elixir">Elixir</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 :cloudi_service.return(dispatcher, request_type, name, pattern,
                        response_info, response,
                        timeout, trans_id, pid)
@@ -2490,7 +2490,7 @@ int CloudI::API::return_(int const request_type,
   <div id="1_return_Erlang">
   <a href="#1_return_Erlang">Erlang</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 cloudi_service:return(Dispatcher :: pid(),
                       RequestType :: 'send_async' | 'send_sync',
                       Name :: string(),
@@ -2507,7 +2507,7 @@ cloudi_service:return(Dispatcher :: pid(),
   <div id="1_return_Go">
   <a href="#1_return_Go">Go</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 func (api *cloudi.Instance) Return(requestType int,
                                    name, pattern string,
                                    responseInfo, response []byte,
@@ -2520,7 +2520,7 @@ func (api *cloudi.Instance) Return(requestType int,
   <div id="1_return_Java">
   <a href="#1_return_Java">Java</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 void org.cloudi.API.return_(Integer request_type,
                             String name, String pattern,
                             byte[] response_info, byte[] response,
@@ -2532,7 +2532,7 @@ void org.cloudi.API.return_(Integer request_type,
   <div id="1_return_JavaScript">
   <a href="#1_return_JavaScript">JavaScript</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 CloudI.API.return_(request_type, name, pattern,
                    response_info, response, timeout, trans_id, pid);
 </pre>
@@ -2541,7 +2541,7 @@ CloudI.API.return_(request_type, name, pattern,
   <div id="1_return_Perl">
   <a href="#1_return_Perl">Perl</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 CloudI::API-&gt;return_($request_type, $name, $pattern,
                      $response_info, $response,
                      $timeout, $trans_id, $pid);
@@ -2551,7 +2551,7 @@ CloudI::API-&gt;return_($request_type, $name, $pattern,
   <div id="1_return_PHP">
   <a href="#1_return_PHP">PHP</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 \CloudI\API::return_($request_type, $name, $pattern,
                      $response_info, $response,
                      $timeout, $trans_id, $pid);
@@ -2561,7 +2561,7 @@ CloudI::API-&gt;return_($request_type, $name, $pattern,
   <div id="1_return_Python">
   <a href="#1_return_Python">Python</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 cloudi.API.return_(request_type, name, pattern, response_info, response,
                    timeout, trans_id, pid)
 </pre>
@@ -2570,7 +2570,7 @@ cloudi.API.return_(request_type, name, pattern, response_info, response,
   <div id="1_return_Ruby">
   <a href="#1_return_Ruby">Ruby</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 CloudI::API.return_(request_type, name, pattern, response_info, response,
                     timeout, trans_id, pid)
 </pre>
@@ -2607,11 +2607,11 @@ CloudI::API.return_(request_type, name, pattern, response_info, response,
 
   <a name="1_forward"></a>
   <h3>1.16 - forward</h3>
-  <div class="tabs" style="min-height: 17em;">
+  <div class="tabs" style="min-height: 22em;">
   <div id="1_forward_C">
   <a href="#1_forward_C">C</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 int cloudi_forward(cloudi_instance_t * api,
                    int const request_type,
                    char const * const name,
@@ -2630,7 +2630,7 @@ int cloudi_forward(cloudi_instance_t * api,
   <div id="1_forward_CXX">
   <a href="#1_forward_CXX">C++</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 int CloudI::API::forward_(int const request_type,
                           STRING name,
                           void const * const request_info,
@@ -2648,7 +2648,7 @@ int CloudI::API::forward_(int const request_type,
   <div id="1_forward_Elixir">
   <a href="#1_forward_Elixir">Elixir</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 :cloudi_service.forward(dispatcher, request_type, name,
                         request_info, request,
                         timeout, priority, trans_id, pid)
@@ -2658,7 +2658,7 @@ int CloudI::API::forward_(int const request_type,
   <div id="1_forward_Erlang">
   <a href="#1_forward_Erlang">Erlang</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 cloudi_service:forward(Dispatcher :: pid(),
                        RequestType :: 'send_async' | 'send_sync',
                        Name :: string(),
@@ -2675,7 +2675,7 @@ cloudi_service:forward(Dispatcher :: pid(),
   <div id="1_forward_Go">
   <a href="#1_forward_Go">Go</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 func (api *cloudi.Instance) Forward(requestType int,
                                     name string,
                                     requestInfo, request []byte,
@@ -2689,7 +2689,7 @@ func (api *cloudi.Instance) Forward(requestType int,
   <div id="1_forward_Java">
   <a href="#1_forward_Java">Java</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 Response org.cloudi.API.forward_(Integer request_type, String name,
                                  byte[] request_info, byte[] request,
                                  Integer timeout, Byte priority,
@@ -2700,7 +2700,7 @@ Response org.cloudi.API.forward_(Integer request_type, String name,
   <div id="1_forward_JavaScript">
   <a href="#1_forward_JavaScript">JavaScript</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 CloudI.API.forward_(request_type, name, request_info, request,
                     timeout, priority, trans_id, pid);
 </pre>
@@ -2709,7 +2709,7 @@ CloudI.API.forward_(request_type, name, request_info, request,
   <div id="1_forward_Perl">
   <a href="#1_forward_Perl">Perl</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 CloudI::API-&gt;forward_($request_type, $name, $request_info, $request,
                       $timeout, $priority, $trans_id, $pid);
 </pre>
@@ -2718,7 +2718,7 @@ CloudI::API-&gt;forward_($request_type, $name, $request_info, $request,
   <div id="1_forward_PHP">
   <a href="#1_forward_PHP">PHP</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 \CloudI\API::forward_($request_type, $name, $request_info, $request,
                       $timeout, $priority, $trans_id, $pid);
 </pre>
@@ -2727,7 +2727,7 @@ CloudI::API-&gt;forward_($request_type, $name, $request_info, $request,
   <div id="1_forward_Python">
   <a href="#1_forward_Python">Python</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 cloudi.API.forward_(request_type, name, request_info, request,
                     timeout, priority, trans_id, pid)
 </pre>
@@ -2736,7 +2736,7 @@ cloudi.API.forward_(request_type, name, request_info, request,
   <div id="1_forward_Ruby">
   <a href="#1_forward_Ruby">Ruby</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 CloudI::API.forward_(request_type, name, request_info, request,
                      timeout, priority, trans_id, pid)
 </pre>
@@ -2773,11 +2773,11 @@ CloudI::API.forward_(request_type, name, request_info, request,
 
   <a name="1_poll"></a>
   <h3>1.17 - poll (external services only)</h3>
-  <div class="tabs" style="min-height: 6em;">
+  <div class="tabs" style="min-height: 11em;">
   <div id="1_poll_C">
   <a href="#1_poll_C">C</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 int cloudi_poll(cloudi_instance_t * api,
                 int timeout);
 </pre>
@@ -2786,7 +2786,7 @@ int cloudi_poll(cloudi_instance_t * api,
   <div id="1_poll_CXX">
   <a href="#1_poll_CXX">C++</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 int CloudI::API::poll(int timeout = -1);
 </pre>
   </div>
@@ -2794,7 +2794,7 @@ int CloudI::API::poll(int timeout = -1);
   <div id="1_poll_Go">
   <a href="#1_poll_Go">Go</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 func (api *cloudi.Instance) Poll(timeout int32) (bool, error)
 </pre>
   </div>
@@ -2802,7 +2802,7 @@ func (api *cloudi.Instance) Poll(timeout int32) (bool, error)
   <div id="1_poll_Java">
   <a href="#1_poll_Java">Java</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 boolean org.cloudi.API.poll(int timeout);
 </pre>
   </div>
@@ -2810,7 +2810,7 @@ boolean org.cloudi.API.poll(int timeout);
   <div id="1_poll_JavaScript">
   <a href="#1_poll_JavaScript">JavaScript</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 var callback = function (timeout_) {};
 CloudI.API.poll(callback, timeout);
 </pre>
@@ -2819,7 +2819,7 @@ CloudI.API.poll(callback, timeout);
   <div id="1_poll_Perl">
   <a href="#1_poll_Perl">Perl</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 CloudI::API-&gt;poll($timeout);
 </pre>
   </div>
@@ -2827,7 +2827,7 @@ CloudI::API-&gt;poll($timeout);
   <div id="1_poll_PHP">
   <a href="#1_poll_PHP">PHP</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 \CloudI\API::poll($timeout = -1);
 </pre>
   </div>
@@ -2835,7 +2835,7 @@ CloudI::API-&gt;poll($timeout);
   <div id="1_poll_Python">
   <a href="#1_poll_Python">Python</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 cloudi.API.poll(timeout=-1)
 </pre>
   </div>
@@ -2843,7 +2843,7 @@ cloudi.API.poll(timeout=-1)
   <div id="1_poll_Ruby">
   <a href="#1_poll_Ruby">Ruby</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 CloudI::API.poll(timeout=nil)
 </pre>
   </div>
@@ -2874,11 +2874,11 @@ CloudI::API.poll(timeout=nil)
 
   <a name="1_shutdown"></a>
   <h3>1.18 - shutdown</h3>
-  <div class="tabs" style="min-height: 17em;">
+  <div class="tabs" style="min-height: 22em;">
   <div id="1_shutdown_C">
   <a href="#1_shutdown_C">C</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 int cloudi_shutdown(cloudi_instance_t * api,
                     char const * const reason);
 </pre>
@@ -2887,7 +2887,7 @@ int cloudi_shutdown(cloudi_instance_t * api,
   <div id="1_shutdown_CXX">
   <a href="#1_shutdown_CXX">C++</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 int CloudI::API::shutdown() const;
 int CloudI::API::shutdown(STRING reason) const;
 </pre>
@@ -2896,7 +2896,7 @@ int CloudI::API::shutdown(STRING reason) const;
   <div id="1_shutdown_Elixir">
   <a href="#1_shutdown_Elixir">Elixir</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 % cloudi_service behaviour return values:
 {:stop, :shutdown}
 {:stop, {:shutdown, 'reason'}}
@@ -2908,7 +2908,7 @@ int CloudI::API::shutdown(STRING reason) const;
   <div id="1_shutdown_Erlang">
   <a href="#1_shutdown_Erlang">Erlang</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 % cloudi_service behaviour return values:
 {stop, shutdown}
 {stop, {shutdown, "reason"}}
@@ -2920,7 +2920,7 @@ int CloudI::API::shutdown(STRING reason) const;
   <div id="1_shutdown_Go">
   <a href="#1_shutdown_Go">Go</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 func (api *cloudi.Instance) Shutdown(extra ...interface{}) error
 </pre>
   </div>
@@ -2928,7 +2928,7 @@ func (api *cloudi.Instance) Shutdown(extra ...interface{}) error
   <div id="1_shutdown_Java">
   <a href="#1_shutdown_Java">Java</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 void org.cloudi.API.shutdown();
 void org.cloudi.API.shutdown(String reason);
 </pre>
@@ -2937,7 +2937,7 @@ void org.cloudi.API.shutdown(String reason);
   <div id="1_shutdown_JavaScript">
   <a href="#1_shutdown_JavaScript">JavaScript</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 CloudI.API.shutdown(callback, reason);
 </pre>
   </div>
@@ -2945,7 +2945,7 @@ CloudI.API.shutdown(callback, reason);
   <div id="1_shutdown_Perl">
   <a href="#1_shutdown_Perl">Perl</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 CloudI::API-&gt;shutdown($reason);
 </pre>
   </div>
@@ -2953,7 +2953,7 @@ CloudI::API-&gt;shutdown($reason);
   <div id="1_shutdown_PHP">
   <a href="#1_shutdown_PHP">PHP</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 \CloudI\API::shutdown($reason = null);
 </pre>
   </div>
@@ -2961,7 +2961,7 @@ CloudI::API-&gt;shutdown($reason);
   <div id="1_shutdown_Python">
   <a href="#1_shutdown_Python">Python</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 cloudi.API.shutdown(reason=None)
 </pre>
   </div>
@@ -2969,7 +2969,7 @@ cloudi.API.shutdown(reason=None)
   <div id="1_shutdown_Ruby">
   <a href="#1_shutdown_Ruby">Ruby</a>
   <div class="tab_contents">
-<pre onclick="element_select(this);">
+<pre class="code">
 CloudI::API.shutdown(reason=nil)
 </pre>
   </div>
@@ -3017,13 +3017,13 @@ CloudI::API.shutdown(reason=nil)
   </th></tr><tr><td>
     Erlang
   </td><td>
-<p class="code" onclick="element_select(this);">
+<p class="code">
 curl http://localhost:6464/cloudi/api/rpc/services.erl
 </p>
   </td></tr><tr><td>
     JSON&#8209;RPC
   </td><td>
-<p class="code" onclick="element_select(this);">
+<p class="code">
 curl -X POST -d '{"method": "services", "params":[], "id": 1}' http://localhost:6464/cloudi/api/rpc.json
 </p>
   </td></tr></table>
@@ -3035,7 +3035,7 @@ curl -X POST -d '{"method": "services", "params":[], "id": 1}' http://localhost:
 
   <a name="2_acl_add"></a>
   <h3>2.1 - acl_add</h3>
-<p class="code" onclick="element_select(this);">
+<p class="code">
 curl -X POST -d '[{sensitive, ["/accouting/*", "/finance/*"]}]' http://localhost:6464/cloudi/api/rpc/acl_add.erl
 </p>
   <p class="paragraph">
@@ -3048,7 +3048,7 @@ curl -X POST -d '[{sensitive, ["/accouting/*", "/finance/*"]}]' http://localhost
 
   <a name="2_acl_remove"></a>
   <h3>2.2 - acl_remove</h3>
-<p class="code" onclick="element_select(this);">
+<p class="code">
 curl -X POST -d '[sensitive]' http://localhost:6464/cloudi/api/rpc/acl_remove.erl
 </p>
   <p class="paragraph">
@@ -3060,7 +3060,7 @@ curl -X POST -d '[sensitive]' http://localhost:6464/cloudi/api/rpc/acl_remove.er
 
   <a name="2_acl"></a>
   <h3>2.3 - acl</h3>
-<p class="code" onclick="element_select(this);">
+<p class="code">
 curl http://localhost:6464/cloudi/api/rpc/acl.erl
 </p>
   <p class="paragraph">
@@ -3070,7 +3070,7 @@ curl http://localhost:6464/cloudi/api/rpc/acl.erl
 
   <a name="2_service_subscriptions"></a>
   <h3>2.4 - service_subscriptions</h3>
-<p class="code" onclick="element_select(this);">
+<p class="code">
 curl -X POST -d '"6a675470-7a1f-11e2-d40e-a5dd00000058"' http://localhost:6464/cloudi/api/rpc/service_subscriptions.erl
 </p>
   <p class="paragraph">
@@ -3080,7 +3080,7 @@ curl -X POST -d '"6a675470-7a1f-11e2-d40e-a5dd00000058"' http://localhost:6464/c
 
   <a name="2_services_add"></a>
   <h3>2.5 - services_add</h3>
-<p class="code" onclick="element_select(this);">
+<p class="code">
 curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{service_name, "/tests/http_req/ruby.xml/get"}, {request_rate, dynamic}], lazy_closest, 5000, 5000, 5000, undefined, undefined, 1, 5, 300, [{duo_mode, true}]}]' http://localhost:6464/cloudi/api/rpc/services_add.erl
 </p>
   <p class="paragraph">
@@ -4003,7 +4003,7 @@ Linux:   /usr/bin/strace -o /tmp/strace.log SERVICE
   </th></tr><tr><td>
     Internal
   </td><td>
-<pre onclick="element_select(this);">
+<pre class="code">
 fun((Args :: list(),
      Prefix :: cloudi_service:service_name_pattern(),
      Timeout :: cloudi_service_api:timeout_milliseconds(),
@@ -4015,7 +4015,7 @@ fun((Args :: list(),
   </td></tr><tr><td>
     External
   </td><td>
-<pre onclick="element_select(this);">
+<pre class="code">
 % the first function call has State =:= undefined
 fun((CommandLine :: list(string()),
      Prefix :: cloudi:service_name_pattern(),
@@ -4042,7 +4042,7 @@ fun((CommandLine :: list(string()),
   </th></tr><tr><td>
     Internal
   </td><td>
-<pre onclick="element_select(this);">
+<pre class="code">
 fun((RequestType :: cloudi_service:request_type(),
      Name :: cloudi_service:service_name(),
      Pattern :: cloudi_service:service_name_pattern(),
@@ -4060,7 +4060,7 @@ fun((RequestType :: cloudi_service:request_type(),
   </td></tr><tr><td>
     External
   </td><td>
-<pre onclick="element_select(this);">
+<pre class="code">
 fun((RequestType :: cloudi_service:request_type(),
      Name :: cloudi_service:service_name(),
      Pattern :: cloudi_service:service_name_pattern(),
@@ -4092,7 +4092,7 @@ fun((RequestType :: cloudi_service:request_type(),
   </th></tr><tr><td>
     Internal
   </td><td>
-<pre onclick="element_select(this);">
+<pre class="code">
 fun((RequestType :: cloudi_service:request_type(),
      Name :: cloudi_service:service_name(),
      Pattern :: cloudi_service:service_name_pattern(),
@@ -4111,7 +4111,7 @@ fun((RequestType :: cloudi_service:request_type(),
   </td></tr><tr><td>
     External
   </td><td>
-<pre onclick="element_select(this);">
+<pre class="code">
 fun((RequestType :: cloudi_service:request_type(),
      Name :: cloudi_service:service_name(),
      Pattern :: cloudi_service:service_name_pattern(),
@@ -4144,7 +4144,7 @@ fun((RequestType :: cloudi_service:request_type(),
   </th></tr><tr><td>
     Internal
   </td><td>
-<pre onclick="element_select(this);">
+<pre class="code">
 fun((Request :: any(),
      State :: any(),
      Dispatcher :: cloudi_service:dispatcher()) -&gt;
@@ -4169,7 +4169,7 @@ fun((Request :: any(),
   </th></tr><tr><td>
     Internal
   </td><td>
-<pre onclick="element_select(this);">
+<pre class="code">
 fun((Request :: any(),
      State :: any(),
      Dispatcher :: cloudi_service:dispatcher()) -&gt;
@@ -4196,7 +4196,7 @@ fun((Request :: any(),
   </th></tr><tr><td>
     Internal and External
   </td><td>
-<pre onclick="element_select(this);">
+<pre class="code">
 fun((Reason :: any(),
      Timeout :: cloudi_service_api:timeout_milliseconds(),
      State :: any()) -&gt;
@@ -4238,7 +4238,7 @@ fun((Reason :: any(),
 
   <a name="2_services_remove"></a>
   <h3>2.6 - services_remove</h3>
-<p class="code" onclick="element_select(this);">
+<p class="code">
 curl -X POST -d '["6e81f0a6-7a1f-11e2-d40e-a5dd00000058", "6e81f0ec-7a1f-11e2-d40e-a5dd00000058"]' http://localhost:6464/cloudi/api/rpc/services_remove.erl
 </p>
   <p class="paragraph">
@@ -4269,7 +4269,7 @@ curl -X POST -d '["6e81f0a6-7a1f-11e2-d40e-a5dd00000058", "6e81f0ec-7a1f-11e2-d4
 
   <a name="2_services_restart"></a>
   <h3>2.7 - services_restart</h3>
-<p class="code" onclick="element_select(this);">
+<p class="code">
 curl -X POST -d '["6a675470-7a1f-11e2-d40e-a5dd00000058"]' http://localhost:6464/cloudi/api/rpc/services_restart.erl
 </p>
   <p class="paragraph">
@@ -4286,7 +4286,7 @@ curl -X POST -d '["6a675470-7a1f-11e2-d40e-a5dd00000058"]' http://localhost:6464
 
   <a name="2_services_suspend"></a>
   <h3>2.8 - services_suspend</h3>
-<p class="code" onclick="element_select(this);">
+<p class="code">
 curl -X POST -d '["6a675470-7a1f-11e2-d40e-a5dd00000058"]' http://localhost:6464/cloudi/api/rpc/services_suspend.erl
 </p>
   <p class="paragraph">
@@ -4302,7 +4302,7 @@ curl -X POST -d '["6a675470-7a1f-11e2-d40e-a5dd00000058"]' http://localhost:6464
 
   <a name="2_services_resume"></a>
   <h3>2.9 - services_resume</h3>
-<p class="code" onclick="element_select(this);">
+<p class="code">
 curl -X POST -d '["6a675470-7a1f-11e2-d40e-a5dd00000058"]' http://localhost:6464/cloudi/api/rpc/services_resume.erl
 </p>
   <p class="paragraph">
@@ -4315,10 +4315,10 @@ curl -X POST -d '["6a675470-7a1f-11e2-d40e-a5dd00000058"]' http://localhost:6464
 
   <a name="2_services_search"></a>
   <h3>2.10 - services_search</h3>
-<p class="code" onclick="element_select(this);">
+<p class="code">
 curl -X POST -d '"/tests/http/text/post"' http://localhost:6464/cloudi/api/rpc/services_search.erl
 </p>
-<p class="code" onclick="element_select(this);">
+<p class="code">
 curl -X POST -d '{cloudi_service_test_msg_size, "/tests/msg_size/erlang"}' http://localhost:6464/cloudi/api/rpc/services_search.erl
 </p>
   <p class="paragraph">
@@ -4330,10 +4330,10 @@ curl -X POST -d '{cloudi_service_test_msg_size, "/tests/msg_size/erlang"}' http:
 
   <a name="2_services_status"></a>
   <h3>2.11 - services_status</h3>
-<p class="code" onclick="element_select(this);">
+<p class="code">
 curl -X POST -d '[]' http://localhost:6464/cloudi/api/rpc/services_status.erl
 </p>
-<p class="code" onclick="element_select(this);">
+<p class="code">
 curl -X POST -d '["65762d3262a511e882359563d34a433e"]' http://localhost:6464/cloudi/api/rpc/services_status.erl
 </p>
   <p class="paragraph">
@@ -4443,7 +4443,7 @@ curl -X POST -d '["65762d3262a511e882359563d34a433e"]' http://localhost:6464/clo
 
   <a name="2_services_update"></a>
   <h3>2.12 - services_update</h3>
-<p class="code" onclick="element_select(this);">
+<p class="code">
 curl -X POST -d '[{"", [{module, cloudi_service_messaging_sequence1}, {modules_load, [cloudi_service_messaging_sequence1]}, {sync, false}]}]' http://localhost:6464/cloudi/api/rpc/services_update.erl
 </p>
   <p class="paragraph">
@@ -4483,7 +4483,7 @@ curl -X POST -d '[{"", [{module, cloudi_service_messaging_sequence1}, {modules_l
     The module_state value for an internal service update can be provided as
     an anonymous Erlang function or an Erlang tuple
     "{module(),&nbsp;FunctionName&nbsp;::&nbsp;atom()}" with the types below:
-<pre onclick="element_select(this);">
+<pre class="code">
 fun((OldModuleVersion :: list(any()),
      NewModuleVersion :: list(any()),
      OldState :: any()) -&gt;
@@ -4681,7 +4681,7 @@ fun((OldModuleVersion :: list(any()),
 
   <a name="2_services"></a>
   <h3>2.13 - services</h3>
-<p class="code" onclick="element_select(this);">
+<p class="code">
 curl http://localhost:6464/cloudi/api/rpc/services.erl
 </p>
   <p class="paragraph">
@@ -4731,7 +4731,7 @@ curl http://localhost:6464/cloudi/api/rpc/services.erl
 
   <a name="2_nodes_set"></a>
   <h3>2.14 - nodes_set</h3>
-<p class="code" onclick="element_select(this);">
+<p class="code">
 curl -X POST -d "[{reconnect_delay, 300}]" http://localhost:6464/cloudi/api/rpc/nodes_set.erl
 </p>
   <p class="paragraph">
@@ -4985,7 +4985,7 @@ curl -X POST -d "[{reconnect_delay, 300}]" http://localhost:6464/cloudi/api/rpc/
 
   <a name="2_nodes_get"></a>
   <h3>2.15 - nodes_get</h3>
-<p class="code" onclick="element_select(this);">
+<p class="code">
 curl http://localhost:6464/cloudi/api/rpc/nodes_get.erl
 </p>
   <p class="paragraph">
@@ -4997,7 +4997,7 @@ curl http://localhost:6464/cloudi/api/rpc/nodes_get.erl
 
   <a name="2_nodes_add"></a>
   <h3>2.16 - nodes_add</h3>
-<p class="code" onclick="element_select(this);">
+<p class="code">
 curl -X POST -d "['cloud001@cluster1']" http://localhost:6464/cloudi/api/rpc/nodes_add.erl
 </p>
   <p class="paragraph">
@@ -5011,7 +5011,7 @@ curl -X POST -d "['cloud001@cluster1']" http://localhost:6464/cloudi/api/rpc/nod
 
   <a name="2_nodes_remove"></a>
   <h3>2.17 - nodes_remove</h3>
-<p class="code" onclick="element_select(this);">
+<p class="code">
 curl -X POST -d "['cloud001@cluster1']" http://localhost:6464/cloudi/api/rpc/nodes_remove.erl
 </p>
   <p class="paragraph">
@@ -5026,7 +5026,7 @@ curl -X POST -d "['cloud001@cluster1']" http://localhost:6464/cloudi/api/rpc/nod
 
   <a name="2_nodes_alive"></a>
   <h3>2.18 - nodes_alive</h3>
-<p class="code" onclick="element_select(this);">
+<p class="code">
 curl http://localhost:6464/cloudi/api/rpc/nodes_alive.erl
 </p>
   <p class="paragraph">
@@ -5036,7 +5036,7 @@ curl http://localhost:6464/cloudi/api/rpc/nodes_alive.erl
 
   <a name="2_nodes_dead"></a>
   <h3>2.19 - nodes_dead</h3>
-<p class="code" onclick="element_select(this);">
+<p class="code">
 curl http://localhost:6464/cloudi/api/rpc/nodes_dead.erl
 </p>
   <p class="paragraph">
@@ -5047,10 +5047,10 @@ curl http://localhost:6464/cloudi/api/rpc/nodes_dead.erl
 
   <a name="2_nodes_status"></a>
   <h3>2.20 - nodes_status</h3>
-<p class="code" onclick="element_select(this);">
+<p class="code">
 curl -X POST -d '[]' http://localhost:6464/cloudi/api/rpc/nodes_status.erl
 </p>
-<p class="code" onclick="element_select(this);">
+<p class="code">
 curl -X POST -d "['cloudi@hostname']" http://localhost:6464/cloudi/api/rpc/nodes_status.erl
 </p>
   <p class="paragraph">
@@ -5098,7 +5098,7 @@ curl -X POST -d "['cloudi@hostname']" http://localhost:6464/cloudi/api/rpc/nodes
 
   <a name="2_nodes"></a>
   <h3>2.21 - nodes</h3>
-<p class="code" onclick="element_select(this);">
+<p class="code">
 curl http://localhost:6464/cloudi/api/rpc/nodes.erl
 </p>
   <p class="paragraph">
@@ -5108,7 +5108,7 @@ curl http://localhost:6464/cloudi/api/rpc/nodes.erl
 
   <a name="2_logging_set"></a>
   <h3>2.22 - logging_set</h3>
-<p class="code" onclick="element_select(this);">
+<p class="code">
 curl -X POST -d '[{file, undefined}, {syslog, []}]' http://localhost:6464/cloudi/api/rpc/logging_set.erl
 </p>
   <p class="paragraph">
@@ -5145,7 +5145,7 @@ curl -X POST -d '[{file, undefined}, {syslog, []}]' http://localhost:6464/cloudi
     with each function as either an anonymous Erlang function or
     an Erlang tuple "{module(),&nbsp;FunctionName&nbsp;::&nbsp;atom()}".
     Each function will be called before the log data is stored to disk.
-<pre onclick="element_select(this);">
+<pre class="code">
 fun((Level :: fatal | error | warn | info | debug | trace,
      Timestamp :: erlang:timestamp(),
      Node :: node(),
@@ -5169,7 +5169,7 @@ fun((Level :: fatal | error | warn | info | debug | trace,
     with each function as either an anonymous Erlang function or
     an Erlang tuple "{module(),&nbsp;FunctionName&nbsp;::&nbsp;atom()}".
     Each function will be called after the log data is stored to disk.
-<pre onclick="element_select(this);">
+<pre class="code">
 fun((Level :: fatal | error | warn | info | debug | trace,
      Timestamp :: erlang:timestamp(),
      Node :: node(),
@@ -5190,7 +5190,7 @@ fun((Level :: fatal | error | warn | info | debug | trace,
 
   <a name="2_logging_file_set"></a>
   <h3>2.23 - logging_file_set</h3>
-<p class="code" onclick="element_select(this);">
+<p class="code">
 curl -X POST -d '"different_filename.log"' http://localhost:6464/cloudi/api/rpc/logging_file_set.erl
 </p>
   <p class="paragraph">
@@ -5201,7 +5201,7 @@ curl -X POST -d '"different_filename.log"' http://localhost:6464/cloudi/api/rpc/
 
   <a name="2_logging_level_set"></a>
   <h3>2.24 - logging_level_set</h3>
-<p class="code" onclick="element_select(this);">
+<p class="code">
 curl -X POST -d 'warn' http://localhost:6464/cloudi/api/rpc/logging_level_set.erl
 </p>
   <p class="paragraph">
@@ -5216,7 +5216,7 @@ curl -X POST -d 'warn' http://localhost:6464/cloudi/api/rpc/logging_level_set.er
 
   <a name="2_logging_stdout_set"></a>
   <h3>2.25 - logging_stdout_set</h3>
-<p class="code" onclick="element_select(this);">
+<p class="code">
 curl -X POST -d 'true' http://localhost:6464/cloudi/api/rpc/logging_stdout_set.erl
 </p>
   <p class="paragraph">
@@ -5226,7 +5226,7 @@ curl -X POST -d 'true' http://localhost:6464/cloudi/api/rpc/logging_stdout_set.e
 
   <a name="2_logging_syslog_set"></a>
   <h3>2.26 - logging_syslog_set</h3>
-<p class="code" onclick="element_select(this);">
+<p class="code">
 curl -X POST -d '[{identity, "CloudI"}, {facility, local0}, {level, trace}]' http://localhost:6464/cloudi/api/rpc/logging_syslog_set.erl
 </p>
   <p class="paragraph">
@@ -5318,7 +5318,7 @@ curl -X POST -d '[{identity, "CloudI"}, {facility, local0}, {level, trace}]' htt
 
   <a name="2_logging_formatters_set"></a>
   <h3>2.27 - logging_formatters_set</h3>
-<p class="code" onclick="element_select(this);">
+<p class="code">
 curl -X POST -d '[{any, [{output, lager_file_backend}, {output_args, [{file, "lager.log"}]}, {formatter, lager_default_formatter}, {level, trace}]}]' http://localhost:6464/cloudi/api/rpc/logging_formatters_set.erl
 </p>
   <p class="paragraph">
@@ -5418,7 +5418,7 @@ curl -X POST -d '[{any, [{output, lager_file_backend}, {output_args, [{file, "la
 
   <a name="2_logging_redirect_set"></a>
   <h3>2.28 - logging_redirect_set</h3>
-<p class="code" onclick="element_select(this);">
+<p class="code">
 curl -X POST -d 'cloudi@host' http://localhost:6464/cloudi/api/rpc/logging_redirect_set.erl
 </p>
   <p class="paragraph">
@@ -5429,7 +5429,7 @@ curl -X POST -d 'cloudi@host' http://localhost:6464/cloudi/api/rpc/logging_redir
 
   <a name="2_logging_status"></a>
   <h3>2.29 - logging_status</h3>
-<p class="code" onclick="element_select(this);">
+<p class="code">
 curl http://localhost:6464/cloudi/api/rpc/logging_status.erl
 </p>
   <p class="paragraph">
@@ -5455,7 +5455,7 @@ curl http://localhost:6464/cloudi/api/rpc/logging_status.erl
 
   <a name="2_logging_status_reset"></a>
   <h3>2.30 - logging_status_reset</h3>
-<p class="code" onclick="element_select(this);">
+<p class="code">
 curl http://localhost:6464/cloudi/api/rpc/logging_status_reset.erl
 </p>
   <p class="paragraph">
@@ -5465,7 +5465,7 @@ curl http://localhost:6464/cloudi/api/rpc/logging_status_reset.erl
 
   <a name="2_logging"></a>
   <h3>2.31 - logging</h3>
-<p class="code" onclick="element_select(this);">
+<p class="code">
 curl http://localhost:6464/cloudi/api/rpc/logging.erl
 </p>
   <p class="paragraph">
@@ -5477,7 +5477,7 @@ curl http://localhost:6464/cloudi/api/rpc/logging.erl
 
   <a name="2_code_path_add"></a>
   <h3>2.32 - code_path_add</h3>
-<p class="code" onclick="element_select(this);">
+<p class="code">
 curl -X POST -d '"/home/user/code/services"' http://localhost:6464/cloudi/api/rpc/code_path_add.erl
 </p>
   <p class="paragraph">
@@ -5489,7 +5489,7 @@ curl -X POST -d '"/home/user/code/services"' http://localhost:6464/cloudi/api/rp
 
   <a name="2_code_path_remove"></a>
   <h3>2.33 - code_path_remove</h3>
-<p class="code" onclick="element_select(this);">
+<p class="code">
 curl -X POST -d '"/home/user/code/services"' http://localhost:6464/cloudi/api/rpc/code_path_remove.erl
 </p>
   <p class="paragraph">
@@ -5501,7 +5501,7 @@ curl -X POST -d '"/home/user/code/services"' http://localhost:6464/cloudi/api/rp
 
   <a name="2_code_path"></a>
   <h3>2.34 - code_path</h3>
-<p class="code" onclick="element_select(this);">
+<p class="code">
 curl http://localhost:6464/cloudi/api/rpc/code_path.erl
 </p>
   <p class="paragraph">
@@ -5512,7 +5512,7 @@ curl http://localhost:6464/cloudi/api/rpc/code_path.erl
 
   <a name="2_code_status"></a>
   <h3>2.35 - code_status</h3>
-<p class="code" onclick="element_select(this);">
+<p class="code">
 curl http://localhost:6464/cloudi/api/rpc/code_status.erl
 </p>
   <p class="paragraph">
@@ -5573,6 +5573,7 @@ curl http://localhost:6464/cloudi/api/rpc/code_status.erl
 <div id="footer">
 <a href="config.html"><img style="position: absolute; right: 10; bottom: 0;" src="images/powered_by_cloudi.png" width="156" height="105" /></a>
 </div>
+<script type="text/javascript">clipboard_copy_init();</script>
 
 </body>
 </html>
