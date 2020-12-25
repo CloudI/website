@@ -58,9 +58,9 @@ function clipboard_copy_click(button, text)
     return function(){
         if (clipboard_copy(text))
         {
-            button.textContent = 'COPIED';
+            button.innerHTML = button.getAttribute('html_action');
             window.setTimeout(function() {
-                button.textContent = 'COPY';
+                button.innerHTML = button.getAttribute('html_content');
             }, 2000);
         }
     }
@@ -69,14 +69,20 @@ function clipboard_copy_click(button, text)
 function clipboard_copy_init()
 {
     var button_class_name = 'clipboard_copy';
-    var button_text_content = 'COPY';
+    var button_html_content = '&nbsp;COPY&nbsp;';
+    var button_html_action = 'COPIED';
+    // fonts lack unicode support for a decent "copy" character
+    //var button_html_content = '&#x2398;'; // copy (NEXT PAGE) character
+    //var button_html_action = '&#x1f4cb;'; // CLIPBOARD character
     var element_array = document.getElementsByClassName('code');
     for (var i = 0; i < element_array.length; i++)
     {
         var element = element_array[i];
         var button = document.createElement('button');
         button.className = button_class_name;
-        button.textContent = button_text_content;
+        button.innerHTML = button_html_content;
+        button.setAttribute('html_content', button_html_content);
+        button.setAttribute('html_action', button_html_action);
         button.onclick = clipboard_copy_click(button, element.textContent);
         element.appendChild(button);
     }

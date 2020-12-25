@@ -217,14 +217,15 @@ pre {
     outline: none;
 }
 #content button.clipboard_copy {
-    font-size: 10pt;
+    font-size: 14pt;
+    font-family: monospace;
     font-weight: bold;
-    padding: 10px;
+    padding: 0;
     border: 0;
     color: white;
     background-color: transparent;
     position: absolute;
-    top: 0;
+    top: -2pt;
     right: 0;
 }
 #content button.clipboard_copy:hover {
