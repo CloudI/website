@@ -220,8 +220,8 @@ pre {
     font-size: 14pt;
     font-family: monospace;
     font-weight: bold;
-    padding: 0;
-    border: 0;
+    border: 1px solid white;
+    padding: 1px;
     color: white;
     background-color: transparent;
     position: absolute;
@@ -231,6 +231,7 @@ pre {
 #content button.clipboard_copy:hover {
     color: black;
     background-color: yellow;
+    border-color: yellow;
 }
 
 #footer {
