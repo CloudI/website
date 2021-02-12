@@ -41,7 +41,7 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
 <div id="content">
   <h1>Frequently Asked Questions</h1>
   <h3 style="text-align:center">version 2.0.1<br />
-  last updated on January 1<sup>st</sup> 2021</h3>
+  last updated on February 11<sup>th</sup> 2021</h3>
 
   <h2 id="1_contents">1 - Introduction to CloudI</h2>
   <ul class="faq">
@@ -2797,15 +2797,12 @@ sudo cloudi stop
   <p class="paragraph">
     The machine is likely overloaded by the number of services and their
     configured concurrency.  However, the Linux scheduler that is selected
-    may make the overloaded machine slower by focusing on CPU intensive
-    execution.  If you are concerned about CloudI services overloading
-    a machine with Linux&nbsp;&lt;&nbsp;5.0, it is best to select the
-    <a href="https://en.wikipedia.org/wiki/CFQ" rel="noreferrer" target="_blank">Completely Fair Queuing (CFQ)</a>
-    scheduler if it has not already been selected
-    (it is a common default for Linux distributions).  To select CFQ,
-    add elevator=cfq to the Linux kernel parameters.
-    For Linux&nbsp;&ge;&nbsp;5.0, the <a href="https://www.kernel.org/doc/html/latest/block/bfq-iosched.html" rel="noreferrer" target="_blank">Budget Fair Queueing (BFQ)</a>
-    scheduler may be beneficial.
+    may make the overloaded machine slower by pausing CPU intensive
+    execution.  For CloudI use it is best to select a scheduler for
+    CPU intensive execution (high-throughput).  Either
+    (multiqueue) "none" with Linux&nbsp;&ge;&nbsp;5.0 or
+    (non-multiqueue) "noop" (or <a href="https://en.wikipedia.org/wiki/CFQ" rel="noreferrer" target="_blank">"cfq"</a>)
+    with Linux&nbsp;&lt;&nbsp;5.0 .
   </p>
   <p class="paragraph">
     Having CloudI services overload a machine is uncommon when the
@@ -2842,6 +2839,9 @@ sudo cloudi stop
     Guest VM execution can have relatively accurate time-keeping on Linux when
     the clocksource is set to kvm&#8209;clock
     (Linux kernel argument "clocksource=kvm&#8209;clock").
+    The Linux scheduler should be set to either
+    (multiqueue) "none" with Linux&nbsp;&ge;&nbsp;5.0 or
+    (non-multiqueue) "noop" with Linux&nbsp;&lt;&nbsp;5.0 .
     Various CloudI testing occurs in guest VM execution without problems,
     though execution is slower than bare-metal execution.
   </p>
