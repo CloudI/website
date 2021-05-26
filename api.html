@@ -41,7 +41,7 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
 <div id="content">
   <h1>CloudI API Documentation</h1>
   <h3 style="text-align:center">version 2.0.1<br />
-  last updated on January 1<sup>st</sup> 2021</h3>
+  last updated on May 25<sup>th</sup> 2021</h3>
 
   <h2 id="Service">CloudI API - Making a Service</h2>
   <ul class="api">
@@ -3434,6 +3434,28 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
     executed cloudi_service_terminate/2 or an external service's
     process terminates).
   </td></tr><tr><td>
+    <strong>(new in 2.0.2)</strong>
+    <a href="#2_services_add_config_opts_aspects_suspend_resume">
+    aspects_suspend</a>
+  </td><td>
+    []
+  </td><td>
+    A list of
+    <a href="#2_services_add_config_opts_aspects_suspend_resume">
+    Erlang functions</a> to call in-order before the
+    service is suspended.
+  </td></tr><tr><td>
+    <strong>(new in 2.0.2)</strong>
+    <a href="#2_services_add_config_opts_aspects_suspend_resume">
+    aspects_resume</a>
+  </td><td>
+    []
+  </td><td>
+    A list of
+    <a href="#2_services_add_config_opts_aspects_suspend_resume">
+    Erlang functions</a> to call in-order before the
+    service is resumed.
+  </td></tr><tr><td>
     duo_mode
   </td><td>
     false
@@ -3955,7 +3977,7 @@ Linux:   /usr/bin/strace -o /tmp/strace.log SERVICE
   </p>
   <h4 id="2_services_add_config_opts_aspects_init_after">aspects_init_after:</h4>
   <p class="paragraph">
-    Provide a list of functions with the type signature shown below,
+    Provide a list of functions with the type specification shown below,
     with each function as either an anonymous Erlang function or
     an Erlang tuple "{module(),&nbsp;FunctionName&nbsp;::&nbsp;atom()}".
     Will not be called if initialization does not occur successfully
@@ -3998,7 +4020,7 @@ fun((CommandLine :: list(string()),
   </p>
   <h4 id="2_services_add_config_opts_aspects_request_before">aspects_request_before:</h4>
   <p class="paragraph">
-    Provide a list of functions with the type signature shown below,
+    Provide a list of functions with the type specification shown below,
     with each function as either an anonymous Erlang function or
     an Erlang tuple "{module(),&nbsp;FunctionName&nbsp;::&nbsp;atom()}".
   </p>
@@ -4049,7 +4071,7 @@ fun((RequestType :: cloudi_service:request_type(),
   </p>
   <h4 id="2_services_add_config_opts_aspects_request_after">aspects_request_after:</h4>
   <p class="paragraph">
-    Provide a list of functions with the type signature shown below,
+    Provide a list of functions with the type specification shown below,
     with each function as either an anonymous Erlang function or
     an Erlang tuple "{module(),&nbsp;FunctionName&nbsp;::&nbsp;atom()}".
   </p>
@@ -4102,7 +4124,7 @@ fun((RequestType :: cloudi_service:request_type(),
   </p>
   <h4 id="2_services_add_config_opts_aspects_info_before">aspects_info_before:</h4>
   <p class="paragraph">
-    Provide a list of functions with the type signature shown below,
+    Provide a list of functions with the type specification shown below,
     with each function as either an anonymous Erlang function or
     an Erlang tuple "{module(),&nbsp;FunctionName&nbsp;::&nbsp;atom()}".
   </p>
@@ -4128,7 +4150,7 @@ fun((Request :: any(),
   </p>
   <h4 id="2_services_add_config_opts_aspects_info_after">aspects_info_after:</h4>
   <p class="paragraph">
-    Provide a list of functions with the type signature shown below,
+    Provide a list of functions with the type specification shown below,
     with each function as either an anonymous Erlang function or
     an Erlang tuple "{module(),&nbsp;FunctionName&nbsp;::&nbsp;atom()}".
   </p>
@@ -4154,7 +4176,7 @@ fun((Request :: any(),
   </p>
   <h4 id="2_services_add_config_opts_aspects_terminate_before">aspects_terminate_before:</h4>
   <p class="paragraph">
-    Provide a list of functions with the type signature shown below,
+    Provide a list of functions with the type specification shown below,
     with each function as either an anonymous Erlang function or
     an Erlang tuple "{module(),&nbsp;FunctionName&nbsp;::&nbsp;atom()}".
     Will still be called if initialization does not occur successfully
@@ -4174,6 +4196,23 @@ fun((Reason :: any(),
     {ok, State :: any()}).
 </pre>
   </td></tr></table>
+  <p class="paragraph">
+    It is also possible to use the Erlang tuple
+    "{{module(),&nbsp;FunctionName&nbsp;::&nbsp;atom()}}" to specify an
+    arity 0 function that returns an anonymous function as described above.
+  </p>
+  <h4 id="2_services_add_config_opts_aspects_suspend_resume">aspects_suspend and aspects_resume:</h4>
+  <p class="paragraph">
+    Provide a list of functions with the type specification shown below,
+    with each function as either an anonymous Erlang function or
+    an Erlang tuple "{module(),&nbsp;FunctionName&nbsp;::&nbsp;atom()}".
+    Each function will be called immediately before the service becomes
+    suspended or resumed.
+  </p>
+<pre class="code">
+fun((State :: any()) -&gt;
+    {ok, State :: any()}).
+</pre>
   <p class="paragraph">
     It is also possible to use the Erlang tuple
     "{{module(),&nbsp;FunctionName&nbsp;::&nbsp;atom()}}" to specify an
@@ -4313,6 +4352,8 @@ curl -X POST -d '["65762d3262a511e882359563d34a433e"]' http://localhost:6464/clo
  {file_path, file:filename()},                   % external service only
  {count_process, pos_integer()},                 % count_process_dynamic may vary
  {count_thread, pos_integer()},                  % external service only
+ {pids_os, list(pos_integer())},                 % external service only
+ {pids_erlang, list(pid())},
  {suspended, boolean()},
  {uptime_total, nonempty_string()},
  {uptime_running, nonempty_string()},
@@ -4399,6 +4440,14 @@ curl -X POST -d '["65762d3262a511e882359563d34a433e"]' http://localhost:6464/clo
     All the availability values are percentages to describe the <a href="https://en.wikipedia.org/wiki/High_availability#Percentage_calculation" rel="noreferrer" target="_blank">fraction of estimated uptime during each time period</a>.
     All status data is determined using the same point in time, so the values
     may be compared among separate services.
+  </p>
+  <p class="paragraph">
+    <strong>(new in 2.0.2)</strong>
+    The currently executing Erlang processes for each service are provided
+    in pids_erlang.  The current external service OS pids are provided in
+    pids_os.  Both lists are ordered by process index and may be smaller
+    than expected (based on count_process and count_thread) if the service
+    is not initialized.
   </p>
   <p class="paragraph">
     Example output is available at<br />
@@ -4556,6 +4605,8 @@ fun((OldModuleVersion :: list(any()),
  {aspects_info_before, list(aspect_info_before_internal())} |
  {aspects_info_after, list(aspect_info_after_internal())} |
  {aspects_terminate_before, list(aspect_terminate_before_internal())} |
+ {aspects_suspend, list(aspect_suspend())} |
+ {aspects_resume, list(aspect_resume())} |
  {init_pid_options,
   list({priority, low | normal | high} |
        {fullsweep_after, non_neg_integer()} |
@@ -4637,7 +4688,8 @@ fun((OldModuleVersion :: list(any()),
  {aspects_request_before, list(aspect_request_before_external())} |
  {aspects_request_after, list(aspect_request_after_external())} |
  {aspects_terminate_before, list(aspect_terminate_before_external())} |
- {limit, limit_external()}]
+ {aspects_suspend, list(aspect_suspend())} |
+ {aspects_resume, list(aspect_resume())}]
 </pre>
   <p class="paragraph">
     For more information about a specific service configuration option
@@ -5014,7 +5066,10 @@ curl -X POST -d "['cloudi@hostname']" http://localhost:6464/cloudi/api/rpc/nodes
     Each node has a {Node, Status} pair with the Status described below:
   </p>
 <pre>
-[{uptime, nonempty_string()},
+[{services_running, nonempty_string()},    %
+ {services_restarted, nonempty_string()},  % new in 2.0.2
+ {services_failed, nonempty_string()},     %
+ {uptime, nonempty_string()},
  {uptime_cost_total, nonempty_string()},
  {uptime_cost_day, nonempty_string()},
  {uptime_cost_week, nonempty_string()},
@@ -5076,6 +5131,9 @@ curl -X POST -d '[{file, undefined}, {syslog, []}]' http://localhost:6464/cloudi
  <a href="#2_logging_redirect_set">{redirect, undefined | node()}</a>,              % defaults to undefined
  <a href="#2_logging_syslog_set">{syslog, undefined | list()}</a>,                % defaults to undefined
  <a href="#2_logging_stdout_set">{stdout, boolean()}</a>,                         % defaults to false
+ <a href="#2_logging_set_config_opts_queue_mode_async">{queue_mode_async, pos_integer()}</a>,           % defaults to 750   (new in 2.0.2)
+ <a href="#2_logging_set_config_opts_queue_mode_sync">{queue_mode_sync, pos_integer()</a>},            % defaults to 1000  (new in 2.0.2)
+ <a href="#2_logging_set_config_opts_queue_mode_overload">{queue_mode_overload, pos_integer()</a>},        % defaults to 10000 (new in 2.0.2)
  <a href="#2_logging_formatters_set">{formatters, undefined | list()}</a>,            % defaults to undefined
  <a href="#2_logging_set_config_opts_log_time_offset">{log_time_offset,
   off | fatal | error |
@@ -5085,6 +5143,26 @@ curl -X POST -d '[{file, undefined}, {syslog, []}]' http://localhost:6464/cloudi
  <a href="#2_logging_set_config_opts_aspects_log_after">{aspects_log_after,
   list(aspects_log_after())}</a>]                 % defaults to []
 </pre>
+  <h4 id="2_logging_set_config_opts_queue_mode_async">queue_mode_async:</h4>
+  <p class="paragraph">
+    The logger process will use asynchronous mode while its message queue
+    length is less than the configured value.
+  </p>
+  <h4 id="2_logging_set_config_opts_queue_mode_sync">queue_mode_sync:</h4>
+  <p class="paragraph">
+    The logger process will use synchronous mode when its message queue
+    length is greater than the configured value.  The gap between
+    queue_mode_async and queue_mode_sync values avoids latency associated
+    with changing the queue_mode.  The sync queue_mode will cause all
+    services to log more slowly while the logger process writes its
+    pending log requests (messages) as quickly as possible.
+  </p>
+  <h4 id="2_logging_set_config_opts_queue_mode_overload">queue_mode_overload:</h4>
+  <p class="paragraph">
+    The logger process will use overload mode when its message queue
+    length is greater than the configured value.  The value prevents
+    CloudI from terminating due to extreme memory consumption.
+  </p>
   <h4 id="2_logging_set_config_opts_log_time_offset">log_time_offset:</h4>
   <p class="paragraph">
     Log when the Erlang VM adjusts its
@@ -5093,7 +5171,7 @@ curl -X POST -d '[{file, undefined}, {syslog, []}]' http://localhost:6464/cloudi
   </p>
   <h4 id="2_logging_set_config_opts_aspects_log_before">aspects_log_before:</h4>
   <p class="paragraph">
-    Provide a list of functions with the type signature shown below,
+    Provide a list of functions with the type specification shown below,
     with each function as either an anonymous Erlang function or
     an Erlang tuple "{module(),&nbsp;FunctionName&nbsp;::&nbsp;atom()}".
     Each function will be called before the log data is stored to disk.
@@ -5118,7 +5196,7 @@ fun((Level :: fatal | error | warn | info | debug | trace,
   </p>
   <h4 id="2_logging_set_config_opts_aspects_log_after">aspects_log_after:</h4>
   <p class="paragraph">
-    Provide a list of functions with the type signature shown below,
+    Provide a list of functions with the type specification shown below,
     with each function as either an anonymous Erlang function or
     an Erlang tuple "{module(),&nbsp;FunctionName&nbsp;::&nbsp;atom()}".
     Each function will be called after the log data is stored to disk.
@@ -5384,7 +5462,20 @@ curl http://localhost:6464/cloudi/api/rpc/logging_status.erl
     output.
   </p>
 <pre>
-[{file_messages_fatal, nonempty_string()},
+[{queue_mode, async | sync | overload},
+ {queue_mode_sync_last_start, nonempty_string()},
+ {queue_mode_sync_last_start_event, nonempty_string()},
+ {queue_mode_sync_last_end, nonempty_string()},
+ {queue_mode_sync_last_end_event, nonempty_string()},
+ {queue_mode_sync_last_total, nonempty_string()},
+ {queue_mode_overload_last_start, nonempty_string()},
+ {queue_mode_overload_last_start_event, nonempty_string()},
+ {queue_mode_overload_last_end, nonempty_string()},
+ {queue_mode_overload_last_end_event, nonempty_string()},
+ {queue_mode_overload_last_total, nonempty_string()},
+ {time_offset_last_change, nonempty_string()},
+ {time_offset_last_event, nonempty_string()},
+ {file_messages_fatal, nonempty_string()},
  {file_messages_error, nonempty_string()},
  {file_messages_warn, nonempty_string()},
  {file_messages_info, nonempty_string()},
@@ -5397,6 +5488,29 @@ curl http://localhost:6464/cloudi/api/rpc/logging_status.erl
  {file_read_fail_count, nonempty_string()},
  {file_read_fail_types, nonempty_list(atom())}]
 </pre>
+  <p class="paragraph">
+    <strong>(new in 2.0.2)</strong>
+    The queue_mode is async while logging is occurring asynchronously
+    (the default).  If the logger receives a large number of logging requests,
+    it will change to sync (synchronous) mode which forces Erlang service
+    processes to wait until their logging request has finished.  The logger
+    may still receive too many logging requests if it is the destination of
+    a redirect and that could cause the logger to use overload mode.
+    In overload mode, the logger will discard logging requests as quickly
+    as possible (i.e., without any write to the log occurring) to reduce the
+    extreme memory consumption until it is possible to go back to sync mode
+    (each mode has a limit set by <a href="#2_logging_set">logging_set</a>).
+  </p>
+  <p class="paragraph">
+    When the overload mode transitions to sync mode an error is logged with
+    the duration of the overload mode.  The most recent durations of both
+    sync mode and overload mode are provided in the logging status output
+    (if either modes were used during CloudI's runtime).  The event timestamps
+    are the same timestamps present in the log output while the start/end
+    timestamps may change based on changes to the OS time.  The logging status
+    output will also provide the last OS time change in seconds
+    (if an OS time change occurred during CloudI's runtime).
+  </p>
   <div class="top"><a href="#CloudI">Top</a></div>
 
   <h3 id="2_logging_status_reset">2.30 - logging_status_reset</h3>
