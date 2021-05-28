@@ -28,7 +28,7 @@
 +    <li><a href="faq.html">FAQ</a></li>
 +    <li><a href="tutorials.html">Tutorials</a>
 +        (<a href="tutorial_java.html" class="active">Java</a>)</li>
-+    <li><a href="https://osdn.net/dl/cloudi/cloudi-2.0.1.tar.gz" rel="noopener" target="_blank">Download</a></li>
++    <li><a href="https://osdn.net/dl/cloudi/cloudi-2.0.2.tar.gz" rel="noopener" target="_blank">Download</a></li>
 +    <li><a href="https://github.com/CloudI/CloudI/tree/develop#readme">Source</a></li>
 +    <li><a href="support.html">Support</a></li>
 +  </ul>
@@ -36,7 +36,7 @@
 +<div id="header_document">
  <h1>CloudI Java Tutorial</h1>
  <div class="details">
- <span id="revnumber">version 2.0.1,</span>
+ <span id="revnumber">version 2.0.2,</span>
 @@ -897,4 +922,4 @@
  </div>
  </div>

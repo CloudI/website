@@ -32,7 +32,7 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
     <li><a href="faq.html" class="active">FAQ</a></li>
     <li><a href="tutorials.html">Tutorials</a>
         (<a href="tutorial_java.html">Java</a>)</li>
-    <li><a href="https://osdn.net/dl/cloudi/cloudi-2.0.1.tar.gz" rel="noopener" target="_blank">Download</a></li>
+    <li><a href="https://osdn.net/dl/cloudi/cloudi-2.0.2.tar.gz" rel="noopener" target="_blank">Download</a></li>
     <li><a href="https://github.com/CloudI/CloudI/tree/develop#readme">Source</a></li>
     <li><a href="support.html">Support</a></li>
   </ul>
@@ -40,8 +40,8 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
 
 <div id="content">
   <h1>Frequently Asked Questions</h1>
-  <h3 style="text-align:center">version 2.0.1<br />
-  last updated on May 26<sup>th</sup> 2021</h3>
+  <h3 style="text-align:center">version 2.0.2<br />
+  last updated on May 27<sup>th</sup> 2021</h3>
 
   <h2 id="1_contents">1 - Introduction to CloudI</h2>
   <ul class="faq">
@@ -457,7 +457,7 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
     allowed CloudI service (i.e., allowed based on the ACL entries).  The
     CloudI Service API is accessible remotely by using Erlang terms or JSON-RPC
     over HTTP when using the cloudi_service_api_requests service with the
-    cloudi_service_http_cowboy1 service.
+    cloudi_service_http_cowboy service.
     <a href="https://github.com/CloudI/CloudI/tree/master/src/service_api#readme" rel="noopener" target="_blank">Examples of using the CloudI Service API</a>
     are provided as separate integration tests.
   </p>
@@ -635,7 +635,7 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
     using light-weight messaging to facilitate CloudI
     <a href="#1_SOA">service requests</a> with the CloudI API.
     HTTP integration is provided by
-    <a href="#6_HTTP">cloudi_service_http_cowboy1</a>
+    <a href="#6_HTTP">cloudi_service_http_cowboy</a>
     (with other protocol integration relying on other CloudI services).
     The service memory footprint is kept small by relying on Erlang processes
     for their light-weight messaging (Erlang processes have been referred to
@@ -1498,7 +1498,7 @@ sudo cloudi stop
   </p>
   <h4 id="4_API_HTTP"><a href="#6_HTTP">HTTP</a></h4>
   <p class="paragraph">
-    The Erlang service cloudi_service_http_cowboy1
+    The Erlang service cloudi_service_http_cowboy
     (or cloudi_service_http_elli) accepts HTTP traffic and
     makes the HTTP requests CloudI requests where the HTTP path in the URL
     is used as the service name.
@@ -1533,7 +1533,7 @@ sudo cloudi stop
     cloudi_service_api_requests service or as Erlang function calls to the
     cloudi_service_api module.  However, typical usage of the
     CloudI Service API would use raw HTTP requests or JSON-RPC over HTTP, using
-    both a configured cloudi_service_http_cowboy1 service and a configured
+    both a configured cloudi_service_http_cowboy service and a configured
     cloudi_service_api_requests service.  A complex example of using the
     CloudI Service API through JSON-RPC over HTTP with python code can be found in <a href="https://github.com/CloudI/CloudI/blob/master/src/tests/service_api/run.py" rel="noopener" target="_blank">src/tests/service_api/run.py</a>.
     Some simpler examples of using the CloudI Service API can be found at
@@ -1570,7 +1570,7 @@ sudo cloudi stop
   <h3 id="4_WebServices">4.5 - How do I create Web Services?</h3>
   <p class="paragraph">
     Web Services are simply CloudI services that accept incoming HTTP traffic
-    coming from the cloudi_service_http_cowboy1 service.  The request body is
+    coming from the cloudi_service_http_cowboy service.  The request body is
     either the body of the uncompressed PUT or POST request, or it is the
     GET query string.
     For more details please refer to the
@@ -1580,7 +1580,7 @@ sudo cloudi stop
 
   <h3 id="4_WebSockets">4.6 - Does CloudI support WebSockets?</h3>
   <p class="paragraph">
-    CloudI supports WebSocket connections with the cloudi_service_http_cowboy1
+    CloudI supports WebSocket connections with the cloudi_service_http_cowboy
     service, when it is configured with "{use_websockets, true}".  Incoming
     HTTP requests become CloudI service requests which return the service
     response as a HTTP response, with the HTTP headers passed in the
@@ -1592,7 +1592,7 @@ sudo cloudi stop
   </p>
   <p class="paragraph">
     Outgoing WebSocket CloudI service requests are also possible if the
-    WebSocket connection URL matches the cloudi_service_http_cowboy1
+    WebSocket connection URL matches the cloudi_service_http_cowboy
     service prefix in its service configuration.  The outgoing CloudI service
     requests can be sent to the WebSocket URL with a "/websocket" suffix added.
     All outgoing CloudI service requests expect a response from the WebSocket
@@ -2017,7 +2017,7 @@ sudo cloudi stop
   <p class="paragraph">
     SSH or HTTPS may be used to bridge CloudI clusters
     (i.e., with the CloudI service cloudi_service_router or
-     cloudi_service_http_cowboy1).
+     cloudi_service_http_cowboy).
     Scaling for capacity planning should often require increasing the
     database node count more than the CloudI node count, but that depends
     on the CloudI services and their incoming data rate.
@@ -2567,14 +2567,14 @@ sudo cloudi stop
     in the path tests/http_req/public_html/ are browsable at <a href="http://127.0.0.1:6464/tests/http_req/" target="_blank">http://127.0.0.1:6464/tests/http_req/</a>.
   </p>
   <p class="paragraph">
-    The incoming HTTP traffic goes through the <a href="https://github.com/CloudI/CloudI/blob/master/src/lib/cloudi_service_http_cowboy1/src/cloudi_service_http_cowboy1.erl" rel="noopener" target="_blank">cloudi_service_http_cowboy1</a>
+    The incoming HTTP traffic goes through the <a href="https://github.com/CloudI/CloudI/blob/master/src/lib/cloudi_service_http_cowboy/src/cloudi_service_http_cowboy.erl" rel="noopener" target="_blank">cloudi_service_http_cowboy</a>
     Erlang CloudI service (or <a href="https://github.com/CloudI/CloudI/blob/master/src/lib/cloudi_service_http_elli/src/cloudi_service_http_elli.erl" rel="noopener" target="_blank">cloudi_service_http_elli</a>)
     and simply uses the URL path
     to send a request to the subscribing CloudI service, where the prefix of
     the service name was set in the service configuration but the suffix of
     the service name was declared programmatically by calling the CloudI API
     <a href="api.html#1_subscribe">subscribe</a> function.
-    cloudi_service_http_cowboy1 adds the "/get" suffix
+    cloudi_service_http_cowboy adds the "/get" suffix
     (when configured with "{use_method_suffix, true}", the default)
     on the URL to make the service name for the CloudI service request
     which contains the HTTP request headers in the RequestInfo value of the
@@ -2602,13 +2602,13 @@ sudo cloudi stop
   </ul>
   <p class="paragraph">
     To prevent HTTP requests from going to internal services, Access Control
-    List (ACL) entries can be added that prevent the cloudi_service_http_cowboy1
+    List (ACL) entries can be added that prevent the cloudi_service_http_cowboy
     Erlang
     CloudI service from sending to the internal services.  The ACL entries
     would be service name patterns that include the internal services in a
     list that is referenced directly (i.e., literally as a list of string) or
     indirectly by an atom that represents the list of strings.  The ACL
-    entries would be specified for the cloudi_service_http_cowboy1 service
+    entries would be specified for the cloudi_service_http_cowboy service
     configuration's deny list.  If service names are named consistently so that
     the service name represents a path which is a destination in a tree or
     hierarchy, then there should be no problems when adding or removing
@@ -2617,7 +2617,7 @@ sudo cloudi stop
     using <a href="#4_URLregex">service name patterns</a>.
   </p>
   <p class="paragraph">
-    The cloudi_service_http_cowboy1 configuration allows you to specify various
+    The cloudi_service_http_cowboy configuration allows you to specify various
     output formats for the incoming HTTP requests with the "output"
     configuration value.  The possible values are:
   </p>

@@ -30,7 +30,7 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
     <li><a href="faq.html">FAQ</a></li>
     <li><a href="tutorials.html">Tutorials</a>
         (<a href="tutorial_java.html">Java</a>)</li>
-    <li><a href="https://osdn.net/dl/cloudi/cloudi-2.0.1.tar.gz" rel="noopener" target="_blank">Download</a></li>
+    <li><a href="https://osdn.net/dl/cloudi/cloudi-2.0.2.tar.gz" rel="noopener" target="_blank">Download</a></li>
     <li><a href="https://github.com/CloudI/CloudI/tree/develop#readme">Source</a></li>
     <li><a href="support.html">Support</a></li>
   </ul>
@@ -127,8 +127,8 @@ EOF
     <li>
       Compile the CloudI service executable:
 <pre class="code">
-gcc -I/usr/local/lib/cloudi-2.0.1/api/c \
-    -L/usr/local/lib/cloudi-2.0.1/api/c \
+gcc -I/usr/local/lib/cloudi-2.0.2/api/c \
+    -L/usr/local/lib/cloudi-2.0.2/api/c \
     -g -O0 -fexceptions hello_world.c -o hello_world_c -lcloudi
 </pre>
     </li>
@@ -143,9 +143,9 @@ cat &lt;&lt; EOF &gt; hello_world.conf
 [[{prefix, "/quickstart/c/"},
   {file_path, "$PWD/hello_world_c"},
   {env, [{"LD_LIBRARY_PATH",
-          "/usr/local/lib/cloudi-2.0.1/api/c/"},
+          "/usr/local/lib/cloudi-2.0.2/api/c/"},
          {"DYLD_LIBRARY_PATH",
-          "/usr/local/lib/cloudi-2.0.1/api/c/"}]}]]
+          "/usr/local/lib/cloudi-2.0.2/api/c/"}]}]]
 EOF
 </pre>
     </li>
@@ -246,8 +246,8 @@ EOF
     <li>
       Compile the CloudI service executable:
 <pre class="code">
-g++ -I/usr/local/lib/cloudi-2.0.1/api/c \
-    -L/usr/local/lib/cloudi-2.0.1/api/c \
+g++ -I/usr/local/lib/cloudi-2.0.2/api/c \
+    -L/usr/local/lib/cloudi-2.0.2/api/c \
     -g -O0 hello_world.cpp -o hello_world_cxx -lcloudi
 </pre>
     </li>
@@ -262,9 +262,9 @@ cat &lt;&lt; EOF &gt; hello_world.conf
 [[{prefix, "/quickstart/cxx/"},
   {file_path, "$PWD/hello_world_cxx"},
   {env, [{"LD_LIBRARY_PATH",
-          "/usr/local/lib/cloudi-2.0.1/api/c/"},
+          "/usr/local/lib/cloudi-2.0.2/api/c/"},
          {"DYLD_LIBRARY_PATH",
-          "/usr/local/lib/cloudi-2.0.1/api/c/"}]}]]
+          "/usr/local/lib/cloudi-2.0.2/api/c/"}]}]]
 EOF
 </pre>
     </li>
@@ -347,7 +347,7 @@ defmodule HelloWorld.Mixfile do
 
     def project do
         [app: :'Elixir.HelloWorld',
-         version: "2.0.1",
+         version: "2.0.2",
          elixirc_paths: ["lib/"],
          deps: []]
     end
@@ -483,7 +483,7 @@ EOF
       file would be added with the same filename
       (see the examples <a href="https://github.com/CloudI/CloudI/tree/develop/examples/hello_world1#readme">for more details</a>).
 <pre class="code">
-erlc -pz /usr/local/lib/cloudi-2.0.1/lib/cloudi_core-2.0.1/ebin \
+erlc -pz /usr/local/lib/cloudi-2.0.2/lib/cloudi_core-2.0.2/ebin \
     hello_world.erl
 </pre>
     </li>
@@ -560,14 +560,24 @@ curl http://localhost:6464/quickstart/erlang/hello_world
       (external to the Erlang VM).  The example Go service can be
       created by executing the following inside your shell:
 <pre class="code">
-mkdir -p src/hello_world_go/vendor/
-cp -rf /usr/local/lib/cloudi-2.0.1/api/go/cloudi src/hello_world_go/vendor/
-cp -rf /usr/local/lib/cloudi-2.0.1/api/go/erlang src/hello_world_go/vendor/
-cat &lt;&lt; EOF &gt; src/hello_world_go/main.go
+cat &lt;&lt; EOF &gt; go.mod
+module hello_world_go
+
+replace (
+    github.com/CloudI/cloudi_api_go/v2/cloudi =&gt; /usr/local/lib/cloudi-2.0.2/api/go/cloudi
+    github.com/okeuday/erlang_go/v2/erlang =&gt; /usr/local/lib/cloudi-2.0.2/api/go/erlang
+)
+
+require (
+    github.com/CloudI/cloudi_api_go/v2/cloudi v0.0.0-00000000000000-000000000000
+    github.com/okeuday/erlang_go/v2/erlang v0.0.0-00000000000000-000000000000
+)
+EOF
+cat &lt;&lt; EOF &gt; main.go
 package main
 
 import (
-    "cloudi"
+    "github.com/CloudI/cloudi_api_go/v2/cloudi"
     "os"
     "sync"
 )
@@ -612,8 +622,7 @@ EOF
     <li>
       Compile the CloudI service executable:
 <pre class="code">
-mkdir -p bin
-GOPATH=`pwd` GOBIN=$GOPATH/bin go install -x hello_world_go
+GOBIN=`pwd` go install -x hello_world_go
 </pre>
     </li>
     <li>
@@ -625,7 +634,7 @@ GOPATH=`pwd` GOBIN=$GOPATH/bin go install -x hello_world_go
 export PWD=`pwd`
 cat &lt;&lt; EOF &gt; hello_world.conf
 [[{prefix, "/quickstart/go/"},
-  {file_path, "$PWD/bin/hello_world_go"}]]
+  {file_path, "$PWD/hello_world_go"}]]
 EOF
 </pre>
     </li>
@@ -758,7 +767,7 @@ public class Task
 EOF
 cat &lt;&lt; EOF &gt; manifest.txt
 Main-Class: org.cloudi.tests.hello_world.Main
-Class-Path: /usr/local/lib/cloudi-2.0.1/api/java/cloudi.jar
+Class-Path: /usr/local/lib/cloudi-2.0.2/api/java/cloudi.jar
 
 EOF
 </pre>
@@ -767,7 +776,7 @@ EOF
       Compile the CloudI service jar:
 <pre class="code">
 cd org/cloudi/tests/hello_world/
-CLASSPATH=/usr/local/lib/cloudi-2.0.1\
+CLASSPATH=/usr/local/lib/cloudi-2.0.2\
 /api/java/cloudi.jar:${CLASSPATH} javac Task.java Main.java
 cd ../../../../
 jar cvfm hello_world.jar manifest.txt org
@@ -784,7 +793,7 @@ export PWD=`pwd`
 cat &lt;&lt; EOF &gt; hello_world.conf
 [[{prefix, "/quickstart/java/"},
   {file_path, "$JAVA"},
-  {args, "-cp /usr/local/lib/cloudi-2.0.1/api/java/ "
+  {args, "-cp /usr/local/lib/cloudi-2.0.2/api/java/ "
          "-ea:org.cloudi... -jar $PWD/hello_world.jar"}]]
 EOF
 </pre>
@@ -832,7 +841,7 @@ curl http://localhost:6464/quickstart/java/hello_world
       created by executing the following inside your shell:
 <pre class="code">
 cat &lt;&lt; EOF &gt; hello_world.js
-var CloudI = require('/usr/local/lib/cloudi-2.0.1/' +
+var CloudI = require('/usr/local/lib/cloudi-2.0.2/' +
                      'api/javascript/CloudI.js').CloudI;
 var assert = require('assert');
 
@@ -985,7 +994,7 @@ cat &lt;&lt; EOF &gt; hello_world.conf
 [[{prefix, "/quickstart/perl/"},
   {file_path, "$PERL"},
   {args, "$PWD/hello_world.pl"},
-  {env, [{"PERL5LIB", "/usr/local/lib/cloudi-2.0.1/api/perl"}]}]]
+  {env, [{"PERL5LIB", "/usr/local/lib/cloudi-2.0.2/api/perl"}]}]]
 EOF
 </pre>
     </li>
@@ -1034,7 +1043,7 @@ curl http://localhost:6464/quickstart/perl/hello_world
 cat &lt;&lt; EOF &gt; hello_world.php
 &lt;?php 
 
-require '/usr/local/lib/cloudi-2.0.1/api/php/CloudI.php';
+require '/usr/local/lib/cloudi-2.0.2/api/php/CloudI.php';
 
 class Task
 {
@@ -1139,7 +1148,7 @@ curl http://localhost:6464/quickstart/php/hello_world
 <pre class="code">
 cat &lt;&lt; EOF &gt; hello_world.py
 import sys
-sys.path.append('/usr/local/lib/cloudi-2.0.1/api/python/')
+sys.path.append('/usr/local/lib/cloudi-2.0.2/api/python/')
 import traceback
 from cloudi import API, terminate_exception
 
@@ -1228,7 +1237,7 @@ curl http://localhost:6464/quickstart/python/hello_world
       created by executing the following inside your shell:
 <pre class="code">
 cat &lt;&lt; EOF &gt; hello_world.rb
-\$:.unshift '/usr/local/lib/cloudi-2.0.1/api/ruby'
+\$:.unshift '/usr/local/lib/cloudi-2.0.2/api/ruby'
 
 \$DEBUG = false
 
@@ -1343,13 +1352,13 @@ curl http://localhost:6464/quickstart/ruby/hello_world
       Get CloudI running (need
       <a href="faq.html#3_Options" target="_blank">./configure help?</a>):
 <pre class="code">
-wget https://osdn.net/dl/cloudi/cloudi-2.0.1.tar.gz
+wget https://osdn.net/dl/cloudi/cloudi-2.0.2.tar.gz
 </pre>
 <pre class="code">
-tar zxvf cloudi-2.0.1.tar.gz
+tar zxvf cloudi-2.0.2.tar.gz
 </pre>
 <pre class="code">
-cd cloudi-2.0.1/src
+cd cloudi-2.0.2/src
 </pre>
 <pre class="code">
 ./configure
