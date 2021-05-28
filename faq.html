@@ -11,7 +11,7 @@
   <link rel="shortcut icon" href="images/cloud.ico" type="image/x-icon" />
   <!-- Open Graph Protocol (OGP) with LinkedIn requirements -->
   <meta property="og:title" content="CloudI: A Cloud at the lowest level - Frequently Asked Questions" />
-  <meta property="og:description" content="CloudI is an open-source private cloud computing framework for efficient, secure, and internal data processing. CloudI provides scaling for previously unscalable source code with efficient fault-tolerant execution of C/C++, Erlang/Elixir, Go, Haskell, Java, JavaScript/node.js, OCaml, Perl, PHP, Python, or Ruby services.
+  <meta property="og:description" content="CloudI is an open-source private cloud computing framework for efficient, secure, and internal data processing. CloudI provides scaling for previously unscalable source code with efficient fault-tolerant execution of ATS, C/C++, Erlang/Elixir, Go, Haskell, Java, JavaScript/node.js, OCaml, Perl, PHP, Python, or Ruby services.
 
 The bare essentials for efficient fault-tolerant processing on a cloud!" />
   <meta property="og:image" content="https://cloudi.org/images/cloud_ogp.png" />
@@ -434,8 +434,8 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
     CloudI was architected to easily integrate with other services, software,
     and frameworks.  The <a href="api.html#Service">CloudI API</a>
     provides a light-weight interface for
-    creating services in C++/C, Elixir, Erlang, Go, Haskell, Java, JavaScript,
-    OCaml, Perl, PHP, Python, and Ruby.  By using
+    creating services in ATS, C++/C, Elixir, Erlang, Go, Haskell, Java,
+    JavaScript, OCaml, Perl, PHP, Python, and Ruby.  By using
     CloudI, external software can become more scalable and fault-tolerant
     by utilizing CloudI's load balancing of CloudI requests.  CloudI
     messaging enforces realtime constraints using timeouts, so that request
@@ -688,7 +688,7 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
     for each datum within the data of a service request when the
     service request handling function is called
     (with the function arity as 9 in Java, Perl, PHP, Ruby, 10 in Python,
-     11 in Erlang/Elixir, Go, Haskell, OCaml, 13 in C++ and 14 in C,
+     11 in ATS, Erlang/Elixir, Go, Haskell, OCaml, 13 in C++ and 14 in C,
      where arities higher than 9 are due to data handling details specific
      to the programming languages).
     Using a relatively high arity count does initially make developers
@@ -1166,6 +1166,11 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
   Install the integration tests configuration
   to run the tests at startup<br />(default="no")
   </td></tr><tr><td style="white-space:nowrap">
+  --enable-ats2-support
+  </td><td>
+  Enable the ATS CloudI API,<br />
+  requires ATS2/Postiats&nbsp;&ge;&nbsp;0.3.13<br />(default="no")
+  </td></tr><tr><td style="white-space:nowrap">
   --enable-go-support
   </td><td>
   Enable the Go CloudI API,<br />
@@ -1356,7 +1361,7 @@ sudo cloudi stop
   <h4><a href="api.html#Service">CloudI API</a></h4>
   <p class="paragraph">
     The CloudI API provides a light-weight interface for creating services
-    in C++/C, Elixir, Erlang, Go, Haskell, Java, Javascript, OCaml, Perl,
+    in ATS, C++/C, Elixir, Erlang, Go, Haskell, Java, Javascript, OCaml, Perl,
     PHP, Python, and Ruby.  Services subscribe to receive requests from
     other services using the CloudI API
     "<a href="api.html#1_subscribe">subscribe</a>" function
