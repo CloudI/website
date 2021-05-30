@@ -61,8 +61,6 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
   <p>https://cloudi.org (and <a href="https://ndforge.com" target="_blank">https://ndforge.com</a>) Configuration
   </p>
   <pre>
-% installed on Sat Nov 28 08:06:39 UTC 2020 with CloudI 2.0.1/Erlang 22.3.4.12
-
 %-*-Mode:erlang;coding:utf-8;tab-width:4;c-basic-offset:4;indent-tabs-mode:()-*-
 % ex: set ft=erlang fenc=utf-8 sts=4 ts=4 sw=4 et nomod:
 {acl, [
@@ -96,9 +94,10 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
      "/ndforge.com/",
      cloudi_service_filesystem,
      [{directory, "${HOME}/www/ndforge.com/"},
-      {files_size, 16384},% KiB per process
-      {refresh, 900},     % 15 minutes
-      {cache, refresh}],  % 7.5 minutes
+      {replace, lfuda_gdsf},  % LFUDA GreedyDual-Size with Frequency (GDSF)
+      {files_size, 16384},    % KiB per process
+      {refresh, 900},         % 15 minutes
+      {cache, refresh}],      % 7.5 minutes
      none,
      60000, 5000, 5000, undefined, undefined, 4, 5, 300, []},
 
@@ -108,9 +107,10 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
      "/cloudi.org/",
      cloudi_service_filesystem,
      [{directory, "${HOME}/www/cloudi.org/"},
-      {files_size, 16384},% KiB per process
-      {refresh, 900},     % 15 minutes
-      {cache, refresh}],  % 7.5 minutes
+      {replace, lfuda_gdsf},  % LFUDA GreedyDual-Size with Frequency (GDSF)
+      {files_size, 16384},    % KiB per process
+      {refresh, 900},         % 15 minutes
+      {cache, refresh}],      % 7.5 minutes
      none,
      1200000, 5000, 5000, undefined, undefined, 4, 5, 300, []},
 
@@ -193,7 +193,7 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
       {dest_refresh_start, 3000}]},
     {internal,
      "/",
-     cloudi_service_http_cowboy1,
+     cloudi_service_http_cowboy,
      [{use_client_ip_prefix, true},
       {use_host_prefix, true},
       {content_security_policy,
