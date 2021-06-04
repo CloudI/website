@@ -41,7 +41,7 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
 <div id="content">
   <h1>CloudI API Documentation</h1>
   <h3 style="text-align:center">version 2.0.2<br />
-  last updated on May 29<sup>th</sup> 2021</h3>
+  last updated on June 3<sup>rd</sup> 2021</h3>
 
   <h2 id="Service">CloudI API - Making a Service</h2>
   <ul class="api">
@@ -5588,6 +5588,7 @@ curl http://localhost:6464/cloudi/api/rpc/code_status.erl
  {runtime_erlang_stdlib_version, nonempty_string()},
  {runtime_erlang_sasl_version, nonempty_string()},
  {runtime_erlang_compiler_version, nonempty_string()},
+ {runtime_erlang_compilation, nonempty_string()},      % "aot" | "jit"
  {runtime_cloudi_version, nonempty_string()},
  {runtime_machine_processors, pos_integer()},          % logical processors
  {runtime_start, nonempty_string()},                   % ISO8601 timestamp
