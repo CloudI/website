@@ -41,7 +41,7 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
 <div id="content">
   <h1>CloudI API Documentation</h1>
   <h3 style="text-align:center">version 2.0.2<br />
-  last updated on June 3<sup>rd</sup> 2021</h3>
+  last updated on July 2<sup>nd</sup> 2021</h3>
 
   <h2 id="Service">CloudI API - Making a Service</h2>
   <ul class="api">
@@ -4595,7 +4595,7 @@ fun((OldModuleVersion :: list(any()),
                          kill =&gt; boolean(),
                          error_logger =&gt; boolean()}} |
        {sensitive, boolean()} |
-       {message_queue_data, off_heap | on_heap | mixed})} |
+       {message_queue_data, off_heap | on_heap})} |
  {aspects_init_after, list(aspect_init_after_internal())} |
  {aspects_request_before, list(aspect_request_before_internal())} |
  {aspects_request_after, list(aspect_request_after_internal())} |
@@ -4614,7 +4614,7 @@ fun((OldModuleVersion :: list(any()),
                          kill =&gt; boolean(),
                          error_logger =&gt; boolean()}} |
        {sensitive, boolean()} |
-       {message_queue_data, off_heap | on_heap | mixed})} |
+       {message_queue_data, off_heap | on_heap})} |
  {request_pid_uses, infinity | pos_integer()} |
  {request_pid_options,
   list({priority, low | normal | high} |
@@ -4626,7 +4626,7 @@ fun((OldModuleVersion :: list(any()),
                          kill =&gt; boolean(),
                          error_logger =&gt; boolean()}} |
        {sensitive, boolean()} |
-       {message_queue_data, off_heap | on_heap | mixed})} |
+       {message_queue_data, off_heap | on_heap})} |
  {info_pid_uses, infinity | pos_integer()} |
  {info_pid_options,
   list({priority, low | normal | high} |
@@ -4638,7 +4638,7 @@ fun((OldModuleVersion :: list(any()),
                          kill =&gt; boolean(),
                          error_logger =&gt; boolean()}} |
        {sensitive, boolean()} |
-       {message_queue_data, off_heap | on_heap | mixed})} |
+       {message_queue_data, off_heap | on_heap})} |
  {hibernate,
   list({period, period_seconds()} |
        {rate_request_min, number()}) | boolean()} |
@@ -4680,7 +4680,7 @@ fun((OldModuleVersion :: list(any()),
                          kill =&gt; boolean(),
                          error_logger =&gt; boolean()}} |
        {sensitive, boolean()} |
-       {message_queue_data, off_heap | on_heap | mixed})} |
+       {message_queue_data, off_heap | on_heap})} |
  {aspects_init_after, list(aspect_init_after_external())} |
  {aspects_request_before, list(aspect_request_before_external())} |
  {aspects_request_after, list(aspect_request_after_external())} |
