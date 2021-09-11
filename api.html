@@ -41,7 +41,7 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
 <div id="content">
   <h1>CloudI API Documentation</h1>
   <h3 style="text-align:center">version 2.0.2<br />
-  last updated on July 2<sup>nd</sup> 2021</h3>
+  last updated on September 10<sup>th</sup> 2021</h3>
 
   <h2 id="Service">CloudI API - Making a Service</h2>
   <ul class="api">
@@ -4928,7 +4928,7 @@ curl -X POST -d "[{reconnect_delay, 300}]" http://localhost:6464/cloudi/api/rpc/
     "ec2.amazonaws.com"
   </td><td>
     AWS EC2 API <a href="http://docs.aws.amazon.com/general/latest/gr/rande.html#ec2_region" rel="noreferrer" target="_blank">endpoint</a>
-    (the default DNS string picks the closest endpoint for USA AWS regions).
+    (e.g., "ec2.${AWS_DEFAULT_REGION}.amazonaws.com").
   </td></tr><tr><td>
     groups
   </td><td>
