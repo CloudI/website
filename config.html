@@ -213,8 +213,9 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
 {nodes, [
     {discovery,
      [{ec2,
-       [{access_key_id, "PUT_IT_HERE"},
-        {secret_access_key, "PUT_IT_HERE"},
+       [{access_key_id, "${AWS_ACCESS_KEY_ID}"},
+        {secret_access_key, "${AWS_SECRET_ACCESS_KEY}"},
+        {host, "ec2.${AWS_DEFAULT_REGION}.amazonaws.com"},
         {groups, ["www-vpc"]}]}]}
 ]}.
 {logging, [
