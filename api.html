@@ -41,7 +41,7 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
 <div id="content">
   <h1>CloudI API Documentation</h1>
   <h3 style="text-align:center">version 2.0.4<br />
-  last updated on January 14<sup>th</sup> 2022</h3>
+  last updated on September 6<sup>th</sup> 2022</h3>
 
   <h2 id="Service">CloudI API - Making a Service</h2>
   <ul class="api">
@@ -3249,6 +3249,35 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
     <a href="#2_services_add_config_opts_count_process_dynamic">
     options can be provided</a>.
   </td></tr><tr><td>
+    fatal_exceptions<br />
+    <strong>(new in 2.0.5)</strong>
+  </td><td>
+    true
+  </td><td>
+    Uncaught exceptions should cause the service to restart instead of
+    causing a null response.  A programming language's fatal exception
+    types will always cause a service restart when this option is set to false.
+  </td></tr><tr><td>
+    fatal_timeout<br />
+    <strong>(new in 2.0.5)</strong>
+  </td><td>
+    false
+  </td><td>
+    A service request timeout is fatal in the service handling the service
+    request.  Enabling this ensures the service request execution is
+    terminating though it may impact the consistency of global state usage
+    if the service is writing to global state and has a timeout during its
+    execution.
+  </td></tr><tr><td>
+    fatal_timeout_delay<br />
+    <strong>(new in 2.0.5)</strong>
+  </td><td>
+    0
+  </td><td>
+    Provide an offset on the fatal timeout value to avoid premature
+    failure of the service when the service request is handled during a time
+    period close to the service request timeout value.
+  </td></tr><tr><td>
     timeout_terminate
   </td><td>
     undefined
@@ -5125,6 +5154,8 @@ curl -X POST -d '[{file, undefined}, {syslog, []}]' http://localhost:6464/cloudi
 <pre>
 % logging configuration options
 [<a href="#2_logging_file_set">{file, undefined | string()}</a>,                % defaults to "cloudi.log"
+ <a href="#2_logging_set_config_opts_file_sync">{file_sync,
+  logging_file_sync_milliseconds()}</a>,          % defaults to 0 milliseconds
  <a href="#2_logging_level_set">{level, off | fatal | error |
          warn | info | debug | trace}</a>,        % defaults to trace
  <a href="#2_logging_redirect_set">{redirect, undefined | node()}</a>,              % defaults to undefined
@@ -5142,6 +5173,12 @@ curl -X POST -d '[{file, undefined}, {syslog, []}]' http://localhost:6464/cloudi
  <a href="#2_logging_set_config_opts_aspects_log_after">{aspects_log_after,
   list(aspects_log_after())}</a>]                 % defaults to []
 </pre>
+  <h4 id="2_logging_set_config_opts_file_sync">file_sync: (new in 2.0.5)</h4>
+  <p class="paragraph">
+    Ensure all log file data has been written to the file by flushing
+    any operating system buffers that contain pending write data,
+    with the interval provided in milliseconds.
+  </p>
   <h4 id="2_logging_set_config_opts_queue_mode_async">queue_mode_async:</h4>
   <p class="paragraph">
     The logger process will use asynchronous mode while its message queue
