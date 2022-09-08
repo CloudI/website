@@ -4383,7 +4383,7 @@ curl -X POST -d '["65762d3262a511e882359563d34a433e"]' http://localhost:6464/clo
  {count_thread, pos_integer()},                % external service only
  {pids_os, list(pos_integer())},               % external service only
  {pids_erlang, list(pid())},
- {size_erlang, bytes_value()},
+ {size_erlang, pos_integer()},
  {suspended, boolean()},
  {uptime_total, nonempty_string()},
  {uptime_running, nonempty_string()},
