@@ -4383,7 +4383,7 @@ curl -X POST -d '["65762d3262a511e882359563d34a433e"]' http://localhost:6464/clo
  {count_thread, pos_integer()},                % external service only
  {pids_os, list(pos_integer())},               % external service only
  {pids_erlang, list(pid())},
- {size_erlang, bytes_value()},                 % size of the service source pids
+ {size_erlang, bytes_value()},
  {suspended, boolean()},
  {uptime_total, nonempty_string()},
  {uptime_running, nonempty_string()},
@@ -4473,10 +4473,26 @@ curl -X POST -d '["65762d3262a511e882359563d34a433e"]' http://localhost:6464/clo
   </p>
   <p class="paragraph">
     The currently executing Erlang processes for each service are provided
-    in pids_erlang.  The current external service OS pids are provided in
-    pids_os.  Both lists are ordered by process index and may be smaller
+    in pids_erlang.  These Erlang processes that represent the service are the
+    source pids provided when handling a CloudI service request.
+    The current external service OS pids are provided in pids_os.
+    Both lists are ordered by process index and may be smaller
     than expected (based on count_process and count_thread) if the service
     is not initialized.
+  </p>
+  <p class="paragraph">
+    The size_erlang value provides the size of the service within the Erlang VM
+    as the size of all the pids_erlang Erlang processes in bytes.
+    The size_erlang value represents the memory used for the most critical
+    parts of a CloudI service in the Erlang VM related to receiving CloudI
+    service requests and responses (i.e., the source pids).
+    For internal services the size_erlang value will not include the size
+    of the info_pid or the request_pid if the duo_mode service configuration
+    option is false (the default value).  If an internal service has the
+    duo_mode service configuration option set to true, the size_erlang value
+    will not include the size of the dispatcher_pid or the request_pid.
+    That means the size_erlang value always represents the long-lived
+    CloudI service memory in the Erlang VM.
   </p>
   <p class="paragraph">
     Example output is available at<br />
