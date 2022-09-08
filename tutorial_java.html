@@ -39,8 +39,8 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
 <div id="header_document">
 <h1>CloudI Java Tutorial</h1>
 <div class="details">
-<span id="revnumber">version 2.0.4,</span>
-<span id="revdate">2021-12-06</span>
+<span id="revnumber">version 2.0.5,</span>
+<span id="revdate">2022-09-07</span>
 </div>
 <div id="toc" class="toc">
 <div id="toctitle"></div>
@@ -279,7 +279,7 @@ That means that the <code>send_async</code> CloudI API function call is an async
                               String pattern, byte[] request_info,
                               byte[] request, Integer timeout,
                               Byte priority, byte[] trans_id,
-                              OtpErlangPid pid)
+                              OtpErlangPid source)
     {
         // refresh all item data asynchronously
         final JSONItemRefreshRequest request_json =
@@ -335,7 +335,7 @@ HTTP requests do provide HTTP headers which is request meta-data and all request
 Every CloudI service request contains a specific timeout value in milliseconds which is decremented when the service request encounters any delay (e.g., due to queuing, handling execution, or forwarding).
 The <code>priority</code> parameter controls the priority when a service request is queued and a service request is only queued while the service thread is busy with a separate service request.
 The <code>request_type</code>, <code>name</code>, and <code>pattern</code> parameters show how the service request got here by containing whether the send is asynchronous or synchronous, the service name, and the service name pattern, respectively.
-The <code>pid</code> contains the source of the service request as it is represented within the CloudI source code (it is the response destination).</p>
+The <code>source</code> contains the source of the service request as it is represented within the CloudI source code (it is the response destination).</p>
 </div>
 <div class="paragraph">
 <p>While many of the parameters in a service request are just book-keeping for tracking the transaction, the service request can be forwarded through any number of service request handlers before a response is provided.
@@ -626,7 +626,7 @@ The service request handler function "client" is shown below (from <a href="http
 <pre class="highlight"><code class="language-java" data-lang="java">    public Object client(Integer request_type, String name, String pattern,
                          byte[] request_info, byte[] request,
                          Integer timeout, Byte priority, byte[] trans_id,
-                         OtpErlangPid pid)
+                         OtpErlangPid source)
         throws API.ForwardAsyncException,
                API.ForwardSyncException,
                API.InvalidInputException,
@@ -651,23 +651,23 @@ The service request handler function "client" is shown below (from <a href="http
                 this.api.forward_(request_type, name_item_refresh,
                                   request_info, request,
                                   timeout, priority,
-                                  trans_id, pid);
+                                  trans_id, source);
                 return null;
             case JSONItemListRequest.message_name_valid:
                 return this.itemList(request_type, name, pattern,
                                      request_info, request,
                                      timeout, priority,
-                                     trans_id, pid);
+                                     trans_id, source);
             case JSONLanguageListRequest.message_name_valid:
                 return this.languageList(request_type, name, pattern,
                                          request_info, request,
                                          timeout, priority,
-                                         trans_id, pid);
+                                         trans_id, source);
             case JSONSubjectListRequest.message_name_valid:
                 return this.subjectList(request_type, name, pattern,
                                         request_info, request,
                                         timeout, priority,
-                                        trans_id, pid);
+                                        trans_id, source);
             case JSONRecommendationRefreshRequest.message_name_valid:
                 // all OS processes need to refresh their recommendation data
                 final String name_recommendation_refresh =
@@ -735,12 +735,12 @@ The service request handler function "client" is shown below (from <a href="http
                 return this.recommendationList(request_type, name, pattern,
                                                request_info, request,
                                                timeout, priority,
-                                               trans_id, pid);
+                                               trans_id, source);
             case JSONRecommendationUpdateRequest.message_name_valid:
                 return this.recommendationUpdate(request_type, name, pattern,
                                                  request_info, request,
                                                  timeout, priority,
-                                                 trans_id, pid);
+                                                 trans_id, source);
             default:
                 return JSONResponse
                     .failure("message_name")
