@@ -41,7 +41,7 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
 <div id="content">
   <h1>CloudI API Documentation</h1>
   <h3 style="text-align:center">version 2.0.4<br />
-  last updated on September 7<sup>th</sup> 2022</h3>
+  last updated on September 14<sup>th</sup> 2022</h3>
 
   <h2 id="Service">CloudI API - Making a Service</h2>
   <ul class="api">
@@ -4393,6 +4393,10 @@ curl -X POST -d '["65762d3262a511e882359563d34a433e"]' http://localhost:6464/clo
  {downtime_week_restarting, nonempty_string()},
  {downtime_month_restarting, nonempty_string()},
  {downtime_year_restarting, nonempty_string()},
+ {outages_day_restarting, nonempty_string()},  %
+ {outages_week_restarting, nonempty_string()}, % (new in 2.0.5)
+ {outages_month_restarting, nonempty_string()},%
+ {outages_year_restarting, nonempty_string()}, %
  {interrupt_day_updating, nonempty_string()},
  {interrupt_week_updating, nonempty_string()},
  {interrupt_month_updating, nonempty_string()},
@@ -4442,6 +4446,24 @@ curl -X POST -d '["65762d3262a511e882359563d34a433e"]' http://localhost:6464/clo
     total availability values (e.g.,&nbsp;availability_day_total,
     availability_week_total, availability_month_total and
     availability_year_total).
+  </p>
+  <p class="paragraph">
+    <strong>(new in 2.0.5)</strong>
+    The service outage due to restarting is shown visually as a count
+    in the time period for each "outages" string value.
+    The outages_day_restarting value shows a single string character for
+    each 30 minute segment after 00:00 UTC.  Each restart causes an integer
+    count to be updated in the string character associated with the restart
+    time.  If the count is above 9 for a single character it is represented as
+    a X character.  The | (pipe) character is a cursor that shows the
+    position of the current time in the string.  Any characters after the
+    cursor are representing the previous time period.
+    The outages_week_restarting value shows a single string character for
+    each 4 hour segment after 00:00 UTC on Monday of the current week.
+    The outages_month_restarting value shows a single string character for
+    each day of the current month.
+    The outages_year_restarting value shows a single string character for
+    each 1/3rd of a month during the current year.
   </p>
   <p class="paragraph">
     The service interrupt spent updating service processes is provided
