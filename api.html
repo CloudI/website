@@ -41,7 +41,7 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
 <div id="content">
   <h1>CloudI API Documentation</h1>
   <h3 style="text-align:center">version 2.0.4<br />
-  last updated on September 14<sup>th</sup> 2022</h3>
+  last updated on September 28<sup>th</sup> 2022</h3>
 
   <h2 id="Service">CloudI API - Making a Service</h2>
   <ul class="api">
@@ -4454,10 +4454,12 @@ curl -X POST -d '["65762d3262a511e882359563d34a433e"]' http://localhost:6464/clo
     The outages_day_restarting value shows a single string character for
     each 30 minute segment after 00:00 UTC.  Each restart causes an integer
     count to be updated in the string character associated with the restart
-    time.  If the count is above 9 for a single character it is represented as
-    a X character.  The | (pipe) character is a cursor that shows the
-    position of the current time in the string.  Any characters after the
-    cursor are representing the previous time period.
+    time period.  If a restart time period crosses a string character boundary
+    all associated string characters will have an integer count updated.
+    If the count is above 9 for a single character it is
+    represented as a X character.  The | (pipe) character is a cursor that
+    shows the position of the current time in the string.  Any characters
+    after the cursor are representing the previous time period.
     The outages_week_restarting value shows a single string character for
     each 4 hour segment after 00:00 UTC on Monday of the current week.
     The outages_month_restarting value shows a single string character for
