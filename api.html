@@ -32,7 +32,7 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
     <li><a href="faq.html">FAQ</a></li>
     <li><a href="tutorials.html">Tutorials</a>
         (<a href="tutorial_java.html">Java</a>)</li>
-    <li><a href="https://osdn.net/dl/cloudi/cloudi-2.0.4.tar.gz" rel="noopener" target="_blank">Download</a></li>
+    <li><a href="https://osdn.net/dl/cloudi/cloudi-2.0.5.tar.gz" rel="noopener" target="_blank">Download</a></li>
     <li><a href="https://github.com/CloudI/CloudI/tree/develop#readme">Source</a></li>
     <li><a href="support.html">Support</a></li>
   </ul>
@@ -40,8 +40,8 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
 
 <div id="content">
   <h1>CloudI API Documentation</h1>
-  <h3 style="text-align:center">version 2.0.4<br />
-  last updated on October 11<sup>th</sup> 2022</h3>
+  <h3 style="text-align:center">version 2.0.5<br />
+  last updated on October 12<sup>th</sup> 2022</h3>
 
   <h2 id="Service">CloudI API - Making a Service</h2>
   <ul class="api">
@@ -434,13 +434,13 @@ CloudI::API.new(thread_index)
     priority.  Both the Timeout parameter and the Priority parameter
     accept the 'undefined' atom to assign the default configured value.
     Please see the
-    <a href="api/cloudi_core-2.0.4/cloudi_service.html#index" target="_blank">cloudi_service module</a>
+    <a href="api/cloudi_core-2.0.5/cloudi_service.html#index" target="_blank">cloudi_service module</a>
     to see all the available functions and the behavior interface functions
     that are implemented within an Erlang service.  The cloudi_service module
     is used within CloudI services, however, it is also possible to use CloudI
     services from external Erlang processes with a subset of the CloudI API
     functions in the
-    <a href="api/cloudi_core-2.0.4/cloudi.html#index" target="_blank">cloudi module</a>.
+    <a href="api/cloudi_core-2.0.5/cloudi.html#index" target="_blank">cloudi module</a>.
   </p>
   <p class="paragraph">
     Both the C and the C++ CloudI API rely on the same underlying code, with
@@ -1717,7 +1717,7 @@ cloudi_service:send_async_active(Dispatcher :: pid(),
     The send_async_active message is sent to the Erlang process as an
     Erlang message, so it arrives in the cloudi_service_handle_info function
     of the Erlang service module (i.e., the module that implements the
-    <a href="api/cloudi_core-2.0.4/cloudi_service.html#description" target="_blank">cloudi_service behavior</a>).
+    <a href="api/cloudi_core-2.0.5/cloudi_service.html#description" target="_blank">cloudi_service behavior</a>).
     The message formats are also provided as records that are accessible with:
   </p>
 <pre class="code">
@@ -2098,7 +2098,7 @@ cloudi_service:mcast_async_active(Dispatcher :: pid(),
     The mcast_async_active message is sent to the Erlang process as an
     Erlang message, so it arrives in the cloudi_service_handle_info function
     of the Erlang service module (i.e., the module that implements the
-    <a href="api/cloudi_core-2.0.4/cloudi_service.html#description" target="_blank">cloudi_service behavior</a>).
+    <a href="api/cloudi_core-2.0.5/cloudi_service.html#description" target="_blank">cloudi_service behavior</a>).
     The message formats are also provided as records that are accessible with:
   </p>
 <pre class="code">
@@ -2573,7 +2573,7 @@ CloudI::API.return_(request_type, name, pattern, response_info, response,
     after returning the service request response.  The simplest
     and preferred way to return a response within an Erlang service is to
     utilize the cloudi_service_handle_request functon return values used by the
-    <a href="api/cloudi_core-2.0.4/cloudi_service.html#Module%3acloudi_service_handle_request-11" target="_blank">cloudi_service behavior</a>.  You can also
+    <a href="api/cloudi_core-2.0.5/cloudi_service.html#Module%3acloudi_service_handle_request-11" target="_blank">cloudi_service behavior</a>.  You can also
     utilize the request handler return value for the response in the
     programming languages Java, Python, and Ruby.  However, within the
     external services it is more explicit (i.e., easier to understand the
@@ -2741,7 +2741,7 @@ CloudI::API.forward_(request_type, name, request_info, request,
     execution is aborted after forwarding the service request.  The simplest
     and preferred way to forward a request within an Erlang service is to
     utilize the cloudi_service_handle_request functon return values used by the
-    <a href="api/cloudi_core-2.0.4/cloudi_service.html#Module%3acloudi_service_handle_request-11" target="_blank">cloudi_service behavior</a>.
+    <a href="api/cloudi_core-2.0.5/cloudi_service.html#Module%3acloudi_service_handle_request-11" target="_blank">cloudi_service behavior</a>.
     All external services must use a forward function when forwarding a request.
   </p>
   <p class="paragraph">
@@ -2988,7 +2988,7 @@ CloudI::API.shutdown(reason=nil)
     cloudi_service_api_requests and cloudi_service_http_cowboy).
     The CloudI Service API can also be accessed directly within the
     Erlang VM by using the
-    <a href="api/cloudi_core-2.0.4/cloudi_service_api.html#index" target="_blank">cloudi_service_api module</a>.
+    <a href="api/cloudi_core-2.0.5/cloudi_service_api.html#index" target="_blank">cloudi_service_api module</a>.
   </p>
   <table><tr><th>
     Protocol
@@ -3249,8 +3249,7 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
     <a href="#2_services_add_config_opts_count_process_dynamic">
     options can be provided</a>.
   </td></tr><tr><td>
-    fatal_exceptions<br />
-    <strong>(new in 2.0.5)</strong>
+    fatal_exceptions
   </td><td>
     true
   </td><td>
@@ -3258,8 +3257,7 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
     causing a null response.  A programming language's fatal exception
     types will always cause a service restart when this option is set to false.
   </td></tr><tr><td>
-    fatal_timeout<br />
-    <strong>(new in 2.0.5)</strong>
+    fatal_timeout
   </td><td>
     false
   </td><td>
@@ -3269,8 +3267,7 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
     if the service is writing to global state and has a timeout during its
     execution.
   </td></tr><tr><td>
-    fatal_timeout_delay<br />
-    <strong>(new in 2.0.5)</strong>
+    fatal_timeout_delay
   </td><td>
     0
   </td><td>
@@ -4393,10 +4390,10 @@ curl -X POST -d '["65762d3262a511e882359563d34a433e"]' http://localhost:6464/clo
  {downtime_week_restarting, nonempty_string()},
  {downtime_month_restarting, nonempty_string()},
  {downtime_year_restarting, nonempty_string()},
- {outages_day_restarting, nonempty_string()},  %
- {outages_week_restarting, nonempty_string()}, % (new in 2.0.5)
- {outages_month_restarting, nonempty_string()},%
- {outages_year_restarting, nonempty_string()}, %
+ {outages_day_restarting, nonempty_string()},
+ {outages_week_restarting, nonempty_string()},
+ {outages_month_restarting, nonempty_string()},
+ {outages_year_restarting, nonempty_string()},
  {interrupt_day_updating, nonempty_string()},
  {interrupt_week_updating, nonempty_string()},
  {interrupt_month_updating, nonempty_string()},
@@ -4448,7 +4445,6 @@ curl -X POST -d '["65762d3262a511e882359563d34a433e"]' http://localhost:6464/clo
     availability_year_total).
   </p>
   <p class="paragraph">
-    <strong>(new in 2.0.5)</strong>
     The service outage due to restarting is shown visually as a count
     in the time period for each "outages" string value.
     The outages_day_restarting value shows a single string character for
@@ -5156,10 +5152,10 @@ curl -X POST -d "['cloudi@hostname']" http://localhost:6464/cloudi/api/rpc/nodes
  {downtime_week_disconnected, nonempty_string()},
  {downtime_month_disconnected, nonempty_string()},
  {downtime_year_disconnected, nonempty_string()},
- {outages_day_disconnected, nonempty_string()},  %
- {outages_week_disconnected, nonempty_string()}, % (new in 2.0.5)
- {outages_month_disconnected, nonempty_string()},%
- {outages_year_disconnected, nonempty_string()}, %
+ {outages_day_disconnected, nonempty_string()},
+ {outages_week_disconnected, nonempty_string()},
+ {outages_month_disconnected, nonempty_string()},
+ {outages_year_disconnected, nonempty_string()},
  {availability_day, nonempty_string()},
  {availability_week, nonempty_string()},
  {availability_month, nonempty_string()},
@@ -5175,7 +5171,6 @@ curl -X POST -d "['cloudi@hostname']" http://localhost:6464/cloudi/api/rpc/nodes
     local node.
   </p>
   <p class="paragraph">
-    <strong>(new in 2.0.5)</strong>
     The connection outage due to a disconnected remote node is shown visually
     as a count in the time period for each "outages" string value.
     The outages_day_disconnected value shows a single string character for
@@ -5238,7 +5233,7 @@ curl -X POST -d '[{file, undefined}, {syslog, []}]' http://localhost:6464/cloudi
  <a href="#2_logging_set_config_opts_aspects_log_after">{aspects_log_after,
   list(aspects_log_after())}</a>]                 % defaults to []
 </pre>
-  <h4 id="2_logging_set_config_opts_file_sync">file_sync: (new in 2.0.5)</h4>
+  <h4 id="2_logging_set_config_opts_file_sync">file_sync:</h4>
   <p class="paragraph">
     Ensure all log file data has been written to the file by flushing
     any operating system buffers that contain pending write data,
