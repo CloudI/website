@@ -56,6 +56,10 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
   <pre id="logging_status" style="height: 20em;">
   </pre>
 
+  <h4><a href="https://github.com/CloudI/CloudI/blob/master/src/lib/cloudi_service_health_check/src/cloudi_service_health_check.erl">cloudi_service_health_check</a></h4>
+  <pre id="service_health_check" style="height: 280em;">
+  </pre>
+
   <h4>cloudi.conf file</h4>
 
   <p>https://cloudi.org (and <a href="https://ndforge.com" target="_blank">https://ndforge.com</a>) Configuration
@@ -70,7 +74,8 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
      ["/cloudi/api/rpc/services_status.json/post",
       "/cloudi/api/rpc/nodes_status.json/post",
       "/cloudi/api/rpc/logging_status.json/get",
-      "/cloudi/api/rpc/code_status.json/get"]},
+      "/cloudi/api/rpc/code_status.json/get",
+      "/health_check/cloudi/hosts.json/get"]},
     {files,
      ["/ndforge.com/*",
       "/cloudi.org/*",
@@ -85,7 +90,8 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
      cloudi_service_api_requests,
      [],
      none,
-     5000, 5000, 5000, undefined, undefined, 1, 5, 300,
+     {5, seconds}, {5, seconds}, {5, seconds},
+     undefined, undefined, 1, 5, {5, minutes},
      [{response_timeout_immediate_max, limit_min}]},
 
     % ndforge.com files
@@ -99,7 +105,8 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
       {refresh, 900},         % 15 minutes
       {cache, refresh}],      % 7.5 minutes
      none,
-     60000, 5000, 5000, undefined, undefined, 4, 5, 300, []},
+     {1, minute}, {5, seconds}, {5, seconds},
+     undefined, undefined, 4, 5, {5, minutes}, []},
 
     % cloudi.org files
 
@@ -112,7 +119,8 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
       {refresh, 900},         % 15 minutes
       {cache, refresh}],      % 7.5 minutes
      none,
-     1200000, 5000, 5000, undefined, undefined, 4, 5, 300, []},
+     {20, minutes}, {5, seconds}, {5, seconds},
+     undefined, undefined, 4, 5, {5, minutes}, []},
 
     % ec2 load-balancer health check
 
@@ -121,7 +129,30 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
      cloudi_service_filesystem,
      [{directory, "${HOME}/www/private/"}],
      none,
-     5000, 5000, 5000, undefined, undefined, 1, 5, 300, []},
+     {5, seconds}, {5, seconds}, {5, seconds},
+     undefined, undefined, 1, 5, {5, minutes}, []},
+
+    % CloudI health check requests
+
+    {internal,
+     "/health_check/cloudi/",
+     cloudi_service_health_check,
+     [{hosts,
+       [{"$CLOUDI_HOST1",
+         [{port, 8000}]},
+        {"$CLOUDI_HOST2",
+         [{port, 8000}]},
+        {"$CLOUDI_HOST3",
+         [{port, 8000}]},
+        {"$CLOUDI_HOST4",
+         [{port, 8000}]},
+        {"$LOAD_BALANCER1",
+         [{port, 80}]},
+        {"$LOAD_BALANCER2",
+         [{port, 80}]}]}],
+     lazy_local,
+     {5, seconds}, {5, seconds}, {5, seconds},
+     undefined, undefined, 6, 5, {5, minutes}, []},
 
     % HTTP traffic
 
@@ -130,7 +161,8 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
      cloudi_service_null,
      [],
      none,
-     5000, 5000, 5000, undefined, undefined, 1, 5, 300,
+     {5, seconds}, {5, seconds}, {5, seconds},
+     undefined, undefined, 1, 5, {5, minutes},
      [{response_timeout_immediate_max, limit_min}]},
     {internal,
      "?/",
@@ -138,59 +170,55 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
      [{add_prefix, false},
       {destinations,
        [{"www.ndforge.com/*",
-         [{parameters_allowed, true},
-          {parameters_strict_matching, false},
+         [{parameters_strict_matching, false},
           {parameters_selected, [2]},
           {service_names,
            ["/ndforge.com/*"]}]},
         {"ndforge.com/*",
-         [{parameters_allowed, true},
-          {parameters_strict_matching, false},
+         [{parameters_strict_matching, false},
           {parameters_selected, [2]},
           {service_names,
            ["/ndforge.com/*"]}]},
         {"www.cloudi.org/*",
-         [{parameters_allowed, true},
-          {parameters_strict_matching, false},
+         [{parameters_strict_matching, false},
           {parameters_selected, [2]},
           {service_names,
            ["/cloudi.org/*"]}]},
         {"cloudi.org/services_status.json/post",
-         [{parameters_allowed, true},
-          {parameters_strict_matching, false},
+         [{parameters_strict_matching, false},
           {service_names,
            ["/cloudi/api/rpc/services_status.json/post"]}]},
         {"cloudi.org/nodes_status.json/post",
-         [{parameters_allowed, true},
-          {parameters_strict_matching, false},
+         [{parameters_strict_matching, false},
           {service_names,
            ["/cloudi/api/rpc/nodes_status.json/post"]}]},
         {"cloudi.org/logging_status.json/get",
-         [{parameters_allowed, true},
-          {parameters_strict_matching, false},
+         [{parameters_strict_matching, false},
           {service_names,
            ["/cloudi/api/rpc/logging_status.json/get"]}]},
         {"cloudi.org/code_status.json/get",
-         [{parameters_allowed, true},
-          {parameters_strict_matching, false},
+         [{parameters_strict_matching, false},
           {service_names,
            ["/cloudi/api/rpc/code_status.json/get"]}]},
+        {"cloudi.org/health_check/hosts.json/get",
+         [{parameters_strict_matching, false},
+          {service_names,
+           ["/health_check/cloudi/hosts.json/get"]}]},
         {"cloudi.org/*",
-         [{parameters_allowed, true},
-          {parameters_strict_matching, false},
+         [{parameters_strict_matching, false},
           {parameters_selected, [2]},
           {service_names,
            ["/cloudi.org/*"]}]},
         {"?/loadbalancer_health_check/index.html/get",
-         [{parameters_allowed, true},
-          {parameters_strict_matching, false},
+         [{parameters_strict_matching, false},
           {service_names,
            ["/loadbalancer_health_check/index.html/get"]}]}
         ]}],
      lazy_closest,
-     5000, 5000, 5000, undefined, [files, api_read_only], 8, 5, 300,
+     {5, seconds}, {5, seconds}, {5, seconds},
+     undefined, [files, api_read_only], 8, 5, {5, minutes},
      [{duo_mode, true},
-      {dest_refresh_start, 3000}]},
+      {dest_refresh_start, {3, seconds}}]},
     {internal,
      "/",
      cloudi_service_http_cowboy,
@@ -206,7 +234,8 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
       {set_x_xss_protection, true},
       {ip, {0, 0, 0, 0}}, {port, 8000}, {output, binary}],
      lazy_closest,
-     5000, 5000, 5000, [api], undefined, 1, 5, 300,
+     {5, seconds}, {5, seconds}, {5, seconds},
+     [api], undefined, 2, 5, {5, minutes},
      [{duo_mode, true}]}
 
 ]}.
@@ -220,7 +249,9 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
 ]}.
 {logging, [
     {level, debug}, % levels: off, fatal, error, warn, info, debug, trace
-    {log_time_offset, info}
+    {log_time_offset, info},
+    % For slower logging disk writes
+    {file_sync, {5, seconds}}
 ]}.
 
   </pre>
@@ -286,6 +317,12 @@ function loadCurrent() {
             logging_status_request.responseText;
     };
     logging_status_request.send('');
+    var service_health_check_request = httpRequest('GET','health_check/hosts.json');
+    service_health_check_request.onload = function () {
+        document.getElementById('service_health_check').innerHTML =
+            service_health_check_request.responseText;
+    };
+    service_health_check_request.send('');
 }
 </script>
 
