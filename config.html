@@ -106,7 +106,8 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
       {cache, refresh}],      % 7.5 minutes
      none,
      {1, minute}, {5, seconds}, {5, seconds},
-     undefined, undefined, 4, 5, {5, minutes}, []},
+     undefined, undefined, 4, 5, {5, minutes},
+     [{info_pid_uses, 1}]},
 
     % cloudi.org files
 
@@ -120,7 +121,8 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
       {cache, refresh}],      % 7.5 minutes
      none,
      {20, minutes}, {5, seconds}, {5, seconds},
-     undefined, undefined, 4, 5, {5, minutes}, []},
+     undefined, undefined, 4, 5, {5, minutes},
+     [{info_pid_uses, 1}]},
 
     % ec2 load-balancer health check
 
@@ -130,7 +132,8 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
      [{directory, "${HOME}/www/private/"}],
      none,
      {5, seconds}, {5, seconds}, {5, seconds},
-     undefined, undefined, 1, 5, {5, minutes}, []},
+     undefined, undefined, 1, 5, {5, minutes},
+     [{info_pid_uses, 1}]},
 
     % CloudI health check requests
 
@@ -152,7 +155,9 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
          [{port, 80}]}]}],
      lazy_local,
      {5, seconds}, {5, seconds}, {5, seconds},
-     undefined, undefined, 6, 5, {5, minutes}, []},
+     undefined, undefined, 6, 5, {5, minutes},
+     [{info_pid_uses, 1},
+      {hibernate, true}]},
 
     % HTTP traffic
 
