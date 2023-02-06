@@ -2861,8 +2861,9 @@ sudo cloudi stop
   <h3 id="7_cpu">7.4 - How can I control the CPU utilization of CloudI?</h3>
   <p class="paragraph">
     The Erlang VM is able to detect the CPU topology on most
-    Operating Systems (OS) and the CPU topology is used for assigning scheduler
-    threads.  The number of scheduler threads may be set with the <a href="https://www.erlang.org/doc/man/erl.html#emulator-flags" rel="noreferrer" target="_blank">erl</a>
+    Operating Systems (OS) and the CPU topology is used for binding scheduler
+    threads to logical processors.  The number of scheduler threads may be
+    set with the <a href="https://www.erlang.org/doc/man/erl.html#emulator-flags" rel="noreferrer" target="_blank">erl</a>
     +S command-line argument.  Additional <a href="https://www.erlang.org/doc/man/erl.html#emulator-flags" rel="noreferrer" target="_blank">erl</a>
     command-line arguments for CloudI execution (like +S) can be added to the
     etc directory vm.args file (or the NODE.args node-specific file where
@@ -2880,10 +2881,10 @@ sudo cloudi stop
     second physical CPU for execution.
   </p>
   <p class="paragraph">
-    If the OS is able to automatically detect the CPU topology,
-    it will do so when binding the scheduler threads to the available CPUs
-    (by default the scheduler threads are unbound).  The default scheduler
-    bind type is used below with the <a href="https://www.erlang.org/doc/man/erl.html#emulator-flags" rel="noreferrer" target="_blank">erl</a>
+    If the Erlang VM is able to automatically detect the CPU topology on the OS,
+    it will do so when binding the scheduler threads to the available
+    logical processors (by default the scheduler threads are unbound).
+    The default scheduler bind type is used below with the <a href="https://www.erlang.org/doc/man/erl.html#emulator-flags" rel="noreferrer" target="_blank">erl</a>
     +sbt command-line argument:
   </p>
 <pre>
