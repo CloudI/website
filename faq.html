@@ -41,7 +41,7 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
 <div id="content">
   <h1>Frequently Asked Questions</h1>
   <h3 style="text-align:center">version 2.0.5<br />
-  last updated on February 6<sup>th</sup> 2023</h3>
+  last updated on March 31<sup>st</sup> 2023</h3>
 
   <h2 id="1_contents">1 - Introduction to CloudI</h2>
   <ul class="faq">
@@ -2863,8 +2863,8 @@ sudo cloudi stop
     The Erlang VM is able to detect the CPU topology on most
     Operating Systems (OS) and the CPU topology is used for binding scheduler
     threads to logical processors.  The number of scheduler threads may be
-    set with the <a href="https://www.erlang.org/doc/man/erl.html#emulator-flags" rel="noreferrer" target="_blank">erl</a>
-    +S command-line argument.  Additional <a href="https://www.erlang.org/doc/man/erl.html#emulator-flags" rel="noreferrer" target="_blank">erl</a>
+    set with the erl <a href="https://www.erlang.org/doc/man/erl.html#+S" rel="noreferrer" target="_blank">+S</a>
+    command-line argument.  Additional <a href="https://www.erlang.org/doc/man/erl.html#emulator-flags" rel="noreferrer" target="_blank">erl</a>
     command-line arguments for CloudI execution (like +S) can be added to the
     etc directory vm.args file (or the NODE.args node-specific file where
     NODE is the node name configured for the CloudI build).
@@ -2872,8 +2872,8 @@ sudo cloudi stop
   <p class="paragraph">
     To control the specific CPUs that are used by the Erlang VM
     (in a cross-platform way, i.e., any OS) it may be necessary to provide the
-    CPU topology explicitly with the <a href="https://www.erlang.org/doc/man/erl.html#emulator-flags" rel="noreferrer" target="_blank">erl</a>
-    +sct command-line argument.  An example is provided below using a
+    CPU topology explicitly with the erl <a href="https://www.erlang.org/doc/man/erl.html#+sct" rel="noreferrer" target="_blank">+sct</a>
+    command-line argument.  An example is provided below using a
     <a href="https://en.wikipedia.org/wiki/List_of_PowerEdge_servers#Generation_11" rel="noreferrer" target="_blank">Dell PowerEdge R710</a>
     with 2 <a href="https://en.wikipedia.org/wiki/List_of_Intel_Xeon_processors_(Nehalem-based)#ark47922" rel="noreferrer" target="_blank">Xeon X5650</a>
     CPUs, each with 6 cores and 2 hyper-threads per core.
@@ -2884,8 +2884,8 @@ sudo cloudi stop
     If the Erlang VM is able to automatically detect the CPU topology on the OS,
     it will do so when binding the scheduler threads to the available
     logical processors (by default the scheduler threads are unbound).
-    The default scheduler bind type is used below with the <a href="https://www.erlang.org/doc/man/erl.html#emulator-flags" rel="noreferrer" target="_blank">erl</a>
-    +sbt command-line argument:
+    The default scheduler bind type is used below with the erl <a href="https://www.erlang.org/doc/man/erl.html#+sbt" rel="noreferrer" target="_blank">+sbt</a>
+    command-line argument:
   </p>
 <pre>
 $ erl +sbt db
@@ -2919,8 +2919,8 @@ $ cat /sys/devices/system/node/node1/cpulist
 </pre>
   <p class="paragraph">
     To use only the second physical CPU, the CPU topology can be
-    manually specified with the <a href="https://www.erlang.org/doc/man/erl.html#emulator-flags" rel="noreferrer" target="_blank">erl</a>
-    +sct command-line argument as:
+    manually specified with the erl <a href="https://www.erlang.org/doc/man/erl.html#+sct" rel="noreferrer" target="_blank">+sct</a>
+    command-line argument as:
   </p>
 <pre>
 L1,13t0-1c0p0N1:L3,15t2-3c1p0N1:L5,17t4-5c2p0N1:L7,19t6-7c3p0N1:L9,21t8-9c4p0N1:L11,23t10-11c5p0N1:L0,12t0-1c0p1N0:L2,14t2-3c1p1N0:L4,16t4-5c2p1N0:L6,18t6-7c3p1N0:L8,20t8-9c4p1N0:L10,22t10-11c5p1N0
@@ -2929,8 +2929,8 @@ L1,13t0-1c0p0N1:L3,15t2-3c1p0N1:L5,17t4-5c2p0N1:L7,19t6-7c3p0N1:L9,21t8-9c4p0N1:
     The +sct value above has the "p" processor (physical CPU) integers using a
     reverse ordering when compared to the "N" NUMA Node integers.
     To bind scheduler threads in the same order as the provided
-    CPU topology the <a href="https://www.erlang.org/doc/man/erl.html#emulator-flags" rel="noreferrer" target="_blank">erl</a>
-    +sbt command-line argument can be provided the "ns" value (for no_spread).
+    CPU topology the erl <a href="https://www.erlang.org/doc/man/erl.html#+sbt" rel="noreferrer" target="_blank">+sbt</a>
+    command-line argument can be provided the "ns" value (for no_spread).
     Combining the <a href="https://www.erlang.org/doc/man/erl.html#emulator-flags" rel="noreferrer" target="_blank">erl</a> command-line arguments together
     for using only the second physical CPU would look like:
   </p>
@@ -2959,6 +2959,16 @@ L1,13t0-1c0p0N1:L3,15t2-3c1p0N1:L5,17t4-5c2p0N1:L7,19t6-7c3p0N1:L9,21t8-9c4p0N1:
   {parameters,
    [{"cpuset.cpus", "1,13,3,15,5,17,7,19,9,21,11,23"}]}]}
 </pre>
+  <p class="paragraph">
+    <b>(new in 2.0.6)</b>
+    With the develop branch CloudI source code it is possible to use the
+    <a href="api.html#2_services_add_config_opts_bind">bind</a> service
+    configuration option with the same string value
+    (i.e.,&nbsp;"1,13,3,15,5,17,7,19,9,21,11,23").  In the future,
+    <a href="api.html#2_services_add_config_opts_bind">bind</a> should be
+    preferred due to cross-platform support with less CloudI execution
+    user privileges required.
+  </p>
   <p class="paragraph">
     External CloudI services have additional service configuration options
     which influence CPU utilization in a more general way:
