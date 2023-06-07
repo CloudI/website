@@ -41,7 +41,7 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
 <div id="content">
   <h1>Frequently Asked Questions</h1>
   <h3 style="text-align:center">version 2.0.5<br />
-  last updated on March 31<sup>st</sup> 2023</h3>
+  last updated on June 7<sup>th</sup> 2023</h3>
 
   <h2 id="1_contents">1 - Introduction to CloudI</h2>
   <ul class="faq">
@@ -112,20 +112,22 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
   </ul>
   <h2 id="6_contents">6 - Services</h2>
   <ul class="faq">
-    <li><a href="#6_C"          >6.1 - C/C++ Service Implementation</a></li>
-    <li><a href="#6_Erlang"     >6.2 - Erlang Service Implementation</a></li>
-    <li><a href="#6_Go"         >6.3 - Go Service Implementation</a></li>
-    <li><a href="#6_Haskell"    >6.4 - Haskell Service Implementation</a></li>
-    <li><a href="#6_Java"       >6.5 - Java Service Implementation</a></li>
-    <li><a href="#6_JavaScript" >6.6 - JavaScript/node.js Service Implementation</a></li>
-    <li><a href="#6_OCaml"      >6.7 - OCaml Service Implementation</a></li>
-    <li><a href="#6_Perl"       >6.8 - Perl Service Implementation</a></li>
-    <li><a href="#6_PHP"        >6.9 - PHP Service Implementation</a></li>
-    <li><a href="#6_Python"     >6.10 - Python Service Implementation</a></li>
-    <li><a href="#6_Ruby"       >6.11 - Ruby Service Implementation</a></li>
-    <li><a href="#6_HTTP"       >6.12 - HTTP Integration</a></li>
-    <li><a href="#6_FaultTolerance">6.13 - Service Fault Tolerance</a></li>
-    <li><a href="#6_Monitoring" >6.14 - Service Monitoring</a></li>
+    <li><a href="#6_ATS"        >6.1 - ATS Service Implementation</a></li>
+    <li><a href="#6_C"          >6.2 - C/C++ Service Implementation</a></li>
+    <li><a href="#6_Erlang"     >6.3 - Erlang Service Implementation</a></li>
+    <li><a href="#6_Go"         >6.4 - Go Service Implementation</a></li>
+    <li><a href="#6_Haskell"    >6.5 - Haskell Service Implementation</a></li>
+    <li><a href="#6_Java"       >6.6 - Java Service Implementation</a></li>
+    <li><a href="#6_JavaScript" >6.7 - JavaScript/node.js Service Implementation</a></li>
+    <li><a href="#6_OCaml"      >6.8 - OCaml Service Implementation</a></li>
+    <li><a href="#6_Perl"       >6.9 - Perl Service Implementation</a></li>
+    <li><a href="#6_PHP"        >6.10 - PHP Service Implementation</a></li>
+    <li><a href="#6_Python"     >6.11 - Python Service Implementation</a></li>
+    <li><a href="#6_Ruby"       >6.12 - Ruby Service Implementation</a></li>
+    <li><a href="#6_Rust"       >6.13 - Rust Service Implementation (new in 2.0.6)</a></li>
+    <li><a href="#6_HTTP"       >6.14 - HTTP Integration</a></li>
+    <li><a href="#6_FaultTolerance">6.15 - Service Fault Tolerance</a></li>
+    <li><a href="#6_Monitoring" >6.16 - Service Monitoring</a></li>
   </ul>
   <h2 id="7_contents">7 - Troubleshooting</h2>
   <ul class="faq">
@@ -540,7 +542,7 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
     <a href="api.html#Service">service requests</a> are transactional
     and a service request response may be used to confirm any state change.
     To understand consistency, as it relates to CloudI service
-    fault tolerance, please refer to <a href="#6_FaultTolerance">"6.13 - Service Fault Tolerance"</a>.
+    fault tolerance, please refer to <a href="#6_FaultTolerance">"6.15 - Service Fault Tolerance"</a>.
   </p>
   <div class="top"><a href="#1_contents">Top</a></div>
 
@@ -2209,7 +2211,37 @@ sudo cloudi stop
   <hr>
   <h2>6 - Services</h2>
 
-  <h3 id="6_C">6.1 - C/C++ Service Implementation</h3>
+  <h3 id="6_ATS">6.1 - ATS Service Implementation</h3>
+  <p class="paragraph">
+    The <a href="https://github.com/CloudI/CloudI/blob/master/src/api/ats/v2/cloudi.sats" rel="noopener" target="_blank">ATS CloudI API</a>
+    provides an ATS2/Postiats interface to the C CloudI API for utilizing any
+    <a href="https://en.wikipedia.org/wiki/ATS_(programming_language)" rel="noreferrer" target="_blank">ATS programming language</a>
+    features in the implementation of a CloudI service.  The ATS CloudI API
+    only utilizes the view types subset of the ATS2/Postiats programming
+    language so it doesn't require compilation with garbage collection.
+    That means the ATS CloudI API compilation utilizes -DATS_MEMALLOC_LIBC
+    without ATS types causing memory leaks.  The ATS2/Postiats exception
+    handling implementation is currently not thread-safe, so ATS service
+    configurations should always have count_thread set to 1 (the default).
+    Some of the integration tests that provide example usage of the ATS
+    <a href="api.html#Service">CloudI API</a> are:
+  </p>
+  <ul>
+    <li><a href="https://github.com/CloudI/CloudI/blob/master/src/tests/count/ats/v2/main.dats" rel="noopener" target="_blank">src/tests/count
+        Basic Count Test</a></li>
+    <li><a href="https://github.com/CloudI/CloudI/blob/master/src/tests/http_req/ats/v2/main.dats" rel="noopener" target="_blank">src/tests/http_req
+        Basic HTTP Request Test</a></li>
+    <li><a href="https://github.com/CloudI/CloudI/blob/master/src/tests/msg_size/ats/v2/main.dats" rel="noopener" target="_blank">src/tests/msg_size
+        Basic Message Size (Forwarding) Test</a></li>
+    <li><a href="https://github.com/CloudI/CloudI/blob/master/src/tests/messaging/ats/v2/main.dats" rel="noopener" target="_blank">src/tests/messaging
+        Basic Messaging Test</a></li>
+  </ul>
+  <p>
+    For more information, please refer to <a href="#4_API">"4.1 - How do I integrate external software with CloudI?"</a>.
+  </p>
+  <div class="top"><a href="#6_contents">Top</a></div>
+
+  <h3 id="6_C">6.2 - C/C++ Service Implementation</h3>
   <p class="paragraph">
     There are separate header files that provide both a C CloudI API
     (<a href="https://github.com/CloudI/CloudI/blob/master/src/api/c/cloudi.h" rel="noopener" target="_blank">cloudi.h</a>)
@@ -2253,7 +2285,7 @@ sudo cloudi stop
   </p>
   <div class="top"><a href="#6_contents">Top</a></div>
 
-  <h3 id="6_Erlang">6.2 - Erlang Service Implementation</h3>
+  <h3 id="6_Erlang">6.3 - Erlang Service Implementation</h3>
   <p class="paragraph">
     Erlang CloudI services use the cloudi_service behavior to create an
     "internal" service (all non-Erlang CloudI services are "external").
@@ -2298,7 +2330,7 @@ sudo cloudi stop
   </p>
   <div class="top"><a href="#6_contents">Top</a></div>
 
-  <h3 id="6_Go">6.3 - Go Service Implementation</h3>
+  <h3 id="6_Go">6.4 - Go Service Implementation</h3>
   <p class="paragraph">
     The Go CloudI API provides a simple interface for making Go CloudI
     services.  The Go CloudI API only uses Go source code internally
@@ -2325,7 +2357,7 @@ sudo cloudi stop
   </p>
   <div class="top"><a href="#6_contents">Top</a></div>
 
-  <h3 id="6_Haskell">6.4 - Haskell Service Implementation</h3>
+  <h3 id="6_Haskell">6.5 - Haskell Service Implementation</h3>
   <p class="paragraph">
     The Haskell CloudI API provides a simple interface for making Haskell CloudI
     services.  The Haskell CloudI API only uses Haskell source code internally
@@ -2355,7 +2387,7 @@ sudo cloudi stop
   </p>
   <div class="top"><a href="#6_contents">Top</a></div>
 
-  <h3 id="6_Java">6.5 - Java Service Implementation</h3>
+  <h3 id="6_Java">6.6 - Java Service Implementation</h3>
   <p class="paragraph">
     The Java CloudI API uses synchronous IO on file descriptors for
     an efficient light-weight interface using only Java source code,
@@ -2386,7 +2418,7 @@ sudo cloudi stop
   </p>
   <div class="top"><a href="#6_contents">Top</a></div>
 
-  <h3 id="6_JavaScript">6.6 - JavaScript/node.js Service Implementation</h3>
+  <h3 id="6_JavaScript">6.7 - JavaScript/node.js Service Implementation</h3>
   <p class="paragraph">
     The JavaScript CloudI API provides a simple interface for making JavaScript
     CloudI services. The JavaScript CloudI API only uses JavaScript source code
@@ -2415,7 +2447,7 @@ sudo cloudi stop
   </p>
   <div class="top"><a href="#6_contents">Top</a></div>
 
-  <h3 id="6_OCaml">6.7 - OCaml Service Implementation</h3>
+  <h3 id="6_OCaml">6.8 - OCaml Service Implementation</h3>
   <p class="paragraph">
     The OCaml CloudI API provides a simple interface for making OCaml CloudI
     services.  The OCaml CloudI API only uses OCaml source code internally
@@ -2441,7 +2473,7 @@ sudo cloudi stop
   </p>
   <div class="top"><a href="#6_contents">Top</a></div>
 
-  <h3 id="6_Perl">6.8 - Perl Service Implementation</h3>
+  <h3 id="6_Perl">6.9 - Perl Service Implementation</h3>
   <p class="paragraph">
     The Perl CloudI API provides a simple interface for making Perl
     CloudI services. The Perl CloudI API only uses Perl source code
@@ -2466,7 +2498,7 @@ sudo cloudi stop
   </p>
   <div class="top"><a href="#6_contents">Top</a></div>
 
-  <h3 id="6_PHP">6.9 - PHP Service Implementation</h3>
+  <h3 id="6_PHP">6.10 - PHP Service Implementation</h3>
   <p class="paragraph">
     The PHP CloudI API provides a simple interface for making PHP
     CloudI services. The PHP CloudI API only uses PHP source code
@@ -2491,7 +2523,7 @@ sudo cloudi stop
   </p>
   <div class="top"><a href="#6_contents">Top</a></div>
 
-  <h3 id="6_Python">6.10 - Python Service Implementation</h3>
+  <h3 id="6_Python">6.11 - Python Service Implementation</h3>
   <p class="paragraph">
     The Python CloudI API provides a simple interface for making Python
     CloudI services.  Some of the integration tests that provide example usage
@@ -2532,7 +2564,7 @@ sudo cloudi stop
   </p>
   <div class="top"><a href="#6_contents">Top</a></div>
 
-  <h3 id="6_Ruby">6.11 - Ruby Service Implementation</h3>
+  <h3 id="6_Ruby">6.12 - Ruby Service Implementation</h3>
   <p class="paragraph">
     The Ruby CloudI API provides a simple interface for making Ruby
     CloudI services. The Ruby CloudI API only uses Ruby source code
@@ -2555,7 +2587,30 @@ sudo cloudi stop
   </p>
   <div class="top"><a href="#6_contents">Top</a></div>
 
-  <h3 id="6_HTTP">6.12 - HTTP Integration</h3>
+  <h3 id="6_Rust">6.13 - Rust Service Implementation (new in 2.0.6)</h3>
+  <p class="paragraph">
+    The Rust CloudI API provides a simple interface for making Rust
+    CloudI services. The Rust CloudI API only uses Rust source code
+    internally to avoid errors and simplify concurrency.
+    Some of the integration tests that provide example
+    usage of the Rust <a href="api.html#Service">CloudI API</a> are:
+  </p>
+  <ul>
+    <li><a href="https://github.com/CloudI/CloudI/blob/develop/src/tests/count/rust/main.rs" rel="noopener" target="_blank">src/tests/count
+        Basic Count Test</a></li>
+    <li><a href="https://github.com/CloudI/CloudI/blob/develop/src/tests/http_req/rust/main.rs" rel="noopener" target="_blank">src/tests/http_req
+        Basic HTTP Request Test</a></li>
+    <li><a href="https://github.com/CloudI/CloudI/blob/develop/src/tests/msg_size/rust/main.rs" rel="noopener" target="_blank">src/tests/msg_size
+        Basic Message Size (Forwarding) Test</a></li>
+    <li><a href="https://github.com/CloudI/CloudI/blob/develop/src/tests/messaging/rust/main.rs" rel="noopener" target="_blank">src/tests/messaging
+        Basic Messaging Test</a></li>
+  </ul>
+  <p>
+    For more information, please refer to <a href="#4_API">"4.1 - How do I integrate external software with CloudI?"</a>.
+  </p>
+  <div class="top"><a href="#6_contents">Top</a></div>
+
+  <h3 id="6_HTTP">6.14 - HTTP Integration</h3>
   <p class="paragraph">
     HTTP integration with CloudI services uses service names that have a prefix
     that matches the Uniform Resource Locator (URL) path.  A simple example
@@ -2661,7 +2716,7 @@ sudo cloudi stop
   </p>
   <div class="top"><a href="#6_contents">Top</a></div>
 
-  <h3 id="6_FaultTolerance">6.13 - Service Fault Tolerance</h3>
+  <h3 id="6_FaultTolerance">6.15 - Service Fault Tolerance</h3>
   <p class="paragraph">
     General fault tolerance considerations within the CloudI framework are
     described in <a href="#5_Stability">"5.3 - Stability and Fault Tolerance Considerations"</a>.
@@ -2726,7 +2781,7 @@ sudo cloudi stop
   </p>
   <div class="top"><a href="#6_contents">Top</a></div>
 
-  <h3 id="6_Monitoring">6.14 - Service Monitoring</h3>
+  <h3 id="6_Monitoring">6.16 - Service Monitoring</h3>
   <p class="paragraph">
     The <a href="https://github.com/CloudI/CloudI/blob/master/src/lib/cloudi_service_monitoring/src/cloudi_service_monitoring.erl" rel="noopener" target="_blank">cloudi_service_monitoring</a>
     provides the ability to monitor the internals of any CloudI service

@@ -41,7 +41,7 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
 <div id="content">
   <h1>CloudI API Documentation</h1>
   <h3 style="text-align:center">version 2.0.5<br />
-  last updated on March 31<sup>st</sup> 2023</h3>
+  last updated on June 7<sup>th</sup> 2023</h3>
 
   <h2 id="Service">CloudI API - Making a Service</h2>
   <ul class="api">
@@ -3351,7 +3351,7 @@ curl -X POST -d '[{internal, "/tests/http_req/", cloudi_service_request_rate, [{
     Usage requires the Erlang VM was started with the <a href="https://www.erlang.org/doc/man/erl.html#+sbt" rel="noreferrer" target="_blank">+sbt</a>
     command-line argument to bind Erlang process scheduler threads to
     logical processors (e.g., +sbt db).  When set to true the logical
-    processors are assigned in round-robin order.  When set to a
+    processors are assigned using round-robin order.  When set to a
     <a href="#2_services_add_config_opts_bind">
     string value all logical processors are provided explicitly</a>.
   </td></tr><tr><td>
