@@ -11,7 +11,7 @@
   <link rel="shortcut icon" href="images/cloud.ico" type="image/x-icon" />
   <!-- Open Graph Protocol (OGP) with LinkedIn requirements -->
   <meta property="og:title" content="CloudI: A Cloud at the lowest level - Frequently Asked Questions" />
-  <meta property="og:description" content="CloudI is an open-source private cloud computing framework for efficient, secure, and internal data processing. CloudI provides scaling for previously unscalable source code with efficient fault-tolerant execution of ATS, C/C++, Erlang/Elixir, Go, Haskell, Java, JavaScript/node.js, OCaml, Perl, PHP, Python, or Ruby services.
+  <meta property="og:description" content="CloudI is an open-source private cloud computing framework for efficient, secure, and internal data processing. CloudI provides scaling for previously unscalable source code with efficient fault-tolerant execution of ATS, C/C++, Erlang/Elixir, Go, Haskell, Java, JavaScript/node.js, OCaml, Perl, PHP, Python, Ruby, or Rust services.
 
 The bare essentials for efficient fault-tolerant processing on a cloud!" />
   <meta property="og:image" content="https://cloudi.org/images/cloud_ogp.png" />
@@ -32,7 +32,7 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
     <li><a href="faq.html" class="active">FAQ</a></li>
     <li><a href="tutorials.html">Tutorials</a>
         (<a href="tutorial_java.html">Java</a>)</li>
-    <li><a href="https://osdn.net/dl/cloudi/cloudi-2.0.5.tar.gz" rel="noopener" target="_blank">Download</a></li>
+    <li><a href="https://osdn.net/dl/cloudi/cloudi-2.0.6.tar.gz" rel="noopener" target="_blank">Download</a></li>
     <li><a href="https://github.com/CloudI/CloudI/tree/develop#readme">Source</a></li>
     <li><a href="support.html">Support</a></li>
   </ul>
@@ -40,8 +40,8 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
 
 <div id="content">
   <h1>Frequently Asked Questions</h1>
-  <h3 style="text-align:center">version 2.0.5<br />
-  last updated on June 7<sup>th</sup> 2023</h3>
+  <h3 style="text-align:center">version 2.0.6<br />
+  last updated on June 21<sup>st</sup> 2023</h3>
 
   <h2 id="1_contents">1 - Introduction to CloudI</h2>
   <ul class="faq">
@@ -124,7 +124,7 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
     <li><a href="#6_PHP"        >6.10 - PHP Service Implementation</a></li>
     <li><a href="#6_Python"     >6.11 - Python Service Implementation</a></li>
     <li><a href="#6_Ruby"       >6.12 - Ruby Service Implementation</a></li>
-    <li><a href="#6_Rust"       >6.13 - Rust Service Implementation (new in 2.0.6)</a></li>
+    <li><a href="#6_Rust"       >6.13 - Rust Service Implementation</a></li>
     <li><a href="#6_HTTP"       >6.14 - HTTP Integration</a></li>
     <li><a href="#6_FaultTolerance">6.15 - Service Fault Tolerance</a></li>
     <li><a href="#6_Monitoring" >6.16 - Service Monitoring</a></li>
@@ -438,7 +438,7 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
     and frameworks.  The <a href="api.html#Service">CloudI API</a>
     provides a light-weight interface for
     creating services in ATS, C++/C, Elixir, Erlang, Go, Haskell, Java,
-    JavaScript, OCaml, Perl, PHP, Python, and Ruby.  By using
+    JavaScript, OCaml, Perl, PHP, Python, Ruby, and Rust.  By using
     CloudI, external software can become more scalable and fault-tolerant
     by utilizing CloudI's load balancing of CloudI requests.  CloudI
     messaging enforces realtime constraints using timeouts, so that request
@@ -689,7 +689,7 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
     for each datum within the data of a service request when the
     service request handling function is called
     (with the function arity as 9 in Java, Perl, PHP, Ruby, 10 in Python,
-     11 in ATS, Erlang/Elixir, Go, Haskell, OCaml, 13 in C++ and 14 in C,
+     11 in ATS, Erlang/Elixir, Go, Haskell, OCaml, Rust, 13 in C++ and 14 in C,
      where arities higher than 9 are due to data handling details specific
      to the programming languages).
     Using a relatively high arity count does initially make developers
@@ -1222,6 +1222,11 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
   </td><td>
   Disable the Ruby CloudI API,<br />
   requires Ruby&nbsp;&ge;&nbsp;1.9.0<br />(default="no")
+  </td></tr><tr><td style="white-space:nowrap">
+  --enable-rust-support
+  </td><td>
+  Enable the Rust CloudI API,<br />
+  requires Rust&nbsp;&ge;&nbsp;1.66.1<br />(default="no")
   </td></tr></table>
   <p class="paragraph">
     For more installation configuration option details, please execute
@@ -1368,7 +1373,7 @@ sudo cloudi stop
   <p class="paragraph">
     The CloudI API provides a light-weight interface for creating services
     in ATS, C++/C, Elixir, Erlang, Go, Haskell, Java, Javascript, OCaml, Perl,
-    PHP, Python, and Ruby.  Services subscribe to receive requests from
+    PHP, Python, Ruby, and Rust.  Services subscribe to receive requests from
     other services using the CloudI API
     "<a href="api.html#1_subscribe">subscribe</a>" function
     call.  The subscribe function call takes a suffix string that is expected
@@ -2587,7 +2592,7 @@ sudo cloudi stop
   </p>
   <div class="top"><a href="#6_contents">Top</a></div>
 
-  <h3 id="6_Rust">6.13 - Rust Service Implementation (new in 2.0.6)</h3>
+  <h3 id="6_Rust">6.13 - Rust Service Implementation</h3>
   <p class="paragraph">
     The Rust CloudI API provides a simple interface for making Rust
     CloudI services. The Rust CloudI API only uses Rust source code
@@ -2596,13 +2601,13 @@ sudo cloudi stop
     usage of the Rust <a href="api.html#Service">CloudI API</a> are:
   </p>
   <ul>
-    <li><a href="https://github.com/CloudI/CloudI/blob/develop/src/tests/count/rust/main.rs" rel="noopener" target="_blank">src/tests/count
+    <li><a href="https://github.com/CloudI/CloudI/blob/master/src/tests/count/rust/main.rs" rel="noopener" target="_blank">src/tests/count
         Basic Count Test</a></li>
-    <li><a href="https://github.com/CloudI/CloudI/blob/develop/src/tests/http_req/rust/main.rs" rel="noopener" target="_blank">src/tests/http_req
+    <li><a href="https://github.com/CloudI/CloudI/blob/master/src/tests/http_req/rust/main.rs" rel="noopener" target="_blank">src/tests/http_req
         Basic HTTP Request Test</a></li>
-    <li><a href="https://github.com/CloudI/CloudI/blob/develop/src/tests/msg_size/rust/main.rs" rel="noopener" target="_blank">src/tests/msg_size
+    <li><a href="https://github.com/CloudI/CloudI/blob/master/src/tests/msg_size/rust/main.rs" rel="noopener" target="_blank">src/tests/msg_size
         Basic Message Size (Forwarding) Test</a></li>
-    <li><a href="https://github.com/CloudI/CloudI/blob/develop/src/tests/messaging/rust/main.rs" rel="noopener" target="_blank">src/tests/messaging
+    <li><a href="https://github.com/CloudI/CloudI/blob/master/src/tests/messaging/rust/main.rs" rel="noopener" target="_blank">src/tests/messaging
         Basic Messaging Test</a></li>
   </ul>
   <p>
@@ -3015,7 +3020,6 @@ L1,13t0-1c0p0N1:L3,15t2-3c1p0N1:L5,17t4-5c2p0N1:L7,19t6-7c3p0N1:L9,21t8-9c4p0N1:
    [{"cpuset.cpus", "1,13,3,15,5,17,7,19,9,21,11,23"}]}]}
 </pre>
   <p class="paragraph">
-    <b>(new in 2.0.6)</b>
     With the develop branch CloudI source code it is possible to use the
     <a href="api.html#2_services_add_config_opts_bind">bind</a> service
     configuration option with the same string value
