@@ -41,7 +41,7 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
 <div id="content">
   <h1>Frequently Asked Questions</h1>
   <h3 style="text-align:center">version 2.0.6<br />
-  last updated on June 21<sup>st</sup> 2023</h3>
+  last updated on June 22<sup>nd</sup> 2023</h3>
 
   <h2 id="1_contents">1 - Introduction to CloudI</h2>
   <ul class="faq">
@@ -3005,11 +3005,22 @@ L1,13t0-1c0p0N1:L3,15t2-3c1p0N1:L5,17t4-5c2p0N1:L7,19t6-7c3p0N1:L9,21t8-9c4p0N1:
     per core, so the CPU topology ordering allows the scheduler threads to be
     bound to only the second physical CPU.
   </p>
+  <p class="paragraph">
+    CloudI services require separate configuration to control their
+    CPU use.  The <a href="api.html#2_services_add_config_opts_bind">bind</a>
+    service configuration option ensures the service execution uses
+    specific logical processors.  If <a href="api.html#2_services_add_config_opts_bind">bind</a>
+    is set to 'true' or a string value, all the CloudI service processes
+    and threads will have specific logical processors assigned which
+    limits how the OS kernel scheduler will schedule execution.
+  </p>
   <h4>External Services</h4>
   <p class="paragraph">
-    External CloudI services require separate configuration to control their
-    CPU use.  On Linux it is best to use the <a href="api.html#2_services_add_config_opts_cgroup">cgroup</a>
-    service configuration option (instead of the taskset executable).
+    On Linux, the <a href="api.html#2_services_add_config_opts_cgroup">cgroup</a>
+    service configuration option could be used instead of <a href="api.html#2_services_add_config_opts_bind">bind</a>
+    (or the taskset executable) though it would not provide
+    thread-specific assignments, it would require root execution of CloudI
+    and it wouldn't be a cross-platform configuration.
     The cgroup configuration example below would ensure an external service
     only uses the second physical CPU described above:
   </p>
@@ -3020,13 +3031,10 @@ L1,13t0-1c0p0N1:L3,15t2-3c1p0N1:L5,17t4-5c2p0N1:L7,19t6-7c3p0N1:L9,21t8-9c4p0N1:
    [{"cpuset.cpus", "1,13,3,15,5,17,7,19,9,21,11,23"}]}]}
 </pre>
   <p class="paragraph">
-    With the develop branch CloudI source code it is possible to use the
-    <a href="api.html#2_services_add_config_opts_bind">bind</a> service
-    configuration option with the same string value
-    (i.e.,&nbsp;"1,13,3,15,5,17,7,19,9,21,11,23").  In the future,
-    <a href="api.html#2_services_add_config_opts_bind">bind</a> should be
-    preferred due to cross-platform support with less CloudI execution
-    user privileges required.
+    With the <a href="api.html#2_services_add_config_opts_bind">bind</a>
+    service configuration option, the same string value
+    (i.e.,&nbsp;"1,13,3,15,5,17,7,19,9,21,11,23") could be used for a
+    CloudI service that has 12 threads of execution.
   </p>
   <p class="paragraph">
     External CloudI services have additional service configuration options
