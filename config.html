@@ -31,7 +31,7 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
     <li><a href="faq.html">FAQ</a></li>
     <li><a href="tutorials.html">Tutorials</a>
         (<a href="tutorial_java.html">Java</a>)</li>
-    <li><a href="https://osdn.net/dl/cloudi/cloudi-2.0.6.tar.gz" rel="noopener" target="_blank">Download</a></li>
+    <li><a href="download" rel="noopener" target="_blank">Download</a></li>
     <li><a href="https://github.com/CloudI/CloudI/tree/develop#readme">Source</a></li>
     <li><a href="support.html">Support</a></li>
   </ul>
@@ -152,7 +152,16 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
         {"$LOAD_BALANCER1",
          [{port, 80}]},
         {"$LOAD_BALANCER2",
-         [{port, 80}]}]}],
+         [{port, 80}]},
+        {"github.com",
+         [{ipv6, false},
+          {port, 443}]},
+        {"osdn.net",
+         [{ipv6, false},
+          {port, 443}]},
+        {"sourceforge.net",
+         [{ipv6, false},
+          {port, 443}]}]}],
      lazy_local,
      {5, seconds}, {5, seconds}, {5, seconds},
      undefined, undefined, 6, 5, {5, minutes},
@@ -187,6 +196,11 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
          [{parameters_selected, [2]},
           {service_names,
            ["/cloudi.org/*"]}]},
+        {"cloudi.org/download/get",
+         [{http_redirect, "https://sourceforge.net/projects/cloudi/files/2.0.6/cloudi-2.0.6.tar.gz/download"}]},
+        {"cloudi.org/download/cloudi-*.tar.gz/get",
+         [{parameters_selected, [2, 2]},
+          {http_redirect, "https://sourceforge.net/projects/cloudi/files/*/cloudi-*.tar.gz/download"}]},
         {"cloudi.org/services_status.json/post",
          [{service_names,
            ["/cloudi/api/rpc/services_status.json/post"]}]},
