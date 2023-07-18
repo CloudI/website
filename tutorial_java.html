@@ -40,7 +40,7 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
 <h1>CloudI Java Tutorial</h1>
 <div class="details">
 <span id="revnumber">version 2.0.6,</span>
-<span id="revdate">2023-06-21</span>
+<span id="revdate">2023-07-17</span>
 </div>
 <div id="toc" class="toc">
 <div id="toctitle"></div>
@@ -361,7 +361,7 @@ Make sure CloudI is installed and running, using the installation and start sequ
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell">wget https://osdn.net/dl/cloudi/cloudi-2.0.6.tar.gz
+<pre class="highlight"><code class="language-shell" data-lang="shell">curl -LOJ https://cloudi.org/download/cloudi-2.0.6.tar.gz
 tar zxvf cloudi-2.0.6.tar.gz
 cd cloudi-2.0.6/src
 ./configure
@@ -453,7 +453,7 @@ EOF</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell">wget https://osdn.net/projects/cloudi/downloads/72706/schema.sql.bz2
+<pre class="highlight"><code class="language-shell" data-lang="shell">curl -LOJ https://cloudi.org/download/cloudi_tutorial_java/1.8.1/schema.sql.bz2
 cat SHA256SUM | sha256sum --check
 bunzip2 schema.sql.bz2
 psql -h localhost cloudi_tutorial_java cloudi_tutorial_java &lt; schema.sql</code></pre>

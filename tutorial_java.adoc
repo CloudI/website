@@ -9,7 +9,7 @@
 :idprefix:
 :linkattrs:
 :revnumber: 2.0.6
-:revdate: 2023-06-21
+:revdate: 2023-07-17
 :lang: en
 :encoding: UTF-8
 :toc:
@@ -246,7 +246,7 @@ Make sure CloudI is installed and running, using the installation and start sequ
 
 [source,shell]
 ----
-wget https://osdn.net/dl/cloudi/cloudi-2.0.6.tar.gz
+curl -LOJ https://cloudi.org/download/cloudi-2.0.6.tar.gz
 tar zxvf cloudi-2.0.6.tar.gz
 cd cloudi-2.0.6/src
 ./configure
@@ -333,7 +333,7 @@ Create the PostgreSQL schema with some test data:
 
 [source,shell]
 ----
-wget https://osdn.net/projects/cloudi/downloads/72706/schema.sql.bz2
+curl -LOJ https://cloudi.org/download/cloudi_tutorial_java/1.8.1/schema.sql.bz2
 cat SHA256SUM | sha256sum --check
 bunzip2 schema.sql.bz2
 psql -h localhost cloudi_tutorial_java cloudi_tutorial_java < schema.sql
