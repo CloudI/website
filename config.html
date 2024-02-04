@@ -199,7 +199,7 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
      [{add_prefix, false},
       {parameters_strict_matching_default, false},
       {http_redirect_health, "/health_check/cloudi/"},
-      {http_redirect_health_refresh, 20}, % 10 seconds * 2
+      {http_redirect_health_refresh, 60}, % 30 seconds * 2
       {destinations,
        [{"www.ndforge.com/*",
          [{parameters_selected, [2]},
