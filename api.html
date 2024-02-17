@@ -41,7 +41,7 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
 <div id="content">
   <h1>CloudI API Documentation</h1>
   <h3 style="text-align:center">version 2.0.7<br />
-  last updated on October 26<sup>th</sup> 2023</h3>
+  last updated on February 16<sup>th</sup> 2024</h3>
 
   <h2 id="Service">CloudI API - Making a Service</h2>
   <ul class="api">
@@ -94,21 +94,22 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
     <li><a href="#2_nodes_alive"           >2.18 - nodes_alive</a></li>
     <li><a href="#2_nodes_dead"            >2.19 - nodes_dead</a></li>
     <li><a href="#2_nodes_status"          >2.20 - nodes_status</a></li>
-    <li><a href="#2_nodes"                 >2.21 - nodes</a></li>
-    <li><a href="#2_logging_set"           >2.22 - logging_set</a></li>
-    <li><a href="#2_logging_file_set"      >2.23 - logging_file_set</a></li>
-    <li><a href="#2_logging_level_set"     >2.24 - logging_level_set</a></li>
-    <li><a href="#2_logging_stdout_set"    >2.25 - logging_stdout_set</a></li>
-    <li><a href="#2_logging_syslog_set"    >2.26 - logging_syslog_set</a></li>
-    <li><a href="#2_logging_formatters_set">2.27 - logging_formatters_set</a></li>
-    <li><a href="#2_logging_redirect_set"  >2.28 - logging_redirect_set</a></li>
-    <li><a href="#2_logging_status"        >2.29 - logging_status</a></li>
-    <li><a href="#2_logging_status_reset"  >2.30 - logging_status_reset</a></li>
-    <li><a href="#2_logging"               >2.31 - logging</a></li>
-    <li><a href="#2_code_path_add"         >2.32 - code_path_add</a></li>
-    <li><a href="#2_code_path_remove"      >2.33 - code_path_remove</a></li>
-    <li><a href="#2_code_path"             >2.34 - code_path</a></li>
-    <li><a href="#2_code_status"           >2.35 - code_status</a></li>
+    <li><a href="#2_nodes_status_reset"    >2.21 - nodes_status_reset (new in 2.0.8)</a></li>
+    <li><a href="#2_nodes"                 >2.22 - nodes</a></li>
+    <li><a href="#2_logging_set"           >2.23 - logging_set</a></li>
+    <li><a href="#2_logging_file_set"      >2.24 - logging_file_set</a></li>
+    <li><a href="#2_logging_level_set"     >2.25 - logging_level_set</a></li>
+    <li><a href="#2_logging_stdout_set"    >2.26 - logging_stdout_set</a></li>
+    <li><a href="#2_logging_syslog_set"    >2.27 - logging_syslog_set</a></li>
+    <li><a href="#2_logging_formatters_set">2.28 - logging_formatters_set</a></li>
+    <li><a href="#2_logging_redirect_set"  >2.29 - logging_redirect_set</a></li>
+    <li><a href="#2_logging_status"        >2.30 - logging_status</a></li>
+    <li><a href="#2_logging_status_reset"  >2.31 - logging_status_reset</a></li>
+    <li><a href="#2_logging"               >2.32 - logging</a></li>
+    <li><a href="#2_code_path_add"         >2.33 - code_path_add</a></li>
+    <li><a href="#2_code_path_remove"      >2.34 - code_path_remove</a></li>
+    <li><a href="#2_code_path"             >2.35 - code_path</a></li>
+    <li><a href="#2_code_status"           >2.36 - code_status</a></li>
   </ul>
 
   <hr>
@@ -5239,7 +5240,25 @@ curl -X POST -d "['cloudi@hostname']" http://localhost:6464/cloudi/api/rpc/nodes
   </p>
   <div class="top"><a href="#CloudI">Top</a></div>
 
-  <h3 id="2_nodes">2.21 - nodes</h3>
+  <h3 id="2_nodes_status_reset">2.21 - nodes_status_reset (new in 2.0.8)</h3>
+<p class="code">
+curl http://localhost:6464/cloudi/api/rpc/nodes_status_reset.erl
+</p>
+  <p class="paragraph">
+    Remove all nodes status data for nodes that are currently dead.
+    If a currently disconnected node (i.e., "dead") reconnects in the future,
+    the remote node's status on the local node will make it appear to be a
+    new remote node.
+    If nodes that are currently dead were added manually
+    (i.e., with <a href="#2_nodes_set">'nodes'</a> configuration instead of
+     <a href="#2_nodes_set_config_discovery">'discovery'</a> configuration, so
+     without the use of Distributed Erlang node auto-discovery functionality),
+    no reconnect with the dead nodes will occur in the future after the
+    nodes status reset occurs (unless the nodes are added manually again).
+  </p>
+  <div class="top"><a href="#CloudI">Top</a></div>
+
+  <h3 id="2_nodes">2.22 - nodes</h3>
 <p class="code">
 curl http://localhost:6464/cloudi/api/rpc/nodes.erl
 </p>
@@ -5248,7 +5267,7 @@ curl http://localhost:6464/cloudi/api/rpc/nodes.erl
   </p>
   <div class="top"><a href="#CloudI">Top</a></div>
 
-  <h3 id="2_logging_set">2.22 - logging_set</h3>
+  <h3 id="2_logging_set">2.23 - logging_set</h3>
 <p class="code">
 curl -X POST -d '[{file, undefined}, {syslog, []}]' http://localhost:6464/cloudi/api/rpc/logging_set.erl
 </p>
@@ -5361,7 +5380,7 @@ fun((Level :: fatal | error | warn | info | debug | trace,
   </p>
   <div class="top"><a href="#CloudI">Top</a></div>
 
-  <h3 id="2_logging_file_set">2.23 - logging_file_set</h3>
+  <h3 id="2_logging_file_set">2.24 - logging_file_set</h3>
 <p class="code">
 curl -X POST -d '"different_filename.log"' http://localhost:6464/cloudi/api/rpc/logging_file_set.erl
 </p>
@@ -5371,7 +5390,7 @@ curl -X POST -d '"different_filename.log"' http://localhost:6464/cloudi/api/rpc/
   </p>
   <div class="top"><a href="#CloudI">Top</a></div>
 
-  <h3 id="2_logging_level_set">2.24 - logging_level_set</h3>
+  <h3 id="2_logging_level_set">2.25 - logging_level_set</h3>
 <p class="code">
 curl -X POST -d 'warn' http://localhost:6464/cloudi/api/rpc/logging_level_set.erl
 </p>
@@ -5385,7 +5404,7 @@ curl -X POST -d 'warn' http://localhost:6464/cloudi/api/rpc/logging_level_set.er
   </p>
   <div class="top"><a href="#CloudI">Top</a></div>
 
-  <h3 id="2_logging_stdout_set">2.25 - logging_stdout_set</h3>
+  <h3 id="2_logging_stdout_set">2.26 - logging_stdout_set</h3>
 <p class="code">
 curl -X POST -d 'true' http://localhost:6464/cloudi/api/rpc/logging_stdout_set.erl
 </p>
@@ -5394,7 +5413,7 @@ curl -X POST -d 'true' http://localhost:6464/cloudi/api/rpc/logging_stdout_set.e
   </p>
   <div class="top"><a href="#CloudI">Top</a></div>
 
-  <h3 id="2_logging_syslog_set">2.26 - logging_syslog_set</h3>
+  <h3 id="2_logging_syslog_set">2.27 - logging_syslog_set</h3>
 <p class="code">
 curl -X POST -d '[{identity, "CloudI"}, {facility, local0}, {level, trace}]' http://localhost:6464/cloudi/api/rpc/logging_syslog_set.erl
 </p>
@@ -5484,7 +5503,7 @@ curl -X POST -d '[{identity, "CloudI"}, {facility, local0}, {level, trace}]' htt
   </td></tr></table>
   <div class="top"><a href="#CloudI">Top</a></div>
 
-  <h3 id="2_logging_formatters_set">2.27 - logging_formatters_set</h3>
+  <h3 id="2_logging_formatters_set">2.28 - logging_formatters_set</h3>
 <p class="code">
 curl -X POST -d '[{any, [{output, lager_file_backend}, {output_args, [{file, "lager.log"}]}, {formatter, lager_default_formatter}, {level, trace}]}]' http://localhost:6464/cloudi/api/rpc/logging_formatters_set.erl
 </p>
@@ -5582,7 +5601,7 @@ curl -X POST -d '[{any, [{output, lager_file_backend}, {output_args, [{file, "la
   </td></tr></table>
   <div class="top"><a href="#CloudI">Top</a></div>
 
-  <h3 id="2_logging_redirect_set">2.28 - logging_redirect_set</h3>
+  <h3 id="2_logging_redirect_set">2.29 - logging_redirect_set</h3>
 <p class="code">
 curl -X POST -d 'cloudi@host' http://localhost:6464/cloudi/api/rpc/logging_redirect_set.erl
 </p>
@@ -5592,7 +5611,7 @@ curl -X POST -d 'cloudi@host' http://localhost:6464/cloudi/api/rpc/logging_redir
   </p>
   <div class="top"><a href="#CloudI">Top</a></div>
 
-  <h3 id="2_logging_status">2.29 - logging_status</h3>
+  <h3 id="2_logging_status">2.30 - logging_status</h3>
 <p class="code">
 curl http://localhost:6464/cloudi/api/rpc/logging_status.erl
 </p>
@@ -5652,7 +5671,7 @@ curl http://localhost:6464/cloudi/api/rpc/logging_status.erl
   </p>
   <div class="top"><a href="#CloudI">Top</a></div>
 
-  <h3 id="2_logging_status_reset">2.30 - logging_status_reset</h3>
+  <h3 id="2_logging_status_reset">2.31 - logging_status_reset</h3>
 <p class="code">
 curl http://localhost:6464/cloudi/api/rpc/logging_status_reset.erl
 </p>
@@ -5661,7 +5680,7 @@ curl http://localhost:6464/cloudi/api/rpc/logging_status_reset.erl
   </p>
   <div class="top"><a href="#CloudI">Top</a></div>
 
-  <h3 id="2_logging">2.31 - logging</h3>
+  <h3 id="2_logging">2.32 - logging</h3>
 <p class="code">
 curl http://localhost:6464/cloudi/api/rpc/logging.erl
 </p>
@@ -5672,7 +5691,7 @@ curl http://localhost:6464/cloudi/api/rpc/logging.erl
   </p>
   <div class="top"><a href="#CloudI">Top</a></div>
 
-  <h3 id="2_code_path_add">2.32 - code_path_add</h3>
+  <h3 id="2_code_path_add">2.33 - code_path_add</h3>
 <p class="code">
 curl -X POST -d '"/home/user/code/services"' http://localhost:6464/cloudi/api/rpc/code_path_add.erl
 </p>
@@ -5683,7 +5702,7 @@ curl -X POST -d '"/home/user/code/services"' http://localhost:6464/cloudi/api/rp
   </p>
   <div class="top"><a href="#CloudI">Top</a></div>
 
-  <h3 id="2_code_path_remove">2.33 - code_path_remove</h3>
+  <h3 id="2_code_path_remove">2.34 - code_path_remove</h3>
 <p class="code">
 curl -X POST -d '"/home/user/code/services"' http://localhost:6464/cloudi/api/rpc/code_path_remove.erl
 </p>
@@ -5694,7 +5713,7 @@ curl -X POST -d '"/home/user/code/services"' http://localhost:6464/cloudi/api/rp
   </p>
   <div class="top"><a href="#CloudI">Top</a></div>
 
-  <h3 id="2_code_path">2.34 - code_path</h3>
+  <h3 id="2_code_path">2.35 - code_path</h3>
 <p class="code">
 curl http://localhost:6464/cloudi/api/rpc/code_path.erl
 </p>
@@ -5704,7 +5723,7 @@ curl http://localhost:6464/cloudi/api/rpc/code_path.erl
   </p>
   <div class="top"><a href="#CloudI">Top</a></div>
 
-  <h3 id="2_code_status">2.35 - code_status</h3>
+  <h3 id="2_code_status">2.36 - code_status</h3>
 <p class="code">
 curl http://localhost:6464/cloudi/api/rpc/code_status.erl
 </p>
@@ -5745,6 +5764,8 @@ curl http://localhost:6464/cloudi/api/rpc/code_status.erl
   list([{type, internal | external},
         {file_age, nonempty_string()},
         {file_path, nonempty_string()},
+        {file_loaded, boolean()},      % internal services only (new in 2.0.8)
+        {file_version, list(byte())},  % internal services only (new in 2.0.8)
         {service_ids, nonempty_list(service_id())}])}]
 </pre>
   <p class="paragraph">
