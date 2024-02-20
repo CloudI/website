@@ -41,7 +41,7 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
 <div id="content">
   <h1>CloudI API Documentation</h1>
   <h3 style="text-align:center">version 2.0.7<br />
-  last updated on February 16<sup>th</sup> 2024</h3>
+  last updated on February 20<sup>th</sup> 2024</h3>
 
   <h2 id="Service">CloudI API - Making a Service</h2>
   <ul class="api">
@@ -5764,8 +5764,8 @@ curl http://localhost:6464/cloudi/api/rpc/code_status.erl
   list([{type, internal | external},
         {file_age, nonempty_string()},
         {file_path, nonempty_string()},
-        {file_loaded, boolean()},      % internal services only (new in 2.0.8)
-        {file_version, list(byte())},  % internal services only (new in 2.0.8)
+        {file_loaded, boolean()},               % internal only (new in 2.0.8)
+        {file_version, nonempty_list(byte())},  % internal only (new in 2.0.8)
         {service_ids, nonempty_list(service_id())}])}]
 </pre>
   <p class="paragraph">
