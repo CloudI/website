@@ -41,7 +41,7 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
 <div id="content">
   <h1>CloudI API Documentation</h1>
   <h3 style="text-align:center">version 2.0.7<br />
-  last updated on February 24<sup>th</sup> 2024</h3>
+  last updated on June 8<sup>th</sup> 2024</h3>
 
   <h2 id="Service">CloudI API - Making a Service</h2>
   <ul class="api">
@@ -110,6 +110,7 @@ Cloud<span style="font-family:serif">I</span><img alt="Active Cloud" width="156"
     <li><a href="#2_code_path_remove"      >2.34 - code_path_remove</a></li>
     <li><a href="#2_code_path"             >2.35 - code_path</a></li>
     <li><a href="#2_code_status"           >2.36 - code_status</a></li>
+    <li><a href="#2_code_status_reset"     >2.37 - code_status_reset (new in 2.0.8)</a></li>
   </ul>
 
   <hr>
@@ -5780,6 +5781,14 @@ curl http://localhost:6464/cloudi/api/rpc/code_status.erl
   </p>
   <div class="top"><a href="#CloudI">Top</a></div>
 
+  <h3 id="2_code_status_reset">2.37 - code_status_reset</h3>
+<p class="code">
+curl http://localhost:6464/cloudi/api/rpc/code_status_reset.erl
+</p>
+  <p class="paragraph">
+    Clear old entries from the code_status runtime_cloudi_changes list.
+  </p>
+  <div class="top"><a href="#CloudI">Top</a></div>
 </div>
 
 <br />
