@@ -150,6 +150,9 @@ pre {
 #content pre.code {
     position: relative;
 }
+#content pre.dynamic {
+    display: flex;
+}
 #content ul.faq li {
     list-style-type: none;
 }
